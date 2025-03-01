@@ -1,16 +1,14 @@
 import { makeAutoObservable, toJS } from "mobx";
-import { MaterialInventory, MaterialInventorySummary } from "../Inventory/Inventory";
 import * as JsSearch from 'js-search';
 import { ConditionalFilterFunction, UuidToTextFilter, Filter, UuidToConditionalFilter } from "@ui/types/filters";
 import { IMaterial } from "@shared/types/models";
 import { MongooseIdStr } from "@shared/types/typeAliases";
 
 /* Mobx Store */
-class InventoryStore implements Filter<MaterialInventory> {
-  inventorySummary: Partial<MaterialInventorySummary> = {};
+class InventoryStore implements Filter<any> {
   searchBarInput: string = ''
   textQuickFilters: UuidToTextFilter = {}
-  conditionalQuickFilters: UuidToConditionalFilter<MaterialInventory> = {}
+  conditionalQuickFilters: UuidToConditionalFilter<any> = {}
   materials: Record<MongooseIdStr, IMaterial> = {};
 
   constructor() {
@@ -25,15 +23,16 @@ class InventoryStore implements Filter<MaterialInventory> {
     return this.textQuickFilters;
   }
 
-  getConditionalQuickFilters(): UuidToConditionalFilter<MaterialInventory> {
+  getConditionalQuickFilters(): UuidToConditionalFilter<any> {
     return this.conditionalQuickFilters;
   }
 
   setSearchBarInput(value: string): void {
+    console.log('Setting search bar input:', value)
     this.searchBarInput = value
   }
 
-  setConditionalQuickFilter(uuid: string, conditionalFilter: ConditionalFilterFunction<MaterialInventory>): void {
+  setConditionalQuickFilter(uuid: string, conditionalFilter: ConditionalFilterFunction<any>): void {
     this.conditionalQuickFilters[uuid] = conditionalFilter
   }
 
@@ -53,10 +52,6 @@ class InventoryStore implements Filter<MaterialInventory> {
     this.searchBarInput = ''
     this.textQuickFilters = {};
     this.conditionalQuickFilters = {};
-  }
-
-  setInventorySummary(inventorySummary: MaterialInventorySummary) {
-    this.inventorySummary = inventorySummary;
   }
 
   getArrivedMaterialsLength() {
@@ -90,27 +85,27 @@ class InventoryStore implements Filter<MaterialInventory> {
     return '';
   }
 
-  applyFilters(materialInventories: MaterialInventory[] | undefined): MaterialInventory[] {
+  applyFilters(materials: IMaterial[] | undefined): IMaterial[] {
     const noFiltersAreApplied = !this.searchBarInput && Object.keys(this.textQuickFilters).length === 0 && Object.keys(this.conditionalQuickFilters).length === 0
 
-    if (noFiltersAreApplied) return materialInventories || [];
-    if (!materialInventories) return [];
+    if (noFiltersAreApplied) return materials || [];
+    if (!materials) return [];
 
-    const search : JsSearch.Search = new JsSearch.Search(['material', '_id']);
-
-    search.addIndex(['material', 'name']);
-    search.addIndex(['material', 'materialId']);
-    search.addIndex(['material', 'materialCategory', 'name']);
-    search.addIndex(['material', 'vendor', 'name']);
-    search.addIndex(['material', 'adhesiveCategory', 'name']);
-    search.addIndex(['material', 'description']);
-    search.addIndex(['material', 'faceColor']);
-    search.addIndex(['material', 'thickness']);
-    search.addDocuments(materialInventories);
+    const search : JsSearch.Search = new JsSearch.Search(['_id']);
+    search.indexStrategy = new JsSearch.AllSubstringsIndexStrategy();
+    search.addIndex(['name']);
+    search.addIndex(['materialId']);
+    search.addIndex(['materialCategory', 'name']);
+    search.addIndex(['vendor', 'name']);
+    search.addIndex(['adhesiveCategory', 'name']);
+    search.addIndex(['description']);
+    search.addIndex(['faceColor']);
+    search.addIndex(['thickness']);
+    search.addDocuments(materials)
 
     const searchQuery: string = this.generateSearchQuery(this.searchBarInput, this.textQuickFilters)
 
-    const textSearchResults = searchQuery ? search.search(searchQuery) as MaterialInventory[] : materialInventories
+    const textSearchResults = searchQuery ? search.search(searchQuery) as IMaterial[] : materials
 
     const conditionalFilterFunctions = Object.values(this.conditionalQuickFilters)
     
@@ -119,12 +114,13 @@ class InventoryStore implements Filter<MaterialInventory> {
     }, textSearchResults)
   }
 
-  getFilteredMaterialInventories(): MaterialInventory[] {
-    return this.applyFilters(toJS(this.inventorySummary.materialInventories));
+  getMaterials() {
+    console.log('getting materials...')
+    return Object.values(this.materials);
   }
 
-  getAllMaterialInventories(): MaterialInventory[] {
-    return this.inventorySummary.materialInventories || [];
+  getFilteredMaterials(): IMaterial[] {
+    return this.applyFilters(toJS(this.getSortedMaterials()));
   }
 
   getSortedMaterials(): IMaterial[] {

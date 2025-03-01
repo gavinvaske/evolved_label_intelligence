@@ -27,7 +27,7 @@ const InventoryFilterBar = observer((_) => {
           conditionalQuickFilters={conditionalQuickFilters}
           textQuickFilters={textQuickFilters}
           store={inventoryStore}
-          filterableItemsCount={inventoryStore.getAllMaterialInventories().length}
+          filterableItemsCount={inventoryStore.getMaterials().length}
       />
     </div>
   )

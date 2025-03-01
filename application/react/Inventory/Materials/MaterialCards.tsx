@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import './MaterialCards.scss'
 import { observer } from 'mobx-react-lite';
 import MaterialCard from './Material/MaterialCard.tsx';
@@ -13,7 +13,7 @@ import { useModal } from '../../_context/modalProvider.tsx';
 import { MaterialDetailsModal } from '../MaterialDetailsModal/MaterialDetailsModal.tsx';
 
 const MaterialCards = observer(() => {
-  const materials = inventoryStore.getSortedMaterials()
+  const materials = inventoryStore.getFilteredMaterials()
   const { openModal } = useModal();
 
   useWebsocket('MATERIAL:CREATED', (material: IMaterial) => {
