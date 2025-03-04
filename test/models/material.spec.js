@@ -3,8 +3,14 @@ import { MaterialModel } from '../../application/api/models/material.ts';
 import mongoose from 'mongoose';
 import * as databaseService from '../../application/api/services/databaseService';
 import * as testDataGenerator from '../testDataGenerator';
+import { populateMaterialInventories as populateMaterialInventoriesMock } from '../../application/api/services/materialInventoryService.ts';
+import { when } from 'jest-when';
 
-jest.mock('../../application/api/services/materialInventoryService.ts');
+jest.mock('../../application/api/services/materialInventoryService.ts', () => {
+    return {
+        populateMaterialInventories: jest.fn()
+    };
+});
 
 const chance = Chance();
 
@@ -882,6 +888,22 @@ describe('File: material.js', () => {
 
         afterAll(async () => {
             await databaseService.closeDatabase();
+        });
+
+        it('should populate inventory after material is saved', async () => {
+            const expectedInventory = {
+                netLengthAvailable: 0,
+                lengthArrived: 0,
+                lengthNotArrived: 0,
+                materialOrders: [],
+                manualLengthAdjustment: 0
+            };
+            const material = new MaterialModel(materialAttributes);
+            when(populateMaterialInventoriesMock).calledWith([material._id]).mockResolvedValue(expectedInventory);
+
+            await material.save();
+
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(1);
         });
 
         it('should soft delete items', async () => {
