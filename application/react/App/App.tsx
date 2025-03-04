@@ -41,8 +41,10 @@ import { VendorForm } from '../Vendor/VendorForm/VendorForm';
 import { VendorTable } from '../Vendor/VendorTable/VendorTable';
 import { MaterialCategoryTable } from '../MaterialCategory/MaterialCategoryTable/MaterialCategoryTable';
 import { MaterialCategoryForm } from '../MaterialCategory/MaterialCategoryForm/MaterialCategoryForm';
+import { AdminPanel } from '../AdminPanel/AdminPanel';
 
 const queryClient = new QueryClient();
+const ANY_ROLE = [USER, ADMIN];
 
 export function App() {
   return (
@@ -62,7 +64,10 @@ export function App() {
               <Route path='*' element={<PageNotFound />} />
 
               {/* PROTECTED ROUTES */}
-              <Route element={<ProtectedRoute allowedRoles={[USER, ADMIN]} />}>
+              <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
+                <Route path='admin' element={<AdminPanel />}></Route>
+              </Route>
+              <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
                 <Route element={<TopNavbarLayout />}>
                   <Route path='inventory' element={<Inventory />}></Route>
                   <Route path='profile' element={<Profile />} />

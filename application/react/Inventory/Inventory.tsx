@@ -17,7 +17,7 @@ const Inventory = observer(() => {
 
   return (
     <div id='inventory-page' className='page-wrapper' data-test='inventory-page'>
-      <button onClick={calculateInventory}>Calculate Inventory</button>
+
       <Summary />
       <InventoryFilterBar />
       <MaterialCards />

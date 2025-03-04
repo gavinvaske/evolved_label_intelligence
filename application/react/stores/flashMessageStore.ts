@@ -2,13 +2,9 @@ import { makeAutoObservable } from 'mobx';
 import { ErrorFlashMessage, SuccessFlashMessage, FlashMessageOption } from "@ui/types/flashMessage";
 import { v4 as uuidv4 } from 'uuid';
 
-/* 
-  Questions: How do we want to handle flash messages?
-  Should they have a timer, where they're only displayed on the page for X seconds?
-*/
 class FlashMessageStore {
   errorMessages: ErrorFlashMessage[] = [];
-  successMessage: SuccessFlashMessage | null;
+  successMessage: SuccessFlashMessage | null = null;
 
   constructor() {
     makeAutoObservable(this);
