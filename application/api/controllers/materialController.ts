@@ -242,7 +242,6 @@ router.get('/recalculate-inventory', async (_: Request, response: Response) => {
     return response.sendStatus(SUCCESS)
   } catch (error) {
     console.log('Error populating material inventories.', error);
-
     return response.status(SERVER_ERROR).send(error.message);
   }
 });

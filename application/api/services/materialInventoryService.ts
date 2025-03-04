@@ -75,18 +75,18 @@ export function getInventoryForMaterial(purchaseOrdersForMaterial: IMaterialOrde
   }
 }
 
-export function buildMaterialInventory(material, allPurchaseOrdersForMaterial, materialLengthAdjustments) {
-  const purchaseOrdersThatHaveArrived = purchaseOrderService.findPurchaseOrdersThatHaveArrived(allPurchaseOrdersForMaterial);
-  const purchaseOrdersThatHaveNotArrived = purchaseOrderService.findPurchaseOrdersThatHaveNotArrived(allPurchaseOrdersForMaterial);
-  const lengthOfMaterialInStock = purchaseOrderService.computeLengthOfMaterialOrders(purchaseOrdersThatHaveArrived);
+export function buildMaterialInventory(material: IMaterial, allPurchaseOrdersForMaterial: IMaterialOrder[], netMaterialLengthAdjustment: number) {
+    const purchaseOrdersThatHaveArrived = purchaseOrderService.findPurchaseOrdersThatHaveArrived(allPurchaseOrdersForMaterial);
+    const purchaseOrdersThatHaveNotArrived = purchaseOrderService.findPurchaseOrdersThatHaveNotArrived(allPurchaseOrdersForMaterial);
+    const lengthOfMaterialInStock = purchaseOrderService.computeLengthOfMaterialOrders(purchaseOrdersThatHaveArrived);
 
-  return {
-    material,
-    lengthOfMaterialOrdered: purchaseOrderService.computeLengthOfMaterialOrders(purchaseOrdersThatHaveNotArrived),
-    lengthOfMaterialInStock: lengthOfMaterialInStock,
-    netLengthOfMaterialInStock: lengthOfMaterialInStock + materialLengthAdjustments,
-    purchaseOrdersForMaterial: purchaseOrdersThatHaveNotArrived
-  };
+    return {
+        material,
+        lengthOfMaterialOrdered: purchaseOrderService.computeLengthOfMaterialOrders(purchaseOrdersThatHaveNotArrived),
+        lengthOfMaterialInStock: lengthOfMaterialInStock,
+        netLengthOfMaterialInStock: lengthOfMaterialInStock + netMaterialLengthAdjustment,
+        purchaseOrdersForMaterial: purchaseOrdersThatHaveNotArrived
+    };
 }
 
 export function computeNetLengthOfMaterialInInventory(materialInventories) {

@@ -50,8 +50,7 @@ describe('materialInventoryService test suite', () => {
         let purchaseOrdersThatHaveArrived, 
             purchaseOrdersThatHaveNotArrived, 
             material,
-            purchaseOrders,
-            feetOfMaterialAlreadyUsedByTickets;
+            purchaseOrders;
 
         afterEach(() => {
             jest.resetAllMocks();
@@ -70,7 +69,6 @@ describe('materialInventoryService test suite', () => {
                 ...purchaseOrdersThatHaveArrived,
                 ...purchaseOrdersThatHaveNotArrived
             ];
-            feetOfMaterialAlreadyUsedByTickets = 0;
 
             when(mockPurchaseOrderService.findPurchaseOrdersThatHaveArrived)
                 .calledWith(purchaseOrders)
@@ -80,23 +78,24 @@ describe('materialInventoryService test suite', () => {
                 .calledWith(purchaseOrders)
                 .mockReturnValue(purchaseOrdersThatHaveNotArrived);
 
-            when(mockPurchaseOrderService.computeLengthOfMaterial)
+            when(mockPurchaseOrderService.computeLengthOfMaterialOrders)
                 .calledWith(purchaseOrders)
                 .mockReturnValue(chance.integer({min: 0}));
         });
         it('should not throw an error', () => {
             expect(() => {
-                materialInventoryService.buildMaterialInventory({}, [], feetOfMaterialAlreadyUsedByTickets);
+                materialInventoryService.buildMaterialInventory({}, [], 0);
             }).not.toThrow();
         });
 
         it('should call correct methods', () => {
-            materialInventoryService.buildMaterialInventory(material, purchaseOrders, feetOfMaterialAlreadyUsedByTickets);
+            const materialLengthAdjustment = chance.integer();
+            materialInventoryService.buildMaterialInventory(material, purchaseOrders, materialLengthAdjustment);
 
             expect(mockPurchaseOrderService.findPurchaseOrdersThatHaveArrived).toHaveBeenCalledTimes(1);
             expect(mockPurchaseOrderService.findPurchaseOrdersThatHaveNotArrived).toHaveBeenCalledTimes(1);
-            expect(mockPurchaseOrderService.computeLengthOfMaterial).toHaveBeenCalledWith(purchaseOrdersThatHaveArrived);
-            expect(mockPurchaseOrderService.computeLengthOfMaterial).toHaveBeenCalledWith(purchaseOrdersThatHaveNotArrived);
+            expect(mockPurchaseOrderService.computeLengthOfMaterialOrders).toHaveBeenCalledWith(purchaseOrdersThatHaveArrived);
+            expect(mockPurchaseOrderService.computeLengthOfMaterialOrders).toHaveBeenCalledWith(purchaseOrdersThatHaveNotArrived);
         });
 
         it('should return a materialInventory object with correctly calculated attributes', () => {
@@ -104,16 +103,15 @@ describe('materialInventoryService test suite', () => {
             const lengthOfMaterialInStock = chance.integer({min: 1});
             const materialLengthAdjustment = chance.integer();
 
-            when(mockPurchaseOrderService.computeLengthOfMaterial)
+            when(mockPurchaseOrderService.computeLengthOfMaterialOrders)
                 .calledWith(purchaseOrdersThatHaveArrived)
                 .mockReturnValue(lengthOfMaterialInStock);
 
-            when(mockPurchaseOrderService.computeLengthOfMaterial)
+            when(mockPurchaseOrderService.computeLengthOfMaterialOrders)
                 .calledWith(purchaseOrdersThatHaveNotArrived)
                 .mockReturnValue(lengthOfMaterialOrdered);
 
-            feetOfMaterialAlreadyUsedByTickets = chance.integer();
-            const netLengthOfMaterialInStock = lengthOfMaterialInStock - (feetOfMaterialAlreadyUsedByTickets + materialLengthAdjustment);
+            const netLengthOfMaterialInStock = lengthOfMaterialInStock + materialLengthAdjustment;
             const expectedMaterialInventory = {
                 material,
                 netLengthOfMaterialInStock,
@@ -122,7 +120,7 @@ describe('materialInventoryService test suite', () => {
                 purchaseOrdersForMaterial: purchaseOrdersThatHaveNotArrived
             };
 
-            const materialInventory = materialInventoryService.buildMaterialInventory(material, purchaseOrders, feetOfMaterialAlreadyUsedByTickets, materialLengthAdjustment);
+            const materialInventory = materialInventoryService.buildMaterialInventory(material, purchaseOrders, materialLengthAdjustment);
         
             expect(materialInventory).toEqual(expectedMaterialInventory);
         });

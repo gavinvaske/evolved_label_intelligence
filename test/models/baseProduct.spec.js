@@ -9,6 +9,8 @@ import { finishTypes } from '../../application/api/enums/finishTypesEnum';
 import { DieModel } from '../../application/api/models/die.ts';
 import * as testDataGenerator from '../testDataGenerator';
 
+jest.mock('../../application/api/services/materialInventoryService.ts');
+
 const chance = Chance();
 
 describe('Product Model', () => {

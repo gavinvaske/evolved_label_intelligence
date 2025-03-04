@@ -3,6 +3,8 @@ import Chance from 'chance';
 import { MaterialLengthAdjustmentModel } from '../../application/api/models/materialLengthAdjustment.ts';
 import * as databaseService from '../../application/api/services/databaseService';
 
+jest.mock('../../application/api/services/materialInventoryService.ts');
+
 const chance = Chance();
 
 describe('File: materialLengthAdjustment', () => {

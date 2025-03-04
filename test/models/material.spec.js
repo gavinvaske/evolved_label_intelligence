@@ -4,6 +4,8 @@ import mongoose from 'mongoose';
 import * as databaseService from '../../application/api/services/databaseService';
 import * as testDataGenerator from '../testDataGenerator';
 
+jest.mock('../../application/api/services/materialInventoryService.ts');
+
 const chance = Chance();
 
 function verifyWeightPerMsiAttribute(materialAttributes, attributeName) {
