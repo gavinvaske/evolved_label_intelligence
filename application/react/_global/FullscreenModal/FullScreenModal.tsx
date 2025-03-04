@@ -1,5 +1,5 @@
 import React from 'react';
-import './FullScreenModal.scss';
+import './FullscreenModal.scss';
 
 type Props = {
   onClose: () => void,
