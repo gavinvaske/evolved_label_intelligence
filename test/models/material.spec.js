@@ -42,6 +42,10 @@ function verifyWeightPerMsiAttribute(materialAttributes, attributeName) {
 describe('File: material.js', () => {
     let materialAttributes;
 
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
+
     beforeEach(() => {
         materialAttributes = testDataGenerator.mockData.Material();
     });
