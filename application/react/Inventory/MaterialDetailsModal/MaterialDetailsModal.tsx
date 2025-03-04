@@ -1,6 +1,6 @@
 import React from 'react';
 import './MaterialDetailsModal.scss'
-import { FullScreenModal } from '../../_global/FullScreenModal/FullScreenModal';
+import { FullScreenModal } from '../../_global/FullScreenModal/FullscreenModal.tsx';
 import '../../utils/app.scss'
 
 import { IMaterial } from '@shared/types/models';
