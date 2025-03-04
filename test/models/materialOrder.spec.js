@@ -1,6 +1,8 @@
 import Chance from 'chance';
 import { MaterialOrderModel } from '../../application/api/models/materialOrder.ts';
 import mongoose from 'mongoose';
+import { populateMaterialInventories as populateMaterialInventoriesMock } from '../../application/api/services/materialInventoryService.ts';
+import * as databaseService from '../../application/api/services/databaseService';
 
 const chance = Chance();
 
@@ -9,6 +11,12 @@ const TOTAL_ROLLS_MAX = 100;
 
 const TOTAL_COST_MIN = 1;
 const TOTAL_COST_MAX = 500000;
+
+jest.mock('../../application/api/services/materialInventoryService.ts', () => {
+    return {
+        populateMaterialInventories: jest.fn()
+    };
+});
 
 describe('materialOrder validation', () => {
     let materialOrderAttributes;
@@ -29,6 +37,10 @@ describe('materialOrder validation', () => {
             freightCharge: chance.floating({ min: 0, fixed: 2 }),
             fuelCharge: chance.floating({ min: 0, fixed: 2 })
         };
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
     });
 
     it('should validate when all attributes are defined correctly', () => {
@@ -379,6 +391,54 @@ describe('materialOrder validation', () => {
             const error = materialOrder.validateSync();
 
             expect(error).not.toBe(undefined);
+        });
+    });
+
+    describe('verify database interactions', () => {
+        beforeAll(async () => {
+            await databaseService.connectToTestMongoDatabase();
+        });
+    
+        afterEach(async () => {
+            await databaseService.clearDatabase();
+        });
+    
+        afterAll(async () => {
+            await databaseService.closeDatabase();
+        });
+
+        it('should update material.inventory once when saved, once when updated, once when deleted', async () => {
+            const materialOrder = new MaterialOrderModel(materialOrderAttributes);
+
+            const savedItem = await materialOrder.save();
+            await MaterialOrderModel.findByIdAndUpdate(savedItem._id, { material: null }).exec();
+            await MaterialOrderModel.findByIdAndDelete(savedItem._id).exec();
+
+            // eslint-disable-next-line no-magic-numbers
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(3);
+        });
+
+        it('should update material.inventory each time insertMany is called', async () => {
+            await MaterialOrderModel.insertMany([materialOrderAttributes]);
+            await MaterialOrderModel.insertMany([materialOrderAttributes]);
+        
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(2);
+        });
+
+        it('should update material.inventory each time bulkWrite is called', async () => {
+            await MaterialOrderModel.bulkWrite([{ insertOne: { document: materialOrderAttributes }}]);
+            await MaterialOrderModel.bulkWrite([{ insertOne: { document: materialOrderAttributes }}]);
+            await MaterialOrderModel.bulkWrite([{ insertOne: { document: materialOrderAttributes }}]);
+
+            // eslint-disable-next-line no-magic-numbers
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(3);
+        });
+
+        it('should update material.inventory each time deleteMany is called', async () => {
+            await MaterialOrderModel.deleteMany({material: null}).exec();
+            await MaterialOrderModel.deleteMany({material: null}).exec();
+
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(2);
         });
     });
     

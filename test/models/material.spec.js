@@ -891,15 +891,8 @@ describe('File: material.js', () => {
         });
 
         it('should populate inventory after material is saved', async () => {
-            const expectedInventory = {
-                netLengthAvailable: 0,
-                lengthArrived: 0,
-                lengthNotArrived: 0,
-                materialOrders: [],
-                manualLengthAdjustment: 0
-            };
             const material = new MaterialModel(materialAttributes);
-            when(populateMaterialInventoriesMock).calledWith([material._id]).mockResolvedValue(expectedInventory);
+            when(populateMaterialInventoriesMock).calledWith([material._id]).mockResolvedValue({});
 
             await material.save();
 
