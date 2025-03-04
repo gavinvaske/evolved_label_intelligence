@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Navbar.scss';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -49,10 +49,6 @@ export const Navbar = () => {
     setIsUserOptionsDropdownDisplayed(false)
     setIsUserNotificationsDropdownDisplayed(false)
     setIsShortcutDropdownDisplayed(!isShortcutDropdownDisplayed)
-  }
-
-  function alertOnClose() {
-    console.log('hello mars');
   }
 
   const dropdownLists = [
@@ -213,7 +209,7 @@ export const Navbar = () => {
               isActive={isShortcutDropdownDisplayed}
               onClose={() => {
                 setIsShortcutDropdownDisplayed(false); 
-                alertOnClose();
+
               }}
             >
             <div className="header">

@@ -28,7 +28,6 @@ class InventoryStore implements Filter<any> {
   }
 
   setSearchBarInput(value: string): void {
-    console.log('Setting search bar input:', value)
     this.searchBarInput = value
   }
 
@@ -115,7 +114,6 @@ class InventoryStore implements Filter<any> {
   }
 
   getMaterials() {
-    console.log('getting materials...')
     return Object.values(this.materials);
   }
 
