@@ -3,31 +3,32 @@ import './SearchBar.scss'
 
 type Props = {
   value: string,
-  performSearch: (value: string) => void
+  performSearch: (value: string) => void,
+  instantSearch?: boolean
 }
 
 const SearchBar = forwardRef((props: Props, ref: any) => {
-  const { value, performSearch } = props;
+  const { value, performSearch, instantSearch = false } = props;
   const [inputValue, setInputValue] = useState(value);
 
-  const handleOnKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key !== 'Enter') return;
+  const handleUserTypedSomething = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const userInput = e.currentTarget.value
+    setInputValue(userInput)
 
-    performSearch(inputValue);
+    if (instantSearch) {
+      performSearch(userInput.trim());
+    }
   }
 
-  const handleOnChange = (e: any) => {
-    const trimmedValue = e.target.value?.trim() || '';
-    setInputValue(trimmedValue);
-    
-    if (!trimmedValue) {
-      performSearch('');
+  const searchIffEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      performSearch(inputValue.trim())
     }
   }
 
   return (
     <div className={value ? 'search-bar has-text' : 'search-bar'} data-test='searchbar'>
-      <input ref={ref} id='primarySearch' type='text' defaultValue={value} onKeyDown={handleOnKeyDown} onChange={handleOnChange} placeholder="Search" />
+      <input ref={ref} id='primarySearch' type='text' defaultValue={value} onKeyDown={searchIffEnterPressed} onChange={handleUserTypedSomething} placeholder="Search" />
     </div>
   )
 })

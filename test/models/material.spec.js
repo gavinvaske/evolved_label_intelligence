@@ -3,6 +3,14 @@ import { MaterialModel } from '../../application/api/models/material.ts';
 import mongoose from 'mongoose';
 import * as databaseService from '../../application/api/services/databaseService';
 import * as testDataGenerator from '../testDataGenerator';
+import { populateMaterialInventories as populateMaterialInventoriesMock } from '../../application/api/services/materialInventoryService.ts';
+import { when } from 'jest-when';
+
+jest.mock('../../application/api/services/materialInventoryService.ts', () => {
+    return {
+        populateMaterialInventories: jest.fn()
+    };
+});
 
 const chance = Chance();
 
@@ -33,6 +41,10 @@ function verifyWeightPerMsiAttribute(materialAttributes, attributeName) {
 
 describe('File: material.js', () => {
     let materialAttributes;
+
+    afterEach(() => {
+        jest.resetAllMocks();
+    });
 
     beforeEach(() => {
         materialAttributes = testDataGenerator.mockData.Material();
@@ -880,6 +892,15 @@ describe('File: material.js', () => {
 
         afterAll(async () => {
             await databaseService.closeDatabase();
+        });
+
+        it('should populate inventory after material is saved', async () => {
+            const material = new MaterialModel(materialAttributes);
+            when(populateMaterialInventoriesMock).calledWith([material._id]).mockResolvedValue({});
+
+            await material.save();
+
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(1);
         });
 
         it('should soft delete items', async () => {

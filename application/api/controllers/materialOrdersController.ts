@@ -1,6 +1,7 @@
 import { Router, Request, Response } from 'express';
 const router = Router();
-import { IMaterialOrder, MaterialOrderModel } from '../models/materialOrder.ts';
+import { MaterialOrderModel } from '../models/materialOrder.ts';
+import { IMaterialOrder } from '@shared/types/models.ts';
 import { MaterialModel } from '../models/material.ts';
 import { VendorModel } from '../models/vendor.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
@@ -122,8 +123,6 @@ router.delete('/:mongooseId', async (request, response) => {
     }
 });
 
-
-
 router.patch('/:mongooseId', async (request, response) => {
     try {
         const updatedMaterialOrder = await MaterialOrderModel.findOneAndUpdate(
@@ -155,6 +154,24 @@ router.post('/', async (request, response) => {
         return response.status(BAD_REQUEST).send(error.message);
     }
 });
+
+router.post('/batch', async (request: Request, response: Response) => {
+  try {
+    const { ids } = request.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return response.status(400).json({ error: "Invalid order IDs" });
+    }
+
+    const orders = await MaterialOrderModel.find({ _id: { $in: ids } });
+
+    return response.json(orders)
+  } catch (error) {
+    console.error('Failed to fetch materialOrders by ids', error);
+
+    return response.status(BAD_REQUEST).send(error.message);
+  }
+})
 
 // @deprecated
 router.post('/create', async (request, response) => {

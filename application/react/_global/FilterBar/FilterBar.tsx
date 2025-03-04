@@ -86,7 +86,8 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         <SearchBar
           ref={ref}
           value={store.getSearchBarInput()}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) => store.setSearchBarInput(e.target.value)}
+          performSearch={(userInput: string) => store.setSearchBarInput(userInput)}
+          instantSearch={true}
         />
         <i className="fa-light fa-xmark" onClick={() => store.resetAllFilters()}></i>
       </div>

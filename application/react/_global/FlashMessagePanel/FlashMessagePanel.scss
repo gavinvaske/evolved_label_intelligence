@@ -11,7 +11,8 @@
   position: fixed;
   bottom: 60px;
   right: 0px;
-  overflow-x: scroll;
+  overflow: hidden;
+
   .clear-all-btn {
     background-color: white;
     padding: 5px 10px;
@@ -43,19 +44,18 @@
   }
 }
 
-
 .flash-message {
-  margin-bottom: 20px;
   display: flex;
   justify-content: center;
   align-items: center;
   -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
   box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
-  padding: 15px 25px;
+  padding: 0px 16px;
   border-radius: 5px;
   width: 460px;
-  height: 100px;
-  min-height: 100px;
+  height: 135px;
+  padding-right: 0px;
+  padding-top: 8px;
   position: relative;
   transition: .3s;
   .fa-solid.fa-xmark-large {
@@ -71,8 +71,9 @@
     justify-content: center;
     align-items: center;
     border-radius: 5px;
-    right: 15px;
-    top: 15px;
+    margin-left: 0px;
+    right: 12px;
+    top: 12px;
     border: 1px solid rgba(240,240,240,1);
     &:hover {
       background-color: rgba(240,240,240, .3);
@@ -86,6 +87,7 @@
     align-items: center;
     flex-direction: row;
     width: 410px;
+    overflow: hidden;
 
     .flash-content {
       display: flex;
@@ -128,15 +130,10 @@
     left: 0;
   }
   &:hover {
-    height: auto;
     transition: .3s;
 
     .flash-content {
-      overflow: visible;
-      height: auto;
-      max-height: 400px;
-      overflow-y: scroll;
-      transition: .3s;
+      overflow-y: auto;
     }
   }
 }

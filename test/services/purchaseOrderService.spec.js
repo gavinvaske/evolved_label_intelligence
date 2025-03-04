@@ -104,12 +104,12 @@ describe('purchaseOrderService test suite', () => {
         });
     });
 
-    describe('computeLengthOfMaterial()', () => {
+    describe('computeLengthOfMaterialOrders()', () => {
         it('should return length of 0 if no purchase orders are passed', () => {
             const expectedLength = 0;
             const purchaseOrders = [];
 
-            const actualLength = purchaseOrderService.computeLengthOfMaterial(purchaseOrders);
+            const actualLength = purchaseOrderService.computeLengthOfMaterialOrders(purchaseOrders);
 
             expect(actualLength).toBe(expectedLength);
         });
@@ -123,7 +123,7 @@ describe('purchaseOrderService test suite', () => {
                 expectedLength += purchaseOrders[i].totalRolls * purchaseOrders[i].feetPerRoll;
             }
 
-            const actualLength = purchaseOrderService.computeLengthOfMaterial(purchaseOrders);
+            const actualLength = purchaseOrderService.computeLengthOfMaterialOrders(purchaseOrders);
 
             expect(actualLength).toBe(expectedLength);
         });

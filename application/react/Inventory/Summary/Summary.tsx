@@ -1,11 +1,9 @@
 import React from 'react';
 import './Summary.scss'
 import { observer } from 'mobx-react-lite';
-import { MaterialInventorySummary } from '../Inventory';
+import inventoryStore from '../../stores/inventoryStore';
 
-const Summary = observer((props: {inventorySummaryStore: any}) => {
-  const { inventorySummaryStore } = props;
-  const inventorySummary: Partial<MaterialInventorySummary> = inventorySummaryStore.getInventorySummary();
+const Summary = observer(() => {
 
   return (
     <div className='material-summary-container'>
@@ -14,15 +12,15 @@ const Summary = observer((props: {inventorySummaryStore: any}) => {
       </div>
       <div className='card col col-two'>
         <span>Feet On Hand</span>
-        <h2 className='total-length-of-material-in-inventory'>{inventorySummary.lengthOfAllMaterialsInInventory}</h2>
+        <h2 className='total-length-of-material-in-inventory'>{inventoryStore.getArrivedMaterialsLength()}</h2>
       </div>
       <div className='card col col-three'>
         <span>Net Feet</span>
-        <h2 className='net-length-of-material-in-inventory'>{inventorySummary.netLengthOfMaterialInInventory}</h2>
+        <h2 className='net-length-of-material-in-inventory'>{inventoryStore.getNetLengthOfMaterialsInInventory()}</h2>
       </div>
       <div className='card col col-four'>
         <span>Feet On Order</span>
-        <h2 className='total-length-of-material-ordered'>{inventorySummary.lengthOfAllMaterialsOrdered}</h2>
+        <h2 className='total-length-of-material-ordered'>{inventoryStore.getNotArrivedMaterialsLength()}</h2>
       </div>
     </div>
   )

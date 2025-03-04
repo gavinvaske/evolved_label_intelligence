@@ -127,6 +127,15 @@ export const MaterialForm = () => {
 
     formData.locations =  locationsAsStr?.length ? locationsAsStr.split(',').map((location: string) => location.trim().toUpperCase()) : [];
     delete formData.locationsAsStr; // locationsAsStr is not needed in the request body.
+    formData.locations.sort((a: string, b: string) => {
+      const [aAlpha = '', aNum = ''] = a.match(/([A-Z]+)(\d+)/)?.slice(1) as string[];
+      const [bAlpha = '', bNum = ''] = b.match(/([A-Z]+)(\d+)/)?.slice(1) as string[];
+
+      if (aAlpha !== bAlpha) {
+        return aAlpha.localeCompare(bAlpha);
+      }
+      return Number(aNum) - Number(bNum);
+    })
 
     if (!formData.locations?.every((location) => locationRegex.test(location))) {
       setError('locationsAsStr', { message: 'Must be in the format: A1, B2, C33' });

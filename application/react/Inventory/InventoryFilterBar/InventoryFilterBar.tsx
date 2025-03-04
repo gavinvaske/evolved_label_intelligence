@@ -1,6 +1,6 @@
 import React from 'react'
 import './InventoryFilterBar.scss'
-import inventorySummaryStore from '../../stores/inventorySummaryStore';
+import inventoryStore from '../../stores/inventoryStore';
 import { observer } from 'mobx-react-lite';
 import { conditionalQuickFilters, textQuickFilters } from './quickFilters';
 import { FilterBar } from '../../_global/FilterBar/FilterBar';
@@ -26,8 +26,8 @@ const InventoryFilterBar = observer((_) => {
       <FilterBar
           conditionalQuickFilters={conditionalQuickFilters}
           textQuickFilters={textQuickFilters}
-          store={inventorySummaryStore}
-          filterableItemsCount={inventorySummaryStore.getAllMaterialInventories().length}
+          store={inventoryStore}
+          filterableItemsCount={inventoryStore.getMaterials().length}
       />
     </div>
   )

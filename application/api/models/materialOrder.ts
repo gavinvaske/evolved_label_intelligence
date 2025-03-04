@@ -1,5 +1,8 @@
-import mongoose, { SchemaTimestampsConfig } from 'mongoose';
+import mongoose from 'mongoose';
 import { convertDollarsToPennies, convertPenniesToDollars, PENNIES_PER_DOLLAR } from '../services/currencyService.ts';
+import { createAndUpdateOneHooks, deleteManyHooks, deleteOneHooks, MongooseHooks, updateManyHooks } from '../constants/mongoose.ts';
+import { IMaterialOrder } from '@shared/types/models.ts';
+import { populateMaterialInventories } from '../services/materialInventoryService.ts';
 mongoose.Schema.Types.String.set('trim', true);
 const Schema = mongoose.Schema;
 
@@ -17,22 +20,6 @@ const validatePurchaseOrderNumber = function(text) {
     }
     return ONLY_NUMBERS_REGEX.test(text);
 };
-
-export interface IMaterialOrder extends SchemaTimestampsConfig, mongoose.Document  {
-    author: mongoose.Types.ObjectId,
-    material: mongoose.Types.ObjectId,
-    purchaseOrderNumber: string,
-    orderDate: Date,
-    arrivalDate: Date,
-    feetPerRoll: number,
-    totalRolls: number,
-    totalCost: number,
-    vendor: mongoose.Types.ObjectId,
-    hasArrived?: boolean,
-    notes?: string
-    freightCharge: number,
-    fuelCharge: number,
-}
 
 const schema = new Schema({
     author: {
@@ -113,11 +100,20 @@ const schema = new Schema({
     }
 }, { timestamps: true, strict: 'throw' });
 
-schema.index({ 
-    'purchaseOrderNumber': 'text',
-    'material.name': 'text', 
-    'material.materialId': 'text', 
-    'vendor.name': 'text' 
-});
+schema.post([...createAndUpdateOneHooks, ...updateManyHooks], (result: IMaterialOrder | IMaterialOrder[]) => {
+  if (result instanceof Array) {
+    const materialIds = result.map(({material}) => material && material.toString());
+    populateMaterialInventories(materialIds);
+  } else {
+    populateMaterialInventories([result.material && result.material.toString()]);
+  }
+})
+
+schema.post(MongooseHooks.InsertMany, (docs: IMaterialOrder[]) => (populateMaterialInventories(docs.map(({material}) => material && material.toString()))))
+
+schema.post(MongooseHooks.BulkWrite, () => populateMaterialInventories())
+
+schema.post([...deleteOneHooks, ...deleteManyHooks], (_) => populateMaterialInventories())
+
 
 export const MaterialOrderModel = mongoose.model('MaterialOrders', schema);

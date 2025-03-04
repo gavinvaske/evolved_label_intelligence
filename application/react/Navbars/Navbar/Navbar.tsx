@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Navbar.scss';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -49,10 +49,6 @@ export const Navbar = () => {
     setIsUserOptionsDropdownDisplayed(false)
     setIsUserNotificationsDropdownDisplayed(false)
     setIsShortcutDropdownDisplayed(!isShortcutDropdownDisplayed)
-  }
-
-  function alertOnClose() {
-    console.log('hello mars');
   }
 
   const dropdownLists = [
@@ -213,7 +209,7 @@ export const Navbar = () => {
               isActive={isShortcutDropdownDisplayed}
               onClose={() => {
                 setIsShortcutDropdownDisplayed(false); 
-                alertOnClose();
+
               }}
             >
             <div className="header">
@@ -300,9 +296,25 @@ export const Navbar = () => {
               </NavLink>
               <div className='line-divide'></div>
               <ul className='user-options-list'>
-                <li><NavLink to="/react-ui/profile" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}><i className="fa-regular fa-user"></i>My Account</NavLink></li>
-                <li><NavLink to="/react-ui/admin-settings" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}><i className="fa-regular fa-crown"></i>Admin Settings</NavLink></li>
-                <li><a href="#"><i className="fa-regular fa-books"></i>Resources</a></li>
+                <li>
+                  <NavLink to="/react-ui/profile" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>
+                    <i className="fa-regular fa-user"></i>
+                    My Account
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/react-ui/admin" 
+                    className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}
+                  >
+                      <i className="fa-regular fa-crown"></i>
+                      Admin Panel
+                  </NavLink></li>
+                <li>
+                  <a href="#">
+                    <i className="fa-regular fa-books"></i>
+                    Resources
+                  </a>
+                </li>
               </ul>
               <div className='line-divide'></div>
               <div className='user-logout-footer'>

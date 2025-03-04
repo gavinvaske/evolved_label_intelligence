@@ -1,6 +1,8 @@
 import { SortDirection, SortOption } from "@shared/types/mongoose.ts";
+import { MongooseId } from "@shared/types/typeAliases.ts";
 
-export function getObjectIds(objects) {
+
+export function getObjectIds<T extends { _id: MongooseId }>(objects: T[]): MongooseId[] {
     return objects.map(({_id}) => {
         return _id;
     });

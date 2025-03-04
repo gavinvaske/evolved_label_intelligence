@@ -1,20 +1,20 @@
 import React from 'react';
 import './MaterialDetailsModal.scss'
+import { FullScreenModal } from '../../_global/LargeModal/LargeModal.tsx';
 import '../../utils/app.scss'
-import { MaterialInventory } from '../Inventory';
-import { FullscreenModal } from '../../_global/FullscreenModal/FullscreenModal';
+
+import { IMaterial } from '@shared/types/models';
 
 type Props = {
-  materialInventory: MaterialInventory,
+  material: IMaterial,
   onClose: () => void
 }
 
 export const MaterialDetailsModal = (props: Props) => {
-  const { materialInventory, onClose } = props
-  const { material } = materialInventory;
+  const { material, onClose } = props;
 
   return (
-    <FullscreenModal onClose={() => onClose()}>
+    <FullScreenModal onClose={() => onClose()}>
 
         <div className='modal-header'>
           <h1>{material.materialId} <span>{material.name}</span></h1>
@@ -23,15 +23,15 @@ export const MaterialDetailsModal = (props: Props) => {
           <div className='body-header'>
             <div className='box box-one'>
               <h5>Stock Available:</h5>
-              <span>{materialInventory.lengthOfMaterialInStock}</span>
+              <span>{material.inventory.netLengthAvailable}</span>
               </div>
             <div className='box box-two'>
-            <h5>Total Stock:</h5> 
-              <span>{materialInventory.netLengthOfMaterialInStock}</span>
+            <h5>Adjustments:</h5> 
+              <span>{material.inventory.manualLengthAdjustment}</span>
             </div>
             <div className='box box-three'>
               <h5>On Order:</h5>
-              <span> {materialInventory.lengthOfMaterialOrdered}</span>
+              <span> {material.inventory.lengthNotArrived}</span>
             </div>
           </div>
           <div className='card-container'>
@@ -95,7 +95,7 @@ export const MaterialDetailsModal = (props: Props) => {
                 <div className='tbl-cell'>{material.facesheetWeightPerMsi}</div>
                 <div className='tbl-cell'>{material.adhesiveWeightPerMsi}</div>
                 <div className='tbl-cell'>{material.linerWeightPerMsi}</div>
-                <div className='tbl-cell'>{materialInventory.purchaseOrdersForMaterial.length}</div>
+                <div className='tbl-cell'>{material.inventory.materialOrders.length || 0}</div>
                 <div className='tbl-cell'>{material.costPerMsi}</div>
               </div>
             </div>
@@ -111,7 +111,7 @@ export const MaterialDetailsModal = (props: Props) => {
             </div>
           </div>
         </div>
-    </FullscreenModal>
+    </FullScreenModal>
   )
 }
 

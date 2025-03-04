@@ -10,6 +10,13 @@ export const getOneMaterialOrder = async (mongooseId: MongooseId): Promise<IMate
   return materialOrder
 }
 
+export const getMaterialOrdersByIds = async (mongooseIds: MongooseId[]): Promise<IMaterialOrder[]> => {
+  const response : AxiosResponse = await axios.post(`/material-orders/batch`, { ids: mongooseIds });
+  const materialOrders: IMaterialOrder[] = response.data;
+
+  return materialOrders
+}
+
 // export const getMaterialOrders = async (searchQuery: SearchQuery): Promise<SearchResult<any>> => {
 //   const { query, limit: pageSize, pageIndex, sortField, sortDirection } = searchQuery;
 //   const response : AxiosResponse = await axios.get(`/material-orders/search?query=${query || ''}&pageIndex=${pageIndex}&limit=${pageSize}`

@@ -1,7 +1,15 @@
+/* eslint-disable no-magic-numbers */
 import mongoose from 'mongoose';
 import Chance from 'chance';
 import { MaterialLengthAdjustmentModel } from '../../application/api/models/materialLengthAdjustment.ts';
 import * as databaseService from '../../application/api/services/databaseService';
+import { populateMaterialInventories as populateMaterialInventoriesMock } from '../../application/api/services/materialInventoryService.ts';
+
+jest.mock('../../application/api/services/materialInventoryService.ts', () => {
+    return {
+        populateMaterialInventories: jest.fn()
+    };
+});
 
 const chance = Chance();
 
@@ -14,6 +22,10 @@ describe('File: materialLengthAdjustment', () => {
             length: chance.integer(),
             notes: chance.string()
         };
+    });
+
+    afterEach(() => {
+        jest.resetAllMocks();
     });
 
     it('should validate successfully', () => {
@@ -114,6 +126,38 @@ describe('File: materialLengthAdjustment', () => {
 
         afterAll(async () => {
             await databaseService.closeDatabase();
+        });
+
+        it('should update material.inventory once when saved, once when updated, once when deleted', async () => {
+            const materialLengthAdjustment = new MaterialLengthAdjustmentModel(materialLengthAdjustmentAttributes);
+
+            const savedItem = await materialLengthAdjustment.save();
+            await MaterialLengthAdjustmentModel.findByIdAndUpdate(savedItem._id, { length: chance.integer() }).exec();
+            await MaterialLengthAdjustmentModel.findByIdAndDelete(savedItem._id).exec();
+
+            // eslint-disable-next-line no-magic-numbers
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(3);
+        });
+
+        it('should update material.inventory once when saved, once when updated, once when deleted', async () => {
+            await MaterialLengthAdjustmentModel.insertMany([materialLengthAdjustmentAttributes]);
+
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(1);
+        });
+
+        it('should update material.inventory each time bulkWrite is called', async () => {
+            await MaterialLengthAdjustmentModel.bulkWrite([{ insertOne: { document: materialLengthAdjustmentAttributes }}]);
+            await MaterialLengthAdjustmentModel.bulkWrite([{ insertOne: { document: materialLengthAdjustmentAttributes }}]);
+            await MaterialLengthAdjustmentModel.bulkWrite([{ insertOne: { document: materialLengthAdjustmentAttributes }}]);
+
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(3);
+        });
+
+        it('should update material.inventory each time deleteMany is called', async () => {
+            await MaterialLengthAdjustmentModel.deleteMany({length: materialLengthAdjustmentAttributes.length}).exec();
+            await MaterialLengthAdjustmentModel.deleteMany({notes: materialLengthAdjustmentAttributes.notes}).exec();
+
+            expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(2);
         });
 
         it('should have timestamps', async () => {
