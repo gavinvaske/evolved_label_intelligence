@@ -185,7 +185,6 @@ export const Login = () => {
 
 interface PasswordIconProps extends IconBaseProps {
   showPassword: boolean;
-  onClick: () => void;
 }
 
 const PasswordIcon: React.FC<PasswordIconProps> = ({ showPassword, ...rest }) => {
