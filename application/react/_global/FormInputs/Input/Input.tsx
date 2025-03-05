@@ -16,7 +16,7 @@ type Props<T extends FieldValues> = {
   ref?: any,
   dataAttributes?: { [key: `data-${string}`]: string },
   unit?: string,
-  Icon: React.ReactNode
+  Icon?: React.ReactNode
 }
 
 /* This "solution" was found here to solve hard-to-fix typescript errors resulting from usage of forwardRef(..): https://stackoverflow.com/a/73795494 */
