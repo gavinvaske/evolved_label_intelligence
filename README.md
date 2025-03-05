@@ -114,3 +114,9 @@ Below is a list of rules that must be followed regarding the storage of common d
      - **Ex:** $109.74 must be stored in the database as 10974
   5. **Percentage Attributes:** Must be stored in floating point form.
      - **Ex:** 30.35% must be stored in the database as 0.3035
+
+### Icons
+
+See all available icons and example imports via these docs: https://react-icons.github.io/react-icons/icons/fa6/
+
+This project uses the library `react-icons` for displaying icons. Specifically, we use the sub-pcakage of that library `react-icons/fa6` ("(F)ont (A)wesome 6")
