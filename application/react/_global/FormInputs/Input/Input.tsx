@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react';
-import './Input'
+import './Input.scss'
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 
@@ -14,8 +14,9 @@ type Props<T extends FieldValues> = {
   onChange?: () => void,
   fieldType?: 'text' | 'checkbox' | 'date' | 'password' | 'currency' | 'percent',
   ref?: any,
-  dataAttributes?: { [key: `data-${string}`]: string }
-  unit?: string
+  dataAttributes?: { [key: `data-${string}`]: string },
+  unit?: string,
+  Icon: React.ReactNode
 }
 
 /* This "solution" was found here to solve hard-to-fix typescript errors resulting from usage of forwardRef(..): https://stackoverflow.com/a/73795494 */
@@ -25,7 +26,7 @@ interface WithForwardRefType extends React.FC<Props<FieldValues>>  {
 
 /* @Gavin More client side validation rules can be configured in react-hook-form. see https://react-hook-form.com/get-started#Applyvalidation */
 export const Input: WithForwardRefType = forwardRef((props, customRef) => {
-  const { placeholder, errors, attribute, label, register, isRequired, fieldType, dataAttributes, unit } = props
+  const { placeholder, errors, attribute, label, register, isRequired, fieldType, dataAttributes, unit, Icon } = props
 
   const { ref, ...rest } = register(attribute,
     { required: isRequired ? "This is required" : undefined }
@@ -49,6 +50,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
         }}
         {...dataAttributes}
       />
+      {Icon && <div className='input-field-icon'>{Icon}</div>}
 
       <FormErrorMessage errors={errors} name={attribute} />
     </div>

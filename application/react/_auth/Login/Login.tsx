@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../_hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Input } from '../../_global/FormInputs/Input/Input';
@@ -8,16 +8,23 @@ import { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import './Login.scss';
+import { FaEyeSlash, FaEye } from "react-icons/fa6";
+import { IconBaseProps } from "react-icons";
 
 export const Login = () => {
-  const { auth, setAuth } = useAuth();
+  const { setAuth } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const from = location.state?.from?.pathname || "/react-ui/profile";
+  const [showPassword, setShowPassword] = useState(false);
 
   const userRef = useRef<HTMLInputElement>(null);
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm();
+
+  const handlePasswordIconClicked = () => {
+    setShowPassword(!showPassword);
+  }
 
   useEffect(() => {
     userRef.current?.focus();
@@ -145,10 +152,11 @@ export const Login = () => {
                       register={register}
                       isRequired={true}
                       errors={errors}
-                      fieldType={'password'}
+                      fieldType={showPassword ? 'text' : 'password'}
                       dataAttributes={
                         {'data-test': 'password-input'}
                       }
+                      Icon={<PasswordIcon showPassword={showPassword} onClick={handlePasswordIconClicked} />}
                   />
                   <div className='remember-reset-container'>
                     <div className='checkbox-container'>
@@ -174,3 +182,16 @@ export const Login = () => {
     </>
   )
 }
+
+interface PasswordIconProps extends IconBaseProps {
+  showPassword: boolean;
+  onClick: () => void;
+}
+
+const PasswordIcon: React.FC<PasswordIconProps> = ({ showPassword, ...rest }) => {
+  return showPassword ? (
+    <FaEye {...rest} />
+  ) : (
+    <FaEyeSlash {...rest} />
+  );
+};
