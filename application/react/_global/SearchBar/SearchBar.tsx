@@ -1,4 +1,4 @@
-import React, { forwardRef, useState } from 'react'
+import React, { forwardRef } from 'react'
 import './SearchBar.scss'
 
 type Props = {
@@ -7,28 +7,44 @@ type Props = {
   instantSearch?: boolean
 }
 
-const SearchBar = forwardRef((props: Props, ref: any) => {
+const SearchBar = forwardRef((props: Props, inputRef: any) => {
   const { value, performSearch, instantSearch = false } = props;
-  const [inputValue, setInputValue] = useState(value);
 
-  const handleUserTypedSomething = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    const userInput = e.currentTarget.value
-    setInputValue(userInput)
-
+  const handleUserTypedSomething = (userInput: string) => {
     if (instantSearch) {
       performSearch(userInput.trim());
     }
   }
 
-  const searchIffEnterPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleButtonPressed = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    const userInput = e.currentTarget.value || '';
+    searchIffEnterWasPressed(e, userInput)
+    searchIffInputIsNowEmpty(e, userInput)
+  }
+
+  const searchIffEnterWasPressed = (e: React.KeyboardEvent<HTMLInputElement>, userInput: string) => {
     if (e.key === 'Enter') {
-      performSearch(inputValue.trim())
+      performSearch(userInput.trim())
+    }
+  }
+
+  const searchIffInputIsNowEmpty = (e: React.KeyboardEvent<HTMLInputElement>, userInput: string) => {
+    if (userInput.trim() === '') {
+      performSearch('')
     }
   }
 
   return (
     <div className={value ? 'search-bar has-text' : 'search-bar'} data-test='searchbar'>
-      <input ref={ref} id='primarySearch' type='text' defaultValue={value} onKeyDown={searchIffEnterPressed} onChange={handleUserTypedSomething} placeholder="Search" />
+      <input 
+        ref={inputRef} 
+        id='primarySearch' 
+        type='text' 
+        defaultValue={value} 
+        onKeyUp={handleButtonPressed} 
+        onChange={(e) => handleUserTypedSomething(e.currentTarget.value)} 
+        placeholder="Search" 
+      />
     </div>
   )
 })

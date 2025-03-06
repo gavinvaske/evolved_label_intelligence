@@ -32,7 +32,6 @@ export const PageSelect = (props: Props) => {
     table.setPageSize(pageSize)
   }
 
-  const numberOfDisplayedRows = table.getRowModel().rows.length;
   const totalPages = table.getPageCount();
 
   const handlePageChange = (e: React.KeyboardEvent<HTMLInputElement>) => {
