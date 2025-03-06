@@ -1,17 +1,16 @@
-import React from 'react';
 import { Row } from '@tanstack/react-table';
-import { MaterialOrder } from '../../../_types/databaseModels/materialOrder'
 import './MaterialOrderRowActions.scss'
 import { RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { MongooseId } from "@ui/types/typeAliases";
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
+import { IMaterialOrder } from '@shared/types/models';
+import { MongooseId } from '@shared/types/typeAliases';
 
 type Props = {
-  row: Row<MaterialOrder>
+  row: Row<IMaterialOrder>
 }
 
 export const MaterialOrderRowActions = (props: Props) => {
