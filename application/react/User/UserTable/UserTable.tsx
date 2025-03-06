@@ -1,39 +1,36 @@
-import React, { useMemo } from 'react';
-import './MaterialOrderTable.scss'
+
+import { IUser } from '@shared/types/models';
+import './UserTable.scss';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
-import { MaterialOrderRowActions } from './MaterialOrderRowActions/MaterialOrderRowActions';
+import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
+import { useMemo, useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import { performTextSearch } from '../../_queries/_common';
+import { SearchResult } from '@shared/types/http';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
+import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator';
 import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
-import { getDateFromIsoStr, getDateTimeFromIsoStr } from '@ui/utils/dateTime';
-import { SearchResult } from '@shared/types/http';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
-import { performTextSearch } from '../../_queries/_common';
-import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
+import { UserRowActions } from './UserRowActions/UserRowActions';
 
-const columnHelper = createColumnHelper<IMaterialOrder>()
+const columnHelper = createColumnHelper<IUser>()
 
 const columns = [
-  columnHelper.accessor('purchaseOrderNumber', {
-    header: 'P.O Number',
+  columnHelper.accessor('email', {
+    header: 'email',
   }),
-  columnHelper.accessor(row => (row.material as IMaterial | null)?.materialId, {
-    id: 'material.materialId',
-    header: 'Material ID',
+  columnHelper.accessor(row => getFullName(row.firstName, row.lastName), {
+    header: 'Name'
   }),
-  columnHelper.accessor(row => (row.vendor as IVendor).name, {
-    id: 'vendor.name',
-    header: 'Vendor',
+  columnHelper.accessor(row => row.authRoles, {
+    header: 'Auth Roles'
   }),
-  columnHelper.accessor(row => getDateFromIsoStr(row.orderDate), {
-    header: 'Order Date'
-  }),
-  columnHelper.accessor(row => getDateFromIsoStr(row.arrivalDate), {
-    header: 'Arrival Date'
+  columnHelper.accessor(row => getDateTimeFromIsoStr(row.lastLoginDateTime), {
+    header: 'Last Login'
   }),
   columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
     header: 'Updated'
@@ -44,25 +41,25 @@ const columns = [
   columnHelper.display({
     id: 'actions',
     header: 'Actions',
-    cell: props => <MaterialOrderRowActions row={props.row} />
+    cell: props => <UserRowActions row={props.row} />
   })
 ];
 
-export const MaterialOrderTable = () => {
-  const [globalSearch, setGlobalSearch] = React.useState('');
-  const [sorting, setSorting] = React.useState<SortingState>([])
-  const [pagination, setPagination] = React.useState<PaginationState>({
+export const UserTable = () => {
+  const [globalSearch, setGlobalSearch] = useState('');
+  const [sorting, setSorting] = useState<SortingState>([])
+  const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
 
-  const { isError, data: materialOrderResults, error, isLoading } = useQuery({
-    queryKey: ['get-material-orders', pagination, sorting, globalSearch],
+  const { isError, data: userResults, error, isLoading } = useQuery({
+    queryKey: ['get-users', pagination, sorting, globalSearch],
     queryFn: async () => {
       const sortDirection = sorting.length ? (sorting[0]?.desc ? '-1' : '1') : undefined;
       const sortField = sorting.length ? sorting[0]?.id : undefined;
-      const results: SearchResult<IMaterial> = await performTextSearch<IMaterial>('/material-orders/search', {
+      const results: SearchResult<IUser> = await performTextSearch<IUser>('/users/search', {
         query: globalSearch,
         pageIndex: String(pagination.pageIndex),
         limit: String(pagination.pageSize),
@@ -75,14 +72,10 @@ export const MaterialOrderTable = () => {
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
   })
 
-  if (isError) {
-    useErrorMessage(error)
-  }
-
   const table = useReactTable<any>({
-    data: materialOrderResults?.results ?? defaultData,
+    data: userResults?.results ?? defaultData,
     columns,
-    rowCount: materialOrderResults?.totalResults ?? 0,
+    rowCount: userResults?.totalResults ?? 0,
     manualSorting: true,
     manualPagination: true,
     state: {
@@ -106,19 +99,28 @@ export const MaterialOrderTable = () => {
   })
   const rows = table.getRowModel().rows;
 
+  if (isError) {
+    useErrorMessage(error)
+  }
+
+  if (isLoading) {
+    return <LoadingIndicator />
+  }
+
+
   return (
-    <div className='page-wrapper credit-term-table'>
+    <div className='page-wrapper user-table'>
       <div className='card table-card'>
         <div className="header-description">
-          <h1 className="text-blue">Material Orders</h1>
-          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{materialOrderResults?.totalResults || 0}</p> results.</p>
+          <h1 className="text-blue">Users</h1>
+          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{userResults?.totalResults || 0}</p> results.</p>
         </div>
         <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
 
-        <Table id='material-order-table'>
+        <Table id='user-table'>
           <TableHead table={table} />
           
           <TableBody>
@@ -134,4 +136,9 @@ export const MaterialOrderTable = () => {
       </div>
     </div>
   )
+}
+
+function getFullName(firstName: string, lastName: string) {
+  if (!firstName && !lastName) return ''
+  return `${firstName || ''} ${lastName || ''}`
 }

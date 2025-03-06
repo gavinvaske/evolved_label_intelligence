@@ -11,6 +11,11 @@ import path from 'path';
 import { isUserLoggedIn } from '../services/userService.ts';
 import { BAD_REQUEST, NOT_FOUND, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { fileURLToPath } from 'url';
+import { SearchQuery, SearchResult } from '@shared/types/http.ts';
+import { IUser } from '@shared/types/models.ts';
+import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
+import { SortOption } from '@shared/types/mongoose.ts';
+import { getSortOption } from '../services/mongooseService.ts';
 
 const MONGODB_DUPLICATE_KEY_ERROR_CODE = 11000;
 const MIN_PASSWORD_LENGTH = 8;
@@ -24,7 +29,71 @@ function deleteFileFromFileSystem(path) {
     fs.unlinkSync(path);
 }
 
-router.patch('/me', verifyBearerToken, async (request, response) => {
+router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+  try {
+    const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
+
+    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+
+    const pageNumber = parseInt(pageIndex, 10);
+    const pageSize = parseInt(limit, 10);
+    const numDocsToSkip = pageNumber * pageSize;
+    const sortOptions: SortOption = getSortOption(sortField, sortDirection);
+
+    const textSearch = query && query.length
+    ? {
+        $or: [
+          { email: { $regex: query, $options: 'i' } },
+          { firstName: { $regex: query, $options: 'i' } },
+          { lastName: { $regex: query, $options: 'i' } },
+          { jobRole: { $regex: query, $options: 'i' } },
+          { phoneNumber: { $regex: query, $options: 'i' } },
+        ],
+      }
+    : {};
+
+    const pipeline = [
+      {
+        $match: {
+          ...textSearch,
+        },
+      },
+      {
+        $facet: {
+          paginatedResults: [
+            { $sort: { ...sortOptions, ...DEFAULT_SORT_OPTIONS } },
+            { $skip: numDocsToSkip },
+            { $limit: pageSize },
+          ],
+          totalCount: [
+            { $count: 'count' },
+          ],
+        },
+      },
+    ];
+
+    const results = await UserModel.aggregate<any>(pipeline);
+    const totalDocumentCount = results[0]?.totalCount[0]?.count || 0; // Extract total count
+    const materialOrders = results[0]?.paginatedResults || [];
+    const totalPages = Math.ceil(totalDocumentCount / pageSize);
+
+    const paginationResponse: SearchResult<IUser> = {
+      totalResults: totalDocumentCount,
+      totalPages,
+      currentPageIndex: (query && query.length) ? 0 : pageNumber,
+      results: materialOrders,
+      pageSize,
+    }
+
+    return response.json(paginationResponse)
+  } catch (error) {
+    console.error('Failed to search for users: ', error);
+    return response.status(SERVER_ERROR).send(error.message);
+  }
+})
+
+router.patch('/me', verifyBearerToken, async (request: Request, response: Response) => {
   try {
     if (!request.user._id) throw new Error('User not logged in');
 
@@ -50,7 +119,7 @@ router.patch('/me', verifyBearerToken, async (request, response) => {
   }
 });
 
-router.get('/', verifyBearerToken, async (_, response) => {
+router.get('/', verifyBearerToken, async (_, response: Response) => {
     try {
         const users = await UserModel.find().exec();
 
@@ -64,7 +133,7 @@ router.get('/', verifyBearerToken, async (_, response) => {
     }
 });
 
-router.get('/me/profile-picture', verifyBearerToken, async (request, response) => {
+router.get('/me/profile-picture', verifyBearerToken, async (request: Request, response: Response) => {
   try {
     const user = await UserModel.findById(request.user._id, 'profilePicture').lean();
 
@@ -102,7 +171,7 @@ router.delete('/me/profile-picture', verifyBearerToken, async (request: Request,
   }
 })
 
-router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), async (request, response) => {
+router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), async (request: Request, response: Response) => {
     const maxImageSizeInBytes = 800000;
     let imageFilePath;
 
@@ -139,11 +208,11 @@ router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), as
     }
 });
 
-router.get('/forgot-password', (request, response) => {
+router.get('/forgot-password', (_, response) => {
     response.render('forgotPassword');
 });
 
-router.post('/forgot-password', async (request, response) => {
+router.post('/forgot-password', async (request: Request, response: Response) => {
     const {email} = request.body;
 
     const user = await UserModel.findOne({email}).lean();
@@ -168,7 +237,7 @@ router.post('/forgot-password', async (request, response) => {
     return response.sendStatus(200);
 });
 
-router.get('/reset-password/:id/:token', async (request, response) => {
+router.get('/reset-password/:id/:token', async (request: Request, response: Response) => {
     const { id, token } = request.params;
 
     const user = await UserModel.findById(id);
@@ -192,7 +261,7 @@ router.get('/reset-password/:id/:token', async (request, response) => {
     }
 });
 
-router.post('/reset-password/:id/:token', async (request, response) => {
+router.post('/reset-password/:id/:token', async (request: Request, response: Response) => {
     const {id, token} = request.params;
     const {password, repeatPassword} = request.body;
 
@@ -240,13 +309,13 @@ router.post('/reset-password/:id/:token', async (request, response) => {
     }
 });
 
-router.get('/logout', verifyBearerToken, (request, response) => {
+router.get('/logout', verifyBearerToken, (_: Request, response: Response) => {
     response.clearCookie('jwtToken');
 
     return response.redirect('/');
 });
 
-router.get('/profile', verifyBearerToken, async (request, response) => {
+router.get('/profile', verifyBearerToken, async (request: Request, response: Response) => {
     const user = await UserModel.findById(request.user.id);
 
     delete user.password;
@@ -257,11 +326,11 @@ router.get('/profile', verifyBearerToken, async (request, response) => {
     });
 });
 
-router.get('/change-password', verifyBearerToken, (request, response) => {
+router.get('/change-password', verifyBearerToken, (_: Request, response: Response) => {
     response.render('changePassword');
 });
 
-router.post('/change-password', verifyBearerToken, async (request, response) => {
+router.post('/change-password', verifyBearerToken, async (request: Request, response: Response) => {
     const {newPassword, repeatPassword} = request.body;
 
     if (newPassword !== repeatPassword) {
@@ -293,12 +362,12 @@ router.post('/change-password', verifyBearerToken, async (request, response) => 
     return response.redirect('/users/login');
 });
 
-router.get('/login', (request, response) => {
+router.get('/login', (_: Request, response: Response) => {
     response.render('login');
 });
 
 // @deprecated (8-9-2024): Use /login from authController
-router.post('/login', async (request, response) => {
+router.post('/login', async (request: Request, response: Response) => {
     const {email, password} = request.body;
 
     const user = await UserModel.findOne({email}).lean();
@@ -330,7 +399,7 @@ router.post('/login', async (request, response) => {
     return response.redirect('/users/profile');
 });
 
-router.get('/register', (request, response) => {
+router.get('/register', (request: Request, response: Response) => {
     if (isUserLoggedIn(request.cookies.jwtToken, process.env.JWT_SECRET)) {
         return response.redirect('/users/profile');
     }
@@ -338,7 +407,7 @@ router.get('/register', (request, response) => {
     response.render('register');
 });
 
-router.post('/register', async (request, response) => {
+router.post('/register', async (request: Request, response: Response) => {
     const {email, password: plainTextPassword, repeatPassword} = request.body;
 
     if (plainTextPassword !== repeatPassword) {

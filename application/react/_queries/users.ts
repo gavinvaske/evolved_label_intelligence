@@ -1,9 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
-import { User } from '../_types/databasemodels/user.ts';
+import { IUser } from '@shared/types/models.ts';
 
-export const getUsers = async (): Promise<User[]> => {
+export const getUsers = async (): Promise<IUser[]> => {
   const response : AxiosResponse = await axios.get('/users');
-  const users: User[] = response.data;
+  const users: IUser[] = response.data;
 
   return users
 }

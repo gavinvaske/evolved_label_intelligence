@@ -42,6 +42,8 @@ import { VendorTable } from '../Vendor/VendorTable/VendorTable';
 import { MaterialCategoryTable } from '../MaterialCategory/MaterialCategoryTable/MaterialCategoryTable';
 import { MaterialCategoryForm } from '../MaterialCategory/MaterialCategoryForm/MaterialCategoryForm';
 import { AdminPanel } from '../AdminPanel/AdminPanel';
+import { UserTable } from '../User/UserTable/UserTable';
+import { UserAuthRolesForm } from '../User/UserAuthRolesForm/UserAuthRolesForm';
 
 const queryClient = new QueryClient();
 const ANY_ROLE = [USER, ADMIN];
@@ -66,6 +68,8 @@ export function App() {
               {/* PROTECTED ROUTES */}
               <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
                 <Route path='admin' element={<AdminPanel />}></Route>
+                <Route path='tables/user' element={<UserTable />} />
+                <Route path='forms/user/auth-roles/:mongooseId' element={<UserAuthRolesForm />} />
               </Route>
               <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
                 <Route element={<TopNavbarLayout />}>
