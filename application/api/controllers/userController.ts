@@ -202,7 +202,7 @@ router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), as
     } catch (error) {
         console.error('Failed to upload profile picture:', error)
 
-        return response.sendStatus(SERVER_ERROR)
+        return response.status(SERVER_ERROR).send(error.message)
     } finally {
         deleteFileFromFileSystem(imageFilePath);
     }
