@@ -13,6 +13,8 @@ import { performTextSearch } from '../../_queries/_common.ts';
 import { SearchResult } from '@shared/types/http.ts';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect.tsx';
 import { IMaterialForm } from '@ui/types/forms.ts';
+import { useQuery } from '@tanstack/react-query';
+import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
 
 const materialTableUrl = '/react-ui/tables/material'
 const locationRegex = /^[a-zA-Z][1-9][0-9]?$/;
@@ -30,47 +32,44 @@ export const MaterialForm = () => {
   const [adhesiveCategories, setAdhesiveCategories] = useState<SelectOption[]>([])
   const [linerTypes, setLinerTypes] = useState<SelectOption[]>([])
 
-  useEffect(() => {
-    if (!isUpdateRequest) return;
+  const { isFetching, isLoading, error } = useQuery({
+    queryKey: ['materials', mongooseId],
+    queryFn: async () => {
+      const { data } = await axios.get('/materials/' + mongooseId)
+      const formValues: IMaterialForm = {
+        name: data.name,
+        materialId: data.materialId,
+        thickness: data.thickness,
+        weight: data.weight,
+        costPerMsi: data.costPerMsi,
+        freightCostPerMsi: data.freightCostPerMsi,
+        width: data.weight,
+        faceColor: data.faceColor,
+        adhesive: data.adhesive,
+        quotePricePerMsi: data.quotePricePerMsi,
+        description: data.description,
+        whenToUse: data.whenToUse,
+        alternativeStock: data.alternativeStock || '',
+        length: data.length,
+        facesheetWeightPerMsi: data.facesheetWeightPerMsi,
+        adhesiveWeightPerMsi: data.adhesiveWeightPerMsi,
+        linerWeightPerMsi: data.linerWeightPerMsi,
+        locationsAsStr: data.locations.join(', '),
+        productNumber: data.productNumber,
+        masterRollSize: data.masterRollSize,
+        image: data.image,
+        linerType: data.linerType,
+        adhesiveCategory: data.adhesiveCategory,
+        vendor: data.vendor as MongooseId,
+        materialCategory: data.materialCategory,
+        lowStockThreshold: data.lowStockThreshold,
+        lowStockBuffer: data.lowStockBuffer
+      }
 
-    axios.get('/materials/' + mongooseId)
-      .then(({ data }: { data: IMaterial }) => {
-        const formValues: IMaterialForm = {
-          name: data.name,
-          materialId: data.materialId,
-          thickness: data.thickness,
-          weight: data.weight,
-          costPerMsi: data.costPerMsi,
-          freightCostPerMsi: data.freightCostPerMsi,
-          width: data.weight,
-          faceColor: data.faceColor,
-          adhesive: data.adhesive,
-          quotePricePerMsi: data.quotePricePerMsi,
-          description: data.description,
-          whenToUse: data.whenToUse,
-          alternativeStock: data.alternativeStock || '',
-          length: data.length,
-          facesheetWeightPerMsi: data.facesheetWeightPerMsi,
-          adhesiveWeightPerMsi: data.adhesiveWeightPerMsi,
-          linerWeightPerMsi: data.linerWeightPerMsi,
-          locationsAsStr: data.locations.join(', '),
-          productNumber: data.productNumber,
-          masterRollSize: data.masterRollSize,
-          image: data.image,
-          linerType: data.linerType,
-          adhesiveCategory: data.adhesiveCategory,
-          vendor: data.vendor as MongooseId,
-          materialCategory: data.materialCategory,
-          lowStockThreshold: data.lowStockThreshold,
-          lowStockBuffer: data.lowStockBuffer
-        }
-
-        reset(formValues) // pre-populate form with existing values from the DB
-      })
-      .catch((error: AxiosError) => {
-        useErrorMessage(error)
-      })
-  }, [])
+      reset(formValues) // pre-populate form with existing values from the DB
+      return formValues
+    }
+  })
 
   useEffect(() => {
     performTextSearch<IVendor>('/vendors/search', { query: '', limit: '100' })
@@ -125,7 +124,7 @@ export const MaterialForm = () => {
   const onSubmit = (formData: IMaterialForm) => {
     const locationsAsStr = formData.locationsAsStr?.trim()
 
-    formData.locations =  locationsAsStr?.length ? locationsAsStr.split(',').map((location: string) => location.trim().toUpperCase()) : [];
+    formData.locations = locationsAsStr?.length ? locationsAsStr.split(',').map((location: string) => location.trim().toUpperCase()) : [];
     delete formData.locationsAsStr; // locationsAsStr is not needed in the request body.
     formData.locations.sort((a: string, b: string) => {
       const [aAlpha = '', aNum = ''] = a.match(/([A-Z]+)(\d+)/)?.slice(1) as string[];
@@ -157,6 +156,12 @@ export const MaterialForm = () => {
         .catch((error: AxiosError) => useErrorMessage(error))
     }
   };
+
+  if (error) {
+    useErrorMessage(error);
+  }
+
+  if (isLoading || isFetching) return <LoadingIndicator />
 
   return (
     <div className='page-wrapper'>
@@ -225,19 +230,19 @@ export const MaterialForm = () => {
                   unit='@storm'
                 />
                 <Input
-                    attribute='faceColor'
-                    label="Face Color"
-                    register={register}
-                    isRequired={true}
-                    errors={errors}
-                  />
-                  <Input
-                    attribute='adhesive'
-                    label="Adhesive"
-                    register={register}
-                    isRequired={true}
-                    errors={errors}
-                  />
+                  attribute='faceColor'
+                  label="Face Color"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+                <Input
+                  attribute='adhesive'
+                  label="Adhesive"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
               </div>
               <div className='input-group-wrapper'>
                 <Input
