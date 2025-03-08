@@ -20,6 +20,7 @@
     "module": "node16",
     "paths": {
       "@shared/types/*": ["./application/_types/shared/*"],
+      "@shared/enums/*": ["./application/_enums/*"],
       "@api/types/*": ["application/_types/api/*"],
       "@ui/types/*": ["./application/_types/ui/*"],
       "@ui/utils/*": ["./application/react/_utils/*"],

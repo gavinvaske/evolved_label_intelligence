@@ -35,7 +35,7 @@
 .select-items-dropdown {
   position: absolute;
   background-color: white;
-  width: 100%;
+  max-width: 350px;
   z-index: 999;
   margin-top: 5px;
   border-radius: 5px;
@@ -52,6 +52,7 @@
   color: #6e6b7b;
   font-size: 15px;
   margin-bottom: 3px;
+  overflow-x: hidden;
 }
 
 .dropdown-item:hover {

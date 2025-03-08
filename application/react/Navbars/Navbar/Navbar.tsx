@@ -1,26 +1,20 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './Navbar.scss';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Image } from '../../_global/Image/Image';
-import { getLoggedInUserProfilePictureUrl } from '../../_queries/users';
-import { useQuery } from '@tanstack/react-query';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { Dropdown } from '../../_global/Dropdown/Dropdown';
+import { useLoggedInUser } from '../../_hooks/useLoggedInUser';
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [isUserOptionsDropdownDisplayed, setIsUserOptionsDropdownDisplayed] = useState(false)
   const [isUserNotificationsDropdownDisplayed, setIsUserNotificationsDropdownDisplayed] = useState(false)
   const [isShortcutDropdownDisplayed, setIsShortcutDropdownDisplayed] = useState(false)
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
-
-  const { data: profilePictureUrl, error } = useQuery({
-    queryKey: ['get-profile-picture'],
-    queryFn: getLoggedInUserProfilePictureUrl,
-    initialData: {}
-  })
+  const { user, error } = useLoggedInUser()
+  const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`
 
   if (error) {
     useErrorMessage(error);
@@ -30,10 +24,6 @@ export const Navbar = () => {
     await axios.get('/auth/logout');
     navigate('/react-ui/login', { replace: true });
   }
-
-  useEffect(() => {
-    setSelectedImage(profilePictureUrl)
-  }, [profilePictureUrl])
 
   function toggleUserOptionsDrpdwnMenu() {
     setIsUserNotificationsDropdownDisplayed(false)
@@ -273,7 +263,7 @@ export const Navbar = () => {
         <li className="list-item-user-detail nav-dropdown-trigger" onClick={() => toggleUserOptionsDrpdwnMenu()}>
             <div className="user-frame">
               <div className="user-profile-picture profile-picture">
-                  <Image img={selectedImage} width={250}/>
+                  {profilePictureUrl && <Image img={profilePictureUrl} width={250}/>}
                   <div className="active-user"></div>
               </div>
             </div>
@@ -283,14 +273,14 @@ export const Navbar = () => {
                   <div className='user-picture-column'>
                     <div className='user-picture-container'>
                       <div className='user-picture-background'>
-                        <Image img={selectedImage} width={250} />
+                        {profilePictureUrl && <Image img={profilePictureUrl} width={250} />}
                         <div className='active-indicator'></div>
                       </div>
                     </div>
                   </div>
                   <div className='user-title-column'>
-                    <h6 className='user-name'>Storm Vaske</h6>
-                    <span className='user-title'>CEO</span>
+                    <h6 className='user-name'>{`${user?.firstName} ${user?.lastName}`}</h6>
+                    <span className='user-title'>{user?.jobRole}</span>
                   </div>
                 </div>
               </NavLink>

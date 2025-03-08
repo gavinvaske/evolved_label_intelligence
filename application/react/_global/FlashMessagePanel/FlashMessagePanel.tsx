@@ -33,10 +33,10 @@ const FlashMessage = (props : FlashMessageProps) => {
   const [shouldSuccessMessageBeRendered, setShouldSuccessMessageBeRendered] = useState(true);
 
   useEffect(() => {
-    const sevenSecondDelayInMs = 7000;
+    const fiveSecondsInMs = 5000;
     setTimeout(() => {
       setShouldSuccessMessageBeRendered(false)  // Success messages are hidden after x-seconds
-    }, sevenSecondDelayInMs)
+    }, fiveSecondsInMs)
   }, [])
 
   const shouldRender = (type === 'SUCCESS' && shouldSuccessMessageBeRendered) || (type === 'ERROR')

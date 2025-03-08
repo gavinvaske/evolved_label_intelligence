@@ -289,7 +289,7 @@
   }
   .purchase-order-info-wrapper {
     max-height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
     .po-table {
       margin-top: 15px;
       .tb-header,

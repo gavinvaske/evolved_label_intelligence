@@ -6,12 +6,13 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
-import { IMaterial, IMaterialLengthAdjustment } from '@shared/types/models.ts';
+import { IMaterial } from '@shared/types/models.ts';
 import { performTextSearch } from '../../_queries/_common.ts';
-import { SearchResult } from '@shared/types/http.ts';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect.tsx';
 import { TextArea } from '../../_global/FormInputs/TextArea/TextArea.tsx';
 import { IMaterialLengthAdjustmentForm } from '@ui/types/forms.ts';
+import { useQuery } from '@tanstack/react-query';
+import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
 
 export const MaterialLengthAdjustmentForm = () => {
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IMaterialLengthAdjustmentForm>();
@@ -19,39 +20,38 @@ export const MaterialLengthAdjustmentForm = () => {
   const [materials, setMaterials] = useState<SelectOption[]>([])
   const { mongooseId } = useParams();
 
-  const isUpdateRequest = mongooseId && mongooseId.length > 0;
+  const isUpdateRequest: boolean = !!mongooseId && mongooseId.length > 0;
 
-  useEffect(() => {
-    if (!isUpdateRequest) return;
+  const { isFetching: isFetchingFormToUpdate, isLoading: isLoadingFormToUpdate, error: fetchingFormError } = useQuery<IMaterialLengthAdjustmentForm>({
+    queryKey: ['material-length-adjustments', mongooseId],
+    queryFn: async () => {
+      const { data } = await axios.get('/material-length-adjustments/' + mongooseId)
+      const formValues: IMaterialLengthAdjustmentForm = {
+        material: data.material,
+        length: data.length,
+        notes: data.notes,
+      }
 
-    axios.get('/material-length-adjustments/' + mongooseId)
-      .then(({ data }: { data: IMaterialLengthAdjustment }) => {
-        const formValues: any = {
-          material: data.material,
-          length: data.length,
-          notes: data.notes,
+      reset(formValues) // pre-populate form with existing values from the DB
+      return formValues
+    },
+    enabled: isUpdateRequest
+  })
+
+  const { isFetching: isFetchingMaterials, isLoading: isLoadingMaterials, error: fetchingMaterialsError } = useQuery<IMaterial[]>({
+    queryKey: ['materials-search'],
+    queryFn: async () => {
+      const { results: materials } = await performTextSearch<IMaterial>('/materials/search', { limit: '100' })
+      setMaterials(materials.map((material: IMaterial) => (
+        {
+          displayName: material.name,
+          value: material._id as string
         }
+      )))
 
-        reset(formValues) // pre-populate form with existing values from the DB
-      })
-      .catch((error: AxiosError) => {
-        useErrorMessage(error)
-      })
-  }, [])
-
-  useEffect(() => {
-    performTextSearch<IMaterial>('/materials/search', { limit: '100',  })
-      .then((searchResults: SearchResult<IMaterial>) => {
-        const materials = searchResults.results
-        setMaterials(materials.map((material: IMaterial) => (
-          {
-            displayName: material.name,
-            value: material._id as string
-          }
-        )))
-      })
-      .catch((error: AxiosError) => useErrorMessage(error))
-    }, []);
+      return materials
+    },
+  })
 
   const onFormSubmit = (formData: IMaterialLengthAdjustmentForm) => {
     if (isUpdateRequest) {
@@ -69,6 +69,13 @@ export const MaterialLengthAdjustmentForm = () => {
         })
         .catch((error: AxiosError) => useErrorMessage(error))
     }
+  }
+
+  if (fetchingMaterialsError) useErrorMessage(fetchingMaterialsError)
+  if (fetchingFormError) useErrorMessage(fetchingFormError)
+
+  if (isLoadingFormToUpdate || isLoadingMaterials || isFetchingFormToUpdate || isFetchingMaterials) {
+    return <LoadingIndicator />
   }
 
   return (

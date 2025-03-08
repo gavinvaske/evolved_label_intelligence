@@ -133,44 +133,6 @@ router.get('/', verifyBearerToken, async (_, response: Response) => {
     }
 });
 
-router.get('/me/profile-picture', verifyBearerToken, async (request: Request, response: Response) => {
-  try {
-    const user = await UserModel.findById(request.user._id, 'profilePicture').lean();
-
-    if (!user) throw new Error('User not found by ID')
-
-    if (!user.profilePicture) return response.send('');
-
-    const { contentType, data } = user.profilePicture
-
-    if (!contentType || !data) return response.send('');
-
-    const imageUrl = `data:image/${contentType};base64,${data.toString('base64')}`
-
-    return response.send(imageUrl)
-  } catch (error) {
-    console.error('failed to fetch profile picture: ', error)
-    return response.status(NOT_FOUND).send(error.message);
-  }
-});
-
-router.delete('/me/profile-picture', verifyBearerToken, async (request: Request, response: Response) => {
-  try {
-    const user = await UserModel.findById(request.user._id);
-
-    if (!user) throw new Error('User not found');
-
-    user.profilePicture = null;
-
-    await user.save();
-
-    return response.sendStatus(SUCCESS);
-  } catch(error) {
-    console.error('Failed to delete profile picture', error)
-    return response.sendStatus(NOT_FOUND);
-  }
-})
-
 router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), async (request: Request, response: Response) => {
     const maxImageSizeInBytes = 800000;
     let imageFilePath;
@@ -202,7 +164,7 @@ router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), as
     } catch (error) {
         console.error('Failed to upload profile picture:', error)
 
-        return response.sendStatus(SERVER_ERROR)
+        return response.status(SERVER_ERROR).send(error.message)
     } finally {
         deleteFileFromFileSystem(imageFilePath);
     }

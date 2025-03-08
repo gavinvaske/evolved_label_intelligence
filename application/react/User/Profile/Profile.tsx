@@ -8,13 +8,13 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { UploadProfilePicture } from '../../UploadProfilePicture/UploadProfilePicture';
+import { refreshLoggedInUser } from '../../_hooks/useLoggedInUser';
 
 export const Profile = () => {
   const queryClient = useQueryClient()
   const { isError, data: loggedInUser, error } = useQuery({
-    queryKey: ['get-logged-in-user'],
-    queryFn: getLoggedInUser,
-    initialData: []
+    queryKey: ['get-me'],
+    queryFn: getLoggedInUser
   })
 
   const { register, handleSubmit, formState: { errors }, reset } = useForm<FieldValues>();
@@ -37,7 +37,7 @@ export const Profile = () => {
   const onSubmit = (formData: any) => {
     axios.patch(`/users/me`, formData)
       .then((_: AxiosResponse) => {
-        queryClient.invalidateQueries({ queryKey: ['get-logged-in-user']})
+        refreshLoggedInUser(queryClient);
         useSuccessMessage('Update was successful')
       })
       .catch((error: AxiosError) => useErrorMessage(error))

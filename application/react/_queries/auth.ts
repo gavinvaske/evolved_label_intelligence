@@ -1,8 +1,9 @@
+import { IUser } from '@shared/types/models';
 import axios, { AxiosResponse } from 'axios';
 
-export const getLoggedInUser = async (): Promise<any> => {
+export const getLoggedInUser = async (): Promise<IUser> => {
   const response : AxiosResponse = await axios.get('/auth/me');
-  const loggedInUserDetails: any = response.data;
+  const user: IUser = response.data;
 
-  return loggedInUserDetails
+  return user
 }

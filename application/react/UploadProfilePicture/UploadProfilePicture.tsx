@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
 import { useErrorMessage } from "../_hooks/useErrorMessage";
 import axios from 'axios';
 import './UploadProfilePicture.scss';
 import { Image } from "../_global/Image/Image";
-import { useQuery } from "@tanstack/react-query";
-import { getLoggedInUserProfilePictureUrl } from '../_queries/users';
+import { refreshLoggedInUser, useLoggedInUser } from "../_hooks/useLoggedInUser";
+import { useQueryClient } from "@tanstack/react-query";
 
 type MimeType = 'image/jpeg' | 'image/png' | 'image/jpg';
 
@@ -15,21 +14,14 @@ type Props = {
 
 export const UploadProfilePicture = (props: Props) => {
   const { apiEndpoint, acceptedMimeTypes } = props;
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const { user, error } = useLoggedInUser()
 
-  const { data: profilePictureUrl, error } = useQuery({
-    queryKey: ['get-profile-picture'],
-    queryFn: getLoggedInUserProfilePictureUrl,
-    initialData: {}
-  })
+  const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`
+  const queryClient = useQueryClient()
 
   if (error) {
     useErrorMessage(error);
   }
-
-  useEffect(() => {
-    setSelectedImage(profilePictureUrl)
-  }, [profilePictureUrl])
 
   const clearSelectedImage = () => {
     const fileInputField = document.getElementById('image-upload');
@@ -38,20 +30,6 @@ export const UploadProfilePicture = (props: Props) => {
       useErrorMessage(new Error('No file input field found. Contact a developer to fix this issue.'));
       return
     }
-
-    axios.delete('/users/me/profile-picture')
-      .then(() => {
-        setSelectedImage(null)
-        fileInputField.value = null; // Reset the file input field to nothing
-      })
-      .catch((error) => {
-        useErrorMessage(error);
-      })
-  }
-
-  const deleteImage = async () => {
-    alert('TODO @Storm: Work with Gavin to add a confirmation dialog before deleting the profile picture (hint @gavin: [hasUserConfirmed, setHasUserConfirmed])');
-    clearSelectedImage();
   }
 
   const saveImage = async (event) => {
@@ -62,8 +40,6 @@ export const UploadProfilePicture = (props: Props) => {
       return;
     }
 
-    setSelectedImage(file);
-
     let formData = new FormData();
     formData.append("image", file);
 
@@ -73,6 +49,7 @@ export const UploadProfilePicture = (props: Props) => {
           'Content-Type': 'multipart/form-data'
         }
       })
+      refreshLoggedInUser(queryClient);
     } catch (error) {
       clearSelectedImage();
       useErrorMessage(error)
@@ -85,7 +62,7 @@ export const UploadProfilePicture = (props: Props) => {
     <div className='profile-picture-container'>
 
       <div className='profile-picture-frame'>
-        <Image img={selectedImage} width={300}/>
+        <Image img={profilePictureUrl} width={300}/>
         <div className="photo-details">
           <input
             id='image-upload'
@@ -97,13 +74,6 @@ export const UploadProfilePicture = (props: Props) => {
           />
         </div>
       </div>
-      
-
-      {/* {selectedImage && (<button onClick={() => deleteImage()}>Click to Delete my Profile Picture</button>)} */}
-
-        {/* <p>Allowed: {allowedMimeTypes.replace(/image\//g, '')} </p>
-        <p>Max size 800KB.</p> */}
-      
     </div>
   );
 };

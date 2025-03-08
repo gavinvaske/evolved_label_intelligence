@@ -2,15 +2,15 @@ const requiredNumberOfSpaces = 4;
 
 module.exports = {
     'ignorePatterns': ['/build', 'application/react/*', 'application/public/js/*'],
-    "env" : {
-      "browser" : true,
-      "node" : true,
-      "es6" : true
+    'env' : {
+        'browser' : true,
+        'node' : true,
+        'es6' : true
     },
     'parserOptions': {
-      "sourceType": "module",
+        'sourceType': 'module',
     },
-    "parser": "@babel/eslint-parser",
+    'parser': '@babel/eslint-parser',
     'rules': {
         'semi': ['error', 'always'],
         'quotes': ['error', 'single'],
