@@ -42,7 +42,6 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
-    setSearchTerm(''); // Reset search when opening
   };
 
   // Filter options based on search term
