@@ -45,6 +45,10 @@
   padding: 5px;
 }
 
+.border-bottom {
+  border-bottom: 1px dashed #ccc;
+}
+
 .dropdown-item {
   padding: 10px;
   cursor: pointer;
@@ -71,8 +75,22 @@
   }
 }
 
-
 .error {
   color: red;
   margin-top: 10px;
+}
+
+.search-input {
+  width: 100%;
+  padding: 5px;
+  margin-bottom: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-weight: bold;
+}
+
+.no-results {
+  padding: 8px;
+  color: #888;
+  text-align: center;
 }

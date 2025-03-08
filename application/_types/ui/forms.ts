@@ -169,3 +169,12 @@ export type IDeliveryMethodForm = {
   name: string;
 };
 
+export type IUserForm = {
+  email: string;
+  firstName: string;
+  lastName: string;
+  jobRole?: string;
+  birthDate: string;
+  phoneNumber?: string;
+}
+

@@ -22,14 +22,12 @@ type Props<T extends FieldValues> = {
 export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
   const { attribute, options, label, errors, isRequired, control, register } = props;
   const [isOpen, setIsOpen] = useState(false);
-  const dropdownRef = useRef<HTMLInputElement>(null);
+  const [searchTerm, setSearchTerm] = useState('');
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   options.sort((a, b) => a.displayName?.localeCompare(b.displayName));
 
-  /* Setup validation rules: see https://react-hook-form.com/get-started#Applyvalidation for more */
-  register(attribute, 
-    { required: isRequired ? "Nothing Selected" : undefined }
-  )
+  register(attribute, { required: isRequired ? "Nothing Selected" : undefined });
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -39,15 +37,17 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
       }
     };
     document.addEventListener("click", handleClickOutside);
-
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
+    return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  // Filter options based on search term
+  const filteredOptions = options.filter(option =>
+    option.displayName.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   return (
     <div className="custom-select-container" ref={dropdownRef}>
@@ -57,34 +57,54 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
         name={attribute}
         render={({ field: { onChange, value } }) => (
           <div className='input-wrapper'>
-            {/* Selected Option: */}
+            {/* Selected Option */}
             <div className={`select-selected ${value && 'active'}`} onClick={toggleDropdown}>
-              {(value && options.find((option: SelectOption) => value == option.value))?.displayName || 'Nothing Selected'}
+              {(value && options.find(option => value == option.value))?.displayName || 'Nothing Selected'}
               <span className={`dropdown-arrow ${isOpen ? "active" : ""}`}><i className="fa-regular fa-chevron-down"></i></span>
             </div>
 
-            {/* All Available Options: */}
-            {isOpen && <div className="select-items-dropdown"> 
-              <DropdownOption 
-                option={{displayName: `Nothing Selected`, value: ''}}
-                key={-1}
-                onClick={() => {
-                  onChange('')
-                  setIsOpen(false)
-                }}
-              />
-              {options.map((option, index) => (
-                <DropdownOption 
-                  option={option} 
-                  isSelected={option.value == value} 
-                  key={index}
+            {/* Dropdown Options */}
+            {isOpen && (
+              <div className="select-items-dropdown">
+                {/* Search Input */}
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className="search-input"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  autoFocus
+                />
+
+                {/* "Nothing Selected" Option */}
+                <DropdownOption
+                  className={`border-bottom ${!value && "same-as-selected"}`}
+                  option={{ displayName: `Nothing Selected`, value: '' }}
+                  key={-1}
                   onClick={() => {
-                    onChange(option.value)
-                    setIsOpen(false)
+                    onChange('');
+                    setIsOpen(false);
                   }}
                 />
-              ))}
-            </div>}
+
+                {/* Filtered Options */}
+                {filteredOptions.length > 0 ? (
+                  filteredOptions.map((option, index) => (
+                    <DropdownOption
+                      option={option}
+                      isSelected={option.value == value}
+                      key={index}
+                      onClick={() => {
+                        onChange(option.value);
+                        setIsOpen(false);
+                      }}
+                    />
+                  ))
+                ) : (
+                  <div className="dropdown-item no-results">No options found</div>
+                )}
+              </div>
+            )}
           </div>
         )}
       />
@@ -98,17 +118,19 @@ type DropdownOptionProps = {
   key: number,
   onClick: () => void,
   isSelected?: boolean,
+  className?: string,
 }
 
-const DropdownOption = ({ option, key, onClick, isSelected }: DropdownOptionProps) => {
+const DropdownOption = ({ option, key, onClick, isSelected, className = '' }: DropdownOptionProps) => {
+
   return (
     <div
       key={key}
-      className={`dropdown-item ${isSelected ? "same-as-selected" : ""
-        }`}
+      className={`dropdown-item ${isSelected ? "same-as-selected" : ""} ${className} `}
       onClick={onClick}
+
     >
       {option.displayName}
     </div>
-  )
+  );
 }
