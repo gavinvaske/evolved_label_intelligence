@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import './MaterialCard.scss'
 import { observer } from 'mobx-react-lite';
-import { MaterialInventory } from '../../Inventory.tsx';
 import { Modal } from '../../../_global/Modal/Modal.tsx';
 import { Link, useNavigate } from 'react-router-dom';
 import { getDayMonthYear } from '../../../_helperFunctions/dateTime.ts';
@@ -10,6 +9,8 @@ import { useQuery } from '@tanstack/react-query';
 import { getMaterialOrdersByIds } from '../../../_queries/materialOrder.ts';
 import { LoadingIndicator } from '../../../_global/LoadingIndicator/LoadingIndicator.tsx';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage.ts';
+import { BsPlusSlashMinus } from "react-icons/bs";
+
 
 function renderPurchaseOrders(material: IMaterial) {
   const navigate = useNavigate();
@@ -63,7 +64,8 @@ type Props = {
 const MaterialCard = observer((props: Props) => {
   const { material, onClick } = props;
   const [shouldShowPoModal, setShouldShowPoModal] = useState(false);
-  const numMaterialOrders = material.inventory.materialOrders?.length || 0;
+  const numMaterialOrders = material.inventory.materialOrders.length;
+  const numLengthAdjustments = material.inventory.lengthAdjustments.length
 
   const showPurchaseOrderModal = (e) => {
     if (e.currentTarget.classList.contains('disabled')) {
@@ -98,11 +100,17 @@ const MaterialCard = observer((props: Props) => {
               }
 
             </div>
-            <div className='material-option open-ticket-container tooltip-top enabled'>
-              <div className='icon-container' onClick={(e) => e.stopPropagation()}>
-                <i className="fa-regular fa-memo"></i>
+            <div className={`material-option open-ticket-container tooltip-top ${numLengthAdjustments === 0 ? 'disabled' : 'enabled'}`}>
+              <div className={`icon-container ${numLengthAdjustments === 0 && ''}`} onClick={(e) => e.stopPropagation()}>
+                <i><BsPlusSlashMinus /></i>
               </div>
-              <span className='tooltiptext'>View open tickets</span>
+              <span className='tooltiptext'>
+                {
+                  numLengthAdjustments === 0 ? 
+                    'No Adjustments' : 
+                    `View ${numLengthAdjustments} Adjustments`
+                }
+              </span>
             </div>
             <div className='material-option edit-container tooltip-top'>
               <Link to={`/react-ui/forms/material/${material._id}`} onClick={(e) => e.stopPropagation()}>
@@ -131,7 +139,7 @@ const MaterialCard = observer((props: Props) => {
         <div className='divide-line'></div>
         <div className='col col-right'>
           <span>Net</span>
-          <h2 className='material-length-ordered'>{material.inventory.lengthArrived + material.inventory.lengthNotArrived + material.inventory.manualLengthAdjustment}</h2>
+          <h2 className='material-length-ordered'>{material.inventory.netLengthAvailable}</h2>
         </div>
 
       </div>

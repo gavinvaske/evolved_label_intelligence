@@ -62,7 +62,7 @@ class InventoryStore implements Filter<any> {
   }
 
   getNetLengthAdjustments() {
-    return Object.values(this.materials).reduce((sum, material) => sum + (material.inventory.manualLengthAdjustment || 0), 0)
+    return Object.values(this.materials).reduce((sum, material) => sum + (material.inventory.sumOfLengthAdjustments || 0), 0)
   }
 
   getNetLengthOfMaterialsInInventory() {

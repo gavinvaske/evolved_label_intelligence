@@ -27,7 +27,7 @@ export const MaterialDetailsModal = (props: Props) => {
               </div>
             <div className='box box-two'>
             <h5>Adjustments:</h5> 
-              <span>{material.inventory.manualLengthAdjustment}</span>
+              <span>{material.inventory.sumOfLengthAdjustments}</span>
             </div>
             <div className='box box-three'>
               <h5>On Order:</h5>

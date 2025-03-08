@@ -219,8 +219,12 @@ const schema = new Schema<IMaterial>({
       ref: 'MaterialOrder',
       type: [Schema.Types.ObjectId],
     },
-    manualLengthAdjustment: {
+    sumOfLengthAdjustments: {
       type: Number
+    },
+    lengthAdjustments: {
+      ref: 'MaterialLengthAdjustment',
+      type: [Schema.Types.ObjectId],
     }
   }
 }, {
