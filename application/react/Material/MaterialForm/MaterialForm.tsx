@@ -25,7 +25,7 @@ export const MaterialForm = () => {
   const { mongooseId } = useParams();
   const axios = useAxios();
 
-  const isUpdateRequest = mongooseId && mongooseId.length > 0;
+  const isUpdateRequest: boolean = !!mongooseId && mongooseId.length > 0;
 
   const [vendors, setVendors] = useState<SelectOption[]>([])
   const [materialCategories, setMaterialCategories] = useState<SelectOption[]>([])
@@ -68,7 +68,8 @@ export const MaterialForm = () => {
 
       reset(formValues) // pre-populate form with existing values from the DB
       return formValues
-    }
+    },
+    enabled: isUpdateRequest
   })
 
   useEffect(() => {
