@@ -25,6 +25,7 @@ export const MaterialForm = () => {
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
 
+  // TODO (9-16-2024): Replace these Axios API calls with react-query
   const [vendors, setVendors] = useState<SelectOption[]>([])
   const [materialCategories, setMaterialCategories] = useState<SelectOption[]>([])
   const [adhesiveCategories, setAdhesiveCategories] = useState<SelectOption[]>([])
