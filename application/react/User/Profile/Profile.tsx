@@ -1,36 +1,36 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import './Profile.scss';
-import { getLoggedInUser } from '../../_queries/auth';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useQueryClient } from '@tanstack/react-query';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
-import { FieldValues, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { UploadProfilePicture } from '../../UploadProfilePicture/UploadProfilePicture';
-import { refreshLoggedInUser } from '../../_hooks/useLoggedInUser';
+import { refreshLoggedInUser, useLoggedInUser } from '../../_hooks/useLoggedInUser';
+import { convertDateStringToFormInputDateString } from '../../_helperFunctions/dateTime';
+import { IUserForm } from '@ui/types/forms';
+import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator';
 
 export const Profile = () => {
   const queryClient = useQueryClient()
-  const { isError, data: loggedInUser, error } = useQuery({
-    queryKey: ['get-me'],
-    queryFn: getLoggedInUser
-  })
+  const { user: loggedInUser, isLoading: isLoadingUser, isFetching: isFetchingUser, error } = useLoggedInUser();
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<FieldValues>();
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<IUserForm>();
 
   useEffect(() => {
+    console.log('grr')
     reset({
-      email: loggedInUser?.email,
-      firstName: loggedInUser?.firstName,
-      lastName: loggedInUser?.lastName,
-      birthDate: loggedInUser?.birthDate || '',
-      phoneNumber: loggedInUser?.phoneNumber,
-      jobRole: loggedInUser?.jobRole
+      email: loggedInUser?.email || '',
+      firstName: loggedInUser?.firstName || '',
+      lastName: loggedInUser?.lastName || '',
+      birthDate: loggedInUser?.birthDate ? convertDateStringToFormInputDateString(loggedInUser?.birthDate as string) : '',
+      phoneNumber: loggedInUser?.phoneNumber || '',
+      jobRole: loggedInUser?.jobRole || ''
     })
-  }, [loggedInUser, reset])
+  }, [loggedInUser])
 
-  if (isError) {
+  if (error) {
     useErrorMessage(error)
   }
 
@@ -52,52 +52,61 @@ export const Profile = () => {
         <div className='profile-canvas-background'></div>
         <div className='profile-details-footer'>
           <UploadProfilePicture apiEndpoint='/users/me/profile-picture' acceptedMimeTypes={['image/jpeg', 'image/png', 'image/jpg']}></UploadProfilePicture>
-          { timeBasedGreetingMessage }
+          {timeBasedGreetingMessage}
         </div>
       </div>
 
-
       <div className='card'>
-        <form onSubmit={handleSubmit(onSubmit)} data-test='user-form'>
-          <Input
-            attribute='email'
-            label="Email"
-            register={register}
-            errors={errors}
-          />
-          <Input
-            attribute='firstName'
-            label="First Name"
-            register={register}
-            errors={errors}
-          />
-          <Input
-            attribute='lastName'
-            label="Last Name"
-            register={register}
-            errors={errors}
-          />
-          <Input
-            attribute='jobRole'
-            label="Job Role"
-            register={register}
-            errors={errors}
-          />
-          <Input
-            attribute='birthDate'
-            label="Birth Date"
-            register={register}
-            errors={errors}
-          />
-          <Input
-            attribute='phoneNumber'
-            label="Phone"
-            register={register}
-            errors={errors}
-          />
-          <button className='create-entry submit-button' type='submit'>{'Update'}</button>
-        </form>
+        {
+          (isLoadingUser || isFetchingUser) ? <LoadingIndicator /> : (
+            <form onSubmit={handleSubmit(onSubmit)} data-test='user-form'>
+              <Input
+                attribute='email'
+                label="Email"
+                isRequired
+                register={register}
+                errors={errors}
+              />
+              <Input
+                attribute='firstName'
+                label="First Name"
+                isRequired
+                register={register}
+                errors={errors}
+              />
+              <Input
+                attribute='lastName'
+                label="Last Name"
+                isRequired
+                register={register}
+                errors={errors}
+              />
+              <Input
+                attribute='jobRole'
+                label="Job Role"
+                register={register}
+                errors={errors}
+              />
+              <Input
+                attribute='birthDate'
+                fieldType='date'
+                isRequired
+                label="Birth Date"
+                register={register}
+                errors={errors}
+              />
+              <Input
+                attribute='phoneNumber'
+                label="Phone"
+                register={register}
+                errors={errors}
+              />
+              <button className='create-entry submit-button' type='submit'>{'Update'}</button>
+            </form>
+          )}
       </div>
+
+
     </div>
   )
 }
