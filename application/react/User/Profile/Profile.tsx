@@ -19,7 +19,6 @@ export const Profile = () => {
   const { register, handleSubmit, formState: { errors }, reset } = useForm<IUserForm>();
 
   useEffect(() => {
-    console.log('grr')
     reset({
       email: loggedInUser?.email || '',
       firstName: loggedInUser?.firstName || '',
