@@ -32,7 +32,7 @@ export const MaterialForm = () => {
   const [adhesiveCategories, setAdhesiveCategories] = useState<SelectOption[]>([])
   const [linerTypes, setLinerTypes] = useState<SelectOption[]>([])
 
-  const { isFetching, isLoading, error } = useQuery({
+  const { isFetching, isLoading, error } = useQuery<IMaterialForm>({
     queryKey: ['materials', mongooseId],
     queryFn: async () => {
       const { data } = await axios.get('/materials/' + mongooseId)
