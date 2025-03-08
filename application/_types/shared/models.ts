@@ -118,8 +118,8 @@ export interface IDie extends SchemaTimestampsConfig, Document<MongooseId> {
   serialNumber: string,
   status: string,
   quantity: number,
-  orderDate?: Date,
-  arrivalDate?: Date
+  orderDate?: Date | string,
+  arrivalDate?: Date | string
   isLamination?: boolean
 }
 
@@ -127,8 +127,8 @@ export interface IMaterialOrder extends SchemaTimestampsConfig, Document<Mongoos
   author: MongooseId | IUser;
   material: MongooseId | IMaterial;
   purchaseOrderNumber: string;
-  orderDate: Date;
-  arrivalDate: Date;
+  orderDate: Date | string;
+  arrivalDate: Date | string;
   feetPerRoll: number;
   totalRolls: number;
   totalCost: number;
@@ -148,10 +148,10 @@ export interface IUser extends SchemaTimestampsConfig, Document<MongooseId> {
   };
   firstName: string;
   lastName: string;
-  birthDate: Date;
+  birthDate: Date | string;
   jobRole: string;
   phoneNumber: string;
   authRoles: (typeof AVAILABLE_AUTH_ROLES)[number][];
-  lastLoginDateTime: Date;
+  lastLoginDateTime: Date | string;
 }
 
