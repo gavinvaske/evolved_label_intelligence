@@ -85,7 +85,7 @@
             font-weight: lighter;
         }
     }
-    #login-form {
+    #login-form {   // todo
         width: 400px;
         display: flex;
         justify-content: center;
@@ -93,14 +93,6 @@
         flex-direction: column;
         .input-wrapper {
             width: 100%;
-            position: relative;
-            span {
-                display: none;
-            }
-            input {
-                margin-top: 10px;
-                
-            }
         }
         .input-wrapper {
             &:nth-child(1) {

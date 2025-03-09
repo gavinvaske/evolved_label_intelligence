@@ -39,9 +39,15 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
         {label} <span className="red">{isRequired ? '*' : ''}</span>:
       </label>
       <div className="input-field-container">
-        {LeftIcon && !leftUnit && <div className="left-input-field-icon">{LeftIcon}</div>}
-        {leftUnit && !LeftIcon && <div className="left-input-field-unit">{leftUnit}</div>}
-        
+        {/* Left Unit / Icon */}
+        {(LeftIcon || leftUnit) && (
+          <div className="left-container">
+            {LeftIcon && <span className="left-input-field-icon">{LeftIcon}</span>}
+            {leftUnit && <span className="left-input-field-unit">{leftUnit}</span>}
+          </div>
+        )}
+
+        {/* Input Field */}
         <input
           {...rest}
           type={fieldType || 'text'}
@@ -52,15 +58,16 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
               customRef.current = e;
             }
           }}
-          className={`
-            ${LeftIcon || leftUnit ? 'has-left-element' : ''} 
-            ${RightIcon || rightUnit ? 'has-right-element' : ''}
-          `}
           {...dataAttributes}
         />
-        
-        {RightIcon && !rightUnit && <div className="right-input-field-icon">{RightIcon}</div>}
-        {rightUnit && !RightIcon && <div className="right-input-field-unit">{rightUnit}</div>}
+
+        {/* Right Unit / Icon */}
+        {(RightIcon || rightUnit) && (
+          <div className="right-container">
+            {RightIcon && <span className="right-input-field-icon">{RightIcon}</span>}
+            {rightUnit && <span className="right-input-field-unit">{rightUnit}</span>}
+          </div>
+        )}
       </div>
       <FormErrorMessage errors={errors} name={attribute} />
     </div>
