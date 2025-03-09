@@ -13,15 +13,6 @@ type MaterialLengthAdjustmentDetails = {
 /* 
   @See: 
     https://mongoplayground.net/
-  
-  @Returns: 
-    A map where the key is the material _id which maps to the net length of that material found in the MaterialLengthAdjustment db table
-  
-  @Notes:
-    type materialIdsWithTotalLengthAdjustments = {
-      _id: mongooseId,
-      totalLength: number
-    }
 */
 export async function getLengthAdjustmentDetailsByMaterialId(): Promise<Record<MongooseIdStr, MaterialLengthAdjustmentDetails>> {
   const materialIdsWithLengthAdjustmentDetails = await MaterialLengthAdjustmentModel.aggregate([
