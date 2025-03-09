@@ -1,6 +1,56 @@
-.input-field-icon {
-  position: absolute;
-  right: 12px;
-  bottom: 5px;
-  font-size: 18px;
+.input-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+
+  label {
+    font-weight: bold;
+  }
+
+  .input-field-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+    
+    input {
+      width: 100%;
+      padding: 8px 12px;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      transition: border-color 0.2s ease-in-out;
+
+      &:focus {
+        border-color: #007bff;
+        outline: none;
+      }
+
+      &.has-left-icon {
+        padding-left: 36px;
+      }
+
+      &.has-right-icon {
+        padding-right: 36px;
+      }
+    }
+
+    .left-input-field-icon,
+    .right-input-field-icon {
+      position: absolute;
+      top: 19px;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #555;
+    }
+
+    .left-input-field-icon {
+      left: 8px;
+    }
+
+    .right-input-field-icon {
+      right: 8px;
+    }
+  }
 }

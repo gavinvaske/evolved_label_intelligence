@@ -16,7 +16,8 @@ type Props<T extends FieldValues> = {
   ref?: any,
   dataAttributes?: { [key: `data-${string}`]: string },
   unit?: string,
-  Icon?: React.ReactNode
+  RightIcon?: React.ReactNode,
+  LeftIcon?: React.ReactNode
 }
 
 /* This "solution" was found here to solve hard-to-fix typescript errors resulting from usage of forwardRef(..): https://stackoverflow.com/a/73795494 */
@@ -26,33 +27,37 @@ interface WithForwardRefType extends React.FC<Props<FieldValues>>  {
 
 /* @Gavin More client side validation rules can be configured in react-hook-form. see https://react-hook-form.com/get-started#Applyvalidation */
 export const Input: WithForwardRefType = forwardRef((props, customRef) => {
-  const { placeholder, errors, attribute, label, register, isRequired, fieldType, dataAttributes, unit, Icon } = props
+  const { 
+    placeholder, errors, attribute, label, register, isRequired, fieldType, 
+    dataAttributes, unit, RightIcon, LeftIcon 
+  } = props;
 
-  const { ref, ...rest } = register(attribute,
-    { required: isRequired ? "This is required" : undefined }
-  );
-
+  const { ref, ...rest } = register(attribute, { required: isRequired ? "This is required" : undefined });
   const displayedUnit = (fieldType === 'currency' || unit) ? `(${fieldType === 'currency' ? '$' : unit || ''})` : '';
 
-
   return (
-    <div className='input-wrapper'>
-      <label>{label} {displayedUnit}<span className='red'>{isRequired ? '*' : ''}</span>:</label>
-      <input
-        {...rest}
-        type={fieldType ? fieldType : 'text'}
-        placeholder={placeholder}
-        ref={(e) => {   // solution from https://stackoverflow.com/a/71497701
-          ref(e)
-          if (customRef) {
-            customRef.current = e
-          }
-        }}
-        {...dataAttributes}
-      />
-      {Icon && <div className='input-field-icon'>{Icon}</div>}
+    <div className="input-wrapper">
+      <label>{label} {displayedUnit}<span className="red">{isRequired ? '*' : ''}</span>:</label>
+      
+      <div className="input-field-container">
+        {LeftIcon && <div className="left-input-field-icon">{LeftIcon}</div>}
+        <input
+          {...rest}
+          type={fieldType || 'text'}
+          placeholder={placeholder}
+          ref={(e) => {   // solution from https://stackoverflow.com/a/71497701
+            ref(e);
+            if (customRef) {
+              customRef.current = e;
+            }
+          }}
+          className={`${LeftIcon ? 'has-left-icon' : ''} ${RightIcon ? 'has-right-icon' : ''}`}
+          {...dataAttributes}
+        />
+        {RightIcon && !unit && <div className="right-input-field-icon">{RightIcon}</div>}
+      </div>
 
       <FormErrorMessage errors={errors} name={attribute} />
     </div>
-  )
-})
+  );
+});

@@ -59,6 +59,7 @@ const schema = new Schema<IVendor>({
 }, { timestamps: true, strict: 'throw' });
 
 
+
 schema.index({ name: 'text', mfgSpecNumber: 'text' });
 
 export const VendorModel = mongoose.model<IVendor>('Vendor', schema);
