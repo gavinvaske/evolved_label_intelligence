@@ -178,7 +178,7 @@ export const CustomerForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@Storm'
+                  leftUnit='@storm'
                 />
               </div>
               <TextArea

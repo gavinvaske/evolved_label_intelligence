@@ -137,7 +137,7 @@ export const DieForm = () => {
                 register={register}
                 errors={errors}
                 isRequired={true}
-                unit='@storm'
+                leftUnit='@storm'
               />
               <Input
                 attribute='sizeAround'
@@ -145,7 +145,7 @@ export const DieForm = () => {
                 register={register}
                 errors={errors}
                 isRequired={true}
-                unit='@storm'
+                leftUnit='@storm'
               />
               <Input
                 attribute='numberAcross'
@@ -153,7 +153,7 @@ export const DieForm = () => {
                 register={register}
                 errors={errors}
                 isRequired={true}
-                  unit='@storm'
+                  leftUnit='@storm'
               />
               <Input
                 attribute='numberAround'
@@ -161,7 +161,7 @@ export const DieForm = () => {
                 register={register}
                 errors={errors}
                 isRequired={true}
-                unit='@storm'
+                leftUnit='@storm'
               />
               <Input
               attribute='cornerRadius'
@@ -169,7 +169,7 @@ export const DieForm = () => {
               register={register}
               errors={errors}
               isRequired={true}
-              unit='@storm'
+              leftUnit='@storm'
             />
             <Input
               attribute='topAndBottom'
@@ -177,7 +177,7 @@ export const DieForm = () => {
               register={register}
               errors={errors}
               isRequired={true}
-              unit='@storm'
+              leftUnit='@storm'
             />
             <Input
               attribute='leftAndRight'
@@ -185,7 +185,7 @@ export const DieForm = () => {
               register={register}
               errors={errors}
               isRequired={true}
-              unit='@storm'
+              leftUnit='@storm'
             />
             </div>
             <div className='input-group-wrapper'>

@@ -194,7 +194,8 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='mm'
+                  rightUnit='mm'
                 />
                 <CustomSelect
                   attribute='vendor'
@@ -220,7 +221,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
                 <Input
                   attribute='weight'
@@ -228,7 +229,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
                 <Input
                   attribute='faceColor'
@@ -278,7 +279,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
                 <Input
                   attribute='lowStockBuffer'
@@ -286,7 +287,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
               </div>
               <div className='input-group-wrapper'>
@@ -321,7 +322,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
                 <Input
                   attribute='facesheetWeightPerMsi'
@@ -329,7 +330,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
                 <Input
                   attribute='adhesiveWeightPerMsi'
@@ -337,7 +338,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
                 <Input
                   attribute='linerWeightPerMsi'
@@ -345,7 +346,7 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
                 />
                 <Input
                   attribute='productNumber'
@@ -360,7 +361,8 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  unit='@storm'
+                  leftUnit='@storm'
+                  unit={'mm'}
                 />
                 <Input
                   attribute='image'
