@@ -89,7 +89,8 @@ export interface IMaterial extends SchemaTimestampsConfig, Document<MongooseId> 
     lengthArrived: number,
     lengthNotArrived: number,
     materialOrders: MongooseId[] | IMaterialOrder[],
-    manualLengthAdjustment: number
+    sumOfLengthAdjustments: number,
+    lengthAdjustments: MongooseId[] | IMaterialLengthAdjustment
   };
   netLength: number;
 }

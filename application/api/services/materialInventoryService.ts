@@ -6,40 +6,39 @@ import { MaterialModel } from '../models/material.ts';
 import * as mongooseService from '../services/mongooseService.ts';
 import * as materialInventoryService from '../services/materialInventoryService.ts';
 
+type MaterialLengthAdjustmentDetails = {
+  materialLengthAdjustmentIds: MongooseIdStr[]
+  sum: number
+}
 /* 
   @See: 
     https://mongoplayground.net/
-  
-  @Returns: 
-    A map where the key is the material _id which maps to the net length of that material found in the MaterialLengthAdjustment db table
-  
-  @Notes:
-    type materialIdsWithTotalLengthAdjustments = {
-      _id: mongooseId,
-      totalLength: number
-    }
 */
-export async function groupLengthAdjustmentsByMaterial(): Promise<Record<string, number>> {
-  const materialIdsWithTotalLengthAdjustments = await MaterialLengthAdjustmentModel.aggregate([
+export async function getLengthAdjustmentDetailsByMaterialId(): Promise<Record<MongooseIdStr, MaterialLengthAdjustmentDetails>> {
+  const materialIdsWithLengthAdjustmentDetails = await MaterialLengthAdjustmentModel.aggregate([
     {
       $group: {
         _id: '$material',
-        totalLength: {
-          $sum: {
-            '$toDouble': '$length'
-          }
+        sumOfMaterialLengthAdjustments: {
+          $sum: { '$toDouble': '$length' }
+        },
+        materialLengthAdjustmentIds: {
+          $push: '$_id' // Collects all the IDs of the grouped material adjustments
         }
-      }
-    }
+      },
+    },
   ]);
 
-  const materialIdToTotalLengthAdjustment = {};
+  const lengthAdjustmentDetailsByMaterialId: Record<MongooseIdStr, MaterialLengthAdjustmentDetails> = {};
 
-  materialIdsWithTotalLengthAdjustments.forEach(({ _id, totalLength }) => {
-    materialIdToTotalLengthAdjustment[_id] = totalLength;
+  materialIdsWithLengthAdjustmentDetails.forEach(({ _id, sumOfMaterialLengthAdjustments, materialLengthAdjustmentIds }) => {
+    lengthAdjustmentDetailsByMaterialId[_id] = {
+      sum: sumOfMaterialLengthAdjustments,
+      materialLengthAdjustmentIds
+    };
   });
 
-  return materialIdToTotalLengthAdjustment;
+  return lengthAdjustmentDetailsByMaterialId;
 }
 
 export function mapMaterialIdToPurchaseOrders(materialIds: MongooseId[], purchaseOrders: IMaterialOrder[]): Record<string, IMaterialOrder[]> {
@@ -58,20 +57,22 @@ export function mapMaterialIdToPurchaseOrders(materialIds: MongooseId[], purchas
   return materialIdToPurchaseOrders;
 }
 
-export function getInventoryForMaterial(purchaseOrdersForMaterial: IMaterialOrder[], materialLengthAdjustment: number): IMaterial['inventory'] {
+export function getInventoryForMaterial(purchaseOrdersForMaterial: IMaterialOrder[], lengthAdjustmentDetails: MaterialLengthAdjustmentDetails | undefined): IMaterial['inventory'] {
   const arrivedOrders = purchaseOrderService.findPurchaseOrdersThatHaveArrived(purchaseOrdersForMaterial);
   const notArrivedOrders = purchaseOrderService.findPurchaseOrdersThatHaveNotArrived(purchaseOrdersForMaterial);
   const lengthArrived = purchaseOrderService.computeLengthOfMaterialOrders(arrivedOrders);
   const lengthNotArrived = purchaseOrderService.computeLengthOfMaterialOrders(notArrivedOrders);
   const materialOrderIds = purchaseOrdersForMaterial.map((purchaseOrder) => purchaseOrder._id);
-  const netLengthAvailable = lengthArrived + materialLengthAdjustment
+  const sumOfLengthAdjustments = lengthAdjustmentDetails?.sum || 0
+  const netLengthAvailable = lengthArrived + sumOfLengthAdjustments
 
   return {
     netLengthAvailable: netLengthAvailable,
     lengthNotArrived: lengthNotArrived,
     lengthArrived: lengthArrived,
     materialOrders: materialOrderIds,
-    manualLengthAdjustment: materialLengthAdjustment,
+    sumOfLengthAdjustments: sumOfLengthAdjustments,
+    lengthAdjustments: lengthAdjustmentDetails?.materialLengthAdjustmentIds || []
   }
 }
 
@@ -107,7 +108,7 @@ export async function populateMaterialInventories(materialIds?: MongooseIdStr[])
     .exec();
 
   const distinctMaterialObjectIds = mongooseService.getObjectIds<IMaterial>(materials);
-  const materialIdToNetLengthAdjustment = await materialInventoryService.groupLengthAdjustmentsByMaterial();
+  const materialIdToLengthAdjustmentDetails = await materialInventoryService.getLengthAdjustmentDetailsByMaterialId();
   const allPurchaseOrders = await purchaseOrderService.getPurchaseOrdersForMaterials(distinctMaterialObjectIds);
   const materialIdToPurchaseOrders = materialInventoryService.mapMaterialIdToPurchaseOrders(distinctMaterialObjectIds, allPurchaseOrders);
 
@@ -115,8 +116,8 @@ export async function populateMaterialInventories(materialIds?: MongooseIdStr[])
 
   materials.forEach((material) => {
     const materialOrders = materialIdToPurchaseOrders[material._id as string] || [];
-    const materialNetLengthAdjustment = materialIdToNetLengthAdjustment[material._id as string] || 0;
-    materialIdToInventory[material._id as string] = materialInventoryService.getInventoryForMaterial(materialOrders, materialNetLengthAdjustment)
+    const lengthAdjustmentDetails = materialIdToLengthAdjustmentDetails[material._id as string];
+    materialIdToInventory[material._id as string] = materialInventoryService.getInventoryForMaterial(materialOrders, lengthAdjustmentDetails as MaterialLengthAdjustmentDetails)
   });
 
   const bulkOps = Object.keys(materialIdToInventory).map((materialId) => ({
