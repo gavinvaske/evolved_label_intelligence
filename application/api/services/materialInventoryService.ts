@@ -75,7 +75,7 @@ export function getInventoryForMaterial(purchaseOrdersForMaterial: IMaterialOrde
   const sumOfLengthAdjustments = lengthAdjustmentDetails?.sum || 0
   const netLengthAvailable = lengthArrived + sumOfLengthAdjustments
 
-  const foo = {
+  return {
     netLengthAvailable: netLengthAvailable,
     lengthNotArrived: lengthNotArrived,
     lengthArrived: lengthArrived,
@@ -83,7 +83,6 @@ export function getInventoryForMaterial(purchaseOrdersForMaterial: IMaterialOrde
     sumOfLengthAdjustments: sumOfLengthAdjustments,
     lengthAdjustments: lengthAdjustmentDetails?.materialLengthAdjustmentIds || []
   }
-  return foo
 }
 
 export function buildMaterialInventory(material: IMaterial, allPurchaseOrdersForMaterial: IMaterialOrder[], netMaterialLengthAdjustment: number) {
