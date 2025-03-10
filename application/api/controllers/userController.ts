@@ -407,7 +407,7 @@ router.post('/register', async (request: Request, response: Response) => {
   return response.redirect('/users/login');
 });
 
-router.put('/:mongooseId/auth-roles', hasAnyRole(['SUPER_USER']), async (request: Request, response: Response) => {
+router.put('/:mongooseId/auth-roles', hasAnyRole(['SUPER_ADMIN']), async (request: Request, response: Response) => {
   const { mongooseId } = request.params;
 
   if (!mongooseId) return response.sendStatus(BAD_REQUEST)

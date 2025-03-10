@@ -1,11 +1,11 @@
 export const USER = 'USER';
 export const ADMIN = 'ADMIN';
-export const SUPER_USER = 'SUPER_USER';
+export const SUPER_ADMIN = 'SUPER_ADMIN';
 
 export const AVAILABLE_AUTH_ROLES = [
     USER,
     ADMIN,
-    SUPER_USER
+    SUPER_ADMIN
 ];
 
 export const DEFAULT_AUTH_ROLE = USER;
