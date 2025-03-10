@@ -8,60 +8,51 @@
   }
 
   .input-field-container {
-    position: relative;
     display: flex;
     align-items: center;
+    border: 1px solid #877e7e;
+    border-radius: 0px;
+    height: 40px;
+    transition: border-color 0.2s ease-in-out;
 
-    input {
-      width: 100%;
-      padding: 10px 12px; // Default padding
-      border: 1px solid #ccc;
-      border-radius: 4px;
-      transition: border-color 0.2s ease-in-out;
-      height: 40px; // Consistent height
-
-      &:focus {
-        border-color: #007bff;
-        outline: none;
-      }
-
-      &.has-left-element {
-        padding-left: 50px; // Space for left icon or left unit
-      }
-
-      &.has-right-element {
-        padding-right: 50px; // Space for right icon or right unit
-      }
+    &:focus-within {
+      border-color: #007bff;
     }
 
-    .left-input-field-icon,
-    .right-input-field-icon,
-    .left-input-field-unit,
-    .right-input-field-unit {
-      position: absolute;
-      top: 50%;
-      transform: translateY(-50%);
+    .left-container,
+    .right-container {
       display: flex;
       align-items: center;
-      justify-content: center;
-      color: #555;
-    }
-
-    .left-input-field-icon,
-    .left-input-field-unit {
-      left: 10px;
-    }
-
-    .right-input-field-icon,
-    .right-input-field-unit {
-      right: 10px;
-    }
-
-    .left-input-field-unit,
-    .right-input-field-unit {
+      padding: 0 8px;
+      white-space: nowrap;
       font-size: 14px;
       font-weight: bold;
       color: #333;
+      flex-shrink: 0;
+    }
+
+    .left-container {
+      border-right: 1px solid #ddd;
+
+    }
+
+    .right-container {
+      border-left: 1px solid #ddd;
+    }
+
+    input {
+      flex: 1;
+      padding: 10px 12px;
+      border: none;
+      outline: none;
+      width: 100%;
+      min-width: 50px;
+      max-height: 100%;
+      border-radius: 0px;
+
+      &::placeholder {
+        color: #aaa;
+      }
     }
   }
 }

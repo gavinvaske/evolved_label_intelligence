@@ -156,6 +156,7 @@ export const Login = () => {
                       dataAttributes={
                         {'data-test': 'password-input'}
                       }
+                      //rightUnit='mm'
                       RightIcon={<PasswordIcon showPassword={showPassword} onClick={handlePasswordIconClicked} />}
                   />
                   <div className='remember-reset-container'>

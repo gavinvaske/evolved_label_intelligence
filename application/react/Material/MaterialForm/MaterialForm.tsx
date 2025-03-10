@@ -194,8 +194,8 @@ export const MaterialForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  leftUnit='mm'
-                  rightUnit='mm'
+                  leftUnit='@storm'
+                  rightUnit='@storm'
                 />
                 <CustomSelect
                   attribute='vendor'

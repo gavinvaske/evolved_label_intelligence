@@ -2,7 +2,7 @@ import React, { forwardRef } from 'react';
 import './Input.scss'
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
-
+import { BsCurrencyDollar } from "react-icons/bs";
 
 type Props<T extends FieldValues> = {
   attribute: Path<T>;
@@ -39,9 +39,19 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
         {label} <span className="red">{isRequired ? '*' : ''}</span>:
       </label>
       <div className="input-field-container">
-        {LeftIcon && !leftUnit && <div className="left-input-field-icon">{LeftIcon}</div>}
-        {leftUnit && !LeftIcon && <div className="left-input-field-unit">{leftUnit}</div>}
-        
+
+        {/* Left Unit / Icon */}
+        {(LeftIcon || leftUnit || fieldType === 'currency') && (
+          <div className="left-container">
+            {/* Set default icon on currency fields IFF no override was provided */}
+            {(!LeftIcon && !leftUnit) && fieldType === 'currency' && (<span className="left-input-field-icon"><BsCurrencyDollar /></span>)}
+            
+            {LeftIcon && <span className="left-input-field-icon">{LeftIcon}</span>}
+            {leftUnit && <span className="left-input-field-unit">{leftUnit}</span>}
+          </div>
+        )}
+
+        {/* Input Field */}
         <input
           {...rest}
           type={fieldType || 'text'}
@@ -52,15 +62,16 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
               customRef.current = e;
             }
           }}
-          className={`
-            ${LeftIcon || leftUnit ? 'has-left-element' : ''} 
-            ${RightIcon || rightUnit ? 'has-right-element' : ''}
-          `}
           {...dataAttributes}
         />
-        
-        {RightIcon && !rightUnit && <div className="right-input-field-icon">{RightIcon}</div>}
-        {rightUnit && !RightIcon && <div className="right-input-field-unit">{rightUnit}</div>}
+
+        {/* Right Unit / Icon */}
+        {(RightIcon || rightUnit) && (
+          <div className="right-container">
+            {RightIcon && <span className="right-input-field-icon">{RightIcon}</span>}
+            {rightUnit && <span className="right-input-field-unit">{rightUnit}</span>}
+          </div>
+        )}
       </div>
       <FormErrorMessage errors={errors} name={attribute} />
     </div>
