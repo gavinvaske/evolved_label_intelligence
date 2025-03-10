@@ -13,7 +13,10 @@
     .row-cell {
         flex: 1;
         display: flex;
-        justify-content: center;
+        justify-content: flex-start;
         align-items: center;
+        white-space: normal;
+        word-break: break-word;
+        overflow-wrap: break-word;
     }
 }

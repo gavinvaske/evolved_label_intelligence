@@ -1,6 +1,5 @@
-import React from 'react'
+import { PropsWithChildren } from 'react'
 import './Table.scss'
-import React, { PropsWithChildren } from 'react'
 
 type Props = {
   id?: string
