@@ -101,7 +101,7 @@ export const MaterialLengthAdjustmentForm = () => {
               register={register}
               isRequired={true}
               errors={errors}
-              unit='@storm'
+              leftUnit='@storm'
             />
             <TextArea
               attribute='notes'

@@ -156,7 +156,7 @@ export const Login = () => {
                       dataAttributes={
                         {'data-test': 'password-input'}
                       }
-                      Icon={<PasswordIcon showPassword={showPassword} onClick={handlePasswordIconClicked} />}
+                      RightIcon={<PasswordIcon showPassword={showPassword} onClick={handlePasswordIconClicked} />}
                   />
                   <div className='remember-reset-container'>
                     <div className='checkbox-container'>

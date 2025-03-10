@@ -13,6 +13,7 @@
   align-items: center;
   border-radius: 5px;
   height: 43px;
+  overflow-x: hidden;
 }
 
 .select-selected.active {
@@ -43,6 +44,8 @@
   box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
   transition: .175s;
   padding: 5px;
+  overflow-y: auto;
+  max-height: 275px;
 }
 
 .border-bottom {

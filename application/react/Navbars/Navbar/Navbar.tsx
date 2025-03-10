@@ -6,6 +6,7 @@ import { Image } from '../../_global/Image/Image';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { Dropdown } from '../../_global/Dropdown/Dropdown';
 import { useLoggedInUser } from '../../_hooks/useLoggedInUser';
+import { AuthRoles } from '@shared/enums/auth';
 
 export const Navbar = () => {
   const navigate = useNavigate();
@@ -292,13 +293,16 @@ export const Navbar = () => {
                     My Account
                   </NavLink>
                 </li>
-                <li>
+                {user?.authRoles.some((role) => [AuthRoles.ADMIN, AuthRoles.SUPER_ADMIN].includes(role)) && (
+                  <li>
                   <NavLink to="/react-ui/admin" 
                     className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}
                   >
                       <i className="fa-regular fa-crown"></i>
                       Admin Panel
-                  </NavLink></li>
+                  </NavLink>
+                </li>
+                )}
                 <li>
                   <a href="#">
                     <i className="fa-regular fa-books"></i>

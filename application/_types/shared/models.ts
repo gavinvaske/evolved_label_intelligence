@@ -2,7 +2,7 @@ import { Document } from "mongoose";
 import { SchemaTimestampsConfig } from "mongoose";
 import { IAddress, IContact, IShippingLocation } from "./schemas.ts";
 import { MongooseId } from "./typeAliases.ts";
-import { AVAILABLE_AUTH_ROLES } from "../../api/enums/authRolesEnum.ts";
+import { AuthRoles } from "@shared/enums/auth.ts";
 
 export interface IDeliveryMethod extends SchemaTimestampsConfig, Document<MongooseId> {
   name: string;
@@ -152,7 +152,7 @@ export interface IUser extends SchemaTimestampsConfig, Document<MongooseId> {
   birthDate: Date | string;
   jobRole: string;
   phoneNumber: string;
-  authRoles: (typeof AVAILABLE_AUTH_ROLES)[number][];
+  authRoles: AuthRoles[];
   lastLoginDateTime: Date | string;
 }
 

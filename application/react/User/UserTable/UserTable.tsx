@@ -26,7 +26,7 @@ const columns = [
   columnHelper.accessor(row => getFullName(row.firstName, row.lastName), {
     header: 'Name'
   }),
-  columnHelper.accessor(row => row.authRoles, {
+  columnHelper.accessor(row => row.authRoles?.join(', ') || '', {
     header: 'Auth Roles'
   }),
   columnHelper.accessor(row => getDateTimeFromIsoStr(row.lastLoginDateTime), {
