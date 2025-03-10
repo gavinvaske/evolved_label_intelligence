@@ -9,8 +9,8 @@ export const RowActions = (props) => {
   const toggleRowActions = () => setIsOpened(!isOpened)
 
   return (
-    <div className='row-actions' onClick={toggleRowActions}>
-      <div className={`dropdown-btn ${isOpened ? 'active' : ''}`}>
+    <div className='row-actions'>
+      <div className={`dropdown-btn ${isOpened ? 'active' : ''}`} onClick={toggleRowActions}>
         <RxDotsVertical />
         <div className={`dropdown-options ${isOpened ? 'show' : ''}`}>
           { children }

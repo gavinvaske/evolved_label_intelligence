@@ -12,9 +12,10 @@
   
   .column-header {
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex: 1;
+    padding: 0px;
   }
   .fa-arrow-down, .fa-arrow-up, .fa-arrow-up-arrow-down {
     margin-right: 3px;
