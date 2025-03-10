@@ -3,19 +3,20 @@ const router = Router();
 import bcrypt from 'bcryptjs';
 import { UserModel } from '../models/user.ts';
 import jwt from 'jsonwebtoken';
-import { verifyBearerToken } from '../middleware/authorize.ts';
+import { hasAnyRole, verifyBearerToken } from '../middleware/authorize.ts';
 import { sendPasswordResetEmail } from '../services/emailService.ts';
 import { upload } from '../middleware/upload.ts';
 import fs from 'fs';
 import path from 'path';
 import { isUserLoggedIn } from '../services/userService.ts';
-import { BAD_REQUEST, NOT_FOUND, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
+import { BAD_REQUEST, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { fileURLToPath } from 'url';
 import { SearchQuery, SearchResult } from '@shared/types/http.ts';
 import { IUser } from '@shared/types/models.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
+import { AVAILABLE_AUTH_ROLES } from '../enums/authRolesEnum.ts';
 
 const MONGODB_DUPLICATE_KEY_ERROR_CODE = 11000;
 const MIN_PASSWORD_LENGTH = 8;
@@ -30,93 +31,93 @@ function deleteFileFromFileSystem(path) {
 }
 
 router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
-  try {
-    const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
+    try {
+        const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+        if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
+        if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
 
-    const pageNumber = parseInt(pageIndex, 10);
-    const pageSize = parseInt(limit, 10);
-    const numDocsToSkip = pageNumber * pageSize;
-    const sortOptions: SortOption = getSortOption(sortField, sortDirection);
+        const pageNumber = parseInt(pageIndex, 10);
+        const pageSize = parseInt(limit, 10);
+        const numDocsToSkip = pageNumber * pageSize;
+        const sortOptions: SortOption = getSortOption(sortField, sortDirection);
 
-    const textSearch = query && query.length
-    ? {
-        $or: [
-          { email: { $regex: query, $options: 'i' } },
-          { firstName: { $regex: query, $options: 'i' } },
-          { lastName: { $regex: query, $options: 'i' } },
-          { jobRole: { $regex: query, $options: 'i' } },
-          { phoneNumber: { $regex: query, $options: 'i' } },
-        ],
-      }
-    : {};
+        const textSearch = query && query.length
+            ? {
+                $or: [
+                    { email: { $regex: query, $options: 'i' } },
+                    { firstName: { $regex: query, $options: 'i' } },
+                    { lastName: { $regex: query, $options: 'i' } },
+                    { jobRole: { $regex: query, $options: 'i' } },
+                    { phoneNumber: { $regex: query, $options: 'i' } },
+                ],
+            }
+            : {};
 
-    const pipeline = [
-      {
-        $match: {
-          ...textSearch,
-        },
-      },
-      {
-        $facet: {
-          paginatedResults: [
-            { $sort: { ...sortOptions, ...DEFAULT_SORT_OPTIONS } },
-            { $skip: numDocsToSkip },
-            { $limit: pageSize },
-          ],
-          totalCount: [
-            { $count: 'count' },
-          ],
-        },
-      },
-    ];
+        const pipeline = [
+            {
+                $match: {
+                    ...textSearch,
+                },
+            },
+            {
+                $facet: {
+                    paginatedResults: [
+                        { $sort: { ...sortOptions, ...DEFAULT_SORT_OPTIONS } },
+                        { $skip: numDocsToSkip },
+                        { $limit: pageSize },
+                    ],
+                    totalCount: [
+                        { $count: 'count' },
+                    ],
+                },
+            },
+        ];
 
-    const results = await UserModel.aggregate<any>(pipeline);
-    const totalDocumentCount = results[0]?.totalCount[0]?.count || 0; // Extract total count
-    const materialOrders = results[0]?.paginatedResults || [];
-    const totalPages = Math.ceil(totalDocumentCount / pageSize);
+        const results = await UserModel.aggregate<any>(pipeline);
+        const totalDocumentCount = results[0]?.totalCount[0]?.count || 0; // Extract total count
+        const materialOrders = results[0]?.paginatedResults || [];
+        const totalPages = Math.ceil(totalDocumentCount / pageSize);
 
-    const paginationResponse: SearchResult<IUser> = {
-      totalResults: totalDocumentCount,
-      totalPages,
-      currentPageIndex: (query && query.length) ? 0 : pageNumber,
-      results: materialOrders,
-      pageSize,
+        const paginationResponse: SearchResult<IUser> = {
+            totalResults: totalDocumentCount,
+            totalPages,
+            currentPageIndex: (query && query.length) ? 0 : pageNumber,
+            results: materialOrders,
+            pageSize,
+        }
+
+        return response.json(paginationResponse)
+    } catch (error) {
+        console.error('Failed to search for users: ', error);
+        return response.status(SERVER_ERROR).send(error.message);
     }
-
-    return response.json(paginationResponse)
-  } catch (error) {
-    console.error('Failed to search for users: ', error);
-    return response.status(SERVER_ERROR).send(error.message);
-  }
 })
 
 router.patch('/me', verifyBearerToken, async (request: Request, response: Response) => {
-  try {
-    if (!request.user._id) throw new Error('User not logged in');
+    try {
+        if (!request.user._id) throw new Error('User not logged in');
 
-    const newUserValues = {
-      email: request.body.email || undefined,
-      firstName: request.body.firstName || undefined,
-      lastName: request.body.lastName || undefined,
-      jobRole: request.body.jobRole || undefined,
-      birthDate: request.body.birthDate || '',
-      phoneNumber: request.body.phoneNumber || undefined
+        const newUserValues = {
+            email: request.body.email || undefined,
+            firstName: request.body.firstName || undefined,
+            lastName: request.body.lastName || undefined,
+            jobRole: request.body.jobRole || undefined,
+            birthDate: request.body.birthDate || '',
+            phoneNumber: request.body.phoneNumber || undefined
+        }
+
+        await UserModel.findOneAndUpdate(
+            { _id: request.user._id },
+            { $set: newUserValues },
+            { runValidators: true }
+        );
+
+        return response.sendStatus(SUCCESS);
+    } catch (error) {
+        console.error('Error updating user: ', error);
+        return response.status(SERVER_ERROR).send(error.message)
     }
-    
-    await UserModel.findOneAndUpdate(
-      { _id: request.user._id }, 
-      { $set: newUserValues }, 
-      { runValidators: true }
-    );
-
-    return response.sendStatus(SUCCESS);
-  } catch(error) {
-    console.error('Error updating user: ', error);
-    return response.status(SERVER_ERROR).send(error.message)
-  }
 });
 
 router.get('/', verifyBearerToken, async (_, response: Response) => {
@@ -139,7 +140,7 @@ router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), as
 
     try {
         if (!request.file) {
-          return response.sendStatus(SUCCESS);
+            return response.sendStatus(SUCCESS);
         }
 
         imageFilePath = request.file.path;
@@ -175,25 +176,25 @@ router.get('/forgot-password', (_, response) => {
 });
 
 router.post('/forgot-password', async (request: Request, response: Response) => {
-    const {email} = request.body;
+    const { email } = request.body;
 
-    const user = await UserModel.findOne({email}).lean();
+    const user = await UserModel.findOne({ email }).lean();
 
     try {
-      if (user) {
-        const secret = process.env.JWT_SECRET + user.password;
-        const payload = {
-            email: user.email,
-            id: user._id
-        };
-        const token = jwt.sign(payload, secret, {expiresIn: '15m'});
-        const link = `${process.env.BASE_URL}/users/reset-password/${user._id}/${token}`;
+        if (user) {
+            const secret = process.env.JWT_SECRET + user.password;
+            const payload = {
+                email: user.email,
+                id: user._id
+            };
+            const token = jwt.sign(payload, secret, { expiresIn: '15m' });
+            const link = `${process.env.BASE_URL}/users/reset-password/${user._id}/${token}`;
 
-        await sendPasswordResetEmail(email, link);
-      }
-    } catch(error) {
-      console.error('Error in POST /forgot-password: ', error)
-      return response.sendStatus(500)
+            await sendPasswordResetEmail(email, link);
+        }
+    } catch (error) {
+        console.error('Error in POST /forgot-password: ', error)
+        return response.sendStatus(500)
     }
 
     return response.sendStatus(200);
@@ -224,8 +225,8 @@ router.get('/reset-password/:id/:token', async (request: Request, response: Resp
 });
 
 router.post('/reset-password/:id/:token', async (request: Request, response: Response) => {
-    const {id, token} = request.params;
-    const {password, repeatPassword} = request.body;
+    const { id, token } = request.params;
+    const { password, repeatPassword } = request.body;
 
     const user = await UserModel.findById(id);
 
@@ -241,28 +242,28 @@ router.post('/reset-password/:id/:token', async (request: Request, response: Res
 
         if (password !== repeatPassword) {
             request.flash('errors', ['passwords do not match']);
-            
+
             return response.redirect('back');
         }
 
         if (password.length < MIN_PASSWORD_LENGTH) {
             request.flash('errors', [`password must be at least ${MIN_PASSWORD_LENGTH} characters`]);
-            
+
             return response.redirect('back');
         }
 
         const encryptedPassword = await bcrypt.hash(password, BCRYPT_SALT_Rounds);
 
         await UserModel.updateOne({
-            _id: user.id, 
+            _id: user.id,
         }, {
-            $set: {password: encryptedPassword}
+            $set: { password: encryptedPassword }
         });
-    
+
         response.clearCookie('jwtToken');
-    
+
         request.flash('alerts', ['Password change was successful, please login']);
-    
+
         return response.redirect('/users/login');
     } catch (error) {
         console.log(error);
@@ -293,26 +294,26 @@ router.get('/change-password', verifyBearerToken, (_: Request, response: Respons
 });
 
 router.post('/change-password', verifyBearerToken, async (request: Request, response: Response) => {
-    const {newPassword, repeatPassword} = request.body;
+    const { newPassword, repeatPassword } = request.body;
 
     if (newPassword !== repeatPassword) {
         request.flash('errors', ['passwords do not match']);
-        
+
         return response.redirect('back');
     }
 
     if (newPassword.length < MIN_PASSWORD_LENGTH) {
         request.flash('errors', [`password must be at least ${MIN_PASSWORD_LENGTH} characters`]);
-        
+
         return response.redirect('back');
     }
 
     const encryptedPassword = await bcrypt.hash(newPassword, BCRYPT_SALT_Rounds);
-    
+
     const user = request.user;
 
     await UserModel.updateOne({
-        _id: user.id, 
+        _id: user.id,
     }, {
         $set: { password: encryptedPassword }
     });
@@ -330,9 +331,9 @@ router.get('/login', (_: Request, response: Response) => {
 
 // @deprecated (8-9-2024): Use /login from authController
 router.post('/login', async (request: Request, response: Response) => {
-    const {email, password} = request.body;
+    const { email, password } = request.body;
 
-    const user = await UserModel.findOne({email}).lean();
+    const user = await UserModel.findOne({ email }).lean();
 
     if (!user) {
         request.flash('errors', [INVALID_USERNAME_PASSWORD_MESSAGE]);
@@ -344,7 +345,7 @@ router.post('/login', async (request: Request, response: Response) => {
 
     if (!isPasswordCorrectForUser) {
         request.flash('errors', [INVALID_USERNAME_PASSWORD_MESSAGE]);
-        
+
         return response.redirect('back');
     }
 
@@ -352,7 +353,7 @@ router.post('/login', async (request: Request, response: Response) => {
         id: user._id,
         email: user.email,
         authRoles: user.authRoles || []
-    }, process.env.JWT_SECRET, { expiresIn: '13h'});
+    }, process.env.JWT_SECRET, { expiresIn: '13h' });
 
     response.cookie('jwtToken', jwtToken, {
         httpOnly: true
@@ -370,17 +371,17 @@ router.get('/register', (request: Request, response: Response) => {
 });
 
 router.post('/register', async (request: Request, response: Response) => {
-    const {email, password: plainTextPassword, repeatPassword} = request.body;
+    const { email, password: plainTextPassword, repeatPassword } = request.body;
 
     if (plainTextPassword !== repeatPassword) {
         request.flash('errors', ['passwords do not match']);
-        
+
         return response.redirect('back');
     }
 
     if (plainTextPassword.length < MIN_PASSWORD_LENGTH) {
         request.flash('errors', [`password must be at least ${MIN_PASSWORD_LENGTH} characters`]);
-        
+
         return response.redirect('back');
     }
 
@@ -394,10 +395,10 @@ router.post('/register', async (request: Request, response: Response) => {
     } catch (error) {
         if (error.code === MONGODB_DUPLICATE_KEY_ERROR_CODE) {
             request.flash('errors', ['Username already exists']);
-        
+
             return response.redirect('back');
         }
-        console.log('Unknown error occurred while creating user: ', error);
+        console.error('Unknown error occurred while creating user: ', error);
         throw error;
     }
 
@@ -405,5 +406,28 @@ router.post('/register', async (request: Request, response: Response) => {
 
     return response.redirect('/users/login');
 });
+
+router.put('/:mongooseId/auth-roles', hasAnyRole(['SUPER_USER']), async (request: Request, response: Response) => {
+    const { mongooseId } = request.params;
+
+    if (!mongooseId) return response.sendStatus(BAD_REQUEST)
+    try {
+        const uniqueAuthRoles = [...new Set(request.body.authRoles as string[] | undefined)];
+        uniqueAuthRoles.sort()
+    
+        if (!uniqueAuthRoles.every((authRole) => AVAILABLE_AUTH_ROLES.includes(authRole))) {
+            return response.status(BAD_REQUEST).send('Invalid auth roles provided');
+        }
+    
+        await UserModel.findOneAndUpdate(
+            { _id: mongooseId }, 
+            { authRoles: uniqueAuthRoles }
+        );
+        return response.sendStatus(SUCCESS)
+    } catch (error) {
+        return response.status(SERVER_ERROR).send(error.message)
+    }
+
+})
 
 export default router;
