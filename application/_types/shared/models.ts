@@ -1,7 +1,7 @@
 import { Document } from "mongoose";
 import { SchemaTimestampsConfig } from "mongoose";
 import { IAddress, IContact, IShippingLocation } from "./schemas.ts";
-import { MongooseId } from "./typeAliases.ts";
+import { MongooseId, MongooseIdStr } from "./typeAliases.ts";
 import { AuthRoles } from "@shared/enums/auth.ts";
 
 export interface IDeliveryMethod extends SchemaTimestampsConfig, Document<MongooseId> {
@@ -88,9 +88,9 @@ export interface IMaterial extends SchemaTimestampsConfig, Document<MongooseId> 
     netLengthAvailable: number,
     lengthArrived: number,
     lengthNotArrived: number,
-    materialOrders: MongooseId[] | IMaterialOrder[],
+    materialOrders: MongooseIdStr[] | MongooseId[] | IMaterialOrder[],
     sumOfLengthAdjustments: number,
-    lengthAdjustments: MongooseId[] | IMaterialLengthAdjustment
+    lengthAdjustments: MongooseIdStr[] | MongooseId[] | IMaterialLengthAdjustment
   };
   netLength: number;
 }
