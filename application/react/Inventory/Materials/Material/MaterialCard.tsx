@@ -178,7 +178,7 @@ const LengthAdjustmentsModal = (props: ModalProps) => {
             <div className='tb-header'>
               <div className='tb-cell cell-50'>
                 <div className='pulse-indicator'></div>
-                Material ID
+                Material Name
               </div>
               <div className='tb-cell cell-50'>
                 Length
