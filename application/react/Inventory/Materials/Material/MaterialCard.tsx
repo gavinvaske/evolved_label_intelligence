@@ -72,8 +72,8 @@ const MaterialCard = observer((props: Props) => {
               }
 
             </div>
-            <div className={`material-option open-ticket-container tooltip-top ${numLengthAdjustments === 0 ? 'disabled' : 'enabled'}`}>
-              <div className={`icon-container ${numLengthAdjustments === 0 && ''}`} onClick={(e) => showLengthAdjustmentsModal(e)}>
+            <div className={`material-option open-ticket-container tooltip-top ${numLengthAdjustments === 0 ? 'disabled' : 'enabled'}`} onClick={(e) => showLengthAdjustmentsModal(e)}>
+              <div className={`icon-container ${numLengthAdjustments === 0 && ''}`}>
                 <i><BsPlusSlashMinus /></i>
               </div>
               <span className='tooltiptext'>

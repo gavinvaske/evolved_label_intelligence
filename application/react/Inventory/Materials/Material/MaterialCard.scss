@@ -231,7 +231,7 @@
         }
       }
       .po-container.disabled, .open-ticket-container.disabled {
-        .po-counter, i {
+        .po-counter, .icon-container {
           &:hover {
             cursor: not-allowed;
           }
