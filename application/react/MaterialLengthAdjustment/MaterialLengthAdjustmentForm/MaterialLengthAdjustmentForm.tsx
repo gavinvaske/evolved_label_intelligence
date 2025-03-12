@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import './MaterialLengthAdjustmentForm.scss';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useForm } from 'react-hook-form';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
@@ -15,11 +15,15 @@ import { useQuery } from '@tanstack/react-query';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
 
 export const MaterialLengthAdjustmentForm = () => {
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IMaterialLengthAdjustmentForm>();
   const navigate = useNavigate();
   const [materials, setMaterials] = useState<SelectOption[]>([])
   const { mongooseId } = useParams();
-
+  const { state } = useLocation();
+  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IMaterialLengthAdjustmentForm>({
+    defaultValues: {
+      ...state || {}
+    }
+  });
   const isUpdateRequest: boolean = !!mongooseId && mongooseId.length > 0;
 
   const { isFetching: isFetchingFormToUpdate, isLoading: isLoadingFormToUpdate, error: fetchingFormError } = useQuery<IMaterialLengthAdjustmentForm>({

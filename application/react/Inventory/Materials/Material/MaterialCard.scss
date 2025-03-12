@@ -278,6 +278,9 @@
   padding: 28px 32px 56px 32px;
   .title-wrapper {
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     h4 {
       color: rgb(87, 155, 252);
       margin-bottom: 0;
@@ -285,6 +288,13 @@
       display: flex;
       align-items: center;
       justify-content: center;
+    }
+    i {
+      &:hover {
+        color: #2F2B3D;
+        cursor: pointer;
+        background-color: rgba(var(--primary-dark-background), .12);
+    }
     }
   }
   .purchase-order-info-wrapper {
@@ -308,6 +318,7 @@
         flex-direction: row;
         border-radius: 5px;
         width: 100%;
+        cursor: pointer;
         .tb-cell {
           border: 1px solid #d0d4e4;
           margin-right: -1px;
@@ -355,6 +366,7 @@
         }
       }
       .tb-header {
+        cursor: default;
         .tb-cell {
           &:first-of-type {
             border-radius: 5px 0 0 0;

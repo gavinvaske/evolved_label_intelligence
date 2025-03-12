@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import './MaterialOrderForm.scss'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import axios, { AxiosError, AxiosResponse } from 'axios';
@@ -21,10 +21,12 @@ import { useQuery } from '@tanstack/react-query';
 const materialOrderTableUrl = '/react-ui/tables/material-order'
 
 export const MaterialOrderForm = () => {
+  const { state } = useLocation();
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IMaterialOrderForm>({
     defaultValues: {
       freightCharge: 0,
-      fuelCharge: 0
+      fuelCharge: 0,
+      ...state || {}
     }
   });
   const navigate = useNavigate();

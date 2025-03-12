@@ -12,6 +12,8 @@ import { useErrorMessage } from '../../../_hooks/useErrorMessage.ts';
 import { BsPlusSlashMinus } from "react-icons/bs";
 import { getMaterialLengthAdjustmentsByIds } from '../../../_queries/materialLengthAdjustment.ts';
 import { MongooseIdStr } from '@shared/types/typeAliases.ts';
+import { IoCreateOutline } from "react-icons/io5";
+import { MdOutlinePreview } from "react-icons/md";
 
 type Props = {
   material: IMaterial,
@@ -62,13 +64,13 @@ const MaterialCard = observer((props: Props) => {
               </div>
 
               {
-                shouldShowPoModal && 
-                <PurchaseOrderModal material={material} onClose={() => setShouldShowPoModal(!shouldShowPoModal)}/>
+                shouldShowPoModal &&
+                <PurchaseOrderModal material={material} onClose={() => setShouldShowPoModal(!shouldShowPoModal)} />
               }
 
               {
                 shouldShowLengthAdjustmentsModal &&
-                <LengthAdjustmentsModal material={material} onClose={() => setShouldShowLengthAdjustmentsModal(!shouldShowLengthAdjustmentsModal)}/>
+                <LengthAdjustmentsModal material={material} onClose={() => setShouldShowLengthAdjustmentsModal(!shouldShowLengthAdjustmentsModal)} />
               }
 
             </div>
@@ -78,8 +80,8 @@ const MaterialCard = observer((props: Props) => {
               </div>
               <span className='tooltiptext'>
                 {
-                  numLengthAdjustments === 0 ? 
-                    'No Adjustments' : 
+                  numLengthAdjustments === 0 ?
+                    'No Adjustments' :
                     `View ${numLengthAdjustments} Adjustments`
                 }
               </span>
@@ -126,18 +128,37 @@ const MaterialCard = observer((props: Props) => {
 });
 
 type ModalProps = {
-  material: IMaterial, 
+  material: IMaterial,
   onClose: () => void
 }
 
 const PurchaseOrderModal = (props: ModalProps) => {
   const { material, onClose } = props;
+  const navigate = useNavigate();
 
   return (
     <Modal onClose={() => onClose()}>
       <div className='modal-content'>
         <div className='title-wrapper'>
           <h4>Purchase orders: {material.materialId}</h4>
+          <i>
+            <IoCreateOutline
+              title='Create new purchase order'
+              size={20}
+              onClick={() => navigate('/react-ui/forms/material-order', {
+                state: {
+                  material: material._id
+                }
+              })}
+            />
+          </i>
+          <i>
+            <MdOutlinePreview
+              title='View All Material Orders'
+              size={20}
+              onClick={() => navigate('/react-ui/tables/material-order')}
+            />
+          </i>
         </div>
         <div className='purchase-order-info-wrapper'>
           <div className='po-table'>
@@ -166,12 +187,31 @@ const PurchaseOrderModal = (props: ModalProps) => {
 
 const LengthAdjustmentsModal = (props: ModalProps) => {
   const { material, onClose } = props;
+  const navigate = useNavigate();
 
   return (
     <Modal onClose={() => onClose()}>
       <div className='modal-content'>
         <div className='title-wrapper'>
           <h4>Material Length Adjustments: {material.materialId}</h4>
+          <i>
+            <IoCreateOutline
+              title='Create New Length Adjustment'
+              size={20}
+              onClick={() => navigate('/react-ui/forms/material-length-adjustment', {
+                state: {
+                  material: material._id
+                }
+              })}
+            />
+          </i>
+          <i>
+            <MdOutlinePreview
+              title='View All Length Adjustments'
+              size={20}
+              onClick={() => navigate('/react-ui/tables/material-length-adjustment')}
+            />
+          </i>
         </div>
         <div className='purchase-order-info-wrapper'>
           <div className='po-table'>
@@ -192,7 +232,7 @@ const LengthAdjustmentsModal = (props: ModalProps) => {
   )
 }
 
-function getLowInventoryClass({lowStockThreshold, lowStockBuffer, inventory}: IMaterial): string {
+function getLowInventoryClass({ lowStockThreshold, lowStockBuffer, inventory }: IMaterial): string {
   if (!lowStockThreshold || !lowStockBuffer) return 'low-inventory';
 
   if (inventory.netLengthAvailable < lowStockThreshold) {
