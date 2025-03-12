@@ -231,7 +231,7 @@
         }
       }
       .po-container.disabled, .open-ticket-container.disabled {
-        .po-counter, i {
+        .po-counter, .icon-container {
           &:hover {
             cursor: not-allowed;
           }
@@ -277,21 +277,39 @@
   border-radius: 0.428rem;
   padding: 28px 32px 56px 32px;
   .title-wrapper {
+    width: 100%;
     display: flex;
-    justify-items: flex-start;
-    align-items: flex-end;
-    flex-direction: row;
+    justify-content: center;
+    align-items: center;
     h4 {
       color: rgb(87, 155, 252);
       margin-bottom: 0;
       margin-right: 15px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    i {
+      &:hover {
+        color: #2F2B3D;
+        cursor: pointer;
+        background-color: rgba(var(--primary-dark-background), .12);
+    }
     }
   }
   .purchase-order-info-wrapper {
     max-height: 100%;
     overflow-y: auto;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+
     .po-table {
       margin-top: 15px;
+      width: 75%;
+
       .tb-header,
       .tb-row {
         display: flex;
@@ -299,6 +317,8 @@
         align-items: center;
         flex-direction: row;
         border-radius: 5px;
+        width: 100%;
+        cursor: pointer;
         .tb-cell {
           border: 1px solid #d0d4e4;
           margin-right: -1px;
@@ -308,6 +328,20 @@
           align-items: center;
           height: 36px;
         }
+        .cell-50 {
+          width: 50%;
+          position: relative;
+          .pulse-indicator {
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 7px;
+            height: 36px;
+            background-color: rgb(87, 155, 252);
+            margin-top: -1px;
+          }
+        }
+
         .cell-one {
           width: 30%;
           position: relative;
@@ -332,6 +366,7 @@
         }
       }
       .tb-header {
+        cursor: default;
         .tb-cell {
           &:first-of-type {
             border-radius: 5px 0 0 0;

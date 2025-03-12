@@ -11,6 +11,27 @@ import { getSortOption } from '../services/mongooseService.ts';
 
 router.use(verifyBearerToken);
 
+router.post('/batch', async (request: Request, response: Response) => {
+  try {
+    const { ids } = request.body;
+
+    if (!Array.isArray(ids) || ids.length === 0) {
+      return response.status(400).json({ error: "'ids' is invalid" });
+    }
+
+    const orders = await MaterialLengthAdjustmentModel
+      .find({ _id: { $in: ids } })
+      .populate('material')
+      .exec();
+
+    return response.json(orders)
+  } catch (error) {
+    console.error('Failed to fetch materialLengthAdjustments by ids', error);
+
+    return response.status(BAD_REQUEST).send(error.message);
+  }
+})
+
 router.post('/', async (request: Request, response: Response) => {
     try {
         const savedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.create(request.body);

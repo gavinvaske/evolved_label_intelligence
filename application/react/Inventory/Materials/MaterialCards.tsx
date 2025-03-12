@@ -28,7 +28,7 @@ const MaterialCards = observer(() => {
     inventoryStore.removeMaterial(materialMongooseId)
   })
 
-  const { isPending, isFetching } = useQuery({
+  const { isPending, isFetching } = useQuery<IMaterial[]>({
     queryKey: ['get-materials'],
     queryFn: async () => {
       const materials = await getMaterials();
