@@ -143,7 +143,7 @@ const PurchaseOrderModal = (props: ModalProps) => {
           <h4>Purchase orders: {material.materialId}</h4>
           <i>
             <IoCreateOutline
-              title='Create new purchase order'
+              title='Create New Material Order'
               size={20}
               onClick={() => navigate('/react-ui/forms/material-order', {
                 state: {
