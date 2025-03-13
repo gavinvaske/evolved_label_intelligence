@@ -124,3 +124,5 @@ export const MaterialCategoryTable = () => {
     </div>
   )
 }
+
+export default MaterialCategoryTable;

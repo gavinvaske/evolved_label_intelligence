@@ -1,4 +1,3 @@
-import React from 'react';
 import './404.scss';
 
 export const PageNotFound = () => {
@@ -8,3 +7,5 @@ export const PageNotFound = () => {
     </div>
   )
 }
+
+export default PageNotFound;

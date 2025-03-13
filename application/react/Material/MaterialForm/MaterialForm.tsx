@@ -410,3 +410,5 @@ export const MaterialForm = () => {
     </div>
   )
 }
+
+export default MaterialForm

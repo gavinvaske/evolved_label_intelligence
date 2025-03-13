@@ -78,3 +78,5 @@ export const AdhesiveCategoryForm = () => {
     </div>
   )
 }
+
+export default AdhesiveCategoryForm;

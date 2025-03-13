@@ -84,3 +84,5 @@ export const QuoteTable = () => {
     </div>
   )
 }
+
+export default QuoteTable;

@@ -248,3 +248,5 @@ const AddressFormAttributes = (props: AddressProps) => {
   )
 }
 
+export default VendorForm;
+

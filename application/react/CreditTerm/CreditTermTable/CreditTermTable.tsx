@@ -130,3 +130,5 @@ export const CreditTermTable = () => {
     </div>
   )
 }
+
+export default CreditTermTable;

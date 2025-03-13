@@ -124,3 +124,5 @@ d        </div>
     </div>
   )
 }
+
+export default AdhesiveCategoryTable;

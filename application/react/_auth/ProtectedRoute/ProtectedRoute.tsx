@@ -80,3 +80,5 @@ export const ProtectedRoute = (props: Props) => {
     </>
   )
 }
+
+export default ProtectedRoute;

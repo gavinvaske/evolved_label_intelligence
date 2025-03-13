@@ -132,3 +132,5 @@ export const CustomerTable = () => {
     </div>
   )
 }
+
+export default CustomerTable;

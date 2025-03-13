@@ -126,3 +126,5 @@ const ShippingLocation = (props: ShippingLocationProps) => {
     </div>
   )
 }
+
+export default ViewCustomer;

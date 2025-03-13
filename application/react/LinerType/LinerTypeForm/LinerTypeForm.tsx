@@ -78,3 +78,5 @@ export const LinerTypeForm = () => {
     </div>
   )
 }
+
+export default LinerTypeForm;

@@ -125,3 +125,5 @@ export const DieTable = () => {
     </div>
   )
 }
+
+export default DieTable;

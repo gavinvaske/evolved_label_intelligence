@@ -139,3 +139,5 @@ export const MaterialLengthAdjustmentTable = () => {
     </div>
   )
 }
+
+export default MaterialLengthAdjustmentTable;

@@ -130,3 +130,5 @@ export const LinerTypeTable = () => {
     </div>
   )
 }
+
+export default LinerTypeTable;

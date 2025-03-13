@@ -195,3 +195,5 @@ const PasswordIcon: React.FC<PasswordIconProps> = ({ showPassword, ...rest }) =>
     <FaEyeSlash {...rest} />
   );
 };
+
+export default Login;

@@ -133,3 +133,5 @@ export const VendorTable = () => {
     </div>
   )
 }
+
+export default VendorTable;

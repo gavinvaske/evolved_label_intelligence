@@ -139,3 +139,5 @@ export const MaterialTable = () => {
     </div>
   )
 }
+
+export default MaterialTable;

@@ -135,3 +135,5 @@ export const MaterialOrderTable = () => {
     </div>
   )
 }
+
+export default MaterialOrderTable;

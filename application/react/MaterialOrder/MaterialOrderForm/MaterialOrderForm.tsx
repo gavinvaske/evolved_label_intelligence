@@ -259,3 +259,5 @@ export const MaterialOrderForm = () => {
     </div>
   )
 }
+
+export default MaterialOrderForm;
