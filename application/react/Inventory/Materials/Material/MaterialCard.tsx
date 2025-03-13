@@ -14,6 +14,7 @@ import { getMaterialLengthAdjustmentsByIds } from '../../../_queries/materialLen
 import { MongooseIdStr } from '@shared/types/typeAliases.ts';
 import { IoCreateOutline } from "react-icons/io5";
 import { MdOutlinePreview } from "react-icons/md";
+import { getDateTimeFromIsoStr } from '@ui/utils/dateTime.ts';
 
 type Props = {
   material: IMaterial,
@@ -214,14 +215,17 @@ const LengthAdjustmentsModal = (props: ModalProps) => {
           </i>
         </div>
         <div className='purchase-order-info-wrapper'>
-          <div className='po-table'>
+          <div className='po-table'> 
             <div className='tb-header'>
-              <div className='tb-cell cell-50'>
+              <div className='tb-cell cell-33'>
                 <div className='pulse-indicator'></div>
                 Material Name
               </div>
-              <div className='tb-cell cell-50'>
+              <div className='tb-cell cell-33'>
                 Length
+              </div>
+              <div className='tb-cell cell-33'>
+                Updated At
               </div>
             </div>
             {renderMaterialLengthAdjustments(material)}
@@ -313,12 +317,15 @@ function renderMaterialLengthAdjustments(material: IMaterial) {
   return (
     lengthAdjustments.map((lo, index: number) => (
       <div className='tb-row' key={index} onClick={() => navigate(`/react-ui/forms/material-length-adjustment/${lo._id}`)}>
-        <div className='tb-cell cell-50'>
+        <div className='tb-cell cell-33'>
           <div className='pulse-indicator'></div>
           {(lo.material as IMaterial).name}
         </div>
-        <div className='tb-cell cell-50'>
+        <div className='tb-cell cell-33'>
           {lo.length}
+        </div>
+        <div className='tb-cell cell-33'>
+          {getDateTimeFromIsoStr(lo.updatedAt)}
         </div>
       </div>
     ))

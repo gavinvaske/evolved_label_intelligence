@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './PageSelect.scss';
 import { Table } from '@tanstack/react-table';
+import { LoadingIndicator } from '../../LoadingIndicator/LoadingIndicator';
 
 interface Props {
   table: Table<any>;
@@ -87,7 +88,7 @@ export const PageSelect = (props: Props) => {
     onPageSizeChange(pageSize);
   };
 
-  const pageNumberDescription = isLoading? 'Loading...': `Page ${table.getState().pagination.pageIndex + 1} of ${totalPages > 0 ? totalPages : 1}`;
+  const pageNumberDescription = isLoading ? <LoadingIndicator />: `Page ${table.getState().pagination.pageIndex + 1} of ${totalPages > 0 ? totalPages : 1}`;
 
     return (
       <div style={{ marginTop: '1rem' }}>
