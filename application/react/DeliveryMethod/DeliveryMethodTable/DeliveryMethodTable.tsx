@@ -16,7 +16,7 @@ import { getDeliveryMethods } from '../../_queries/deliveryMethod'
 import { useQuery } from '@tanstack/react-query'
 import { useErrorMessage } from '../../_hooks/useErrorMessage'
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime.ts'
-import tableStyles from '@ui/styles/table.module.scss'
+import * as tableStyles from '@ui/styles/table.module.scss'
 import Row from '../../_global/Table/Row/Row'
 
 const columnHelper = createColumnHelper<any>()

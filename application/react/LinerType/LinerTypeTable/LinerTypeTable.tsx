@@ -21,7 +21,7 @@ import { performTextSearch } from '../../_queries/_common';
 import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { ILinerType } from '@shared/types/models';
-import tableStyles from '@ui/styles/table.module.scss'
+import * as tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 

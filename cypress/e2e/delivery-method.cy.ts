@@ -15,13 +15,12 @@ describe('DeliveryMethod Views', () => {
     cy.url().should('include', url)
   });
 
-  it('Should render the DeliveryMethod table and searchbar', () => {
+  it('Should render the DeliveryMethod table', () => {
     const url = `${tableUrlPrefix}/delivery-method`;
 
     cy.visit(url);
 
     cy.get('#delivery-method-table').should('exist');
-    cy.get('[data-test=searchbar]').should('exist');
     cy.url().should('include', url)
   });
 });

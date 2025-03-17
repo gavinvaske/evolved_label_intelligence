@@ -11,7 +11,7 @@ import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
-import tableStyles from '@ui/styles/table.module.scss'
+import * as tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 

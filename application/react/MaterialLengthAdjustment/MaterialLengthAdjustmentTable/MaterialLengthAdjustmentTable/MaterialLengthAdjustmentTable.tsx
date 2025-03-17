@@ -15,7 +15,7 @@ import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import { performTextSearch } from '../../../_queries/_common';
 import { IMaterial, IMaterialLengthAdjustment } from '@shared/types/models.ts';
 import { isRefPopulated } from '@shared/types/_utility';
-import tableStyles from '@ui/styles/table.module.scss'
+import * as tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<IMaterialLengthAdjustment>()
 

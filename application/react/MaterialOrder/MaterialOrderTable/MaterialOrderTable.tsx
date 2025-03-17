@@ -14,7 +14,7 @@ import { SearchResult } from '@shared/types/http';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { performTextSearch } from '../../_queries/_common';
 import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
-import tableStyles from '@ui/styles/table.module.scss'
+import * as tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<IMaterialOrder>()
 

@@ -14,7 +14,7 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { IDie } from '@shared/types/models';
-import tableStyles from '@ui/styles/table.module.scss'
+import * as tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<IDie>()
 
