@@ -289,3 +289,5 @@ export const DieForm = () => {
     </div>
   )
 }
+
+export default DieForm;

@@ -124,3 +124,5 @@ export const MaterialLengthAdjustmentForm = () => {
     </div>
   )
 }
+
+export default MaterialLengthAdjustmentForm;

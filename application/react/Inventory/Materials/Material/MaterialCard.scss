@@ -328,8 +328,8 @@
           align-items: center;
           height: 36px;
         }
-        .cell-50 {
-          width: 50%;
+        .cell-33 {
+          width: 33.33%;
           position: relative;
           .pulse-indicator {
             position: absolute;
@@ -367,6 +367,7 @@
       }
       .tb-header {
         cursor: default;
+        font-weight: bold;
         .tb-cell {
           &:first-of-type {
             border-radius: 5px 0 0 0;

@@ -1,124 +1,136 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
-import QuoteForm from '../Quote/QuoteForm/QuoteForm';
-import { CustomerForm } from '../Customer/CustomerForm/CustomerForm';
-import { DeliveryMethodForm } from '../DeliveryMethod/DeliveryMethodForm/DeliveryMethodForm'
-import { CreditTermForm } from '../CreditTerm/CreditTermForm/CreditTermForm';
-import { CreditTermTable } from '../CreditTerm/CreditTermTable/CreditTermTable';
-import DeliveryMethodTable from '../DeliveryMethod/DeliveryMethodTable/DeliveryMethodTable';
-import Inventory from '../Inventory/Inventory';
-import { LinerTypeForm } from '../LinerType/LinerTypeForm/LinerTypeForm';
-import { LinerTypeTable } from '../LinerType/LinerTypeTable/LinerTypeTable';
-import { MaterialForm } from '../Material/MaterialForm/MaterialForm';
-import { AdhesiveCategoryForm } from '../AdhesiveCategory/AdhesiveCategoryForm/AdhesiveCategoryForm';
-import { MaterialTable } from '../Material/MaterialTable/MaterialTable';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { TopNavbarLayout } from '../_layouts/TopNavbarLayout';
-import { PageNotFound } from '../404/404';
-import { MaterialLengthAdjustmentForm } from '../MaterialLengthAdjustment/MaterialLengthAdjustmentForm/MaterialLengthAdjustmentForm';
-import { AdhesiveCategoryTable } from '../AdhesiveCategory/AdhesiveCategoryTable/AdhesiveCategoryTable';
-import { CustomerTable } from '../Customer/CustomerTable/CustomerTable';
-import { MaterialOrderForm } from '../MaterialOrder/MaterialOrderForm/MaterialOrderForm';
-import { MaterialOrderTable } from '../MaterialOrder/MaterialOrderTable/MaterialOrderTable';
-import { ProtectedRoute } from '../_auth/ProtectedRoute/ProtectedRoute';
-import { Login } from '../_auth/Login/Login';
 import { USER, ADMIN } from '../../api/enums/authRolesEnum'
-import { ForgotPassword } from '../_auth/ForgotPassword/ForgotPassword';
-import { ChangePassword } from '../_auth/ChangePassword/ChangePassword';
-import { Register } from '../_auth/Register/Register';
-import { Unauthorized } from '../_auth/Unauthorized/Unauthorized';
-import { Profile } from '../User/Profile/Profile';
-import { CrudNavigation } from '../CrudNavigation/CrudNavigation';
-import { ProductForm } from '../Product/ProductForm/ProductForm';
-import { ProductTable } from '../Product/ProductTable/ProductTable';
-import { DieTable } from '../Die/DieTable/DieTable';
-import { DieForm } from '../Die/DieForm/DieForm';
-import { ViewCustomer } from '../Customer/ViewCustomer/ViewCustomer';
-import { QuoteTable } from '../Quote/QuoteTable/QuoteTable';
 import { DropdownProvider, useDropdownContext } from '../_context/dropdownProvider';
-import { MaterialLengthAdjustmentTable } from '../MaterialLengthAdjustment/MaterialLengthAdjustmentTable/MaterialLengthAdjustmentTable/MaterialLengthAdjustmentTable';
-import { VendorForm } from '../Vendor/VendorForm/VendorForm';
-import { VendorTable } from '../Vendor/VendorTable/VendorTable';
-import { MaterialCategoryTable } from '../MaterialCategory/MaterialCategoryTable/MaterialCategoryTable';
-import { MaterialCategoryForm } from '../MaterialCategory/MaterialCategoryForm/MaterialCategoryForm';
-import { AdminPanel } from '../AdminPanel/AdminPanel';
-import { UserTable } from '../User/UserTable/UserTable';
-import { UserAuthRolesForm } from '../User/UserAuthRolesForm/UserAuthRolesForm';
+import { lazy, Suspense } from "react";
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const queryClient = new QueryClient();
 const ANY_ROLE = [USER, ADMIN];
 
+// Lazy loading components
+const Login = lazy(() => import('../_auth/Login/Login'));
+const Register = lazy(() => import('../_auth/Register/Register'));
+const ForgotPassword = lazy(() => import('../_auth/ForgotPassword/ForgotPassword'));
+const ChangePassword = lazy(() => import('../_auth/ChangePassword/ChangePassword'));
+const Unauthorized = lazy(() => import('../_auth/Unauthorized/Unauthorized'));
+const PageNotFound = lazy(() => import('../404/404'));
+
+const ProtectedRoute = lazy(() => import('../_auth/ProtectedRoute/ProtectedRoute'));
+const TopNavbarLayout = lazy(() => import('../_layouts/TopNavbarLayout'));
+const AdminPanel = lazy(() => import('../AdminPanel/AdminPanel'));
+const UserTable = lazy(() => import('../User/UserTable/UserTable'));
+const UserAuthRolesForm = lazy(() => import('../User/UserAuthRolesForm/UserAuthRolesForm'));
+const Inventory = lazy(() => import('../Inventory/Inventory'));
+const Profile = lazy(() => import('../User/Profile/Profile'));
+const CrudNavigation = lazy(() => import('../CrudNavigation/CrudNavigation'));
+
+const ViewCustomer = lazy(() => import('../Customer/ViewCustomer/ViewCustomer'));
+
+const VendorForm = lazy(() => import('../Vendor/VendorForm/VendorForm'));
+const MaterialCategoryForm = lazy(() => import('../MaterialCategory/MaterialCategoryForm/MaterialCategoryForm'));
+const MaterialLengthAdjustmentForm = lazy(() => import('../MaterialLengthAdjustment/MaterialLengthAdjustmentForm/MaterialLengthAdjustmentForm'));
+const DeliveryMethodForm = lazy(() => import('../DeliveryMethod/DeliveryMethodForm/DeliveryMethodForm'));
+const CreditTermForm = lazy(() => import('../CreditTerm/CreditTermForm/CreditTermForm'));
+const QuoteForm = lazy(() => import('../Quote/QuoteForm/QuoteForm'));
+const CustomerForm = lazy(() => import('../Customer/CustomerForm/CustomerForm'));
+const LinerTypeForm = lazy(() => import('../LinerType/LinerTypeForm/LinerTypeForm'));
+const MaterialForm = lazy(() => import('../Material/MaterialForm/MaterialForm'));
+const AdhesiveCategoryForm = lazy(() => import('../AdhesiveCategory/AdhesiveCategoryForm/AdhesiveCategoryForm'));
+const MaterialOrderForm = lazy(() => import('../MaterialOrder/MaterialOrderForm/MaterialOrderForm'));
+const ProductForm = lazy(() => import('../Product/ProductForm/ProductForm'));
+const DieForm = lazy(() => import('../Die/DieForm/DieForm'));
+
+const VendorTable = lazy(() => import('../Vendor/VendorTable/VendorTable'));
+const MaterialLengthAdjustmentTable = lazy(() => import('../MaterialLengthAdjustment/MaterialLengthAdjustmentTable/MaterialLengthAdjustmentTable/MaterialLengthAdjustmentTable'));
+const QuoteTable = lazy(() => import('../Quote/QuoteTable/QuoteTable'));
+const CreditTermTable = lazy(() => import('../CreditTerm/CreditTermTable/CreditTermTable'));
+const DeliveryMethodTable = lazy(() => import('../DeliveryMethod/DeliveryMethodTable/DeliveryMethodTable'));
+const LinerTypeTable = lazy(() => import('../LinerType/LinerTypeTable/LinerTypeTable'));
+const MaterialCategoryTable = lazy(() => import('../MaterialCategory/MaterialCategoryTable/MaterialCategoryTable'));
+const MaterialTable = lazy(() => import('../Material/MaterialTable/MaterialTable'));
+const AdhesiveCategoryTable = lazy(() => import('../AdhesiveCategory/AdhesiveCategoryTable/AdhesiveCategoryTable'));
+const CustomerTable = lazy(() => import('../Customer/CustomerTable/CustomerTable'));
+const MaterialOrderTable = lazy(() => import('../MaterialOrder/MaterialOrderTable/MaterialOrderTable'));
+const ProductTable = lazy(() => import('../Product/ProductTable/ProductTable'));
+const DieTable = lazy(() => import('../Die/DieTable/DieTable'));
+
 export function App() {
   return (
-    <DropdownProvider>
-      <QueryClientProvider client={queryClient}>
-        <AppContainer>
-          <Routes >
-            <Route path='react-ui'>
+    <ErrorBoundary>
+      <DropdownProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppContainer>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes >
+                <Route path='react-ui'>
 
-              {/* PUBLIC ROUTES*/}
-              <Route path='login' element={<Login />}></Route>
-              <Route path='register' element={<Register />}></Route>
+                  {/* PUBLIC ROUTES*/}
+                  <Route path='login' element={<Login />}></Route>
+                  <Route path='register' element={<Register />}></Route>
 
-              <Route path='forgot-password' element={<ForgotPassword />}></Route>
-              <Route path='change-password/:mongooseId/:token' element={<ChangePassword />} />
-              <Route path='unauthorized' element={<Unauthorized />} />
-              <Route path='*' element={<PageNotFound />} />
+                  <Route path='forgot-password' element={<ForgotPassword />}></Route>
+                  <Route path='change-password/:mongooseId/:token' element={<ChangePassword />} />
+                  <Route path='unauthorized' element={<Unauthorized />} />
+                  <Route path='*' element={<PageNotFound />} />
 
-              {/* PROTECTED ROUTES */}
-              <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
-                <Route path='admin' element={<AdminPanel />}></Route>
-                <Route path='tables/user' element={<UserTable />} />
-                <Route path='forms/user/auth-roles/:mongooseId' element={<UserAuthRolesForm />} />
-              </Route>
-              <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
-                <Route element={<TopNavbarLayout />}>
-                  <Route path='inventory' element={<Inventory />}></Route>
-                  <Route path='profile' element={<Profile />} />
-                  <Route path='crud-navigation' element={<CrudNavigation />} />
-
-                  <Route path='views'>
-                    <Route path='customer/:mongooseId' element={<ViewCustomer />} />
+                  {/* PROTECTED ROUTES */}
+                  <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
+                    <Route path='admin' element={<AdminPanel />}></Route>
+                    <Route path='tables/user' element={<UserTable />} />
+                    <Route path='forms/user/auth-roles/:mongooseId' element={<UserAuthRolesForm />} />
                   </Route>
+                  <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
+                    <Route element={<TopNavbarLayout />}>
+                      <Route path='inventory' element={<Inventory />}></Route>
+                      <Route path='profile' element={<Profile />} />
+                      <Route path='crud-navigation' element={<CrudNavigation />} />
 
-                  <Route path='forms'>
-                    <Route path='vendor/:mongooseId?' element={<VendorForm />} />
-                    <Route path='material-category/:mongooseId?' element={<MaterialCategoryForm />} />
-                    <Route path='material-length-adjustment/:mongooseId?' element={<MaterialLengthAdjustmentForm />} />
-                    <Route path='delivery-method/:mongooseId?' element={<DeliveryMethodForm />} />
-                    <Route path='credit-term/:mongooseId?' element={<CreditTermForm />} />
-                    <Route path='quote' element={<QuoteForm />} />
-                    <Route path='customer/:mongooseId?' element={<CustomerForm />} />
-                    <Route path="liner-type/:mongooseId?" element={<LinerTypeForm />} /> {/* TODO (6-5-2024): Enforce admin routes only render for admins */}
-                    <Route path='material/:mongooseId?' element={<MaterialForm />} />
-                    <Route path='adhesive-category/:mongooseId?' element={<AdhesiveCategoryForm />} />
-                    <Route path='material-order/:mongooseId?' element={<MaterialOrderForm />} />
-                    <Route path='product/:mongooseId?' element={<ProductForm />} />
-                    <Route path='die/:mongooseId?' element={<DieForm />} />
-                  </Route>
+                      <Route path='views'>
+                        <Route path='customer/:mongooseId' element={<ViewCustomer />} />
+                      </Route>
 
-                  <Route path='tables'>
-                    <Route path='vendor' element={<VendorTable />} />
-                    <Route path='material-length-adjustment' element={<MaterialLengthAdjustmentTable />} />
-                    <Route path='quote' element={<QuoteTable />} />
-                    <Route path='credit-term' element={<CreditTermTable />} />
-                    <Route path='delivery-method' element={<DeliveryMethodTable />} />
-                    <Route path='liner-type' element={<LinerTypeTable />} />
-                    <Route path='material-category' element={<MaterialCategoryTable />} />
-                    <Route path='material' element={<MaterialTable />} />
-                    <Route path='adhesive-category' element={<AdhesiveCategoryTable />} />
-                    <Route path='customer' element={<CustomerTable />} />
-                    <Route path='material-order' element={<MaterialOrderTable />} />
-                    <Route path='product' element={<ProductTable />} />
-                    <Route path='die' element={<DieTable />} />
+                      <Route path='forms'>
+                        <Route path='vendor/:mongooseId?' element={<VendorForm />} />
+                        <Route path='material-category/:mongooseId?' element={<MaterialCategoryForm />} />
+                        <Route path='material-length-adjustment/:mongooseId?' element={<MaterialLengthAdjustmentForm />} />
+                        <Route path='delivery-method/:mongooseId?' element={<DeliveryMethodForm />} />
+                        <Route path='credit-term/:mongooseId?' element={<CreditTermForm />} />
+                        <Route path='quote' element={<QuoteForm />} />
+                        <Route path='customer/:mongooseId?' element={<CustomerForm />} />
+                        <Route path="liner-type/:mongooseId?" element={<LinerTypeForm />} />
+                        <Route path='material/:mongooseId?' element={<MaterialForm />} />
+                        <Route path='adhesive-category/:mongooseId?' element={<AdhesiveCategoryForm />} />
+                        <Route path='material-order/:mongooseId?' element={<MaterialOrderForm />} />
+                        <Route path='product/:mongooseId?' element={<ProductForm />} />
+                        <Route path='die/:mongooseId?' element={<DieForm />} />
+                      </Route>
+
+                      <Route path='tables'>
+                        <Route path='vendor' element={<VendorTable />} />
+                        <Route path='material-length-adjustment' element={<MaterialLengthAdjustmentTable />} />
+                        <Route path='quote' element={<QuoteTable />} />
+                        <Route path='credit-term' element={<CreditTermTable />} />
+                        <Route path='delivery-method' element={<DeliveryMethodTable />} />
+                        <Route path='liner-type' element={<LinerTypeTable />} />
+                        <Route path='material-category' element={<MaterialCategoryTable />} />
+                        <Route path='material' element={<MaterialTable />} />
+                        <Route path='adhesive-category' element={<AdhesiveCategoryTable />} />
+                        <Route path='customer' element={<CustomerTable />} />
+                        <Route path='material-order' element={<MaterialOrderTable />} />
+                        <Route path='product' element={<ProductTable />} />
+                        <Route path='die' element={<DieTable />} />
+                      </Route>
+                    </Route>
                   </Route>
                 </Route>
-              </Route>
-            </Route>
-          </Routes>
-        </AppContainer>
-      </QueryClientProvider>
-    </DropdownProvider>
+              </Routes>
+            </Suspense>
+          </AppContainer>
+        </QueryClientProvider>
+      </DropdownProvider>
+    </ErrorBoundary>
   )
 }
 

@@ -79,3 +79,5 @@ export const CreditTermForm = () => {
     </div>
   )
 }
+
+export default CreditTermForm;

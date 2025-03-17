@@ -5,3 +5,5 @@ export const UserAuthRolesForm = () => {
     <div>TODO: Build AuthRolesForm</div>
   )
 }
+
+export default UserAuthRolesForm

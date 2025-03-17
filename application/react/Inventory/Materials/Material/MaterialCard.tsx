@@ -1,19 +1,11 @@
-import React, { useState } from 'react';
-import './MaterialCard.scss'
+import { useState } from 'react';
+import './MaterialCard.scss'  // TODO: Extract the css classes that the modals use
 import { observer } from 'mobx-react-lite';
-import { Modal } from '../../../_global/Modal/Modal.tsx';
-import { Link, useNavigate } from 'react-router-dom';
-import { getDayMonthYear } from '../../../_helperFunctions/dateTime.ts';
+import { Link } from 'react-router-dom';
 import { IMaterial } from '@shared/types/models.ts';
-import { useQuery } from '@tanstack/react-query';
-import { getMaterialOrdersByIds } from '../../../_queries/materialOrder.ts';
-import { LoadingIndicator } from '../../../_global/LoadingIndicator/LoadingIndicator.tsx';
-import { useErrorMessage } from '../../../_hooks/useErrorMessage.ts';
 import { BsPlusSlashMinus } from "react-icons/bs";
-import { getMaterialLengthAdjustmentsByIds } from '../../../_queries/materialLengthAdjustment.ts';
-import { MongooseIdStr } from '@shared/types/typeAliases.ts';
-import { IoCreateOutline } from "react-icons/io5";
-import { MdOutlinePreview } from "react-icons/md";
+import { LengthAdjustmentsModal } from './LengthAdjustmentsModal/LengthAdjustmentsModal.tsx';
+import { PurchaseOrderModal } from './PurchaseOrdersModal/PurchaseOrdersModal.tsx';
 
 type Props = {
   material: IMaterial,
@@ -127,111 +119,6 @@ const MaterialCard = observer((props: Props) => {
   );
 });
 
-type ModalProps = {
-  material: IMaterial,
-  onClose: () => void
-}
-
-const PurchaseOrderModal = (props: ModalProps) => {
-  const { material, onClose } = props;
-  const navigate = useNavigate();
-
-  return (
-    <Modal onClose={() => onClose()}>
-      <div className='modal-content'>
-        <div className='title-wrapper'>
-          <h4>Purchase orders: {material.materialId}</h4>
-          <i>
-            <IoCreateOutline
-              title='Create New Material Order'
-              size={20}
-              onClick={() => navigate('/react-ui/forms/material-order', {
-                state: {
-                  material: material._id
-                }
-              })}
-            />
-          </i>
-          <i>
-            <MdOutlinePreview
-              title='View All Material Orders'
-              size={20}
-              onClick={() => navigate('/react-ui/tables/material-order')}
-            />
-          </i>
-        </div>
-        <div className='purchase-order-info-wrapper'>
-          <div className='po-table'>
-            <div className='tb-header'>
-              <div className='tb-cell cell-one'>
-                <div className='pulse-indicator'></div>
-                PO #
-              </div>
-              <div className='tb-cell cell-two'>
-                Order Date
-              </div>
-              <div className='tb-cell cell-three'>
-                Arrival Date
-              </div>
-              <div className='tb-cell cell-four'>
-                Total Feet
-              </div>
-            </div>
-            {renderPurchaseOrders(material)}
-          </div>
-        </div>
-      </div>
-    </Modal>
-  )
-}
-
-const LengthAdjustmentsModal = (props: ModalProps) => {
-  const { material, onClose } = props;
-  const navigate = useNavigate();
-
-  return (
-    <Modal onClose={() => onClose()}>
-      <div className='modal-content'>
-        <div className='title-wrapper'>
-          <h4>Material Length Adjustments: {material.materialId}</h4>
-          <i>
-            <IoCreateOutline
-              title='Create New Length Adjustment'
-              size={20}
-              onClick={() => navigate('/react-ui/forms/material-length-adjustment', {
-                state: {
-                  material: material._id
-                }
-              })}
-            />
-          </i>
-          <i>
-            <MdOutlinePreview
-              title='View All Length Adjustments'
-              size={20}
-              onClick={() => navigate('/react-ui/tables/material-length-adjustment')}
-            />
-          </i>
-        </div>
-        <div className='purchase-order-info-wrapper'>
-          <div className='po-table'>
-            <div className='tb-header'>
-              <div className='tb-cell cell-50'>
-                <div className='pulse-indicator'></div>
-                Material Name
-              </div>
-              <div className='tb-cell cell-50'>
-                Length
-              </div>
-            </div>
-            {renderMaterialLengthAdjustments(material)}
-          </div>
-        </div>
-      </div>
-    </Modal>
-  )
-}
-
 function getLowInventoryClass({ lowStockThreshold, lowStockBuffer, inventory }: IMaterial): string {
   if (!lowStockThreshold || !lowStockBuffer) return 'low-inventory';
 
@@ -244,85 +131,6 @@ function getLowInventoryClass({ lowStockThreshold, lowStockBuffer, inventory }: 
   }
 
   return '';
-}
-
-function renderPurchaseOrders(material: IMaterial) {
-  const navigate = useNavigate();
-  const { isPending, isFetching, data: materialOrders, isError, error } = useQuery({
-    queryKey: ['get-material-orders', JSON.stringify(material.inventory.materialOrders)],
-    queryFn: async () => {
-      const materials = await getMaterialOrdersByIds(material.inventory.materialOrders);
-
-      return materials
-    },
-    initialData: []
-  })
-
-  if (isPending || isFetching) return (<LoadingIndicator />)
-
-  if (isError) {
-    useErrorMessage(error)
-  }
-
-  materialOrders.sort((a, b) => new Date(b.orderDate).getTime() - new Date(a.orderDate).getTime());
-
-  return (
-    materialOrders.map((mo, index: number) => (
-      <div className='tb-row' key={index} onClick={() => navigate(`/react-ui/forms/material-order/${mo._id}`)}>
-        <div className='tb-cell cell-one'>
-          <div className='pulse-indicator'></div>
-          {mo.purchaseOrderNumber}
-        </div>
-        <div className='tb-cell cell-two'>
-          <div className='pulse-indicator'></div>
-          {getDayMonthYear(mo.orderDate)}
-        </div>
-        <div className='tb-cell cell-three'>
-          <div className='pulse-indicator'></div>
-          {getDayMonthYear(mo.arrivalDate)}
-        </div>
-        <div className='tb-cell cell-four'>
-          <div className='pulse-indicator'></div>
-          {(mo.feetPerRoll * mo.totalRolls)}
-        </div>
-      </div>
-    ))
-  )
-}
-
-function renderMaterialLengthAdjustments(material: IMaterial) {
-  const navigate = useNavigate();
-  const { isPending, isFetching, data: lengthAdjustments, isError, error } = useQuery({
-    queryKey: ['material-length-adjustments', JSON.stringify(material.inventory.lengthAdjustments)],
-    queryFn: async () => {
-      const lengthAdjustments = await getMaterialLengthAdjustmentsByIds(material.inventory.lengthAdjustments as MongooseIdStr[]);
-
-      return lengthAdjustments
-    },
-    initialData: []
-  })
-
-  if (isPending || isFetching) return (<LoadingIndicator />)
-
-  if (isError) {
-    useErrorMessage(error)
-  }
-
-  lengthAdjustments.sort((a, b) => new Date(b.updatedAt as string).getTime() - new Date(a.updatedAt as string).getTime());
-
-  return (
-    lengthAdjustments.map((lo, index: number) => (
-      <div className='tb-row' key={index} onClick={() => navigate(`/react-ui/forms/material-length-adjustment/${lo._id}`)}>
-        <div className='tb-cell cell-50'>
-          <div className='pulse-indicator'></div>
-          {(lo.material as IMaterial).name}
-        </div>
-        <div className='tb-cell cell-50'>
-          {lo.length}
-        </div>
-      </div>
-    ))
-  )
 }
 
 export default MaterialCard;

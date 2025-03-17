@@ -75,3 +75,5 @@ export const DeliveryMethodForm = () => {
     </div>
   )
 }
+
+export default DeliveryMethodForm;

@@ -8,8 +8,6 @@ import {
   getSortedRowModel,
   SortingState,
 } from '@tanstack/react-table'
-import ExpandableRow from '../../_global/Table/ExpandableRow/ExpandableRow'
-import SearchBar from '../../_global/SearchBar/SearchBar'
 import { TableHead } from '../../_global/Table/TableHead/TableHead'
 import { TableBody } from '../../_global/Table/TableBody/TableBody'
 import { Table } from '../../_global/Table/Table'
@@ -18,6 +16,8 @@ import { getDeliveryMethods } from '../../_queries/deliveryMethod'
 import { useQuery } from '@tanstack/react-query'
 import { useErrorMessage } from '../../_hooks/useErrorMessage'
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime.ts'
+import * as tableStyles from '@ui/styles/table.module.scss'
+import Row from '../../_global/Table/Row/Row'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -69,24 +69,24 @@ function DeliveryMethodTable() {
   const rows = table.getRowModel().rows;
 
   return (
-    <>
-      <SearchBar value={globalFilter} onChange={e => setGlobalFilter(e.target.value)} />
+    <div className='page-wrapper'>
+      <div className='card'>
+        <div className={tableStyles.headerDescription}>
+          <h1 className="text-blue">Delivery Methods</h1>
+          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{deliveryMethods?.length || 0}</p> results.</p>
+        </div>
 
-      <Table id='delivery-method-table'>
-        <TableHead table={table} />
-        
-        <TableBody>
-          {rows.map(row => (
-            <ExpandableRow row={row} key={row.id}>
-              <div>@Storm: Click on a row to see this expandable row content. Delete this div to make the row no-longer expandable</div>
-            </ExpandableRow>
-          ))}
-        </TableBody>
-      </Table>
+        <Table id='delivery-method-table'>
+          <TableHead table={table} />
 
-      <br />
-      <p>Row Count: {rows.length}</p>
-    </>
+          <TableBody>
+            {rows.map(row => (
+              <Row row={row} key={row.id}></Row>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
   )
 }
 

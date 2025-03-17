@@ -129,3 +129,5 @@ export const CrudNavigation = () => {
 
   )
 }
+
+export default CrudNavigation;

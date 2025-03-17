@@ -4,7 +4,7 @@
  * @param {Date | undefined} utcDate - The UTC Date to extract the day, month, and year from. If not provided, it will return 'N/A'.
  * @returns {string} - A string containing the day, month, and year (Ex: 'November 12th, 2022').
  */
-export const getDayMonthYear = (utcDate: Date | undefined): string => {
+export const getDayMonthYear = (utcDate: Date | undefined | string): string => {
   if (!utcDate) {
     return 'N/A'
   }

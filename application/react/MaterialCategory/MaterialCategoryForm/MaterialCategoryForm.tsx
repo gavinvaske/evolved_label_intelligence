@@ -78,3 +78,5 @@ export const MaterialCategoryForm = () => {
     </div>
   )
 }
+
+export default MaterialCategoryForm;

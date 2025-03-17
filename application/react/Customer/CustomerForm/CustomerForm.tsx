@@ -365,3 +365,5 @@ export const CustomerForm = () => {
     </div>
   );
 }
+
+export default CustomerForm;

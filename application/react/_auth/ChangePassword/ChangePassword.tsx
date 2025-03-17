@@ -56,3 +56,5 @@ export const ChangePassword = () => {
   </form>
   )
 }
+
+export default ChangePassword;
