@@ -21,6 +21,7 @@ import { performTextSearch } from '../../_queries/_common';
 import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { ILinerType } from '@shared/types/models';
+import tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -103,7 +104,7 @@ export const LinerTypeTable = () => {
   return (
     <div className='page-wrapper'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Liner Types</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{linerTypeSearchResults?.totalResults || 0}</p> results.</p>
         </div>

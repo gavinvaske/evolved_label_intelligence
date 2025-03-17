@@ -24,6 +24,7 @@
       "@api/types/*": ["application/_types/api/*"],
       "@ui/types/*": ["./application/_types/ui/*"],
       "@ui/utils/*": ["./application/react/_utils/*"],
+      "@ui/styles/*": ["./application/react/_styles/*"]
     },
     "sourceMap": true,
     "declaration": false,

@@ -10,6 +10,7 @@ import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
+import tableStyles from '@ui/styles/table.module.scss'
 
 type TODO = any;
 
@@ -65,7 +66,7 @@ export const QuoteTable = () => {
   return (
     <div className='page-wrapper'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Quotes</h1>
           <p>Showing <p className='text-blue'>{rows.length} </p> quotes.</p>
         </div>

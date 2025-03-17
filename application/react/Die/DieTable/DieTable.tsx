@@ -14,6 +14,7 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { IDie } from '@shared/types/models';
+import tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<IDie>()
 
@@ -97,8 +98,8 @@ export const DieTable = () => {
 
   return (
     <div className='page-wrapper'>
-      <div className='card table-card'>
-        <div className="header-description">
+      <div className='card'>
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Dies</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{dieSearchResults?.totalResults || 0}</p> results.</p>
         </div>

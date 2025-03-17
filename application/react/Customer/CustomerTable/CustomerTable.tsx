@@ -14,6 +14,7 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { ICustomer } from '@shared/types/models';
+import tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -105,7 +106,7 @@ export const CustomerTable = () => {
   return (
     <div className='page-wrapper'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Customers</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{customerSearchResults?.totalResults || 0}</p> results.</p>
         </div>

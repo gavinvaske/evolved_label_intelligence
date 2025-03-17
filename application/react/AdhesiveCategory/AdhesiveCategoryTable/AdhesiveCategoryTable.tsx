@@ -14,6 +14,7 @@ import { SearchResult } from '@shared/types/http';
 import { IAdhesiveCategory } from '@shared/types/models';
 import { performTextSearch } from '../../_queries/_common';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
+import tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -97,7 +98,7 @@ export const AdhesiveCategoryTable = () => {
   return (
     <div className='page-wrapper'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Adhesive Categories</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{adhesiveCategorySearchResults?.totalResults || 0}</p> results.</p>
 d        </div>

@@ -742,14 +742,6 @@
   .light-blue-master .product-wrapper .table-row:hover .column-td:nth-child(1) {
 	background-color: #00cfe8;
   }
-  
-  
-
-
-.header-description h1 {
-	font-weight: 700;
-	line-height: 2.5rem;
-}
 
 .workflow-order-header ul li:hover {
 	cursor: pointer;

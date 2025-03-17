@@ -11,6 +11,7 @@ import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
+import tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -66,7 +67,7 @@ export const ProductTable = () => {
   return (
     <div id='product-table-page-wrapper' className='page-wrapper products-table'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Products</h1>
           <p>Showing <p className='text-blue'>{rows.length} </p> products.</p>
         </div>

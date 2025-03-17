@@ -14,6 +14,7 @@ import { SearchResult } from '@shared/types/http';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { performTextSearch } from '../../_queries/_common';
 import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
+import tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<IMaterialOrder>()
 
@@ -109,7 +110,7 @@ export const MaterialOrderTable = () => {
   return (
     <div className='page-wrapper credit-term-table'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Material Orders</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{materialOrderResults?.totalResults || 0}</p> results.</p>
         </div>

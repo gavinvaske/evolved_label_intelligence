@@ -16,6 +16,7 @@ import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { UserRowActions } from './UserRowActions/UserRowActions';
+import tableStyles from '@ui/styles/table.module.scss'
 
 const columnHelper = createColumnHelper<IUser>()
 
@@ -111,7 +112,7 @@ export const UserTable = () => {
   return (
     <div className='page-wrapper user-table'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Users</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{userResults?.totalResults || 0}</p> results.</p>
         </div>

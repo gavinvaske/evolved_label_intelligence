@@ -15,6 +15,7 @@ import { SearchResult } from '@shared/types/http';
 import { IMaterial } from '@shared/types/models';
 import { performTextSearch } from '../../_queries/_common';
 import { isRefPopulated } from '@shared/types/_utility';
+import tableStyles from '../../_styles/table.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -112,7 +113,7 @@ export const MaterialTable = () => {
   return (
     <div className='page-wrapper'>
       <div className='card table-card'>
-        <div className="header-description">
+        <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Materials</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{materialSearchResults?.totalResults || 0}</p> results.</p>
         </div>
