@@ -4,6 +4,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { USER, ADMIN } from '../../api/enums/authRolesEnum'
 import { DropdownProvider, useDropdownContext } from '../_context/dropdownProvider';
 import { lazy, Suspense } from "react";
+import ErrorBoundary from '../ErrorBoundary/ErrorBoundary';
 
 const queryClient = new QueryClient();
 const ANY_ROLE = [USER, ADMIN];
@@ -57,77 +58,79 @@ const DieTable = lazy(() => import('../Die/DieTable/DieTable'));
 
 export function App() {
   return (
-    <DropdownProvider>
-      <QueryClientProvider client={queryClient}>
-        <AppContainer>
-          <Suspense fallback={<div>Loading...</div>}>
-            <Routes >
-              <Route path='react-ui'>
+    <ErrorBoundary>
+      <DropdownProvider>
+        <QueryClientProvider client={queryClient}>
+          <AppContainer>
+            <Suspense fallback={<div>Loading...</div>}>
+              <Routes >
+                <Route path='react-ui'>
 
-                {/* PUBLIC ROUTES*/}
-                <Route path='login' element={<Login />}></Route>
-                <Route path='register' element={<Register />}></Route>
+                  {/* PUBLIC ROUTES*/}
+                  <Route path='login' element={<Login />}></Route>
+                  <Route path='register' element={<Register />}></Route>
 
-                <Route path='forgot-password' element={<ForgotPassword />}></Route>
-                <Route path='change-password/:mongooseId/:token' element={<ChangePassword />} />
-                <Route path='unauthorized' element={<Unauthorized />} />
-                <Route path='*' element={<PageNotFound />} />
+                  <Route path='forgot-password' element={<ForgotPassword />}></Route>
+                  <Route path='change-password/:mongooseId/:token' element={<ChangePassword />} />
+                  <Route path='unauthorized' element={<Unauthorized />} />
+                  <Route path='*' element={<PageNotFound />} />
 
-                {/* PROTECTED ROUTES */}
-                <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
-                  <Route path='admin' element={<AdminPanel />}></Route>
-                  <Route path='tables/user' element={<UserTable />} />
-                  <Route path='forms/user/auth-roles/:mongooseId' element={<UserAuthRolesForm />} />
-                </Route>
-                <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
-                  <Route element={<TopNavbarLayout />}>
-                    <Route path='inventory' element={<Inventory />}></Route>
-                    <Route path='profile' element={<Profile />} />
-                    <Route path='crud-navigation' element={<CrudNavigation />} />
+                  {/* PROTECTED ROUTES */}
+                  <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
+                    <Route path='admin' element={<AdminPanel />}></Route>
+                    <Route path='tables/user' element={<UserTable />} />
+                    <Route path='forms/user/auth-roles/:mongooseId' element={<UserAuthRolesForm />} />
+                  </Route>
+                  <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
+                    <Route element={<TopNavbarLayout />}>
+                      <Route path='inventory' element={<Inventory />}></Route>
+                      <Route path='profile' element={<Profile />} />
+                      <Route path='crud-navigation' element={<CrudNavigation />} />
 
-                    <Route path='views'>
-                      <Route path='customer/:mongooseId' element={<ViewCustomer />} />
-                    </Route>
+                      <Route path='views'>
+                        <Route path='customer/:mongooseId' element={<ViewCustomer />} />
+                      </Route>
 
-                    <Route path='forms'>
-                      <Route path='vendor/:mongooseId?' element={<VendorForm />} />
-                      <Route path='material-category/:mongooseId?' element={<MaterialCategoryForm />} />
-                      <Route path='material-length-adjustment/:mongooseId?' element={<MaterialLengthAdjustmentForm />} />
-                      <Route path='delivery-method/:mongooseId?' element={<DeliveryMethodForm />} />
-                      <Route path='credit-term/:mongooseId?' element={<CreditTermForm />} />
-                      <Route path='quote' element={<QuoteForm />} />
-                      <Route path='customer/:mongooseId?' element={<CustomerForm />} />
-                      <Route path="liner-type/:mongooseId?" element={<LinerTypeForm />} />
-                      <Route path='material/:mongooseId?' element={<MaterialForm />} />
-                      <Route path='adhesive-category/:mongooseId?' element={<AdhesiveCategoryForm />} />
-                      <Route path='material-order/:mongooseId?' element={<MaterialOrderForm />} />
-                      <Route path='product/:mongooseId?' element={<ProductForm />} />
-                      <Route path='die/:mongooseId?' element={<DieForm />} />
-                    </Route>
+                      <Route path='forms'>
+                        <Route path='vendor/:mongooseId?' element={<VendorForm />} />
+                        <Route path='material-category/:mongooseId?' element={<MaterialCategoryForm />} />
+                        <Route path='material-length-adjustment/:mongooseId?' element={<MaterialLengthAdjustmentForm />} />
+                        <Route path='delivery-method/:mongooseId?' element={<DeliveryMethodForm />} />
+                        <Route path='credit-term/:mongooseId?' element={<CreditTermForm />} />
+                        <Route path='quote' element={<QuoteForm />} />
+                        <Route path='customer/:mongooseId?' element={<CustomerForm />} />
+                        <Route path="liner-type/:mongooseId?" element={<LinerTypeForm />} />
+                        <Route path='material/:mongooseId?' element={<MaterialForm />} />
+                        <Route path='adhesive-category/:mongooseId?' element={<AdhesiveCategoryForm />} />
+                        <Route path='material-order/:mongooseId?' element={<MaterialOrderForm />} />
+                        <Route path='product/:mongooseId?' element={<ProductForm />} />
+                        <Route path='die/:mongooseId?' element={<DieForm />} />
+                      </Route>
 
-                    <Route path='tables'>
-                      <Route path='vendor' element={<VendorTable />} />
-                      <Route path='material-length-adjustment' element={<MaterialLengthAdjustmentTable />} />
-                      <Route path='quote' element={<QuoteTable />} />
-                      <Route path='credit-term' element={<CreditTermTable />} />
-                      <Route path='delivery-method' element={<DeliveryMethodTable />} />
-                      <Route path='liner-type' element={<LinerTypeTable />} />
-                      <Route path='material-category' element={<MaterialCategoryTable />} />
-                      <Route path='material' element={<MaterialTable />} />
-                      <Route path='adhesive-category' element={<AdhesiveCategoryTable />} />
-                      <Route path='customer' element={<CustomerTable />} />
-                      <Route path='material-order' element={<MaterialOrderTable />} />
-                      <Route path='product' element={<ProductTable />} />
-                      <Route path='die' element={<DieTable />} />
+                      <Route path='tables'>
+                        <Route path='vendor' element={<VendorTable />} />
+                        <Route path='material-length-adjustment' element={<MaterialLengthAdjustmentTable />} />
+                        <Route path='quote' element={<QuoteTable />} />
+                        <Route path='credit-term' element={<CreditTermTable />} />
+                        <Route path='delivery-method' element={<DeliveryMethodTable />} />
+                        <Route path='liner-type' element={<LinerTypeTable />} />
+                        <Route path='material-category' element={<MaterialCategoryTable />} />
+                        <Route path='material' element={<MaterialTable />} />
+                        <Route path='adhesive-category' element={<AdhesiveCategoryTable />} />
+                        <Route path='customer' element={<CustomerTable />} />
+                        <Route path='material-order' element={<MaterialOrderTable />} />
+                        <Route path='product' element={<ProductTable />} />
+                        <Route path='die' element={<DieTable />} />
+                      </Route>
                     </Route>
                   </Route>
                 </Route>
-              </Route>
-            </Routes>
-          </Suspense>
-        </AppContainer>
-      </QueryClientProvider>
-    </DropdownProvider>
+              </Routes>
+            </Suspense>
+          </AppContainer>
+        </QueryClientProvider>
+      </DropdownProvider>
+    </ErrorBoundary>
   )
 }
 
