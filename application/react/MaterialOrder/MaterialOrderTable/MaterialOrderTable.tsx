@@ -109,7 +109,7 @@ export const MaterialOrderTable = () => {
 
   return (
     <div className='page-wrapper credit-term-table'>
-      <div className='card table-card'>
+      <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Material Orders</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{materialOrderResults?.totalResults || 0}</p> results.</p>

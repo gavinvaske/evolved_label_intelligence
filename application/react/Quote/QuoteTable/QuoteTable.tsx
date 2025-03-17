@@ -65,7 +65,7 @@ export const QuoteTable = () => {
 
   return (
     <div className='page-wrapper'>
-      <div className='card table-card'>
+      <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Quotes</h1>
           <p>Showing <p className='text-blue'>{rows.length} </p> quotes.</p>

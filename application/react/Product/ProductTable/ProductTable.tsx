@@ -66,7 +66,7 @@ export const ProductTable = () => {
 
   return (
     <div id='product-table-page-wrapper' className='page-wrapper products-table'>
-      <div className='card table-card'>
+      <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Products</h1>
           <p>Showing <p className='text-blue'>{rows.length} </p> products.</p>

@@ -70,7 +70,7 @@ function DeliveryMethodTable() {
 
   return (
     <div className='page-wrapper'>
-      <div className='card table-card'>
+      <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Delivery Methods</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{deliveryMethods?.length || 0}</p> results.</p>

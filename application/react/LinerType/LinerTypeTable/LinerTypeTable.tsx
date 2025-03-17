@@ -103,7 +103,7 @@ export const LinerTypeTable = () => {
 
   return (
     <div className='page-wrapper'>
-      <div className='card table-card'>
+      <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Liner Types</h1>
           <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{linerTypeSearchResults?.totalResults || 0}</p> results.</p>
