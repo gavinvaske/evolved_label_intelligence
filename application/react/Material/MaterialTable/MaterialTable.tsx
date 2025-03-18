@@ -16,6 +16,7 @@ import { IMaterial } from '@shared/types/models';
 import { performTextSearch } from '../../_queries/_common';
 import { isRefPopulated } from '@shared/types/_utility';
 import tableStyles from '../../_styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -111,7 +112,7 @@ export const MaterialTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
+    <div className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Materials</h1>

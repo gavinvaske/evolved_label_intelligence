@@ -15,6 +15,7 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { performTextSearch } from '../../_queries/_common';
 import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<IMaterialOrder>()
 
@@ -108,7 +109,7 @@ export const MaterialOrderTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper credit-term-table'>
+    <div className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Material Orders</h1>

@@ -22,6 +22,7 @@ import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { ILinerType } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -102,7 +103,7 @@ export const LinerTypeTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
+    <div className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Liner Types</h1>

@@ -15,6 +15,7 @@ import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -96,7 +97,7 @@ export const MaterialCategoryTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
+    <div className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Material Categories</h1>

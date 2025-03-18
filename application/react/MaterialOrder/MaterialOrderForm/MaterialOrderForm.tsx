@@ -17,6 +17,7 @@ import { IMaterialOrderForm } from '@ui/types/forms.ts';
 import { MongooseIdStr } from '@shared/types/typeAliases.ts';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
 import { useQuery } from '@tanstack/react-query';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const materialOrderTableUrl = '/react-ui/tables/material-order'
 
@@ -135,7 +136,7 @@ export const MaterialOrderForm = () => {
   if (isLoadingFormValues || isLoadingMaterialOrder || isFetchingFormValues || isFetchingMaterialOrder) return <LoadingIndicator />
 
   return (
-    <div id='material-po-form-page-wrapper' className='page-wrapper'>
+    <div id='material-po-form-page-wrapper' className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className='form-card-header'>
           <h3>Create Material Order</h3>

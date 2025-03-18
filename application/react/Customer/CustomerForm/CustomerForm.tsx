@@ -25,6 +25,7 @@ import { ICreditTerm } from '@shared/types/models';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect';
 import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import AddressListItem from './AddressListItem/AddressListItem';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 
 const customerTableUrl = '/react-ui/tables/customer'
@@ -149,7 +150,7 @@ export const CustomerForm = () => {
   }
 
   return (
-    <div id='customer-form-page-wrapper' className='page-wrapper'>
+    <div id='customer-form-page-wrapper' className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className='form-card-header'>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Customer</h3>

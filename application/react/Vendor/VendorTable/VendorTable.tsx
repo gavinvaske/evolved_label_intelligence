@@ -14,6 +14,7 @@ import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { IVendor } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -105,7 +106,7 @@ export const VendorTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
+    <div className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Vendors</h1>

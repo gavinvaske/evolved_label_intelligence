@@ -9,6 +9,7 @@ import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { getOneVendor } from '../../_queries/vendors';
 import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import { IVendorForm } from '@ui/types/forms';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const vendorTableUrl = '/react-ui/tables/vendor'
 
@@ -76,7 +77,7 @@ export const VendorForm = () => {
   }
 
   return (
-    <div id='vendor-form-page-wrapper' className='page-wrapper'>
+    <div id='vendor-form-page-wrapper' className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className='form-card-header'>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Vendor</h3>

@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IAdhesiveCategory, ILinerType, IMaterial, IMaterialCategory, IVendor } from '@shared/types/models.ts';
+import { IAdhesiveCategory, ILinerType, IMaterialCategory, IVendor } from '@shared/types/models.ts';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { MongooseId } from "@shared/types/typeAliases.ts";
@@ -15,6 +15,7 @@ import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelec
 import { IMaterialForm } from '@ui/types/forms.ts';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const materialTableUrl = '/react-ui/tables/material'
 const locationRegex = /^[a-zA-Z][1-9][0-9]?$/;
@@ -165,7 +166,7 @@ export const MaterialForm = () => {
   if (isLoading || isFetching) return <LoadingIndicator />
 
   return (
-    <div className='page-wrapper'>
+    <div className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className='form-card-header'>
           <h3>{isUpdateRequest ? 'Edit' : 'Create'} Material</h3>

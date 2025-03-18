@@ -16,6 +16,7 @@ import { performTextSearch } from '../../../_queries/_common';
 import { IMaterial, IMaterialLengthAdjustment } from '@shared/types/models.ts';
 import { isRefPopulated } from '@shared/types/_utility';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<IMaterialLengthAdjustment>()
 
@@ -111,7 +112,7 @@ export const MaterialLengthAdjustmentTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
+    <div className={sharedStyles.pageWrapper}>
       <div className='card'>
         <div className={tableStyles.headerDescription}>
           <h1 className="text-blue">Material Length Adjustments</h1>
