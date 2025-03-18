@@ -14,6 +14,8 @@ import { IMaterialLengthAdjustmentForm } from '@ui/types/forms.ts';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 export const MaterialLengthAdjustmentForm = () => {
   const navigate = useNavigate();
@@ -85,8 +87,8 @@ export const MaterialLengthAdjustmentForm = () => {
 
   return (
     <div id='material-po-form-page-wrapper' className={sharedStyles.pageWrapper}>
-      <div className='card'>
-        <div className='form-card-header'>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
           <h3>Create Material Adjustment</h3>
         </div>
         <div className='form-wrapper'>

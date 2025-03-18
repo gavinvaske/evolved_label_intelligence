@@ -9,6 +9,8 @@ import { getOneDeliveryMethod } from '../../_queries/deliveryMethod';
 import { DeliveryMethod } from '../../_types/databasemodels/deliveryMethod.ts';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { IDeliveryMethodForm } from '@ui/types/forms.ts';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const deliveryMethodTableUrl = '/react-ui/tables/delivery-method'
 
@@ -54,9 +56,9 @@ export const DeliveryMethodForm = () => {
   };
 
   return (
-    <div className='page-container'>
-      <div className='form-card'>
-        <div className='form-card-header'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
         <h3>{isUpdateRequest ? 'Update' : 'Create'} Delivery Method</h3>
         </div>
         <div className='form-wrapper'>

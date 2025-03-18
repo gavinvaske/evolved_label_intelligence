@@ -9,6 +9,8 @@ import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { getOneAdhesiveCategory } from '../../_queries/adhesiveCategory';
 import { IAdhesiveCategory } from '@shared/types/models.ts';
 import { IAdhesiveCategoryForm } from '@ui/types/forms';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const adhesiveCategoryTableUrl = '/react-ui/tables/adhesive-category'
 
@@ -54,9 +56,9 @@ export const AdhesiveCategoryForm = () => {
   };
 
   return (
-    <div className='page-container'>
-      <div className='form-card'>
-        <div className='form-card-header'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
         <h3>{isUpdateRequest ? 'Update' : 'Create'} Adhesive Category</h3>
         </div>
         <div className='form-wrapper'>

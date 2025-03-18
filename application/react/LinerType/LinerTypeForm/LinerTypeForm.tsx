@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import './LinerTypeForm.scss';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,8 @@ import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { ILinerType } from '@shared/types/models';
 import { ILinerTypeForm } from '@ui/types/forms';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const linerTypeTableUrl = '/react-ui/tables/liner-type'
 
@@ -54,9 +56,9 @@ export const LinerTypeForm = () => {
   };
 
   return (
-    <div className='page-container'>
-      <div className='form-card'>
-        <div className='form-card-header'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
         <h3>{isUpdateRequest ? 'Update' : 'Create'} Liner Type</h3>
         </div>
         <div className='form-wrapper'>

@@ -1,50 +1,51 @@
-.page-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 110px 100px;
+// Commented out by Gavin on 3/17/25: Because it didnt seem to be doing anything
+// .page-container {
+//     width: 100%;
+//     display: flex;
+//     justify-content: center;
+//     align-items: center;
+//     padding: 110px 100px;
 
-    .form-card {
-        border: none;
-        /* margin-bottom: 2rem; */
-        margin-bottom: 15px;
-        -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
-        box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
-        background-color: white;
-        border-radius: 0.428rem;
-        width: 100%;
-        .form-card-header {
-            width: 100%;
-            padding: 16px 24px 16px 24px;
-            border-bottom: 1px solid rgba(103, 104, 121, 0.1);
-            h1 {
-                font-size: 1.25rem;
-                margin: 0;
-                font-weight: 500;
-            }
-        }
-        .form-wrapper {
-            padding: 24px;
-            .group-field-wrapper {
-                display: flex;
-                justify-content: center;
-                align-items: center;
-                flex-direction: row;
-                flex-wrap: wrap;
-                .input-wrapper {
-                    width: 33.333%;
-                    padding: 0 15px;
-                    label {
-                        font-weight: 300;
-                        font-size: 15px;
-                    }
-                    input {
-                        margin: 5px 0 15px 0;
-                    }
-                }
-            }
-        }
-    }
-}
+//     .form-card {
+//         border: none;
+//         /* margin-bottom: 2rem; */
+//         margin-bottom: 15px;
+//         -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+//         box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+//         background-color: white;
+//         border-radius: 0.428rem;
+//         width: 100%;
+//         .form-card-header {
+//             width: 100%;
+//             padding: 16px 24px 16px 24px;
+//             border-bottom: 1px solid rgba(103, 104, 121, 0.1);
+//             h1 {
+//                 font-size: 1.25rem;
+//                 margin: 0;
+//                 font-weight: 500;
+//             }
+//         }
+//         .form-wrapper {
+//             padding: 24px;
+//             .group-field-wrapper {
+//                 display: flex;
+//                 justify-content: center;
+//                 align-items: center;
+//                 flex-direction: row;
+//                 flex-wrap: wrap;
+//                 .input-wrapper {
+//                     width: 33.333%;
+//                     padding: 0 15px;
+//                     label {
+//                         font-weight: 300;
+//                         font-size: 15px;
+//                     }
+//                     input {
+//                         margin: 5px 0 15px 0;
+//                     }
+//                 }
+//             }
+//         }
+//     }
+// }
 

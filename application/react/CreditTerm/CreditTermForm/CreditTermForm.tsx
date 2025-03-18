@@ -9,6 +9,8 @@ import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { getOneCreditTerm } from '../../_queries/creditTerm';
 import { ICreditTerm } from '@shared/types/models';
 import { ICreditTermForm } from '@ui/types/forms';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const creditTermTableUrl = '/react-ui/tables/credit-term'
 
@@ -55,9 +57,9 @@ export const CreditTermForm = () => {
   };
 
   return (
-    <div className='page-container'>
-      <div className='form-card'>
-        <div className='form-card-header'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
         <h3>{isUpdateRequest ? 'Update' : 'Create'} Credit Term</h3>
         </div>
         <div className='form-wrapper'>

@@ -20,6 +20,7 @@ import { performTextSearch } from '../../_queries/_common';
 import { IDie, IMaterial } from '@shared/types/models';
 import { IProductForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const productTableUrl = '/react-ui/tables/product'
 
@@ -112,8 +113,8 @@ export const ProductForm = () => {
 
   return (
     <div id='product-form-page-wrapper' className={sharedStyles.pageWrapper}>
-      <div className='card'>
-        <div className='form-card-header'>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Product</h3>
         </div>
         <div className='form-wrapper'>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import './DieForm.scss';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useForm } from 'react-hook-form';
@@ -16,6 +16,7 @@ import { CustomSelect } from '../../_global/FormInputs/CustomSelect/CustomSelect
 import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import { IDieForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const dieTableUrl = '/react-ui/tables/die'
 
@@ -91,8 +92,8 @@ export const DieForm = () => {
 
   return (
     <div id='die-form-page-wrapper' className={sharedStyles.pageWrapper}>
-      <div className='card'>
-        <div className='form-card-header'>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Die</h3>
         </div>
         <div className='form-wrapper'>

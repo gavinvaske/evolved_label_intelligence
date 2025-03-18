@@ -6,6 +6,8 @@ import { IMaterial } from '@shared/types/models.ts';
 import { BsPlusSlashMinus } from "react-icons/bs";
 import { LengthAdjustmentsModal } from './LengthAdjustmentsModal/LengthAdjustmentsModal.tsx';
 import { PurchaseOrderModal } from './PurchaseOrdersModal/PurchaseOrdersModal.tsx';
+import clsx from 'clsx';
+import * as sharedStyles from '@ui/styles/shared.module.scss';
 
 type Props = {
   material: IMaterial,
@@ -38,7 +40,7 @@ const MaterialCard = observer((props: Props) => {
   };
 
   return (
-    <div id={material._id as string} className={`card ${getLowInventoryClass(material)}`} onClick={() => onClick()} data-test='material-inventory-card'>
+    <div id={material._id as string} className={clsx('card', getLowInventoryClass(material))} onClick={() => onClick()} data-test='material-inventory-card'>
       <div className='card-header flex-center-center-row'>
         <div className='col col-left'>
           <h2 className='material-id'>{material.materialId}</h2>

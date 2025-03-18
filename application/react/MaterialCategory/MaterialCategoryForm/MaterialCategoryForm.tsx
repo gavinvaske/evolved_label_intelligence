@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import './MaterialCategoryForm.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,8 @@ import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { getOneMaterialCategory } from '../../_queries/materialCategory';
 import { IMaterialCategoryForm } from '@ui/types/forms';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const materialCategoryTableUrl = '/react-ui/tables/material-category'
 
@@ -54,9 +56,9 @@ export const MaterialCategoryForm = () => {
   };
 
   return (
-    <div className='page-container'>
-      <div className='form-card'>
-        <div className='form-card-header'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
         <h3>{isUpdateRequest ? 'Update' : 'Create'} Material Category</h3>
         </div>
         <div className='form-wrapper'>

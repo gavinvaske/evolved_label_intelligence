@@ -6,6 +6,8 @@ import OutputSection from './OutputSection/OutputSection';
 import axios from 'axios';
 import './QuoteForm.scss';
 import quoteStore from '../../stores/quoteStore'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const QuoteForm = () => {
   const generateQuotes = (e) => {

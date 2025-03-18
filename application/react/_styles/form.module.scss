@@ -1,0 +1,11 @@
+.formCardHeader {
+  margin-bottom: 15px;
+  border-bottom: 1px solid #6768791a;
+
+  h3 {
+      color: rgba(var(--primary-purple-text-color), 1);
+      font-weight: 700;
+      line-height: 1.75rem;
+      margin-bottom: 15px;
+  }
+}

@@ -10,6 +10,7 @@ import { getOneVendor } from '../../_queries/vendors';
 import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import { IVendorForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const vendorTableUrl = '/react-ui/tables/vendor'
 
@@ -78,8 +79,8 @@ export const VendorForm = () => {
 
   return (
     <div id='vendor-form-page-wrapper' className={sharedStyles.pageWrapper}>
-      <div className='card'>
-        <div className='form-card-header'>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Vendor</h3>
         </div>
         <div className='form-wrapper'>

@@ -18,6 +18,7 @@ import { MongooseIdStr } from '@shared/types/typeAliases.ts';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
 import { useQuery } from '@tanstack/react-query';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const materialOrderTableUrl = '/react-ui/tables/material-order'
 
@@ -137,8 +138,8 @@ export const MaterialOrderForm = () => {
 
   return (
     <div id='material-po-form-page-wrapper' className={sharedStyles.pageWrapper}>
-      <div className='card'>
-        <div className='form-card-header'>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
           <h3>Create Material Order</h3>
         </div>
         <div className='form-wrapper'>
