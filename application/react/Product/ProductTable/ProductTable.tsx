@@ -67,10 +67,10 @@ export const ProductTable = () => {
 
   return (
     <div id='product-table-page-wrapper' className={sharedStyles.pageWrapper}>
-      <div className='card'>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Products</h1>
-          <p>Showing <p className='text-blue'>{rows.length} </p> products.</p>
+          <h1 className={sharedStyles.textBlue}>Products</h1>
+          <p>Showing <p className={sharedStyles.textBlue}>{rows.length} </p> products.</p>
         </div>
          <SearchBar value={globalFilter} onChange={(e: any) => setGlobalFilter(e.target.value)} />
 

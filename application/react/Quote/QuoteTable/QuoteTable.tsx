@@ -11,6 +11,7 @@ import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 type TODO = any;
 
@@ -64,11 +65,11 @@ export const QuoteTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
-      <div className='card'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Quotes</h1>
-          <p>Showing <p className='text-blue'>{rows.length} </p> quotes.</p>
+          <h1 className={sharedStyles.textBlue}>Quotes</h1>
+          <p>Showing <p className={sharedStyles.textBlue}>{rows.length} </p> quotes.</p>
         </div>
          <SearchBar value={globalFilter} onChange={(e: any) => setGlobalFilter(e.target.value)} />
 

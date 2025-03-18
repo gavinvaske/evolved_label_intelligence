@@ -113,10 +113,10 @@ export const MaterialTable = () => {
 
   return (
     <div className={sharedStyles.pageWrapper}>
-      <div className='card'>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Materials</h1>
-          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{materialSearchResults?.totalResults || 0}</p> results.</p>
+          <h1 className={sharedStyles.textBlue}>Materials</h1>
+          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{materialSearchResults?.totalResults || 0}</p> results.</p>
         </div>
          <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
