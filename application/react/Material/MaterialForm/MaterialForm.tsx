@@ -172,10 +172,10 @@ export const MaterialForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Edit' : 'Create'} Material</h3>
         </div>
-        <div className='form-wrapper'>
-          <form id='material-form' className='material-form' onSubmit={handleSubmit(onSubmit)} data-test='material-form'>
-            <div className='form-elements-wrapper'>
-              <div className='input-group-wrapper'>
+        <div>
+          <form id='material-form' className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='name'
                   label="Name"
@@ -216,7 +216,7 @@ export const MaterialForm = () => {
                   errors={errors}
                 />
               </div>
-              <div className='input-group-wrapper'>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='thickness'
                   label="Thickness"
@@ -248,7 +248,7 @@ export const MaterialForm = () => {
                   errors={errors}
                 />
               </div>
-              <div className='input-group-wrapper'>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='freightCostPerMsi'
                   label="Freight Cost (per MSI)"
@@ -274,7 +274,7 @@ export const MaterialForm = () => {
                   fieldType='currency'
                 />
               </div>
-              <div className='input-group-wrapper'>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='lowStockThreshold'
                   label="Low Stock Threshold"
@@ -292,7 +292,7 @@ export const MaterialForm = () => {
                   leftUnit='@storm'
                 />
               </div>
-              <div className='input-group-wrapper'>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='description'
                   label="Description"
@@ -301,7 +301,7 @@ export const MaterialForm = () => {
                   errors={errors}
                 />
               </div>
-              <div className='input-group-wrapper'>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='whenToUse'
                   label="When-to-use"
@@ -317,7 +317,7 @@ export const MaterialForm = () => {
                   errors={errors}
                 />
               </div>
-              <div className='input-group-wrapper'>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='length'
                   label="Length"

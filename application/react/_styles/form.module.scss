@@ -3,9 +3,49 @@
   border-bottom: 1px solid #6768791a;
 
   h3 {
-      color: rgba(var(--primary-purple-text-color), 1);
-      font-weight: 700;
-      line-height: 1.75rem;
-      margin-bottom: 15px;
+    color: rgba(var(--primary-purple-text-color), 1);
+    font-weight: 700;
+    line-height: 1.75rem;
+    margin-bottom: 15px;
+  }
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+
+  .formElementsWrapper {
+      width: 100%;
+  }
+
+  .inputGroupWrapper {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      margin: 0 0 15px 0;
+      padding: 0 0 15px 0;
+      border-bottom: 1px solid #6768791a;
+  }
+
+  .inputWrapper, .customSelectContainer {
+      width: 240px;
+      margin:15px 5px;
+      .input-wrapper {
+          margin: 0;
+      }
+  }
+
+  .textArea {
+      width: 100%;
+  }
+  .btnWrapper {
+      width: 100%;
+      display: flex;
+      align-items: flex-start;
   }
 }

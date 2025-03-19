@@ -3,6 +3,8 @@ import './Input.scss'
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import { BsCurrencyDollar } from "react-icons/bs";
+import * as formStyles from '@ui/styles/form.module.scss'
+import clsx from 'clsx';
 
 type Props<T extends FieldValues> = {
   attribute: Path<T>;
@@ -34,7 +36,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
   });
 
   return (
-    <div className="input-wrapper">
+    <div className={clsx(formStyles.inputWrapper, 'input-wrapper')}>
       <label>
         {label} <span className="red">{isRequired ? '*' : ''}</span>:
       </label>
