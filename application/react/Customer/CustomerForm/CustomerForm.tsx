@@ -199,7 +199,6 @@ export const CustomerForm = () => {
                 errors={errors}
                 control={control}
               />
-            </div>
             <div className='title-header'>
               <h3>Business Locations:</h3>
             </div>
@@ -326,7 +325,8 @@ export const CustomerForm = () => {
             {/* Let user know some form inputs had errors */}
             <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-            <button className='btn-primary' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+            <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+            </div>
           </form>
         </div>
         {/* Code Below Renders a modal IFF user initiated one to open */}
