@@ -1,5 +1,6 @@
-import React from 'react';
 import './FormModal.scss'
+import clsx from 'clsx';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 export const FormModal = (props) => {
   const {
@@ -11,7 +12,7 @@ export const FormModal = (props) => {
 
   return (
     <div className='modal-wrapper'>
-      <div className='modal card'>
+      <div className={clsx('modal', sharedStyles.card)}>
       <button className='close-button' type="button" onClick={() => onCancel()}><i className="fa-solid fa-x"></i></button>
         <div className='modal-content'>
           <Form

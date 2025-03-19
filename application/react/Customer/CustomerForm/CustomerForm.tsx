@@ -156,10 +156,10 @@ export const CustomerForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Customer</h3>
         </div>
-        <div className='form-wrapper'>
-          <form onSubmit={handleSubmit(onCustomerFormSubmit)} data-test='customer-form' className='create-customer-form'>
-            <div className='form-elements-wrapper'>
-              <div className='input-group-wrapper'>
+        <div>
+          <form onSubmit={handleSubmit(onCustomerFormSubmit)} data-test='customer-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='customerId'
                   label="Customer ID"

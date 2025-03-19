@@ -30,9 +30,9 @@ export const ProductForm = () => {
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
 
   const [dies, setDies] = useState<SelectOption[]>([])
-  const [materials, setMaterials ] = useState<SelectOption[]>([])
-  const [finishes, setFinishes ] = useState<SelectOption[]>([])
-  const [customers, setCustomers ] = useState<SelectOption[]>([])
+  const [materials, setMaterials] = useState<SelectOption[]>([])
+  const [finishes, setFinishes] = useState<SelectOption[]>([])
+  const [customers, setCustomers] = useState<SelectOption[]>([])
 
   const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IProductForm>({
     defaultValues: {
@@ -46,9 +46,9 @@ export const ProductForm = () => {
   });
 
   const preloadFormData = async () => {
-    const diesSearchResults = await performTextSearch<IDie>('/dies/search', { limit: '100',  });
+    const diesSearchResults = await performTextSearch<IDie>('/dies/search', { limit: '100', });
     const dies = diesSearchResults.results
-    const materialSearchResults = await performTextSearch<IMaterial>('/materials/search', { limit: '100',  });
+    const materialSearchResults = await performTextSearch<IMaterial>('/materials/search', { limit: '100', });
     const materials = materialSearchResults.results
     const customers = await getCustomers();
     const finishes = await getFinishes();
@@ -112,150 +112,154 @@ export const ProductForm = () => {
   };
 
   return (
-    <div id='product-form-page-wrapper' className={sharedStyles.pageWrapper}>
+    <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Product</h3>
         </div>
-        <div className='form-wrapper'>
-          <form onSubmit={handleSubmit(onSubmit)} data-test='product-form'>
-            <CustomSelect 
-              attribute='customer'
-              label="Customer"
-              options={customers}
-              register={register}
-              errors={errors}
-              control={control}
-              isRequired={true}
-            />
-            <Input
-              attribute='productDescription'
-              label="Product Description"
-              register={register}
-              errors={errors}
-              isRequired={true}
-            />
-            <div className='triple-column-wrapper'>
-              <CustomSelect
-                attribute='unwindDirection'
-                label='Unwind Direction'
-                options={unwindDirections.map((direction) => ({ value: String(direction), displayName: String(direction) }))}
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)} data-test='product-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
+                <CustomSelect
+                  attribute='customer'
+                  label="Customer"
+                  options={customers}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  isRequired={true}
+                />
+                <Input
+                  attribute='productDescription'
+                  label="Product Description"
+                  register={register}
+                  errors={errors}
+                  isRequired={true}
+                />
+              </div>
+              <div className={formStyles.inputGroupWrapper}>
+                <CustomSelect
+                  attribute='unwindDirection'
+                  label='Unwind Direction'
+                  options={unwindDirections.map((direction) => ({ value: String(direction), displayName: String(direction) }))}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  isRequired={true}
+                />
+                <CustomSelect
+                  attribute='ovOrEpm'
+                  label='OV / EPM'
+                  options={ovOrEpmOptions.map((option) => ({ value: option, displayName: option }))}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  isRequired={true}
+                />
+                <CustomSelect
+                  attribute='finishType'
+                  label='Finish Types'
+                  options={finishTypes.map((finishType) => ({ value: finishType, displayName: finishType }))}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  isRequired={true}
+                />
+              </div>
+              <div className={formStyles.inputGroupWrapper}>
+                <CustomSelect
+                  attribute='die'
+                  label="Die"
+                  options={dies}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  isRequired={true}
+                />
+                <CustomSelect
+                  attribute='primaryMaterial'
+                  label="Primary Material"
+                  options={materials}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                  isRequired={true}
+                />
+                <CustomSelect
+                  attribute='secondaryMaterial'
+                  label="Secondary Material"
+                  options={materials}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                />
+                <CustomSelect
+                  attribute='finish'
+                  label="Finish"
+                  options={finishes}
+                  register={register}
+                  errors={errors}
+                  control={control}
+                />
+              </div>
+              <div className={formStyles.inputGroupWrapper}>
+                <Input
+                  attribute='coreDiameter'
+                  label="Core Diameter"
+                  register={register}
+                  errors={errors}
+                  isRequired={true}
+                />
+                <Input
+                  attribute='labelsPerRoll'
+                  label="Labels Per Roll"
+                  register={register}
+                  errors={errors}
+                  isRequired={true}
+                />
+                <Input
+                  attribute='overun'
+                  label="Overun"
+                  register={register}
+                  errors={errors}
+                />
+                <Input
+                  attribute='numberOfColors'
+                  label="Number of Colors"
+                  register={register}
+                  errors={errors}
+                  isRequired={true}
+                />
+                <Input
+                  attribute='spotPlate'
+                  label="Has Spot Plate"
+                  register={register}
+                  errors={errors}
+                  fieldType='checkbox'
+                />
+              </div>
+              <TextArea
+                attribute='artNotes'
+                label="Art Notes"
                 register={register}
                 errors={errors}
-                control={control}
-                isRequired={true}
               />
-              <CustomSelect
-                attribute='ovOrEpm'
-                label='OV / EPM'
-                options={ovOrEpmOptions.map((option) => ({ value: option, displayName: option }))}
-                register={register}
-                errors={errors}
-                control={control}
-                isRequired={true}
-              />
-              <CustomSelect
-                attribute='finishType'
-                label='Finish Types'
-                options={finishTypes.map((finishType) => ({ value: finishType, displayName: finishType }))}
-                register={register}
-                errors={errors}
-                control={control}
-                isRequired={true}
-              />
-            </div>
-            <div className='quad-column-wrapper'>
-              <CustomSelect 
-                attribute='die'
-                label="Die"
-                options={dies}
-                register={register}
-                errors={errors}
-                control={control}
-                isRequired={true}
-              />
-              <CustomSelect 
-                attribute='primaryMaterial'
-                label="Primary Material"
-                options={materials}
-                register={register}
-                errors={errors}
-                control={control}
-                isRequired={true}
-              />
-              <CustomSelect 
-                attribute='secondaryMaterial'
-                label="Secondary Material"
-                options={materials}
-                register={register}
-                errors={errors}
-                control={control}
-              />
-              <CustomSelect 
-                attribute='finish'
-                label="Finish"
-                options={finishes}
-                register={register}
-                errors={errors}
-                control={control}
-              />
-            </div>
-            <div className='quad-column-wrapper'>
-              <Input
-                attribute='coreDiameter'
-                label="Core Diameter"
-                register={register}
-                errors={errors}
-                isRequired={true}
-              />
-              <Input
-                attribute='labelsPerRoll'
-                label="Labels Per Roll"
-                register={register}
-                errors={errors}
-                isRequired={true}
-              />
-              <Input
-                attribute='overun'
-                label="Overun"
+              <TextArea
+                attribute='pressNotes'
+                label="Press Notes"
                 register={register}
                 errors={errors}
               />
-              <Input
-                attribute='numberOfColors'
-                label="Number of Colors"
+              <TextArea
+                attribute='dieCuttingNotes'
+                label="Die Cutting Notes"
                 register={register}
                 errors={errors}
-                isRequired={true}
               />
-              <Input
-              attribute='spotPlate'
-              label="Has Spot Plate"
-              register={register}
-              errors={errors}
-              fieldType='checkbox'
-            />
-            </div>
-            <TextArea
-              attribute='artNotes'
-              label="Art Notes"
-              register={register}
-              errors={errors}
-            />
-            <TextArea
-              attribute='pressNotes'
-              label="Press Notes"
-              register={register}
-              errors={errors}
-            />
-            <TextArea
-              attribute='dieCuttingNotes'
-              label="Die Cutting Notes"
-              register={register}
-              errors={errors}
-            /> 
 
-            <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+            </div>
           </form>
         </div>
       </div>

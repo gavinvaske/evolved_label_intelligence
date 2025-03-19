@@ -78,108 +78,106 @@ export const VendorForm = () => {
   }
 
   return (
-    <div id='vendor-form-page-wrapper' className={sharedStyles.pageWrapper}>
+    <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Vendor</h3>
         </div>
-        <div className='form-wrapper'>
-          <form onSubmit={handleSubmit(onVendorFormSubmit)} data-test='vendor-form' className='create-vendor-form'>
-            <div className='form-elements-wrapper'>
-              <div className='group-field-wrapper'>
-                <div className='triple-column-container'>
-                  <div className='input-group-wrapper'>
-                    <Input
-                      attribute='name'
-                      label="Name"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                    />
-                    <Input
-                      attribute='phoneNumber'
-                      label="Phone #"
-                      register={register}
-                      isRequired={false}
-                      errors={errors}
-                    />
-                    <Input
-                      attribute='email'
-                      label="Email"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                    />
-                    <Input
-                      attribute='website'
-                      label="Website"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                    />
-                  </div>
-                  <div className='input-group-wrapper'>
-                    <Input
-                      attribute='primaryContactName'
-                      label="P.C Name"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                    />
-                    <Input
-                      attribute='primaryContactPhoneNumber'
-                      label="P.C Phone #"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                    />
-                    <Input
-                      attribute='primaryContactEmail'
-                      label="P.C Email"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                    />
-                    <Input
-                      attribute='mfgSpecNumber'
-                      label="MFG Spec #"
-                      register={register}
-                      isRequired={false}
-                      errors={errors}
-                    />
-                  </div>
-                  <TextArea
-                    attribute='notes'
-                    label="Notes"
-                    register={register}
-                    isRequired={false}
-                    errors={errors}
-                  />
-                </div>
+        <div>
+          <form onSubmit={handleSubmit(onVendorFormSubmit)} data-test='vendor-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
+                <Input
+                  attribute='name'
+                  label="Name"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+                <Input
+                  attribute='phoneNumber'
+                  label="Phone #"
+                  register={register}
+                  isRequired={false}
+                  errors={errors}
+                />
+                <Input
+                  attribute='email'
+                  label="Email"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+                <Input
+                  attribute='website'
+                  label="Website"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
               </div>
-            </div>
-
-            <label>
-              <input
-                type="checkbox"
-                checked={isPrimaryAddressSameAsRemittance}
-                onChange={(e) => setIsPrimaryAddressSameAsRemittance(e.target.checked)}
+              <div className={formStyles.inputGroupWrapper}>
+                <Input
+                  attribute='primaryContactName'
+                  label="P.C Name"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+                <Input
+                  attribute='primaryContactPhoneNumber'
+                  label="P.C Phone #"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+                <Input
+                  attribute='primaryContactEmail'
+                  label="P.C Email"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+                <Input
+                  attribute='mfgSpecNumber'
+                  label="MFG Spec #"
+                  register={register}
+                  isRequired={false}
+                  errors={errors}
+                />
+              </div>
+              <TextArea
+                attribute='notes'
+                label="Notes"
+                register={register}
+                isRequired={false}
+                errors={errors}
               />
-              Remittance same as Primary Address?
-            </label>
 
-            {/* Primary Address Input Fields */}
-            <AddressFormAttributes label='Primary Address' attribute='primaryAddress' register={register} errors={errors} />
-            {/* Remittance Address Input Fields */}
-            {!isPrimaryAddressSameAsRemittance && (
-              <AddressFormAttributes label='Remittance Address' attribute='remittanceAddress' register={register} errors={errors} />
-            )
-            }
+              <div className={formStyles.inputGroupWrapper}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={isPrimaryAddressSameAsRemittance}
+                    onChange={(e) => setIsPrimaryAddressSameAsRemittance(e.target.checked)}
+                  />
+                  Remittance same as Primary Address?
+                </label>
+              </div>
 
-            {/* Let user know some form inputs had errors */}
-            <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+              {/* Primary Address Input Fields */}
+              <AddressFormAttributes label='Primary Address' attribute='primaryAddress' register={register} errors={errors} />
+              {/* Remittance Address Input Fields */}
+              {!isPrimaryAddressSameAsRemittance && (
+                <AddressFormAttributes label='Remittance Address' attribute='remittanceAddress' register={register} errors={errors} />
+              )
+              }
 
-            <button className='btn-primary' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              {/* Let user know some form inputs had errors */}
+              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+
+              <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+            </div>
           </form>
         </div>
       </div>
@@ -199,10 +197,10 @@ const AddressFormAttributes = (props: AddressProps) => {
 
   return (
     <div>
-      <div className='header'>
-        <h2>{label}</h2>
+      <div className={formStyles.formCardHeader}>
+        <h3>{label}</h3>
       </div>
-      <div className='input-group-wrapper'>
+      <div className={formStyles.inputGroupWrapper}>
         <Input
           attribute={`${attribute}.name`}
           label="Name"

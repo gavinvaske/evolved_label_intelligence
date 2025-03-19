@@ -59,18 +59,22 @@ export const DeliveryMethodForm = () => {
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
         <div className={formStyles.formCardHeader}>
-        <h3>{isUpdateRequest ? 'Update' : 'Create'} Delivery Method</h3>
+          <h3>{isUpdateRequest ? 'Update' : 'Create'} Delivery Method</h3>
         </div>
-        <div className='form-wrapper'>
-          <form id='delivery-method-form' onSubmit={handleSubmit(onSubmit)} data-test='delivery-method-form'>
-            <Input
-                attribute='name'
-                label="Name"
-                register={register}
-                isRequired={true}
-                errors={errors}
-            />
-            <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+        <div>
+          <form id='delivery-method-form' onSubmit={handleSubmit(onSubmit)} data-test='delivery-method-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
+                <Input
+                  attribute='name'
+                  label="Name"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+              </div>
+              <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+            </div>
           </form>
         </div>
       </div>
