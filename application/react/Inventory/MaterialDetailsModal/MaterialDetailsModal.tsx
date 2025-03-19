@@ -1,4 +1,3 @@
-import React from 'react';
 import './MaterialDetailsModal.scss'
 import { FullScreenModal } from '../../_global/LargeModal/LargeModal.tsx';
 import '../../utils/app.scss'

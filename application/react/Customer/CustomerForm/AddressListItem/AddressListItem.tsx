@@ -1,6 +1,6 @@
-import React from 'react'
 import './AddressListItem.scss'
 import { IAddressForm } from '@ui/types/forms';
+import { IoTrashOutline } from "react-icons/io5";
 
 interface Props {
   onDelete: () => void;
@@ -18,7 +18,7 @@ const AddressListItem = (props: Props) => {
         <div className='column-td'>{state}</div>
         <div className='column-td'>{zipCode}</div>
 
-        <div className='column-td' onClick={onDelete}><i className="fa-regular fa-trash-can"></i></div>
+        <div className='column-td'><i><IoTrashOutline className='delete-icon' onClick={onDelete}/></i></div>
     </div>
   )
 }

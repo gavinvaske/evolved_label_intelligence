@@ -4,6 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
+
   div.column-td {
     width: 14%;
     display: flex;
@@ -12,5 +13,12 @@
     margin: 0;
     padding: 0;
     height: 45px;
+  }
+
+  .delete-icon {
+    cursor: pointer;
+    font-size: 22px;
+    color: red;
+    transition: transform 0.3s;
   }
 }

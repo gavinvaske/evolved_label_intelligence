@@ -1,12 +1,14 @@
 /* TABLE FRAMEWORK */
 .tbl-pri {
     width: 100%;
+    background-color: red;  // TODO: This is file is marked for deletion
     .tbl-hdr {
         width: 100%;
         display: flex;
         justify-content: center;
         align-items: center;
         flex-direction: row;
+        background-color: purple;  // TODO: This is file is marked for deletion
 
         .tbl-cell {
             font-weight: bold;
