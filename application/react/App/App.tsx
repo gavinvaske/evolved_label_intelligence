@@ -21,7 +21,6 @@ const ProtectedRoute = lazy(() => import('../_auth/ProtectedRoute/ProtectedRoute
 const TopNavbarLayout = lazy(() => import('../_layouts/TopNavbarLayout'));
 const AdminPanel = lazy(() => import('../AdminPanel/AdminPanel'));
 const UserTable = lazy(() => import('../User/UserTable/UserTable'));
-const UserAuthRolesForm = lazy(() => import('../User/UserAuthRolesForm/UserAuthRolesForm'));
 const Inventory = lazy(() => import('../Inventory/Inventory'));
 const Profile = lazy(() => import('../User/Profile/Profile'));
 const CrudNavigation = lazy(() => import('../CrudNavigation/CrudNavigation'));
@@ -79,7 +78,6 @@ export function App() {
                   <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
                     <Route path='admin' element={<AdminPanel />}></Route>
                     <Route path='tables/user' element={<UserTable />} />
-                    <Route path='forms/user/auth-roles/:mongooseId' element={<UserAuthRolesForm />} />
                   </Route>
                   <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
                     <Route element={<TopNavbarLayout />}>
