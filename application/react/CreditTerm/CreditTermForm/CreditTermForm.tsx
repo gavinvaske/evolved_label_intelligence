@@ -60,21 +60,25 @@ export const CreditTermForm = () => {
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
         <div className={formStyles.formCardHeader}>
-        <h3>{isUpdateRequest ? 'Update' : 'Create'} Credit Term</h3>
+          <h3>{isUpdateRequest ? 'Update' : 'Create'} Credit Term</h3>
         </div>
-        <div className='form-wrapper'>
-          <form id='credit-terms-form' onSubmit={handleSubmit(onSubmit)} data-test='credit-term-form'>
-            <Input
-              attribute='description'
-              label="Description"
-              register={register}
-              isRequired={true}
-              errors={errors}
-            />
-            {/* Let user know some form inputs had errors */}
-            <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)} data-test='credit-term-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
+                <Input
+                  attribute='description'
+                  label="Description"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+              </div>
+              {/* Let user know some form inputs had errors */}
+              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-            <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+            </div>
           </form>
         </div>
       </div>

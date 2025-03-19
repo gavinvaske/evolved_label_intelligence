@@ -1,19 +1,20 @@
 import React from 'react';
-import { useForm } from'react-hook-form';
+import { useForm } from 'react-hook-form';
 import './ContactForm.scss'
 import { IContactForm, IAddressForm } from '@ui/types/forms';
 import { Input } from '../../../_global/FormInputs/Input/Input';
 import { IShippingLocationForm } from '@ui/types/forms';
 import { CustomSelect, SelectOption } from '../../../_global/FormInputs/CustomSelect/CustomSelect';
 import { TextArea } from '../../../_global/FormInputs/TextArea/TextArea';
+import * as formStyles from '@ui/styles/form.module.scss'
 
 interface Props {
-  onSubmit: (contact: any) => void, 
-  onCancel: () => void, 
+  onSubmit: (contact: any) => void,
+  onCancel: () => void,
   locations: (IAddressForm | IShippingLocationForm)[]
 }
 export const ContactForm = (props: Props) => {
-  const { 
+  const {
     onSubmit,
     locations
   } = props;
@@ -28,75 +29,77 @@ export const ContactForm = (props: Props) => {
   const { register, handleSubmit, formState: { errors }, control } = useForm<IContactForm>();
 
   return (
-    <div className='modal-content'>
-      <div className='header'>
-        <h2>New Business Contact</h2>
+    <div>
+      <div className={formStyles.formCardHeader}>
+        <h3>New Business Contact</h3>
       </div>
-      <form id='contact-form' onSubmit={handleSubmit(onSubmit)}>
-        <div className='double-column-container'>
-          <Input
+      <form id='contact-form' onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
+        <div className={formStyles.formElementsWrapper}>
+          <div className={formStyles.inputGroupWrapper}>
+            <Input
               attribute='fullName'
               label="Name"
               register={register}
               isRequired={true}
               errors={errors}
-          />
-          <Input
+            />
+            <Input
               attribute='phoneNumber'
               label="Phone Number"
               register={register}
               isRequired={false}
               errors={errors}
-          />
-        </div>
-        <div className='triple-column-container'>
-          <Input
+            />
+          </div>
+          <div className={formStyles.inputGroupWrapper}>
+            <Input
               attribute='phoneExtension'
               label="Phone Extension"
               register={register}
               isRequired={false}
               errors={errors}
-          />
-          <Input
+            />
+            <Input
               attribute='email'
               label="Email"
               register={register}
               isRequired={false}
               errors={errors}
-          />
-          <Input
+            />
+            <Input
               attribute='contactStatus'
               label="Contact Status"
               register={register}
               isRequired={true}
               errors={errors}
-          />
-        </div>
-        <TextArea
+            />
+          </div>
+          <TextArea
             attribute='notes'
             label="Notes"
             register={register}
             isRequired={false}
             errors={errors}
-        />
-        <Input
+          />
+          <Input
             attribute='position'
             label="Position"
             register={register}
             isRequired={false}
             errors={errors}
-        />
-        <CustomSelect
-          attribute='location'
-          label="Location"
-          options={selectableLocations}
-          register={register}
-          isRequired={false}
-          errors={errors}
-          control={control}
-        />
-      <button className='submit-button' type="submit">Submit</button>
-    </form>
-  </div>
+          />
+          <CustomSelect
+            attribute='location'
+            label="Location"
+            options={selectableLocations}
+            register={register}
+            isRequired={false}
+            errors={errors}
+            control={control}
+          />
+          <button className='submit-button' type="submit">Submit</button>
+        </div>
+      </form>
+    </div>
   )
 }
