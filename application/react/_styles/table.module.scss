@@ -26,13 +26,13 @@
           font-weight: bold;
           &:first-of-type {
               border-radius: 5px 0 0 0;
-              .pulse-indicator {
+              .pulseIndicator {
                   border-radius: 5px 0 0 0;
               }
           }
           &:last-of-type {
               border-radius: 0 5px 0 0;
-              .pulse-indicator {
+              .pulseIndicator {
                   border-radius: 0 0 5px 0;
               }
           }
@@ -49,7 +49,7 @@
           .tblCell {
               &:first-of-type {
                   border-radius: 0 0 0 5px;
-                  .pulse-indicator {
+                  .pulseIndicator {
                       border-radius: 0 0 0 5px;
                   }
               }
