@@ -1,6 +1,5 @@
 
 import { IUser } from '@shared/types/models';
-import './UserTable.scss';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import { useMemo, useState } from 'react';
@@ -18,7 +17,6 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { UserRowActions } from './UserRowActions/UserRowActions';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
-import clsx from 'clsx';
 
 const columnHelper = createColumnHelper<IUser>()
 

@@ -1,6 +1,6 @@
-#profile-page {
+.profilePage {
     padding:0 15px 15px 15px;
-    .profile-header-container {
+    .profileHeaderContainer {
         height: 450px;
         border-radius: 5px;
         -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
@@ -11,7 +11,7 @@
         align-items: center;
         flex-direction: column;
         margin-bottom: 15px;
-        .profile-canvas-background {
+        .profileCanvasBackground {
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             width: 100%;
@@ -21,7 +21,7 @@
             background-size: cover;
             height: 300px;
         }
-        .profile-details-footer {
+        .profileDetailsFooter {
             position: relative;
             height: 150px;
             background-color: white;

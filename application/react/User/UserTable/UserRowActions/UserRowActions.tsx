@@ -1,4 +1,3 @@
-import './UserRowActions.scss'
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions'
 import { Row } from '@tanstack/react-table'
 import { MongooseIdStr } from '@shared/types/typeAliases'

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './Profile.scss';
 import { useQueryClient } from '@tanstack/react-query';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useForm } from 'react-hook-form';
@@ -12,6 +11,7 @@ import { convertDateStringToFormInputDateString } from '../../_helperFunctions/d
 import { IUserForm } from '@ui/types/forms';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as styles from './Profile.module.scss'
 
 export const Profile = () => {
   const queryClient = useQueryClient()
@@ -47,10 +47,10 @@ export const Profile = () => {
   const timeBasedGreetingMessage = hourOfDay < 12 ? 'Good Morning' : hourOfDay < 18 ? 'Good Afternoon' : 'Good Evening';
 
   return (
-    <div id='profile-page'>
-      <div className='profile-header-container'>
-        <div className='profile-canvas-background'></div>
-        <div className='profile-details-footer'>
+    <div className={styles.profilePage}>
+      <div className={styles.profileHeaderContainer}>
+        <div className={styles.profileCanvasBackground}></div>
+        <div className={styles.profileDetailsFooter}>
           <UploadProfilePicture apiEndpoint='/users/me/profile-picture' acceptedMimeTypes={['image/jpeg', 'image/png', 'image/jpg']}></UploadProfilePicture>
           {timeBasedGreetingMessage}
         </div>
