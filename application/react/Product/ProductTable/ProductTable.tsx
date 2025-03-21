@@ -12,6 +12,7 @@ import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -65,11 +66,11 @@ export const ProductTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div id='product-table-page-wrapper' className='page-wrapper products-table'>
-      <div className='card'>
+    <div id='product-table-page-wrapper' className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Products</h1>
-          <p>Showing <p className='text-blue'>{rows.length} </p> products.</p>
+          <h1 className={sharedStyles.textBlue}>Products</h1>
+          <p>Showing <p className={sharedStyles.textBlue}>{rows.length} </p> products.</p>
         </div>
          <SearchBar value={globalFilter} onChange={(e: any) => setGlobalFilter(e.target.value)} />
 

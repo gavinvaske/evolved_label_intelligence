@@ -13,6 +13,9 @@ import { TextArea } from '../../_global/FormInputs/TextArea/TextArea.tsx';
 import { IMaterialLengthAdjustmentForm } from '@ui/types/forms.ts';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 export const MaterialLengthAdjustmentForm = () => {
   const navigate = useNavigate();
@@ -83,41 +86,46 @@ export const MaterialLengthAdjustmentForm = () => {
   }
 
   return (
-    <div id='material-po-form-page-wrapper' className='page-wrapper'>
-      <div className='card'>
-        <div className='form-card-header'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
           <h3>Create Material Adjustment</h3>
         </div>
-        <div className='form-wrapper'>
-          <form onSubmit={handleSubmit(onFormSubmit)} data-test='material-length-adjustment-form'>
-            <CustomSelect
-              attribute='material'
-              label="Material"
-              options={materials}
-              register={register}
-              isRequired={true}
-              errors={errors}
-              control={control}
-            />
-            <Input
-              attribute='length'
-              label="Length"
-              register={register}
-              isRequired={true}
-              errors={errors}
-              leftUnit='@storm'
-            />
-            <TextArea
-              attribute='notes'
-              label="Notes"
-              register={register}
-              isRequired={false}
-              errors={errors}
-            />
-            {/* Let user know some form inputs had errors */}
-            <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+        <div>
+          <form onSubmit={handleSubmit(onFormSubmit)} data-test='material-length-adjustment-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
+                <CustomSelect
+                  attribute='material'
+                  label="Material"
+                  options={materials}
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                  control={control}
+                />
+                <Input
+                  attribute='length'
+                  label="Length"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                  leftUnit='@storm'
+                />
+              </div>
+              <TextArea
+                attribute='notes'
+                label="Notes"
+                register={register}
+                isRequired={false}
+                errors={errors}
+              />
 
-            <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'} </button>
+              {/* Let user know some form inputs had errors */}
+              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+
+              <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'} </button>
+            </div>
           </form>
         </div>
       </div>

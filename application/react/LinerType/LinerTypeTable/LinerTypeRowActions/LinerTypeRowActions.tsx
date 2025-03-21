@@ -1,6 +1,6 @@
 import React from 'react';
 import './LinerTypeRowActions.scss';
-import { RowActions } from '../../../_global/Table/RowActions/RowActions';
+import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { MongooseId } from "@shared/types/typeAliases.ts";
 import { useNavigate } from "react-router-dom";
@@ -9,6 +9,7 @@ import { Row } from '@tanstack/react-table';
 import { LinerType } from '../../../_types/databasemodels/linerType.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
+import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 
 type Props = {
   row: Row<LinerType>
@@ -37,8 +38,8 @@ export const LinerTypeRowActions = (props: Props) => {
 
   return (
     <RowActions>
-      <div className='dropdown-option' onClick={() => onEditClicked(mongooseObjectId)}>Edit</div>
-      <div className='dropdown-option' onClick={() => onDeleteClicked(mongooseObjectId)}>Delete</div>
+      <RowActionItem text='Edit' Icon={IoCreateOutline} onClick={() => onEditClicked(mongooseObjectId)} />
+      <RowActionItem text='Delete' Icon={IoTrashOutline} onClick={() => onDeleteClicked(mongooseObjectId)} />
     </RowActions>
   )
 }

@@ -11,6 +11,7 @@ import { refreshLoggedInUser, useLoggedInUser } from '../../_hooks/useLoggedInUs
 import { convertDateStringToFormInputDateString } from '../../_helperFunctions/dateTime';
 import { IUserForm } from '@ui/types/forms';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 export const Profile = () => {
   const queryClient = useQueryClient()
@@ -55,7 +56,7 @@ export const Profile = () => {
         </div>
       </div>
 
-      <div className='card'>
+      <div className={sharedStyles.card}>
         {
           (isLoadingUser || isFetchingUser) ? <LoadingIndicator /> : (
             <form onSubmit={handleSubmit(onSubmit)} data-test='user-form'>

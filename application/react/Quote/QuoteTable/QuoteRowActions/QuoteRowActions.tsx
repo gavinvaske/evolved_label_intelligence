@@ -4,7 +4,8 @@ import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { MongooseId } from "@ui/types/typeAliases";
-import { RowActions } from '../../../_global/Table/RowActions/RowActions';
+import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
+import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 
 type TODO = any;
 
@@ -34,9 +35,9 @@ export const QuoteRowActions = (props: Props) => {
 
   return (
     <RowActions>
-      <div className='dropdown-option' onClick={() => onViewClicked(mongooseObjectId)}>View</div>
-      <div className='dropdown-option' onClick={() => onEditClicked(mongooseObjectId)}>Edit</div>
-      <div className='dropdown-option' onClick={() => onDeleteClicked(mongooseObjectId)}>Delete</div>
+      <RowActionItem text='View' onClick={() => onViewClicked(mongooseObjectId)} />
+      <RowActionItem text='Edit' Icon={IoCreateOutline} onClick={() => onEditClicked(mongooseObjectId)} />
+      <RowActionItem text='Delete' Icon={IoTrashOutline} onClick={() => onDeleteClicked(mongooseObjectId)} />
     </RowActions>
   )
 };

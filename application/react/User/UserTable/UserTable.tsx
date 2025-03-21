@@ -17,6 +17,8 @@ import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { UserRowActions } from './UserRowActions/UserRowActions';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import clsx from 'clsx';
 
 const columnHelper = createColumnHelper<IUser>()
 
@@ -110,11 +112,11 @@ export const UserTable = () => {
 
 
   return (
-    <div className='page-wrapper user-table'>
-      <div className='card'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Users</h1>
-          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{userResults?.totalResults || 0}</p> results.</p>
+          <h1 className={sharedStyles.textBlue}>Users</h1>
+          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{userResults?.totalResults || 0}</p> results.</p>
         </div>
         <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)

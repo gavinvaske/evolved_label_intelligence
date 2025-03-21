@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import './CustomerForm.scss'
 import { useForm } from 'react-hook-form';
 import { ShippingLocationForm } from '../../ShippingLocation/ShippingLocationForm/ShippingLocationForm';
 import { IShippingLocationForm } from '@ui/types/forms';
@@ -19,13 +18,17 @@ import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { getOneCustomer } from '../../_queries/customer';
-import { MongooseId } from "@ui/types/typeAliases";
+
 import { performTextSearch } from '../../_queries/_common';
 import { ICreditTerm } from '@shared/types/models';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect';
 import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import AddressListItem from './AddressListItem/AddressListItem';
-
+import * as sharedStyles from '@ui/styles/shared.module.scss';
+import * as formStyles from '@ui/styles/form.module.scss';
+import * as tableStyles from '@ui/styles/table.module.scss';
+import * as styles from './CustomerForm.module.scss';
+import { MongooseId } from '@shared/types/typeAliases';
 
 const customerTableUrl = '/react-ui/tables/customer'
 
@@ -149,15 +152,15 @@ export const CustomerForm = () => {
   }
 
   return (
-    <div id='customer-form-page-wrapper' className='page-wrapper'>
-      <div className='card'>
-        <div className='form-card-header'>
+    <div id='customer-form-page-wrapper' className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Customer</h3>
         </div>
-        <div className='form-wrapper'>
-          <form onSubmit={handleSubmit(onCustomerFormSubmit)} data-test='customer-form' className='create-customer-form'>
-            <div className='form-elements-wrapper'>
-              <div className='input-group-wrapper'>
+        <div>
+          <form onSubmit={handleSubmit(onCustomerFormSubmit)} data-test='customer-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='customerId'
                   label="Customer ID"
@@ -197,25 +200,24 @@ export const CustomerForm = () => {
                 errors={errors}
                 control={control}
               />
-            </div>
-            <div className='title-header'>
+            <div className={styles.titleHeader}>
               <h3>Business Locations:</h3>
             </div>
-            <div id='business-location-cards' className='tbl-pri'>
-              <div className='tbl-hdr'>
-                <div className='tbl-cell'>Name</div>
-                <div className='tbl-cell'>Address</div>
-                <div className='tbl-cell'>Unit #</div>
-                <div className='tbl-cell'>City</div>
-                <div className='tbl-cell'>State</div>
-                <div className='tbl-cell'>Zip</div>
-                <div className='tbl-cell'>Delete</div>
+            <div id='business-location-cards' className={tableStyles.tblPri}>
+              <div className={tableStyles.tblHdr}>
+                <div className={tableStyles.tblCell}>Name</div>
+                <div className={tableStyles.tblCell}>Address</div>
+                <div className={tableStyles.tblCell}>Unit #</div>
+                <div className={tableStyles.tblCell}>City</div>
+                <div className={tableStyles.tblCell}>State</div>
+                <div className={tableStyles.tblCell}>Zip</div>
+                <div className={tableStyles.tblCell}>Delete</div>
               </div>
               <div className='table'>
                 {
                   businessLocations.map((businessLocation, index) => {
                     return (
-                      <div className='table-row' key={index}>
+                      <div className={styles.tableRow} key={index}>
                         <AddressListItem
                           data={businessLocation}
                           onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
@@ -226,22 +228,22 @@ export const CustomerForm = () => {
                 }
               </div>
             </div>
-            <button className='add-new-row' type="button" onClick={() => setShowBusinessLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Business Location</button>
+            <button className={styles.addNewRow} type="button" onClick={() => setShowBusinessLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Business Location</button>
 
-            <div className='title-header'>
+            <div className={styles.titleHeader}>
               <h3>Shipping Locations:</h3>
             </div>
-            <div id='shipping-location-cards' className='tbl-pri'>
-              <div className='tbl-hdr'>
-                <div className='tbl-cell'>Freight Acct #:</div>
-                <div className='tbl-cell'>Delivery Method</div>
-                <div className='tbl-cell'>Name</div>
-                <div className='tbl-cell'>Street</div>
-                <div className='tbl-cell'>Unit</div>
-                <div className='tbl-cell'>City</div>
-                <div className='tbl-cell'>State</div>
-                <div className='tbl-cell'>Zip</div>
-                <div className='tbl-cell'>Delete</div>
+            <div id='shipping-location-cards' className={tableStyles.tblPri}>
+              <div className={tableStyles.tblHdr}>
+                <div className={tableStyles.tblCell}>Freight Acct #:</div>
+                <div className={tableStyles.tblCell}>Delivery Method</div>
+                <div className={tableStyles.tblCell}>Name</div>
+                <div className={tableStyles.tblCell}>Street</div>
+                <div className={tableStyles.tblCell}>Unit</div>
+                <div className={tableStyles.tblCell}>City</div>
+                <div className={tableStyles.tblCell}>State</div>
+                <div className={tableStyles.tblCell}>Zip</div>
+                <div className={tableStyles.tblCell}>Delete</div>
               </div>
               <div className='table'>
                 {
@@ -258,20 +260,20 @@ export const CustomerForm = () => {
                 }
               </div>
             </div>
-            <button className='add-new-row' type="button" onClick={() => setShowShippingLocationForm(true)}><i className="fa-solid fa-plus"></i>Add Shipping Location</button>
+            <button className={styles.addNewRow} type="button" onClick={() => setShowShippingLocationForm(true)}><i className="fa-solid fa-plus"></i>Add Shipping Location</button>
 
-            <div className='title-header'>
+            <div className={styles.titleHeader}>
               <h3>Billing Locations:</h3>
             </div>
-            <div id='billing-location-cards' className='tbl-pri'>
-              <div className='tbl-hdr'>
-                <div className='tbl-cell'>Name</div>
-                <div className='tbl-cell'>Street</div>
-                <div className='tbl-cell'>Unit</div>
-                <div className='tbl-cell'>City</div>
-                <div className='tbl-cell'>State</div>
-                <div className='tbl-cell'>Zip</div>
-                <div className='tbl-cell'>Delete</div>
+            <div id='billing-location-cards' className={tableStyles.tblPri}>
+              <div className={tableStyles.tblHdr}>
+                <div className={tableStyles.tblCell}>Name</div>
+                <div className={tableStyles.tblCell}>Street</div>
+                <div className={tableStyles.tblCell}>Unit</div>
+                <div className={tableStyles.tblCell}>City</div>
+                <div className={tableStyles.tblCell}>State</div>
+                <div className={tableStyles.tblCell}>Zip</div>
+                <div className={tableStyles.tblCell}>Delete</div>
               </div>
               <div className='table'>
                 {
@@ -288,22 +290,22 @@ export const CustomerForm = () => {
                 }
               </div>
             </div>
-            <button className='add-new-row' type="button" onClick={() => setShowBillingLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Billing Location</button>
+            <button className={styles.addNewRow} type="button" onClick={() => setShowBillingLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Billing Location</button>
 
-            <div className='title-header'>
+            <div className={styles.titleHeader}>
               <h3>Contacts:</h3>
             </div>
-            <div id='contact-cards' className='tbl-pri'>
-              <div className='tbl-hdr'>
-                <div className='tbl-cell'>Name</div>
-                <div className='tbl-cell'>Freight Number</div>
-                <div className='tbl-cell'>Delivery Method</div>
-                <div className='tbl-cell'>Street</div>
-                <div className='tbl-cell'>Unit</div>
-                <div className='tbl-cell'>City</div>
-                <div className='tbl-cell'>State</div>
-                <div className='tbl-cell'>Zip</div>
-                <div className='tbl-cell'>Delete</div>
+            <div id='contact-cards' className={tableStyles.tblPri}>
+              <div className={tableStyles.tblHdr}>
+                <div className={tableStyles.tblCell}>Name</div>
+                <div className={tableStyles.tblCell}>Freight Number</div>
+                <div className={tableStyles.tblCell}>Delivery Method</div>
+                <div className={tableStyles.tblCell}>Street</div>
+                <div className={tableStyles.tblCell}>Unit</div>
+                <div className={tableStyles.tblCell}>City</div>
+                <div className={tableStyles.tblCell}>State</div>
+                <div className={tableStyles.tblCell}>Zip</div>
+                <div className={tableStyles.tblCell}>Delete</div>
               </div>
               <div className='table'>
                 {
@@ -320,11 +322,12 @@ export const CustomerForm = () => {
                 }
               </div>
             </div>
-            <button className='add-new-row' type="button" onClick={() => setShowContactForm(true)}><i className="fa-solid fa-plus"></i> Add Contact</button>
+            <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><i className="fa-solid fa-plus"></i> Add Contact</button>
             {/* Let user know some form inputs had errors */}
             <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-            <button className='btn-primary' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+            <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+            </div>
           </form>
         </div>
         {/* Code Below Renders a modal IFF user initiated one to open */}

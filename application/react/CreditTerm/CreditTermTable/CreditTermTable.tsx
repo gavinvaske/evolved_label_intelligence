@@ -22,6 +22,7 @@ import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -102,11 +103,11 @@ export const CreditTermTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
-      <div className='card'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Credit Terms</h1>
-          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{creditTermSearchResults?.totalResults || 0}</p> results.</p>
+          <h1 className={sharedStyles.textBlue}>Credit Terms</h1>
+          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{creditTermSearchResults?.totalResults || 0}</p> results.</p>
         </div>
          <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)

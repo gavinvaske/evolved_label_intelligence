@@ -18,6 +18,7 @@ import { useErrorMessage } from '../../_hooks/useErrorMessage'
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime.ts'
 import * as tableStyles from '@ui/styles/table.module.scss'
 import Row from '../../_global/Table/Row/Row'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<any>()
 
@@ -69,11 +70,11 @@ function DeliveryMethodTable() {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper'>
-      <div className='card'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Delivery Methods</h1>
-          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{deliveryMethods?.length || 0}</p> results.</p>
+          <h1 className={sharedStyles.textBlue}>Delivery Methods</h1>
+          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{deliveryMethods?.length || 0}</p> results.</p>
         </div>
 
         <Table id='delivery-method-table'>

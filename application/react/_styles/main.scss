@@ -68,19 +68,7 @@ h6 {
 	font-size: 1rem;
     line-height: 1rem;
 }
-.page-wrapper {
-    padding: 95px 15px 15px;
-}
-.form-card-header {
-    margin-bottom: 15px;
-    border-bottom: 1px solid #6768791a;
-    h3 {
-        color: rgba(var(--primary-purple-text-color),1);
-        font-weight: 700;
-        line-height: 1.75rem;
-        margin-bottom: 15px;
-    }
-}
+
 .input-wrapper, .custom-select-container {
     margin-bottom: 15px;
 }
@@ -235,7 +223,6 @@ textarea {
     margin-bottom: 15px;
     -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
     box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
-    background-color: white;
     border-radius: 0.428rem;
 }
 
@@ -282,41 +269,4 @@ textarea {
     display: flex;
     justify-content: center;
     align-items: center;
-}
-
-
-.create-die-form, #shipping-location-form, .create-vendor-form, .create-customer-form, .create-material-order-form {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: wrap;
-    .form-elements-wrapper {
-        width: 100%;
-    }
-    .input-group-wrapper {
-        width: 100%;
-        display: flex;
-        flex-direction: row;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        margin: 0 0 15px 0;
-        padding: 0 0 15px 0;
-        border-bottom: 1px solid #6768791a;
-    }
-    .input-wrapper, .custom-select-container {
-        width: 240px;
-        margin:15px 5px;
-        .input-wrapper {
-            margin: 0;
-        }
-    }
-    .text-area {
-        width: 100%;
-    }
-    .btn-wrapper {
-        width: 100%;
-        display: flex;
-        align-items: flex-start;
-    }
 }

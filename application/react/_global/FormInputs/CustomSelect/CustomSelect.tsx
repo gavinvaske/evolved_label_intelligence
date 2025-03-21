@@ -2,6 +2,8 @@ import React, { useEffect, useRef, useState } from 'react';
 import './CustomSelect.scss';
 import { FieldErrors, FieldValues, UseFormRegister, Path, Controller, Control } from 'react-hook-form';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage.tsx';
+import clsx from 'clsx';
+import * as formStyles from '@ui/styles/form.module.scss'
 
 export type SelectOption = {
   displayName: string,
@@ -50,13 +52,13 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
   );
 
   return (
-    <div className="custom-select-container" ref={dropdownRef}>
+    <div className={clsx(formStyles.customSelectContainer)} ref={dropdownRef}>
       <label>{label}<span className='red'>{isRequired ? '*' : ''}</span>:</label>
       <Controller
         control={control}
         name={attribute}
         render={({ field: { onChange, value } }) => (
-          <div className='input-wrapper'>
+          <div>
             {/* Selected Option */}
             <div className={`select-selected ${value && 'active'}`} onClick={toggleDropdown}>
               {(value && options.find(option => value == option.value))?.displayName || 'Nothing Selected'}

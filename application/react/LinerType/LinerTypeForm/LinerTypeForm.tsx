@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import './LinerTypeForm.scss';
 import { useForm } from 'react-hook-form';
@@ -9,6 +9,8 @@ import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { ILinerType } from '@shared/types/models';
 import { ILinerTypeForm } from '@ui/types/forms';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as formStyles from '@ui/styles/form.module.scss'
 
 const linerTypeTableUrl = '/react-ui/tables/liner-type'
 
@@ -54,24 +56,28 @@ export const LinerTypeForm = () => {
   };
 
   return (
-    <div className='page-container'>
-      <div className='form-card'>
-        <div className='form-card-header'>
-        <h3>{isUpdateRequest ? 'Update' : 'Create'} Liner Type</h3>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
+        <div className={formStyles.formCardHeader}>
+          <h3>{isUpdateRequest ? 'Update' : 'Create'} Liner Type</h3>
         </div>
-        <div className='form-wrapper'>
-          <form id='liner-type-form' onSubmit={handleSubmit(onSubmit)} data-test='liner-type-form'>
-            <Input
-              attribute='name'
-              label="Name"
-              register={register}
-              isRequired={true}
-              errors={errors}
-            />
-            {/* Let user know some form inputs had errors */}
-            <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+        <div>
+          <form onSubmit={handleSubmit(onSubmit)} data-test='liner-type-form' className={formStyles.form}>
+            <div className={formStyles.formElementsWrapper}>
+              <div className={formStyles.inputGroupWrapper}>
+                <Input
+                  attribute='name'
+                  label="Name"
+                  register={register}
+                  isRequired={true}
+                  errors={errors}
+                />
+              </div>
+              {/* Let user know some form inputs had errors */}
+              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-            <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+            </div>
           </form>
         </div>
       </div>

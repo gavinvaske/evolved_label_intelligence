@@ -7,6 +7,7 @@ import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { IShippingLocationForm } from '@ui/types/forms.ts';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect.tsx';
 import { IDeliveryMethod } from '@shared/types/models.ts';
+import * as formStyles from '@ui/styles/form.module.scss'
 
 interface Props {
   onSubmit: (data: IShippingLocationForm) => void
@@ -37,12 +38,13 @@ export const ShippingLocationForm = (props: Props) => {
   const { register, handleSubmit, formState: { errors }, control } = useForm<IShippingLocationForm>();
 
   return (
-    <div className=''>
-      <div className='header'>
-        <h2>New Shipping Address</h2>
+    <div>
+      <div className={formStyles.formCardHeader}>
+        <h3>New Shipping Address</h3>
       </div>
-      <form id='shipping-location-form' onSubmit={handleSubmit(onSubmit)}>
-        <div className='input-group-wrapper'>
+      <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
+      <div className={formStyles.formElementsWrapper}>
+        <div className={formStyles.inputGroupWrapper}>
           <Input
             attribute='name'
             label="Name"
@@ -103,6 +105,7 @@ export const ShippingLocationForm = (props: Props) => {
           />
         </div>
         <button className='submit-button' type="submit">Submit</button>
+        </div>
       </form>
     </div>
   )

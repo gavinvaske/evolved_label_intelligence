@@ -15,6 +15,7 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { performTextSearch } from '../../_queries/_common';
 import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const columnHelper = createColumnHelper<IMaterialOrder>()
 
@@ -108,11 +109,11 @@ export const MaterialOrderTable = () => {
   const rows = table.getRowModel().rows;
 
   return (
-    <div className='page-wrapper credit-term-table'>
-      <div className='card'>
+    <div className={sharedStyles.pageWrapper}>
+      <div className={sharedStyles.card}>
         <div className={tableStyles.headerDescription}>
-          <h1 className="text-blue">Material Orders</h1>
-          <p>Viewing <p className='text-blue'>{rows.length}</p> of <p className='text-blue'>{materialOrderResults?.totalResults || 0}</p> results.</p>
+          <h1 className={sharedStyles.textBlue}>Material Orders</h1>
+          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{materialOrderResults?.totalResults || 0}</p> results.</p>
         </div>
         <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
