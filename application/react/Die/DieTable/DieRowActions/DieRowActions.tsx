@@ -1,14 +1,16 @@
 import React from 'react';
 import './DieRowActions.scss';
-import { RowActions } from '../../../_global/Table/RowActions/RowActions';
+import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { IDie } from '../../../../api/models/die'
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { GET_DIES_QUERY_KEY } from '../DieTable';
+import { IoCreateOutline } from "react-icons/io5";
+import { IoTrashOutline } from "react-icons/io5";
+import { IDie } from '@shared/types/models';
 
 type Props = {
   row: Row<IDie>
@@ -37,8 +39,8 @@ export const DieRowActions = (props: Props) => {
 
   return (
     <RowActions>
-    <div className='dropdown-option' onClick={() => onEditClicked(mongooseObjectId)}><i className="fa-regular fa-pen-to-square"></i>Edit</div>
-    <div className='dropdown-option' onClick={() => onDeleteClicked(mongooseObjectId)}><i className="fa-regular fa-trash"></i>Delete</div>
+      <RowActionItem text='Edit' Icon={IoCreateOutline} onClick={() => onEditClicked(mongooseObjectId)} />
+      <RowActionItem text='Delete' Icon={IoTrashOutline} onClick={() => onDeleteClicked(mongooseObjectId)} />
   </RowActions>
   )
 }

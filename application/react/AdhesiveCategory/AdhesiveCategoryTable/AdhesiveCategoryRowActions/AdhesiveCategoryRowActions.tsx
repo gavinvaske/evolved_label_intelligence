@@ -8,7 +8,8 @@ import { MongooseId } from "@shared/types/typeAliases.ts";
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
-import { RowActions } from '../../../_global/Table/RowActions/RowActions';
+import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
+import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 
 type Props = {
   row: Row<AdhesiveCategory>
@@ -37,8 +38,8 @@ export const AdhesiveCategoryRowActions = (props: Props) => {
 
   return (
     <RowActions>
-      <div className='dropdown-option' onClick={() => onEditClicked(mongooseObjectId)}><i className="fa-regular fa-pen-to-square"></i>Edit</div>
-      <div className='dropdown-option' onClick={() => onDeleteClicked(mongooseObjectId)}><i className="fa-regular fa-trash"></i>Delete</div>
+      <RowActionItem text='Edit' Icon={IoCreateOutline} onClick={() => onEditClicked(mongooseObjectId)} />
+      <RowActionItem text='Delete' Icon={IoTrashOutline} onClick={() => onDeleteClicked(mongooseObjectId)} />
     </RowActions>
   )
 }
