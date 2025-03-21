@@ -20,3 +20,30 @@
 .textBlue {
 	color: #157efb;
 }
+
+.red {
+  color: red;
+}
+
+.submitButton {
+  display: block;
+  border-color: #157efb;
+  background-color: #157efb;
+  text-align: center;
+  border: 1px solid transparent;
+  padding: 0.786rem 1.5rem;
+  width: 100%;
+  border-radius: 3px;
+  color: white;
+  font-weight: 500;
+  font-size: 1rem;
+  margin-top: 1rem;
+  width: 150px;
+}
+
+.submitButton:hover {
+  cursor: pointer;
+  background-color: #5e50ee;
+  -webkit-box-shadow: 0 8px 25px -8px #7367f0;
+  box-shadow: 0 8px 25px -8px #7367f0;
+}

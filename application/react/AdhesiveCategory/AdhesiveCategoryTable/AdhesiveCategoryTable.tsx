@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import './AdhesiveCategoryTable.scss';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { AdhesiveCategoryRowActions } from './AdhesiveCategoryRowActions/AdhesiveCategoryRowActions';
 import { useQuery } from '@tanstack/react-query';

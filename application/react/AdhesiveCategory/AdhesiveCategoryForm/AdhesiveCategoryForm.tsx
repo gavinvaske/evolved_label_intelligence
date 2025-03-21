@@ -1,5 +1,4 @@
-import React, { useEffect } from 'react';
-import './AdhesiveCategoryForm.scss';
+import { useEffect } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from 'react-hook-form';
@@ -76,7 +75,7 @@ export const AdhesiveCategoryForm = () => {
               {/* Let user know some form inputs had errors */}
               <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-              <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>
