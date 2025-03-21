@@ -1,5 +1,3 @@
-import React from 'react';
-import './DieRowActions.scss';
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +9,7 @@ import { GET_DIES_QUERY_KEY } from '../DieTable';
 import { IoCreateOutline } from "react-icons/io5";
 import { IoTrashOutline } from "react-icons/io5";
 import { IDie } from '@shared/types/models';
+import { MongooseId } from '@shared/types/typeAliases';
 
 type Props = {
   row: Row<IDie>
@@ -23,11 +22,11 @@ export const DieRowActions = (props: Props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient()
 
-  const onEditClicked = (mongooseObjectId) => {
+  const onEditClicked = (mongooseObjectId: MongooseId) => {
     navigate(`/react-ui/forms/die/${mongooseObjectId}`)
   }
   
-  const onDeleteClicked = (mongooseObjectId) => {
+  const onDeleteClicked = (mongooseObjectId: MongooseId) => {
     alert('@TODO Storm: Add a confirmation modal before deletion?')
     axios.delete(`/dies/${mongooseObjectId}`)
       .then((_ : AxiosResponse) => {
