@@ -173,7 +173,7 @@ export const MaterialForm = () => {
           <h3>{isUpdateRequest ? 'Edit' : 'Create'} Material</h3>
         </div>
         <div>
-          <form id='material-form' className={formStyles.form} onSubmit={handleSubmit(onSubmit)}>
+          <form id='material-form' className={formStyles.form} onSubmit={handleSubmit(onSubmit)} data-test='material-form'>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
