@@ -1,6 +1,5 @@
-import React from 'react';
-import './ContactCard.scss';
 import { IContactForm } from '@ui/types/forms';
+import * as styles from './ContactCard.module.scss'
 
 type Props = {
   data: IContactForm,
@@ -15,7 +14,7 @@ const ContactCard = (props: Props) => {
   } = data;
   
   return (
-    <div className='contact-card'>
+    <div className={styles.contactCard}>
       <p>Full Name: {fullName}</p>
       <p>Phone Number: {phoneNumber}</p>
       <p>Phone Extension: {phoneExtension}</p>

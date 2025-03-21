@@ -258,7 +258,7 @@ export const ProductForm = () => {
                 errors={errors}
               />
 
-              <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>

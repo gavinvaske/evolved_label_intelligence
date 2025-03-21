@@ -73,7 +73,7 @@ export const DeliveryMethodForm = () => {
                   errors={errors}
                 />
               </div>
-              <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>

@@ -1,11 +1,11 @@
-import React, { useEffect, useRef } from 'react';
-import './ChangePassword.scss';
+import { useEffect, useRef } from 'react';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useNavigate, useParams } from 'react-router-dom';
+import * as sharedStyles from '@ui/styles/shared.module.scss';
 
 export const ChangePassword = () => {
   const newPasswordFieldRef = useRef<HTMLInputElement>(null);
@@ -52,7 +52,7 @@ export const ChangePassword = () => {
           {'data-test': 'repeat-password-input'}
         }
     />
-    <button className='create-entry submit-button' type='submit' data-test='change-password-btn'>Save Password</button>
+    <button className={sharedStyles.submitButton} type='submit' data-test='change-password-btn'>Save Password</button>
   </form>
   )
 }

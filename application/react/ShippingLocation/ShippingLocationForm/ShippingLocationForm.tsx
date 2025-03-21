@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useForm } from 'react-hook-form';
 import './ShippingLocationForm.scss'
@@ -8,6 +8,7 @@ import { IShippingLocationForm } from '@ui/types/forms.ts';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect.tsx';
 import { IDeliveryMethod } from '@shared/types/models.ts';
 import * as formStyles from '@ui/styles/form.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 interface Props {
   onSubmit: (data: IShippingLocationForm) => void
@@ -104,7 +105,7 @@ export const ShippingLocationForm = (props: Props) => {
             errors={errors}
           />
         </div>
-        <button className='submit-button' type="submit">Submit</button>
+        <button className={sharedStyles.submitButton} type="submit">Submit</button>
         </div>
       </form>
     </div>

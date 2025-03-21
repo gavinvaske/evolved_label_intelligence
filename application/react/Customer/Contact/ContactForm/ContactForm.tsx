@@ -1,18 +1,18 @@
-import React from 'react';
 import { useForm } from 'react-hook-form';
-import './ContactForm.scss'
 import { IContactForm, IAddressForm } from '@ui/types/forms';
 import { Input } from '../../../_global/FormInputs/Input/Input';
 import { IShippingLocationForm } from '@ui/types/forms';
 import { CustomSelect, SelectOption } from '../../../_global/FormInputs/CustomSelect/CustomSelect';
 import { TextArea } from '../../../_global/FormInputs/TextArea/TextArea';
 import * as formStyles from '@ui/styles/form.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 interface Props {
   onSubmit: (contact: any) => void,
   onCancel: () => void,
   locations: (IAddressForm | IShippingLocationForm)[]
 }
+
 export const ContactForm = (props: Props) => {
   const {
     onSubmit,
@@ -33,7 +33,7 @@ export const ContactForm = (props: Props) => {
       <div className={formStyles.formCardHeader}>
         <h3>New Business Contact</h3>
       </div>
-      <form id='contact-form' onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
+      <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
         <div className={formStyles.formElementsWrapper}>
           <div className={formStyles.inputGroupWrapper}>
             <Input
@@ -97,7 +97,7 @@ export const ContactForm = (props: Props) => {
             errors={errors}
             control={control}
           />
-          <button className='submit-button' type="submit">Submit</button>
+          <button className={sharedStyles.submitButton} type="submit">Submit</button>
         </div>
       </form>
     </div>

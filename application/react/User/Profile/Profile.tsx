@@ -101,7 +101,7 @@ export const Profile = () => {
                 register={register}
                 errors={errors}
               />
-              <button className='create-entry submit-button' type='submit'>{'Update'}</button>
+              <button className={sharedStyles.submitButton} type='submit'>{'Update'}</button>
             </form>
           )}
       </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './Register.scss';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import axios, { AxiosError, AxiosResponse } from 'axios';
@@ -6,6 +6,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
+import * as sharedStyles from '../../_styles/shared.module.scss';
 
 export const Register = () => {
   const emailFieldRef = useRef<HTMLInputElement>(null);
@@ -95,7 +96,7 @@ export const Register = () => {
                   </div>
                 </div>
                 <div className='button-container'>
-                  <button className='create-entry submit-button' type='submit' data-test='login-btn'>Register</button>
+                  <button className={sharedStyles.submitButton} type='submit' data-test='login-btn'>Register</button>
                 </div>
               </form>
 
