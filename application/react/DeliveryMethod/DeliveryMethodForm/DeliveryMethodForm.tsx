@@ -1,7 +1,6 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import './DeliveryMethodForm.scss'
 import { useNavigate, useParams } from "react-router-dom";
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
@@ -62,7 +61,7 @@ export const DeliveryMethodForm = () => {
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Delivery Method</h3>
         </div>
         <div>
-          <form id='delivery-method-form' onSubmit={handleSubmit(onSubmit)} data-test='delivery-method-form' className={formStyles.form}>
+          <form onSubmit={handleSubmit(onSubmit)} data-test='delivery-method-form' className={formStyles.form}>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
                 <Input

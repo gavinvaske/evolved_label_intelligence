@@ -1,18 +1,16 @@
-import React from 'react'
-import './DeliveryMethodRowActions.scss'
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { MongooseId } from "@shared/types/typeAliases.ts";
 import { useNavigate } from 'react-router-dom';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { Row } from '@tanstack/react-table';
-import { DeliveryMethod } from '../../../_types/databasemodels/deliveryMethod.ts';
 import { useQueryClient } from '@tanstack/react-query'
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
+import { IDeliveryMethod } from '@shared/types/models.ts';
 
 type Props = {
-  row: Row<DeliveryMethod>
+  row: Row<IDeliveryMethod>
 }
 
 export const DeliveryMethodRowActions = (props: Props) => {

@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './DieForm.scss';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -283,9 +282,7 @@ export const DieForm = () => {
               {/* Let user know some form inputs had errors */}
               <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-              <div className='btn-wrapper'>
-                <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
-              </div>
+              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>

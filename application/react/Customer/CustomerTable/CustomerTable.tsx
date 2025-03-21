@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import './CustomerTable.scss';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { CustomerRowActions } from './CustomerRowActions/CustomerRowActions'
 import { useQuery } from '@tanstack/react-query';
