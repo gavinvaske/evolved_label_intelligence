@@ -6,6 +6,8 @@ import { ConditionalQuickFilter } from '../QuickFilterModal/ConditionalQuickFilt
 import { TextQuickFilter } from '../QuickFilterModal/TextQuickFilter/QuickFilterButton';
 import SearchBar from '../SearchBar/SearchBar';
 import clsx from 'clsx';
+import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], store: Filter<T>) => {
   return (
@@ -82,8 +84,8 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
 
   return (
     <>
-      <div className={clsx('search-wrapper', 'flex-center-left-row', store.getSearchBarInput() && 'has-text', isSearchBarActive && 'active')} onClick={toggleSearchActive}>
-        <i className={clsx('fa-regular', 'fa-magnifying-glass', 'flex-center-center-row')}></i>
+      <div className={clsx('search-wrapper', flexboxStyles.flexCenterLeftRow, store.getSearchBarInput() && 'has-text', isSearchBarActive && 'active')} onClick={toggleSearchActive}>
+        <i className={clsx('fa-regular', 'fa-magnifying-glass', flexboxStyles.flexCenterCenterRow)}></i>
         <SearchBar
           ref={ref}
           value={store.getSearchBarInput()}
@@ -93,10 +95,10 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         <i className={clsx('fa-light', 'fa-xmark')} onClick={() => store.resetAllFilters()}></i>
       </div>
 
-      <div className={clsx('split-btn-frame', 'btn-filter', 'flex-center-center-row', 'tooltip-top')}>
-        <span className={clsx('tooltiptext')}>Filter materials</span>
-        <div className={clsx('filter-btn-wrapper', 'flex-center-center-row', (isDropdownDisplayed || isAdvancedDropdownDisplayed) && 'active')}>
-          <button className={clsx('btn-split', 'quick-filter', 'flex-center-center-row')} onClick={() => toggleQuickFilterMenu()}>
+      <div className={clsx('split-btn-frame', 'btn-filter', flexboxStyles.flexCenterCenterRow, sharedStyles.tooltipTop)}>
+        <span className={clsx(sharedStyles.tooltipText)}>Filter materials</span>
+        <div className={clsx('filter-btn-wrapper', flexboxStyles.flexCenterCenterRow, (isDropdownDisplayed || isAdvancedDropdownDisplayed) && 'active')}>
+          <button className={clsx('btn-split', 'quick-filter', flexboxStyles.flexCenterCenterRow)} onClick={() => toggleQuickFilterMenu()}>
             <i className={clsx('fa-light', 'fa-filter')}></i>Filter
           </button>
           <button className={clsx('btn-split-arrow-dropdown', 'btn-advanced-filter')} onClick={() => toggleAdvancedQuickFilterMenu()}>
@@ -114,8 +116,8 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         </div>
 
       </div>
-      <div className={clsx('all-wrapper', 'tooltip-top')}>
-        <span className={clsx('tooltiptext')}>See all materials</span>
+      <div className={clsx('all-wrapper', sharedStyles.tooltipTop)}>
+        <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>
         <button className={clsx('sort', 'btn-sort', 'see-all')} onClick={() => store.resetAllFilters()}>
           <i className={clsx('fa-solid', 'fa-layer-group')}></i> See All ({<span>{filterableItemsCount}</span>})
         </button>
