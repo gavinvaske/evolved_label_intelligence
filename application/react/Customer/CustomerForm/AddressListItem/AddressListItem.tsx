@@ -19,7 +19,7 @@ const AddressListItem = (props: Props) => {
         <div className={styles.columnTd}>{zipCode}</div>
 
         <div className={styles.columnTd}>
-          <i><IoTrashOutline className='delete-icon' onClick={onDelete}/></i>
+          <i><IoTrashOutline className={styles.deleteIcon} onClick={onDelete}/></i>
         </div>
     </div>
   )

@@ -1,5 +1,4 @@
 import { TextFilter, ConditionalFilter } from "@ui/types/filters";
-import { MaterialInventory } from "../Inventory"
 import { v4 as uuidv4 } from 'uuid';
 
 export const textQuickFilters: TextFilter[] = [
@@ -27,11 +26,11 @@ export const textQuickFilters: TextFilter[] = [
   }
 ]
 
-export const conditionalQuickFilters: ConditionalFilter<MaterialInventory>[] = [
+export const conditionalQuickFilters: ConditionalFilter<any>[] = [
   {
     uuid: uuidv4(),
     textToDisplay: 'This text is rendered',
-    conditionalFilter: (objects: Partial<MaterialInventory>[]) => {
+    conditionalFilter: (objects: Partial<any>[]) => {
       return objects.filter((object) => {
         return object?.material?.name?.toLowerCase() === 'foo'
       })
