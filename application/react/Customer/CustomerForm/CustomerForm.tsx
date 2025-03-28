@@ -29,6 +29,7 @@ import * as formStyles from '@ui/styles/form.module.scss';
 import * as tableStyles from '@ui/styles/table.module.scss';
 import * as styles from './CustomerForm.module.scss';
 import { MongooseId } from '@shared/types/typeAliases';
+import clsx from 'clsx';
 
 const customerTableUrl = '/react-ui/tables/customer'
 
@@ -152,7 +153,7 @@ export const CustomerForm = () => {
   }
 
   return (
-    <div id='customer-form-page-wrapper' className={sharedStyles.pageWrapper}>
+    <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Customer</h3>
@@ -203,7 +204,7 @@ export const CustomerForm = () => {
             <div className={styles.titleHeader}>
               <h3>Business Locations:</h3>
             </div>
-            <div id='business-location-cards' className={tableStyles.tblPri}>
+            <div className={clsx(styles.businessLocationCards, tableStyles.tblPri)}>
               <div className={tableStyles.tblHdr}>
                 <div className={tableStyles.tblCell}>Name</div>
                 <div className={tableStyles.tblCell}>Address</div>
@@ -233,7 +234,7 @@ export const CustomerForm = () => {
             <div className={styles.titleHeader}>
               <h3>Shipping Locations:</h3>
             </div>
-            <div id='shipping-location-cards' className={tableStyles.tblPri}>
+            <div className={clsx(styles.shippingLocationCards, tableStyles.tblPri)}>
               <div className={tableStyles.tblHdr}>
                 <div className={tableStyles.tblCell}>Freight Acct #:</div>
                 <div className={tableStyles.tblCell}>Delivery Method</div>
@@ -265,7 +266,7 @@ export const CustomerForm = () => {
             <div className={styles.titleHeader}>
               <h3>Billing Locations:</h3>
             </div>
-            <div id='billing-location-cards' className={tableStyles.tblPri}>
+            <div className={clsx(styles.billingLocationCards, tableStyles.tblPri)}>
               <div className={tableStyles.tblHdr}>
                 <div className={tableStyles.tblCell}>Name</div>
                 <div className={tableStyles.tblCell}>Street</div>
@@ -295,7 +296,7 @@ export const CustomerForm = () => {
             <div className={styles.titleHeader}>
               <h3>Contacts:</h3>
             </div>
-            <div id='contact-cards' className={tableStyles.tblPri}>
+            <div className={clsx(styles.contactCards, tableStyles.tblPri)}>
               <div className={tableStyles.tblHdr}>
                 <div className={tableStyles.tblCell}>Name</div>
                 <div className={tableStyles.tblCell}>Freight Number</div>

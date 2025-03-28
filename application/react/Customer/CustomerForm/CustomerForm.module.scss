@@ -1,6 +1,6 @@
 
 
-#business-location-cards {
+.businessLocationCards {
     .tableHeader {
         display: flex;
         justify-content: space-evenly;
@@ -34,7 +34,8 @@
         background-color: #f3f2f7;
     }
 }
-#shipping-location-cards {
+
+.shippingLocationCards {
     .tableHeader {
         display: flex;
         justify-content: space-evenly;
@@ -58,7 +59,8 @@
         background-color: white;
     }
 }
-#billing-location-cards {
+
+.billingLocationCards {
     .tableHeader {
         display: flex;
         justify-content: space-evenly;
@@ -82,7 +84,8 @@
         background-color: white;
     }
 }
-#contact-cards {
+
+.contactCards {
     .tableHeader {
         display: flex;
         justify-content: space-evenly;
