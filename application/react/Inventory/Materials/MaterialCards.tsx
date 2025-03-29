@@ -1,4 +1,3 @@
-import React from 'react';
 import './MaterialCards.scss'
 import { observer } from 'mobx-react-lite';
 import MaterialCard from './Material/MaterialCard.tsx';
@@ -11,6 +10,7 @@ import { IMaterial } from '@shared/types/models';
 import { MongooseIdStr } from '@shared/types/typeAliases';
 import { useModal } from '../../_context/modalProvider.tsx';
 import { MaterialDetailsModal } from '../MaterialDetailsModal/MaterialDetailsModal.tsx';
+import clsx from 'clsx';
 
 const MaterialCards = observer(() => {
   const materials = inventoryStore.getFilteredMaterials()
@@ -42,7 +42,7 @@ const MaterialCards = observer(() => {
   if (isPending || isFetching) return <LoadingIndicator />;
 
   return (
-    <div className='material-card-section full-width'>
+    <div className={clsx('material-card-section', 'full-width')}>
       {materials.map((material) => (
         <MaterialCard 
           material={material}

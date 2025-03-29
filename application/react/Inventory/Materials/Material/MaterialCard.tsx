@@ -41,20 +41,20 @@ const MaterialCard = observer((props: Props) => {
 
   return (
     <div id={material._id as string} className={clsx('card', getLowInventoryClass(material))} onClick={() => onClick()} data-test='material-inventory-card'>
-      <div className='card-header flex-center-center-row'>
-        <div className='col col-left'>
-          <h2 className='material-id'>{material.materialId}</h2>
-          <div className='tooltip-top material-width-container'>
-            <h2 className='material-width'>{material.width ? `${material.width}"` : 'N/A'}</h2>
-            <span className='tooltiptext'>{material.width ? `${material.width}"` : 'N/A'} material width</span>
+      <div className={clsx('card-header', 'flex-center-center-row')}>
+        <div className={clsx('col', 'col-left')}>
+          <h2>{material.materialId}</h2>
+          <div className={clsx('tooltip-top', 'material-width-container')}>
+            <h2 className={clsx('material-width')}>{material.width ? `${material.width}"` : 'N/A'}</h2>
+            <span className={clsx('tooltiptext')}>{material.width ? `${material.width}"` : 'N/A'} material width</span>
           </div>
         </div>
-        <div className='col col-right'>
-          <div className='material-card-options-container'>
-            <div className={`material-option po-container tooltip-top ${numMaterialOrders === 0 ? 'disabled' : 'enabled'}`} onClick={(e) => showPurchaseOrderModal(e)}>
-              <span className='tooltiptext'>{numMaterialOrders === 0 ? 'No purchase orders' : `View ${numMaterialOrders} purchase orders`}</span>
-              <div className='icon-container'>
-                <div className='po-counter'>{`${numMaterialOrders}`}</div>
+        <div className={clsx('col', 'col-right')}>
+          <div className={clsx('material-card-options-container')}>
+            <div className={clsx('material-option', 'po-container', 'tooltip-top', numMaterialOrders === 0 ? 'disabled' : 'enabled')} onClick={(e) => showPurchaseOrderModal(e)}>
+              <span className={clsx('tooltiptext')}>{numMaterialOrders === 0 ? 'No purchase orders' : `View ${numMaterialOrders} purchase orders`}</span>
+              <div className={clsx('icon-container')}>
+                <div className={clsx('po-counter')}>{`${numMaterialOrders}`}</div>
               </div>
 
               {
@@ -68,11 +68,11 @@ const MaterialCard = observer((props: Props) => {
               }
 
             </div>
-            <div className={`material-option open-ticket-container tooltip-top ${numLengthAdjustments === 0 ? 'disabled' : 'enabled'}`} onClick={(e) => showLengthAdjustmentsModal(e)}>
-              <div className={`icon-container ${numLengthAdjustments === 0 && ''}`}>
+            <div className={clsx('material-option', 'open-ticket-container', 'tooltip-top', numLengthAdjustments === 0 ? 'disabled' : 'enabled')} onClick={(e) => showLengthAdjustmentsModal(e)}>
+              <div className={clsx('icon-container')}>
                 <i><BsPlusSlashMinus /></i>
               </div>
-              <span className='tooltiptext'>
+              <span className={clsx('tooltiptext')}>
                 {
                   numLengthAdjustments === 0 ?
                     'No Adjustments' :
@@ -80,41 +80,41 @@ const MaterialCard = observer((props: Props) => {
                 }
               </span>
             </div>
-            <div className='material-option edit-container tooltip-top'>
+            <div className={clsx('material-option', 'edit-container', 'tooltip-top')}>
               <Link to={`/react-ui/forms/material/${material._id}`} onClick={(e) => e.stopPropagation()}>
-                <div className='icon-container'>
-                  <i className="fa-regular fa-pen-to-square"></i>
+                <div className={clsx('icon-container')}>
+                  <i className={clsx('fa-regular', 'fa-pen-to-square')}></i>
                 </div>
               </Link>
-              <span className='tooltiptext'>Edit material details</span>
+              <span className={clsx('tooltiptext')}>Edit material details</span>
             </div>
           </div>
         </div>
       </div>
-      <div className='material-description text-left'>
-        <span className='material-name'>{material.name || 'N/A'}</span>
+      <div className={clsx('material-description', 'text-left')}>
+        <span className={clsx('material-name')}>{material.name || 'N/A'}</span>
       </div>
-      <div className='actual-vs-ordered-container'>
-        <div className='col col-left'>
+      <div className={clsx('actual-vs-ordered-container')}>
+        <div className={clsx('col', 'col-left')}>
           <span>Actual</span>
-          <h2 className='material-length-in-stock'>{material.inventory.lengthArrived}</h2>
+          <h2 className={clsx('material-length-in-stock')}>{material.inventory.lengthArrived}</h2>
         </div>
-        <div className='divide-line'></div>
-        <div className='col col-right'>
+        <div className={clsx('divide-line')}></div>
+        <div className={clsx('col', 'col-right')}>
           <span>Ordered</span>
-          <h2 className='material-length-ordered'>{material.inventory.lengthNotArrived}</h2>
+          <h2 className={clsx('material-length-ordered')}>{material.inventory.lengthNotArrived}</h2>
         </div>
-        <div className='divide-line'></div>
-        <div className='col col-right'>
+        <div className={clsx('divide-line')}></div>
+        <div className={clsx('col', 'col-right')}>
           <span>Net</span>
-          <h2 className='material-length-ordered'>{material.inventory.netLengthAvailable}</h2>
+          <h2 className={clsx('material-length-ordered')}>{material.inventory.netLengthAvailable}</h2>
         </div>
 
       </div>
-      <div className='material-location-container tooltip-top'>
-        <span className='tooltiptext'>Location of material</span>
-        <div className='span-wrapper'>
-          <span className='material-location'>{material?.locations?.length > 0 ? material.locations.join(', ') : 'N/A'}</span>
+      <div className={clsx('material-location-container', 'tooltip-top')}>
+        <span className={clsx('tooltiptext')}>Location of material</span>
+        <div className={clsx('span-wrapper')}>
+          <span className={clsx('material-location')}>{material?.locations?.length > 0 ? material.locations.join(', ') : 'N/A'}</span>
         </div>
       </div>
     </div>
