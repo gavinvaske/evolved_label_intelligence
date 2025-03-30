@@ -1,4 +1,3 @@
-import './MaterialCategoryRowActions.scss';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -8,9 +7,10 @@ import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 import { MongooseIdStr } from '@shared/types/typeAliases';
+import { IMaterialCategory } from '@shared/types/models';
 
 type Props = {
-  row: Row<any>
+  row: Row<IMaterialCategory>
 }
 
 export const MaterialCategoryRowActions = (props: Props) => {
