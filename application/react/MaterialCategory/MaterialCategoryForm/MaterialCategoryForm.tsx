@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './MaterialCategoryForm.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { IMaterialCategory } from '@shared/types/models';
