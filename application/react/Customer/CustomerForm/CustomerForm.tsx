@@ -201,133 +201,133 @@ export const CustomerForm = () => {
                 errors={errors}
                 control={control}
               />
-            <div className={styles.titleHeader}>
-              <h3>Business Locations:</h3>
-            </div>
-            <div className={clsx(styles.businessLocationCards, tableStyles.tblPri)}>
-              <div className={tableStyles.tblHdr}>
-                <div className={tableStyles.tblCell}>Name</div>
-                <div className={tableStyles.tblCell}>Address</div>
-                <div className={tableStyles.tblCell}>Unit #</div>
-                <div className={tableStyles.tblCell}>City</div>
-                <div className={tableStyles.tblCell}>State</div>
-                <div className={tableStyles.tblCell}>Zip</div>
-                <div className={tableStyles.tblCell}>Delete</div>
+              <div className={styles.titleHeader}>
+                <h3>Business Locations:</h3>
               </div>
-              <div className='table'>
-                {
-                  businessLocations.map((businessLocation, index) => {
-                    return (
-                      <div className={styles.tableRow} key={index}>
-                        <AddressListItem
-                          data={businessLocation}
-                          onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
-                        />
-                      </div>
-                    )
-                  })
-                }
+              <div className={clsx(styles.businessLocationCards, tableStyles.tblPri)}>
+                <div className={tableStyles.tblHdr}>
+                  <div className={tableStyles.tblCell}>Name</div>
+                  <div className={tableStyles.tblCell}>Address</div>
+                  <div className={tableStyles.tblCell}>Unit #</div>
+                  <div className={tableStyles.tblCell}>City</div>
+                  <div className={tableStyles.tblCell}>State</div>
+                  <div className={tableStyles.tblCell}>Zip</div>
+                  <div className={tableStyles.tblCell}>Delete</div>
+                </div>
+                <div className='table'>
+                  {
+                    businessLocations.map((businessLocation, index) => {
+                      return (
+                        <div className={styles.tableRow} key={index}>
+                          <AddressListItem
+                            data={businessLocation}
+                            onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
+                          />
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </div>
-            </div>
-            <button className={styles.addNewRow} type="button" onClick={() => setShowBusinessLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Business Location</button>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowBusinessLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Business Location</button>
 
-            <div className={styles.titleHeader}>
-              <h3>Shipping Locations:</h3>
-            </div>
-            <div className={clsx(styles.shippingLocationCards, tableStyles.tblPri)}>
-              <div className={tableStyles.tblHdr}>
-                <div className={tableStyles.tblCell}>Freight Acct #:</div>
-                <div className={tableStyles.tblCell}>Delivery Method</div>
-                <div className={tableStyles.tblCell}>Name</div>
-                <div className={tableStyles.tblCell}>Street</div>
-                <div className={tableStyles.tblCell}>Unit</div>
-                <div className={tableStyles.tblCell}>City</div>
-                <div className={tableStyles.tblCell}>State</div>
-                <div className={tableStyles.tblCell}>Zip</div>
-                <div className={tableStyles.tblCell}>Delete</div>
+              <div className={styles.titleHeader}>
+                <h3>Shipping Locations:</h3>
               </div>
-              <div className='table'>
-                {
-                  shippingLocations.map((shippingLocation, index) => {
-                    return (
-                      <div key={index}>
-                        <ShippingLocationCard
-                          data={shippingLocation}
-                          onDelete={() => removeElementFromArray(index, shippingLocations, setShippingLocations)}
-                        />
-                      </div>
-                    )
-                  })
-                }
+              <div className={clsx(styles.shippingLocationCards, tableStyles.tblPri)}>
+                <div className={tableStyles.tblHdr}>
+                  <div className={tableStyles.tblCell}>Freight Acct #:</div>
+                  <div className={tableStyles.tblCell}>Delivery Method</div>
+                  <div className={tableStyles.tblCell}>Name</div>
+                  <div className={tableStyles.tblCell}>Street</div>
+                  <div className={tableStyles.tblCell}>Unit</div>
+                  <div className={tableStyles.tblCell}>City</div>
+                  <div className={tableStyles.tblCell}>State</div>
+                  <div className={tableStyles.tblCell}>Zip</div>
+                  <div className={tableStyles.tblCell}>Delete</div>
+                </div>
+                <div className='table'>
+                  {
+                    shippingLocations.map((shippingLocation, index) => {
+                      return (
+                        <div key={index}>
+                          <ShippingLocationCard
+                            data={shippingLocation}
+                            onDelete={() => removeElementFromArray(index, shippingLocations, setShippingLocations)}
+                          />
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </div>
-            </div>
-            <button className={styles.addNewRow} type="button" onClick={() => setShowShippingLocationForm(true)}><i className="fa-solid fa-plus"></i>Add Shipping Location</button>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowShippingLocationForm(true)}><i className="fa-solid fa-plus"></i>Add Shipping Location</button>
 
-            <div className={styles.titleHeader}>
-              <h3>Billing Locations:</h3>
-            </div>
-            <div className={clsx(styles.billingLocationCards, tableStyles.tblPri)}>
-              <div className={tableStyles.tblHdr}>
-                <div className={tableStyles.tblCell}>Name</div>
-                <div className={tableStyles.tblCell}>Street</div>
-                <div className={tableStyles.tblCell}>Unit</div>
-                <div className={tableStyles.tblCell}>City</div>
-                <div className={tableStyles.tblCell}>State</div>
-                <div className={tableStyles.tblCell}>Zip</div>
-                <div className={tableStyles.tblCell}>Delete</div>
+              <div className={styles.titleHeader}>
+                <h3>Billing Locations:</h3>
               </div>
-              <div className='table'>
-                {
-                  billingLocations.map((billingLocation, index) => {
-                    return (
-                      <div key={index}>
-                        <AddressListItem
-                          data={billingLocation}
-                          onDelete={() => removeElementFromArray(index, billingLocations, setBillingLocations)}
-                        />
-                      </div>
-                    )
-                  })
-                }
+              <div className={clsx(styles.billingLocationCards, tableStyles.tblPri)}>
+                <div className={tableStyles.tblHdr}>
+                  <div className={tableStyles.tblCell}>Name</div>
+                  <div className={tableStyles.tblCell}>Street</div>
+                  <div className={tableStyles.tblCell}>Unit</div>
+                  <div className={tableStyles.tblCell}>City</div>
+                  <div className={tableStyles.tblCell}>State</div>
+                  <div className={tableStyles.tblCell}>Zip</div>
+                  <div className={tableStyles.tblCell}>Delete</div>
+                </div>
+                <div className='table'>
+                  {
+                    billingLocations.map((billingLocation, index) => {
+                      return (
+                        <div key={index}>
+                          <AddressListItem
+                            data={billingLocation}
+                            onDelete={() => removeElementFromArray(index, billingLocations, setBillingLocations)}
+                          />
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </div>
-            </div>
-            <button className={styles.addNewRow} type="button" onClick={() => setShowBillingLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Billing Location</button>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowBillingLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Billing Location</button>
 
-            <div className={styles.titleHeader}>
-              <h3>Contacts:</h3>
-            </div>
-            <div className={clsx(styles.contactCards, tableStyles.tblPri)}>
-              <div className={tableStyles.tblHdr}>
-                <div className={tableStyles.tblCell}>Name</div>
-                <div className={tableStyles.tblCell}>Freight Number</div>
-                <div className={tableStyles.tblCell}>Delivery Method</div>
-                <div className={tableStyles.tblCell}>Street</div>
-                <div className={tableStyles.tblCell}>Unit</div>
-                <div className={tableStyles.tblCell}>City</div>
-                <div className={tableStyles.tblCell}>State</div>
-                <div className={tableStyles.tblCell}>Zip</div>
-                <div className={tableStyles.tblCell}>Delete</div>
+              <div className={styles.titleHeader}>
+                <h3>Contacts:</h3>
               </div>
-              <div className='table'>
-                {
-                  contacts.map((contact, index) => {
-                    return (
-                      <div key={index}>
-                        <ContactCard
-                          data={contact}
-                          onDelete={() => removeElementFromArray(index, contacts, setContacts)}
-                        />
-                      </div>
-                    )
-                  })
-                }
+              <div className={clsx(styles.contactCards, tableStyles.tblPri)}>
+                <div className={tableStyles.tblHdr}>
+                  <div className={tableStyles.tblCell}>Name</div>
+                  <div className={tableStyles.tblCell}>Phone Number</div>
+                  <div className={tableStyles.tblCell}>Ext.</div>
+                  <div className={tableStyles.tblCell}>Email</div>
+                  <div className={tableStyles.tblCell}>Contact Status</div>
+                  <div className={tableStyles.tblCell}>Notes</div>
+                  <div className={tableStyles.tblCell}>Position</div>
+                  <div className={tableStyles.tblCell}>Location</div>
+                  <div className={tableStyles.tblCell}>Delete</div>
+                </div>
+                <div className='table'>
+                  {
+                    contacts.map((contact, index) => {
+                      return (
+                        <div key={index}>
+                          <ContactCard
+                            data={contact}
+                            onDelete={() => removeElementFromArray(index, contacts, setContacts)}
+                          />
+                        </div>
+                      )
+                    })
+                  }
+                </div>
               </div>
-            </div>
-            <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><i className="fa-solid fa-plus"></i> Add Contact</button>
-            {/* Let user know some form inputs had errors */}
-            <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><i className="fa-solid fa-plus"></i> Add Contact</button>
+              {/* Let user know some form inputs had errors */}
+              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-            <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>
