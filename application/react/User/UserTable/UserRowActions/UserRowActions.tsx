@@ -14,7 +14,7 @@ type Props = {
 
 export const UserRowActions = (props: Props) => {
   const { row } = props;
-  const { _id : mongooseObjectId, authRoles = [] } = row.original;
+  const { _id: mongooseObjectId, authRoles = [] } = row.original;
 
   const grantRoleToUser = (mongooseObjectId: MongooseIdStr, authRoleToAdd: AuthRoles) => {
     console.log('UserRowActions', row.original)
@@ -24,16 +24,16 @@ export const UserRowActions = (props: Props) => {
         authRoleToAdd
       ]
     })
-    .then(() => useSuccessMessage('User granted admin privileges successfully.'))
-    .catch((error) => useErrorMessage(error))
+      .then(() => useSuccessMessage('User granted admin privileges successfully.'))
+      .catch((error) => useErrorMessage(error))
   }
 
   const removeRoleFromUser = (mongooseObjectId: MongooseIdStr, authRoleToRemove: AuthRoles) => {
     axios.put(`/users/${mongooseObjectId}/auth-roles`, {
-      authRoles: authRoles.filter((role) => role!== authRoleToRemove)
+      authRoles: authRoles.filter((role) => role !== authRoleToRemove)
     })
-   .then(() => useSuccessMessage('User removed admin privileges successfully.'))
-   .catch((error) => useErrorMessage(error))
+      .then(() => useSuccessMessage('User removed admin privileges successfully.'))
+      .catch((error) => useErrorMessage(error))
   }
 
   return (

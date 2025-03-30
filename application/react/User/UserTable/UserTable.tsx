@@ -89,9 +89,9 @@ export const UserTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -123,7 +123,7 @@ export const UserTable = () => {
 
         <Table id='user-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
