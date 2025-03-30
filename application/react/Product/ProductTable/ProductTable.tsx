@@ -1,5 +1,4 @@
 import React from 'react';
-import './ProductTable.scss';
 import { createColumnHelper, getCoreRowModel, getFilteredRowModel, getSortedRowModel, SortingState, useReactTable } from '@tanstack/react-table';
 import { ProductRowActions } from './ProductRowActions/ProductRowActions';
 import { getProducts } from '../../_queries/product';
@@ -13,8 +12,9 @@ import Row from '../../_global/Table/Row/Row';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { IBaseProduct } from '../../../api/models/baseProduct';
 
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<IBaseProduct>()
 
 export const GET_PRODUCTS_QUERY_KEY = 'get-products'
 
@@ -72,11 +72,11 @@ export const ProductTable = () => {
           <h1 className={sharedStyles.textBlue}>Products</h1>
           <p>Showing <p className={sharedStyles.textBlue}>{rows.length} </p> products.</p>
         </div>
-         <SearchBar value={globalFilter} onChange={(e: any) => setGlobalFilter(e.target.value)} />
+        <SearchBar value={globalFilter} onChange={(e: any) => setGlobalFilter(e.target.value)} />
 
         <Table id='product-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
