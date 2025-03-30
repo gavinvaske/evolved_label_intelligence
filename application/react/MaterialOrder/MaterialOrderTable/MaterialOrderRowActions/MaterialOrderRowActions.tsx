@@ -1,5 +1,4 @@
 import { Row } from '@tanstack/react-table';
-import './MaterialOrderRowActions.scss'
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -16,7 +15,7 @@ type Props = {
 
 export const MaterialOrderRowActions = (props: Props) => {
   const { row } = props;
-  const { _id : mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId } = row.original;
 
   const navigate = useNavigate();
   const queryClient = useQueryClient()
@@ -24,8 +23,8 @@ export const MaterialOrderRowActions = (props: Props) => {
   const onDeleteClicked = (mongooseObjectId: MongooseId) => {
     alert('@TODO Storm: Add a confirmation modal before deletion?')
     axios.delete(`/material-orders/${mongooseObjectId}`)
-      .then((_ : AxiosResponse) => {
-        queryClient.invalidateQueries({ queryKey: ['get-material-orders']})
+      .then((_: AxiosResponse) => {
+        queryClient.invalidateQueries({ queryKey: ['get-material-orders'] })
         useSuccessMessage('Deletion was successful')
       })
       .catch((error: AxiosError) => useErrorMessage(error))
