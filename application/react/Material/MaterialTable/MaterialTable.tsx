@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
-import './MaterialTable.scss';
-import { PaginationState, SortingState, createColumnHelper, getCoreRowModel, getFilteredRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
+import { PaginationState, SortingState, createColumnHelper, getCoreRowModel, getSortedRowModel, useReactTable } from '@tanstack/react-table';
 import { MaterialRowActions } from './MaterialRowActions/MaterialRowActions';
 import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
@@ -12,13 +11,13 @@ import { getDateTimeFromIsoStr } from '@ui/utils/dateTime.ts';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import Row from '../../_global/Table/Row/Row';
 import { SearchResult } from '@shared/types/http';
-import { IMaterial } from '@shared/types/models';
+import { ILinerType, IMaterial, IVendor } from '@shared/types/models';
 import { performTextSearch } from '../../_queries/_common';
 import { isRefPopulated } from '@shared/types/_utility';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<IMaterial>()
 
 const columns = [
   columnHelper.accessor('name', {
@@ -30,13 +29,13 @@ const columns = [
   columnHelper.accessor('productNumber', {
     header: 'Product Number'
   }),
-  columnHelper.accessor(row => isRefPopulated(row.linerType) ? row.linerType.name : '', {
+  columnHelper.accessor(row => isRefPopulated(row.linerType) ? (row.linerType as ILinerType).name : '', {
     header: 'Liner Type'
   }),
   columnHelper.accessor('description', {
     header: 'Description'
   }),
-  columnHelper.accessor(row => isRefPopulated(row.vendor) ? row.vendor.name : '', {
+  columnHelper.accessor(row => isRefPopulated(row.vendor) ? (row.vendor as IVendor).name : '', {
     header: 'Vendor Name'
   }),
   columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
