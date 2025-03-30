@@ -1,17 +1,19 @@
-#inventory-filter-bar {
+@import '../../_styles/shared.module.scss';
+
+.inventoryFilterBar {
     width: 100%;
     display: flex;
     justify-content: flex-start;
     align-items: center;
     flex-direction: row;
 
-    .btn-primary {
+    .btnPrimary {
         width: 95px;
         i {
             margin-right: 5px;
         }
     }
-    .btn-wrapper {
+    .btnWrapper {
         width: 110px;
         display: flex;
         justify-content: center;

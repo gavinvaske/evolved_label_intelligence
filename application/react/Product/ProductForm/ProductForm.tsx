@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import './ProductForm.scss';
+import { useEffect, useState } from 'react';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -66,12 +65,12 @@ export const ProductForm = () => {
       productDescription: product.productDescription,
       unwindDirection: product.unwindDirection,
       ovOrEpm: product.ovOrEpm,
-      artNotes: product.artNotes,
-      pressNotes: product.pressNotes,
+      artNotes: product.artNotes || '',
+      pressNotes: product.pressNotes || '',
       finishType: product.finishType,
       coreDiameter: product.coreDiameter,
       labelsPerRoll: product.labelsPerRoll,
-      dieCuttingNotes: product.dieCuttingNotes,
+      dieCuttingNotes: product.dieCuttingNotes || '',
       overun: product.overun,
       spotPlate: product.spotPlate,
       numberOfColors: product.numberOfColors,
@@ -258,7 +257,7 @@ export const ProductForm = () => {
                 errors={errors}
               />
 
-              <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>

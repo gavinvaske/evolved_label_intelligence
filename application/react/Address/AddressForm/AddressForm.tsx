@@ -1,14 +1,13 @@
 import { useForm } from 'react-hook-form';
-import './AddressForm.scss'
 import { Input } from '../../_global/FormInputs/Input/Input';
 import * as formStyles from '@ui/styles/form.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
-export const AddressForm = (props) => {
-  const {
-    onSubmit,
-    onCancel
-  } = props;
+interface Props {
+  onSubmit: (data: any) => void;
+}
 
+export const AddressForm = ({onSubmit}: Props) => {
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   return (
@@ -62,7 +61,7 @@ export const AddressForm = (props) => {
               errors={errors}
             />
           </div>
-          <button className='submit-button' type="submit">Submit</button>
+          <button className={sharedStyles.submitButton} type="submit">Submit</button>
         </div>
       </form>
     </div>

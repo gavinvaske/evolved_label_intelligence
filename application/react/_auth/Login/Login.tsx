@@ -10,6 +10,7 @@ import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import './Login.scss';
 import { FaEyeSlash, FaEye } from "react-icons/fa6";
 import { IconBaseProps } from "react-icons";
+import * as sharedStyles from '@ui/styles/shared.module.scss';
 
 export const Login = () => {
   const { setAuth } = useAuth();
@@ -168,7 +169,7 @@ export const Login = () => {
                       <Link to='/react-ui/forgot-password' id='forgot-password-btn'>Forgot Password?</Link>
                     </div>
                   </div>
-                  <button className='create-entry submit-button' type='submit' data-test='login-btn'>Login</button>
+                  <button className={sharedStyles.submitButton} type='submit' data-test='login-btn'>Login</button>
                 </form>
                 
                 <div className='register-link-container'>

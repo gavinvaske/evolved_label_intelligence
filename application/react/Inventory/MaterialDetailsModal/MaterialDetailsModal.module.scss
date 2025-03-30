@@ -1,4 +1,6 @@
-.card-container {
+@import '../../_styles/shared.module.scss';
+
+.cardContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;

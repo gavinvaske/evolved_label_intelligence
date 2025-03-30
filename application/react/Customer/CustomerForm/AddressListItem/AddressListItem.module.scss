@@ -1,12 +1,11 @@
-.address-card {
+.addressCard {
   background-color: white;
   width: 100%;
   display: flex;
   align-items: center;
-  justify-content: space-evenly;
 
-  div.column-td {
-    width: 14%;
+  div.columnTd {
+    width: 14.2857%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,7 +14,7 @@
     height: 45px;
   }
 
-  .delete-icon {
+  .deleteIcon {
     cursor: pointer;
     font-size: 22px;
     color: red;

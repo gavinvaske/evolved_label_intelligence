@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import './CreditTermTable.scss'
 import {
   createColumnHelper,
   getCoreRowModel,

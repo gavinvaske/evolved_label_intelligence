@@ -8,6 +8,8 @@ import { getDayMonthYear } from "../../../../_helperFunctions/dateTime";
 import { MdOutlinePreview } from "react-icons/md";
 import { IoCreateOutline } from "react-icons/io5";
 import { Modal } from "../../../../_global/Modal/Modal";
+import clsx from "clsx";
+import * as materialCardStyles from '../MaterialCard.module.scss'
 
 type ModalProps = {
   material: IMaterial,
@@ -20,8 +22,8 @@ export const PurchaseOrderModal = (props: ModalProps) => {
 
   return (
     <Modal onClose={() => onClose()}>
-      <div className='modal-content'>
-        <div className='title-wrapper'>
+      <div className={clsx(materialCardStyles.modalContent)}>
+        <div className={clsx(materialCardStyles.titleWrapper)}>
           <h4>Purchase orders: {material.materialId}</h4>
           <i>
             <IoCreateOutline
@@ -42,20 +44,20 @@ export const PurchaseOrderModal = (props: ModalProps) => {
             />
           </i>
         </div>
-        <div className='purchase-order-info-wrapper'>
-          <div className='po-table'>
-            <div className='tb-header'>
-              <div className='tb-cell cell-one'>
-                <div className='pulse-indicator'></div>
+        <div className={materialCardStyles.purchaseOrderInfoWrapper}>
+          <div className={materialCardStyles.poTable}>
+            <div className={materialCardStyles.tbHeader}>
+              <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellOne)}>
+                <div className={materialCardStyles.pulseIndicator}></div>
                 PO #
               </div>
-              <div className='tb-cell cell-two'>
+              <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellTwo)}>
                 Order Date
               </div>
-              <div className='tb-cell cell-three'>
+              <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellThree)}>
                 Arrival Date
               </div>
-              <div className='tb-cell cell-four'>
+              <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellFour)}>
                 Total Feet
               </div>
             </div>
@@ -89,21 +91,21 @@ function renderPurchaseOrders(material: IMaterial) {
 
   return (
     materialOrders.map((mo, index: number) => (
-      <div className='tb-row' key={index} onClick={() => navigate(`/react-ui/forms/material-order/${mo._id}`)}>
-        <div className='tb-cell cell-one'>
-          <div className='pulse-indicator'></div>
+      <div className={materialCardStyles.tbRow} key={index} onClick={() => navigate(`/react-ui/forms/material-order/${mo._id}`)}>
+        <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellOne)}>
+          <div className={materialCardStyles.pulseIndicator}></div>
           {mo.purchaseOrderNumber}
         </div>
-        <div className='tb-cell cell-two'>
-          <div className='pulse-indicator'></div>
+        <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellTwo)}>
+          <div className={materialCardStyles.pulseIndicator}></div>
           {getDayMonthYear(mo.orderDate)}
         </div>
-        <div className='tb-cell cell-three'>
-          <div className='pulse-indicator'></div>
+        <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellThree)}>
+          <div className={materialCardStyles.pulseIndicator}></div>
           {getDayMonthYear(mo.arrivalDate)}
         </div>
-        <div className='tb-cell cell-four'>
-          <div className='pulse-indicator'></div>
+        <div className={clsx(materialCardStyles.tbCell, materialCardStyles.cellFour)}>
+          <div className={materialCardStyles.pulseIndicator}></div>
           {(mo.feetPerRoll * mo.totalRolls)}
         </div>
       </div>

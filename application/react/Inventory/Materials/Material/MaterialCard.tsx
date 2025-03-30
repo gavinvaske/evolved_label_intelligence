@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './MaterialCard.scss'  // TODO: Extract the css classes that the modals use
 import { observer } from 'mobx-react-lite';
 import { Link } from 'react-router-dom';
 import { IMaterial } from '@shared/types/models.ts';
@@ -8,6 +7,8 @@ import { LengthAdjustmentsModal } from './LengthAdjustmentsModal/LengthAdjustmen
 import { PurchaseOrderModal } from './PurchaseOrdersModal/PurchaseOrdersModal.tsx';
 import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
+import * as styles from './MaterialCard.module.scss'
+import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
 
 type Props = {
   material: IMaterial,
@@ -22,39 +23,37 @@ const MaterialCard = observer((props: Props) => {
   const numLengthAdjustments = material.inventory.lengthAdjustments.length
 
   const showPurchaseOrderModal = (e) => {
-    if (e.currentTarget.classList.contains('disabled')) {
-      e.stopPropagation();
-      return; // Prevent further execution if the class is present
-    }
     setShouldShowPoModal(true)
     e.stopPropagation() // This is required to prevent any parents' onClick from being called
   };
 
   const showLengthAdjustmentsModal = (e) => {
-    if (e.currentTarget.classList.contains('disabled')) {
-      e.stopPropagation();
-      return; // Prevent further execution if the class is present
-    }
     setShouldShowLengthAdjustmentsModal(true)
     e.stopPropagation() // This is required to prevent any parents' onClick from being called
   };
 
   return (
-    <div id={material._id as string} className={clsx('card', getLowInventoryClass(material))} onClick={() => onClick()} data-test='material-inventory-card'>
-      <div className='card-header flex-center-center-row'>
-        <div className='col col-left'>
-          <h2 className='material-id'>{material.materialId}</h2>
-          <div className='tooltip-top material-width-container'>
-            <h2 className='material-width'>{material.width ? `${material.width}"` : 'N/A'}</h2>
-            <span className='tooltiptext'>{material.width ? `${material.width}"` : 'N/A'} material width</span>
+    <div id={material._id as string} className={clsx(styles.card)} onClick={() => onClick()} data-test='material-inventory-card'>
+      <div className={clsx(styles.cardHeader, flexboxStyles.flexCenterCenterRow)}>
+
+        <div className={clsx(styles.col, styles.colLeft)}>
+          <h2 className={clsx({
+            [styles.lowInventory as string]: isLowInventory(material),
+            [styles.lowInventoryWarning as string]: isLowInventoryWarning(material),
+          })}>
+            {material.materialId}
+          </h2>
+          <div className={clsx(sharedStyles.tooltipTop, styles.materialWidthContainer)}>
+            <h2 className={clsx(styles.materialWidth)}>{material.width ? `${material.width}"` : 'N/A'}</h2>
+            <span className={clsx(sharedStyles.tooltipText)}>{material.width ? `${material.width}"` : 'N/A'} material width</span>
           </div>
         </div>
-        <div className='col col-right'>
-          <div className='material-card-options-container'>
-            <div className={`material-option po-container tooltip-top ${numMaterialOrders === 0 ? 'disabled' : 'enabled'}`} onClick={(e) => showPurchaseOrderModal(e)}>
-              <span className='tooltiptext'>{numMaterialOrders === 0 ? 'No purchase orders' : `View ${numMaterialOrders} purchase orders`}</span>
-              <div className='icon-container'>
-                <div className='po-counter'>{`${numMaterialOrders}`}</div>
+        <div className={clsx(styles.col, styles.colRight)}>
+          <div className={clsx(styles.materialCardOptionsContainer)}>
+            <div className={clsx(styles.materialOption, styles.poContainer, sharedStyles.tooltipTop, numMaterialOrders === 0 ? styles.disabled : styles.enabled)} onClick={(e) => numMaterialOrders > 0 && showPurchaseOrderModal(e)}>
+              <span className={clsx(sharedStyles.tooltipText)}>{numMaterialOrders === 0 ? 'No purchase orders' : `View ${numMaterialOrders} purchase orders`}</span>
+              <div className={clsx(styles.iconContainer)}>
+                <div className={clsx(styles.poCounter)}>{`${numMaterialOrders}`}</div>
               </div>
 
               {
@@ -68,11 +67,11 @@ const MaterialCard = observer((props: Props) => {
               }
 
             </div>
-            <div className={`material-option open-ticket-container tooltip-top ${numLengthAdjustments === 0 ? 'disabled' : 'enabled'}`} onClick={(e) => showLengthAdjustmentsModal(e)}>
-              <div className={`icon-container ${numLengthAdjustments === 0 && ''}`}>
+            <div className={clsx(styles.materialOption, styles.openTicketContainer, sharedStyles.tooltipTop, numLengthAdjustments === 0 ? styles.disabled : styles.enabled)} onClick={(e) => numLengthAdjustments > 0 && showLengthAdjustmentsModal(e)}>
+              <div className={clsx(styles.iconContainer)}>
                 <i><BsPlusSlashMinus /></i>
               </div>
-              <span className='tooltiptext'>
+              <span className={clsx(sharedStyles.tooltipText)}>
                 {
                   numLengthAdjustments === 0 ?
                     'No Adjustments' :
@@ -80,59 +79,67 @@ const MaterialCard = observer((props: Props) => {
                 }
               </span>
             </div>
-            <div className='material-option edit-container tooltip-top'>
+            <div className={clsx(styles.materialOption, styles.editContainer, sharedStyles.tooltipTop)}>
               <Link to={`/react-ui/forms/material/${material._id}`} onClick={(e) => e.stopPropagation()}>
-                <div className='icon-container'>
-                  <i className="fa-regular fa-pen-to-square"></i>
+                <div className={clsx(styles.iconContainer)}>
+                  <i className={clsx('fa-regular', 'fa-pen-to-square')}></i>
                 </div>
               </Link>
-              <span className='tooltiptext'>Edit material details</span>
+              <span className={clsx(sharedStyles.tooltipText)}>Edit material details</span>
             </div>
           </div>
         </div>
       </div>
-      <div className='material-description text-left'>
-        <span className='material-name'>{material.name || 'N/A'}</span>
+
+      <div className={clsx(styles.materialDescription, flexboxStyles.textLeft)}>
+        <span className={clsx(styles.materialName)}>{material.name || 'N/A'}</span>
       </div>
-      <div className='actual-vs-ordered-container'>
-        <div className='col col-left'>
+      <div className={clsx(styles.actualVsOrderedContainer)}>
+        <div className={clsx(styles.col, styles.colLeft)}>
           <span>Actual</span>
-          <h2 className='material-length-in-stock'>{material.inventory.lengthArrived}</h2>
+          <h2>{material.inventory.lengthArrived}</h2>
         </div>
-        <div className='divide-line'></div>
-        <div className='col col-right'>
+        <div className={clsx(styles.divideLine)}></div>
+        <div className={clsx(styles.col, styles.colRight)}>
           <span>Ordered</span>
-          <h2 className='material-length-ordered'>{material.inventory.lengthNotArrived}</h2>
+          <h2>{material.inventory.lengthNotArrived}</h2>
         </div>
-        <div className='divide-line'></div>
-        <div className='col col-right'>
+        <div className={clsx(styles.divideLine)}></div>
+        <div className={clsx(styles.col, styles.colRight)}>
           <span>Net</span>
-          <h2 className='material-length-ordered'>{material.inventory.netLengthAvailable}</h2>
+          <h2>{material.inventory.netLengthAvailable}</h2>
         </div>
 
       </div>
-      <div className='material-location-container tooltip-top'>
-        <span className='tooltiptext'>Location of material</span>
-        <div className='span-wrapper'>
-          <span className='material-location'>{material?.locations?.length > 0 ? material.locations.join(', ') : 'N/A'}</span>
+      <div className={clsx(styles.materialLocationContainer, sharedStyles.tooltipTop)}>
+        <span className={clsx(sharedStyles.tooltipText)}>Location of material</span>
+        <div className={clsx(styles.spanWrapper)}>
+          <span className={clsx(styles.materialLocation)}>{material?.locations?.length > 0 ? material.locations.join(', ') : 'N/A'}</span>
         </div>
       </div>
     </div>
   );
 });
 
-function getLowInventoryClass({ lowStockThreshold, lowStockBuffer, inventory }: IMaterial): string {
-  if (!lowStockThreshold || !lowStockBuffer) return 'low-inventory';
+function isLowInventory(material: IMaterial): boolean {
+  const { lowStockThreshold, lowStockBuffer, inventory } = material;
 
-  if (inventory.netLengthAvailable < lowStockThreshold) {
-    return 'low-inventory';
+  if ((!lowStockThreshold || !lowStockBuffer) || inventory.netLengthAvailable < lowStockThreshold) {
+    return true
   }
+  return false;
+}
 
-  if (inventory.netLengthAvailable < lowStockThreshold + lowStockBuffer) {
-    return 'low-inventory-warning';
+function isLowInventoryWarning(material: IMaterial): boolean {
+  const { lowStockThreshold, lowStockBuffer, inventory } = material;
+
+  if (
+    inventory.netLengthAvailable > lowStockThreshold
+    && inventory.netLengthAvailable < lowStockThreshold + lowStockBuffer
+  ) {
+    return true;
   }
-
-  return '';
+  return false;
 }
 
 export default MaterialCard;

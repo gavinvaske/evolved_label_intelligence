@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import './FlashMessagePanel.scss';
 import flashMessageStore from '../../stores/flashMessageStore';
 import { FlashMessageOption } from "@ui/types/flashMessage";

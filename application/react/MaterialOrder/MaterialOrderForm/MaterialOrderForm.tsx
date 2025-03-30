@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './MaterialOrderForm.scss'
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
@@ -255,7 +254,7 @@ export const MaterialOrderForm = () => {
               />
               {/* Let user know some form inputs had errors */}
               <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
-              <button className='create-entry submit-button' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>

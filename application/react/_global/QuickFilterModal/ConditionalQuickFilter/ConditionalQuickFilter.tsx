@@ -1,7 +1,6 @@
-import React from 'react';
 import { observer } from 'mobx-react-lite';
-import './ConditionalQuickFilter.scss'
 import { ConditionalFilterFunction } from "@ui/types/filters";
+import clsx from 'clsx';
 
 type Props<T> = {
   uuid: string,
@@ -26,14 +25,14 @@ export const ConditionalQuickFilter = observer(<T extends any>(props: Props<T>) 
 
   function onClick() {
     const needsToBecomeEnabled = !isEnabled();
-    
+
     if (needsToBecomeEnabled) onEnabled(uuid, conditionalFilterFunction)
     else onDisabled(uuid)
   }
 
   return (
-    <div 
-      className={`conditional-quick-filter-btn filter-btn ${isEnabled() ? 'filter-active' : ''}`} 
+    <div
+      className={clsx('conditional-quick-filter-btn', 'filter-btn', isEnabled() && 'filter-active')}
       onClick={(_) => onClick()}>{textToDisplay}
     </div>
   )

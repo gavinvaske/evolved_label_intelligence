@@ -1,6 +1,5 @@
-import React from 'react';
-import './FormErrorMessage.scss'
 import { FieldErrors, FieldValues } from 'react-hook-form';
+import * as styles from './FormErrorMessage.module.scss';
 
 interface Props<T extends FieldValues> {
   errors: FieldErrors<T>,
@@ -23,7 +22,7 @@ const FormErrorMessage = <T extends FieldValues>({ errors, name }: Props<T>) => 
     if (!message) return null;
 
   return (
-    <div className="form-error-message">
+    <div className={styles.formErrorMessage}>
       {message}
 
     </div>

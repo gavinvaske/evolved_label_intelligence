@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import { useEffect, useRef } from 'react';
 import './ForgotPassword.scss';
 import { useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
@@ -6,6 +6,7 @@ import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useNavigate } from 'react-router-dom';
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 export const ForgotPassword = () => {
   const resetPasswordFieldRef = useRef<HTMLInputElement>(null);
@@ -50,7 +51,7 @@ export const ForgotPassword = () => {
                   {'data-test': 'email-input'}
                 }
             />
-            <button className='create-entry submit-button' type='submit' data-test='reset-password-btn'>Reset</button>
+            <button className={sharedStyles.submitButton} type='submit' data-test='reset-password-btn'>Reset</button>
           </form>
           <div className='register-link-container'>
             <a href='/react-ui/register' id='register-btn'>Back to login</a>

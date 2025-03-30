@@ -8,7 +8,6 @@ import { Table } from '../../../_global/Table/Table';
 import { TableHead } from '../../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../../_global/Table/TableBody/TableBody';
 import Row from '../../../_global/Table/Row/Row';
-import './MaterialLengthAdjustmentTable.scss'
 import { PageSelect } from '../../../_global/Table/PageSelect/PageSelect';
 import { SearchResult } from '@shared/types/http';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
@@ -77,7 +76,7 @@ export const MaterialLengthAdjustmentTable = () => {
       return results
     },
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
-    })
+  })
 
   if (isError) {
     useErrorMessage(error)
@@ -99,9 +98,9 @@ export const MaterialLengthAdjustmentTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -118,14 +117,14 @@ export const MaterialLengthAdjustmentTable = () => {
           <h1 className={sharedStyles.textBlue}>Material Length Adjustments</h1>
           <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{materialLengthAdjustmentSearchResults?.totalResults || 0}</p> results.</p>
         </div>
-         <SearchBar value={globalSearch} performSearch={(value: string) => {
+        <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
 
         <Table id='material-length-adjustment-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>

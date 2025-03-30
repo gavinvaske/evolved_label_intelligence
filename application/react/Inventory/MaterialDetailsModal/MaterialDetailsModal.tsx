@@ -1,8 +1,10 @@
-import './MaterialDetailsModal.scss'
 import { FullScreenModal } from '../../_global/LargeModal/LargeModal.tsx';
 import * as tableStyles from '@ui/styles/table.module.scss'
+import * as styles from './MaterialDetailsModal.module.scss'
+import * as sharedStyles from '@ui/styles/shared.module.scss'
 
 import { IMaterial } from '@shared/types/models';
+import clsx from 'clsx';
 
 type Props = {
   material: IMaterial,
@@ -15,35 +17,35 @@ export const MaterialDetailsModal = (props: Props) => {
   return (
     <FullScreenModal onClose={() => onClose()}>
 
-        <div className='modal-header'>
+        <div className={sharedStyles.modalHeader}>
           <h1>{material.materialId} <span>{material.name}</span></h1>
         </div>
-        <div className='modal-body'>
-          <div className='body-header'>
-            <div className='box box-one'>
+        <div className={sharedStyles.modalBody}>
+          <div className={sharedStyles.bodyHeader}>
+            <div className={sharedStyles.box}>
               <h5>Stock Available:</h5>
               <span>{material.inventory.netLengthAvailable}</span>
               </div>
-            <div className='box box-two'>
+            <div className={sharedStyles.box}>
             <h5>Adjustments:</h5> 
               <span>{material.inventory.sumOfLengthAdjustments}</span>
             </div>
-            <div className='box box-three'>
+            <div className={sharedStyles.box}>
               <h5>On Order:</h5>
               <span> {material.inventory.lengthNotArrived}</span>
             </div>
           </div>
-          <div className='card-container'>
-            <div className='card'>
+          <div className={styles.cardContainer}>
+            <div className={styles.card}>
               <h5>Description:</h5> 
               <span>{material.description}</span>
             </div>
-            <div className='card'>
+            <div className={styles.card}>
               <h5>When to use:</h5> 
               <span>{material.whenToUse}</span>
             </div>
           </div>
-          <div className='card full-width'>
+          <div className={clsx(styles.card, sharedStyles.fullWidth)}>
             <div className={tableStyles.tblPri}>
               <div className={tableStyles.tblHdr}>
                 <div className={tableStyles.tblCell}><div className={tableStyles.pulseIndicator}></div>Name</div>

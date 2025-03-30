@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import './LinerTypeTable.scss';
 import {
   createColumnHelper,
   getCoreRowModel,

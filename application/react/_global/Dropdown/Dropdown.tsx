@@ -1,6 +1,5 @@
-import React, { forwardRef, PropsWithChildren, useEffect, useImperativeHandle, useRef } from 'react';
-import './Dropdown.scss';
-import { Closable, useDropdownContext } from '../../_context/dropdownProvider';
+import React, { PropsWithChildren, useEffect, useRef } from 'react';
+import { useDropdownContext } from '../../_context/dropdownProvider';
 import { v4 as uuidv4 } from 'uuid';
 
 type Props = {

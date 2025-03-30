@@ -1,18 +1,16 @@
-import React from 'react';
-import './LinerTypeRowActions.scss';
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { MongooseId } from "@shared/types/typeAliases.ts";
 import { useNavigate } from "react-router-dom";
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { Row } from '@tanstack/react-table';
-import { LinerType } from '../../../_types/databasemodels/linerType.ts';
 import { useQueryClient } from '@tanstack/react-query';
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
+import { ILinerType } from '@shared/types/models.ts';
 
 type Props = {
-  row: Row<LinerType>
+  row: Row<ILinerType>
 }
 
 export const LinerTypeRowActions = (props: Props) => {

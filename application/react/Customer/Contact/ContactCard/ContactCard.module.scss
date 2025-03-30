@@ -1,0 +1,23 @@
+.contactCard {
+  background-color: white;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.columnTd {
+  width: 11.11%;
+  max-width: 11.11%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 45px;
+  overflow-x: hidden;
+}
+
+.deleteIcon {
+  cursor: pointer;
+  font-size: 22px;
+  color: red;
+  transition: transform 0.3s;
+}

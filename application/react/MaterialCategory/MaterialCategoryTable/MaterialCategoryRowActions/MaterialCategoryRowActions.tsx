@@ -1,17 +1,16 @@
-import React from 'react';
-import './MaterialCategoryRowActions.scss';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { MongooseId } from "@ui/types/typeAliases";
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
+import { MongooseIdStr } from '@shared/types/typeAliases';
+import { IMaterialCategory } from '@shared/types/models';
 
 type Props = {
-  row: Row<any>
+  row: Row<IMaterialCategory>
 }
 
 export const MaterialCategoryRowActions = (props: Props) => {
@@ -21,7 +20,7 @@ export const MaterialCategoryRowActions = (props: Props) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const onDeleteClicked = (mongooseObjectId: MongooseId) => {
+  const onDeleteClicked = (mongooseObjectId: MongooseIdStr) => {
     alert('@TODO Storm: Add a confirmation modal before deletion?')
     axios.delete(`/material-categories/${mongooseObjectId}`)
       .then((_: AxiosResponse) => {
@@ -31,7 +30,7 @@ export const MaterialCategoryRowActions = (props: Props) => {
       .catch((error: AxiosError) => useErrorMessage(error))
   }
 
-  const onEditClicked = (mongooseObjectId: MongooseId) => {
+  const onEditClicked = (mongooseObjectId: MongooseIdStr) => {
     navigate(`/react-ui/forms/material-category/${mongooseObjectId}`)
   }
 

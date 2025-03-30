@@ -1,5 +1,4 @@
 import { useEffect } from 'react';
-import './MaterialCategoryForm.scss';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { IMaterialCategory } from '@shared/types/models';
@@ -76,7 +75,7 @@ export const MaterialCategoryForm = () => {
               {/* Let user know some form inputs had errors */}
               <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-              <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
         </div>

@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import './DieTable.scss';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { DieRowActions } from './DieRowActions/DieRowActions';
 import { useQuery } from '@tanstack/react-query';

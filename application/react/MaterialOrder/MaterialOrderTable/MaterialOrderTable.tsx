@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import './MaterialOrderTable.scss'
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { MaterialOrderRowActions } from './MaterialOrderRowActions/MaterialOrderRowActions';
 import { useQuery } from '@tanstack/react-query';
@@ -97,9 +96,9 @@ export const MaterialOrderTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -122,7 +121,7 @@ export const MaterialOrderTable = () => {
 
         <Table id='material-order-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>

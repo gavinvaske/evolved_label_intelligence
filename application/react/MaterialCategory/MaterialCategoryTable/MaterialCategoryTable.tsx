@@ -1,5 +1,4 @@
 import React, { useMemo } from 'react';
-import './MaterialCategoryTable.scss'
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { useQuery } from '@tanstack/react-query';
 import { IMaterialCategory } from '@shared/types/models';
@@ -17,7 +16,7 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<IMaterialCategory>()
 
 const columns = [
   columnHelper.accessor('name', {

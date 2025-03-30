@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './MaterialLengthAdjustmentForm.scss';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -13,7 +12,6 @@ import { TextArea } from '../../_global/FormInputs/TextArea/TextArea.tsx';
 import { IMaterialLengthAdjustmentForm } from '@ui/types/forms.ts';
 import { useQuery } from '@tanstack/react-query';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
-import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
 
@@ -124,7 +122,7 @@ export const MaterialLengthAdjustmentForm = () => {
               {/* Let user know some form inputs had errors */}
               <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
-              <button className='create-entry submit-button' type="submit">{isUpdateRequest ? 'Update' : 'Create'} </button>
+              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'} </button>
             </div>
           </form>
         </div>
