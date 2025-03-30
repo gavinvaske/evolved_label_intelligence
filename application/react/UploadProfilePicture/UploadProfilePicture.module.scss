@@ -1,5 +1,5 @@
-.profile-picture-container {
-  .profile-picture-frame {
+.profilePictureContainer {
+  .profilePictureFrame {
     position: absolute;
     height: 300px;
     width: 300px;
@@ -12,12 +12,15 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    img, div {
+
+    img,
+    div {
       border-radius: 50%;
       height: 290px;
       width: 290px;
     }
-    .photo-details {
+
+    .photoDetails {
       position: absolute;
       height: 290px;
       width: 290px;
@@ -25,6 +28,7 @@
       display: flex;
       justify-content: center;
       align-items: center;
+
       input {
         height: 300px;
         width: 300px;
@@ -33,22 +37,26 @@
         color: transparent;
         background: none;
         background-size: 60px 60px;
+
         &:hover {
           cursor: pointer;
         }
       }
+
       &:hover {
-        background-color: rgba(0,0,0,.7);
+        background-color: rgba(0, 0, 0, .7);
+
         input {
           color: white;
           background: url('https://cdn1.iconfinder.com/data/icons/hawcons/32/698394-icon-130-cloud-upload-512.png') center center no-repeat transparent;
           background-size: 60px 60px;
         }
       }
-      
+
       input::-webkit-file-upload-button {
         display: none;
       }
+
       input[type='file'] {
         color: transparent;
       }

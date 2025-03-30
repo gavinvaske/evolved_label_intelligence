@@ -1,15 +1,15 @@
 import { useErrorMessage } from "../_hooks/useErrorMessage";
 import axios from 'axios';
-import './UploadProfilePicture.scss';
 import { Image } from "../_global/Image/Image";
 import { refreshLoggedInUser, useLoggedInUser } from "../_hooks/useLoggedInUser";
 import { useQueryClient } from "@tanstack/react-query";
+import * as styles from './UploadProfilePicture.module.scss'
 
 type MimeType = 'image/jpeg' | 'image/png' | 'image/jpg';
 
 type Props = {
   apiEndpoint: string,
-  acceptedMimeTypes: MimeType[] 
+  acceptedMimeTypes: MimeType[]
 }
 
 export const UploadProfilePicture = (props: Props) => {
@@ -59,11 +59,11 @@ export const UploadProfilePicture = (props: Props) => {
   const allowedMimeTypes = acceptedMimeTypes.join(', ');
 
   return (
-    <div className='profile-picture-container'>
+    <div className={styles.profilePictureContainer}>
 
-      <div className='profile-picture-frame'>
-        <Image img={profilePictureUrl} width={300}/>
-        <div className="photo-details">
+      <div className={styles.profilePictureFrame}>
+        <Image img={profilePictureUrl} width={300} />
+        <div className={styles.photoDetails}>
           <input
             id='image-upload'
             type="file"
