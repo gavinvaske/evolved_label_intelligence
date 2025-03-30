@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react';
-import './VendorForm.scss'
+import { useEffect, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';

@@ -16,7 +16,7 @@ import { IVendor } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 
-const columnHelper = createColumnHelper<any>()
+const columnHelper = createColumnHelper<IVendor>()
 
 const columns = [
   columnHelper.accessor('name', {
@@ -43,7 +43,7 @@ const columns = [
   columnHelper.display({
     id: 'actions',
     header: 'Actions',
-    cell: props => <VendorRowActions row={props.row}/>
+    cell: props => <VendorRowActions row={props.row} />
   })
 ];
 export const VendorTable = () => {
@@ -71,7 +71,7 @@ export const VendorTable = () => {
       return results
     },
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
-    })
+  })
 
   if (isError) {
     useErrorMessage(error)
@@ -93,9 +93,9 @@ export const VendorTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -112,14 +112,14 @@ export const VendorTable = () => {
           <h1 className={sharedStyles.textBlue}>Vendors</h1>
           <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{vendorSearchResults?.totalResults || 0}</p> results.</p>
         </div>
-         <SearchBar value={globalSearch} performSearch={(value: string) => {
+        <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
 
         <Table id='vendor-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
