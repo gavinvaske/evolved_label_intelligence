@@ -7,18 +7,18 @@ const Summary = observer(() => {
 
   return (
     <div className={styles.materialSummaryContainer}>
-      <div className={clsx(styles.card, styles.col)}>
+      <div className={clsx(styles.card)}>
         <h1>Inventory</h1>
       </div>
-      <div className={clsx(styles.card, styles.col)}>
+      <div className={clsx(styles.card)}>
         <span>Feet On Hand</span>
         <h2 className='total-length-of-material-in-inventory'>{inventoryStore.getArrivedMaterialsLength()}</h2>
       </div>
-      <div className={clsx(styles.card, styles.col)}>
+      <div className={clsx(styles.card)}>
         <span>Net Feet</span>
         <h2 className='net-length-of-material-in-inventory'>{inventoryStore.getNetLengthOfMaterialsInInventory()}</h2>
       </div>
-      <div className={clsx(styles.card, styles.col)}>
+      <div className={clsx(styles.card)}>
         <span>Feet On Order</span>
         <h2 className='total-length-of-material-ordered'>{inventoryStore.getNotArrivedMaterialsLength()}</h2>
       </div>

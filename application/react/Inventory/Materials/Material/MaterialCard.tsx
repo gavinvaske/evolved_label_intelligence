@@ -97,17 +97,17 @@ const MaterialCard = observer((props: Props) => {
       <div className={clsx(styles.actualVsOrderedContainer)}>
         <div className={clsx(styles.col, styles.colLeft)}>
           <span>Actual</span>
-          <h2 className={clsx(styles.materialLengthInStock)}>{material.inventory.lengthArrived}</h2>
+          <h2>{material.inventory.lengthArrived}</h2>
         </div>
         <div className={clsx(styles.divideLine)}></div>
         <div className={clsx(styles.col, styles.colRight)}>
           <span>Ordered</span>
-          <h2 className={clsx(styles.materialLengthOrdered)}>{material.inventory.lengthNotArrived}</h2>
+          <h2>{material.inventory.lengthNotArrived}</h2>
         </div>
         <div className={clsx(styles.divideLine)}></div>
         <div className={clsx(styles.col, styles.colRight)}>
           <span>Net</span>
-          <h2 className={clsx(styles.materialLengthOrdered)}>{material.inventory.netLengthAvailable}</h2>
+          <h2>{material.inventory.netLengthAvailable}</h2>
         </div>
 
       </div>
