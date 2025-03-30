@@ -108,7 +108,7 @@ export const DieTable = () => {
           table.resetPageIndex();
         }} />
 
-        <Table data-test='die-table'>
+        <Table id='die-table'>
           <TableHead table={table} />
           
           <TableBody>

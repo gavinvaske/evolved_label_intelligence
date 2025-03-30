@@ -20,7 +20,7 @@ describe('Product Views', () => {
 
     cy.visit(url);
 
-    cy.get('[data-test=die-table]').should('exist');
+    cy.get('#die-table').should('exist');
     cy.get('[data-test=searchbar]').should('exist');
     cy.url().should('include', url)
   });
