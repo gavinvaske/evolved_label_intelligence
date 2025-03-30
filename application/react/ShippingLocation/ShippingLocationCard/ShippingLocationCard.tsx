@@ -1,21 +1,20 @@
-import React from 'react'
-import './ShippingLocationCard.scss'
+import * as styles from './ShippingLocationCard.module.scss'
 
 const ShippingLocationCard = (props) => {
   const { data, onDelete } = props;
   const { freightAccountNumber, deliveryMethod, name, street, unitOrSuite, city, state, zipCode } = data;
   return (
-    <div className='shipping-location-card'>
-      <div className='column-td'>{freightAccountNumber}</div>
-      <div className='column-td'>{deliveryMethod}</div>
-      <div className='column-td'>{name}</div>
-      <div className='column-td'>{street}</div>
-      <div className='column-td'>{unitOrSuite}</div>
-      <div className='column-td'>{city}</div>
-      <div className='column-td'>{state}</div>
-      <div className='column-td'>{zipCode}</div>
+    <div className={styles.shippingLocationCard}>
+      <div className={styles.columnTd}>{freightAccountNumber}</div>
+      <div className={styles.columnTd}>{deliveryMethod}</div>
+      <div className={styles.columnTd}>{name}</div>
+      <div className={styles.columnTd}>{street}</div>
+      <div className={styles.columnTd}>{unitOrSuite}</div>
+      <div className={styles.columnTd}>{city}</div>
+      <div className={styles.columnTd}>{state}</div>
+      <div className={styles.columnTd}>{zipCode}</div>
 
-      <div className='column-td' onClick={onDelete}><i className="fa-regular fa-trash-can"></i></div>
+      <div className={styles.columnTd} onClick={onDelete}><i className="fa-regular fa-trash-can"></i></div>
     </div>
   )
 }
