@@ -9,7 +9,6 @@ import { MongooseIdStr } from "@shared/types/typeAliases";
 import { LoadingIndicator } from "../../../../_global/LoadingIndicator/LoadingIndicator";
 import { useErrorMessage } from "../../../../_hooks/useErrorMessage";
 import { getDateTimeFromIsoStr } from "@ui/utils/dateTime";
-import './LengthAdjustmentsModal.scss';
 import * as materialCardStyles from '../MaterialCard.module.scss'
 import clsx from "clsx";
 
