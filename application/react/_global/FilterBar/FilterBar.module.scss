@@ -1,0 +1,182 @@
+@import '../../_styles/shared.module.scss';
+@import '../../_styles/button.module.scss';
+
+.searchWrapper input {
+  border: none;
+  height: 34px;
+  width: 60px;
+  padding: 0;
+  background-color: unset;
+  padding-left: 5px;
+  width: 60px;
+  transition: background-color .1s cubic-bezier(0, 0, 0.35, 1), width .1s cubic-bezier(0, 0, 0.35, 1);
+  border: unset;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  border-radius: 4px;
+  outline: none;
+  box-sizing: border-box;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.searchWrapper:hover {
+  background-color: #dcdfec;
+  cursor: pointer;
+}
+
+.searchWrapper {
+  height: 33px;
+  min-width: 94px;
+  border-radius: 3px;
+  line-height: 14px;
+  font-size: 14px;
+  margin: 0 7px;
+  overflow: hidden;
+}
+
+.searchWrapper i {
+  margin-left: 10px;
+  width: 20px;
+}
+
+.quickFilterDropdown.active {
+  visibility: visible;
+  opacity: 1;
+  z-index: 99;
+}
+
+.advancedFilterDropdown.active {
+  visibility: visible;
+  opacity: 1;
+  z-index: 99;
+}
+
+.quickFilterDropdown,
+.advancedFilterDropdown {
+  position: absolute;
+  box-shadow: 0 4px 17px 6px rgb(0 0 0 / 10%);
+  padding: 16px;
+  border-radius: 8px;
+  background-color: white;
+  visibility: hidden;
+  z-index: 0;
+  opacity: 0;
+  top: calc(100% + 10px);
+  min-width: 600px;
+
+  h5 {
+    font-size: 1.05rem;
+  }
+}
+
+.filterBtn {
+  width: 146px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f6f8;
+  border-radius: 3px;
+  margin-bottom: 5px;
+  color: #323338;
+
+  &:hover {
+    background-color: rgba(103, 104, 121, 0.1);
+    cursor: pointer;
+  }
+}
+
+.filterActive {
+  background-color: #cce5ff;
+
+  &:hover {
+    background-color: #aed4fc;
+  }
+}
+
+.filterDescription {
+  color: #676879;
+}
+
+
+.advancedFilterDropdown {
+  background-color: white;
+}
+
+.searchWrapper {
+  padding-right: 15px;
+  height: 34px;
+  position: relative;
+  overflow-x: hidden;
+
+  &:focus-within {
+    border: 1px solid #0073ea;
+  }
+
+  .clearButton {
+    position: absolute;
+    top: 7px;
+    right: 5px;
+    visibility: hidden;
+    border-radius: .428rem;
+    justify-content: center;
+    align-items: center;
+    width: 16px;
+    height: 16px;
+    display: flex;
+
+    &:hover {
+      color: red;
+      cursor: pointer;
+      transition: .3s;
+    }
+  }
+}
+
+.searchWrapper.active {
+  &:hover {
+    background-color: white;
+  }
+
+  input {
+    width: 170px;
+    transition: 0.3s;
+  }
+
+  .clearButton {
+    visibility: visible;
+  }
+}
+
+.searchWrapper.hasText {
+  background-color: #cce5ff;
+
+  &:hover {
+    background-color: #cce5ff;
+  }
+}
+
+.allWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.filterText {
+  padding-left: 5px;
+}
+
+.seeAllButtonText {
+  padding-left: 5px;
+  font-size: 16px;
+}
+
+.btnSort {
+  width: 124px;
+}
+
+.seeAllButton {
+  font-size: 18px;
+}

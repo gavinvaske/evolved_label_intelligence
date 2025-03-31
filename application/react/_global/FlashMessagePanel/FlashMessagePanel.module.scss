@@ -1,4 +1,4 @@
-.flash-message-container {
+.flashMessageContainer {
   z-index: 999;
   color: rgb(255, 255, 255);
   flex-direction: column;
@@ -13,7 +13,7 @@
   right: 0px;
   overflow: hidden;
 
-  .clear-all-btn {
+  .clearAllBtn {
     background-color: white;
     padding: 5px 10px;
     width: 200px;
@@ -23,28 +23,34 @@
     box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
     position: fixed;
     bottom: 0;
+
     &:hover {
       background-color: #dcdfec;
     }
+
     &:focus {
       background-color: #cce5ff;
     }
   }
-  .success-flash-message {
+
+  .successFlashMessage {
     background-color: #28c76f;
-    .fa-regular.fa-close {
+
+    .closeMessageButton {
       background-color: #28c76f;
     }
   }
-  .error-flash-message {
+
+  .errorFlashMessage {
     background-color: rgb(223, 47, 74);
-    .fa-regular.fa-close {
+
+    .closeMessageButton {
       background-color: rgb(223, 47, 74);
     }
   }
 }
 
-.flash-message {
+.flashMessage {
   display: flex;
   justify-content: center;
   align-items: center;
@@ -60,12 +66,7 @@
   transition: .3s;
   margin-bottom: 14px;
 
-  .fa-solid.fa-xmark-large {
-    &:hover {
-      cursor:default;
-    }
-  }
-  .fa-regular.fa-close {
+  .closeMessageButton {
     position: absolute;
     height: 25px;
     width: 25px;
@@ -76,14 +77,15 @@
     margin-left: 0px;
     right: 12px;
     top: 12px;
-    border: 1px solid rgba(240,240,240,1);
+
     &:hover {
-      background-color: rgba(240,240,240, .3);
+      background-color: rgba(240, 240, 240, .3);
       border: none;
       cursor: pointer;
     }
   }
-  .flash-container {
+
+  .flashContainer {
     display: flex;
     justify-content: flex-start;
     align-items: center;
@@ -91,7 +93,7 @@
     width: 410px;
     overflow: hidden;
 
-    .flash-content {
+    .flashContent {
       display: flex;
       justify-content: flex-start;
       align-items: flex-start;
@@ -103,14 +105,17 @@
       text-overflow: ellipsis;
 
     }
+
     h6 {
       margin-bottom: 0;
       font-weight: bold;
     }
-    .circle-container {
+
+    .circleContainer {
       width: 45px;
-      .circle-background {
-        background-color: rgba(240,240,240, .3);
+
+      .circleBackground {
+        background-color: rgba(240, 240, 240, .3);
         height: 45px;
         width: 45px;
         border-radius: 50%;
@@ -118,30 +123,34 @@
         justify-content: center;
         align-items: center;
       }
+
       i {
         font-size: 25px;
       }
     }
   }
-  .bottom-bumper {
-    background-color: rgba(240,240,240, .3);
+
+  .bottomBumper {
+    background-color: rgba(240, 240, 240, .3);
     width: 100%;
     position: absolute;
     height: 10px;
     bottom: 0;
     left: 0;
   }
+
   &:hover {
     transition: .3s;
 
-    .flash-content {
+    .flashContent {
       overflow-y: auto;
     }
   }
 }
 
-
-
-
-
-
+.errorIcon,
+.successIcon {
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
+}
