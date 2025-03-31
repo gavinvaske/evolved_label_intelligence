@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react';
-import './FilterBar.scss';
 import { observer } from 'mobx-react-lite';
 import { ConditionalFilter, ConditionalFilterFunction, Filter, TextFilter, TextFilterOption } from "@ui/types/filters";
 import { ConditionalQuickFilter } from '../QuickFilterModal/ConditionalQuickFilter/ConditionalQuickFilter';
@@ -138,7 +137,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
       </div>
       <div className={clsx(styles.allWrapper, sharedStyles.tooltipTop)}>
         <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>
-        <button className={clsx(styles.btnSort, styles.seeAll)} onClick={(e) => {
+        <button className={clsx(styles.btnSort)} onClick={(e) => {
           store.resetAllFilters();
           clearSearchBar(e);
         }}>
