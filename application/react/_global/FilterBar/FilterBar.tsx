@@ -93,6 +93,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
     if (ref.current) {
       ref.current.value = '';
     }
+    setIsSearchBarActive(false)
     e.stopPropagation();
   }
 
