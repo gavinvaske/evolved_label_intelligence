@@ -1,0 +1,156 @@
+.flashMessageContainer {
+  z-index: 999;
+  color: rgb(255, 255, 255);
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  width: 460px;
+  max-height: calc(100% - 60px);
+  margin-right: 25px;
+  display: flex;
+  position: fixed;
+  bottom: 60px;
+  right: 0px;
+  overflow: hidden;
+
+  .clearAllBtn {
+    background-color: white;
+    padding: 5px 10px;
+    width: 200px;
+    border-radius: 15px;
+    margin-bottom: 15px;
+    -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+    box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+    position: fixed;
+    bottom: 0;
+
+    &:hover {
+      background-color: #dcdfec;
+    }
+
+    &:focus {
+      background-color: #cce5ff;
+    }
+  }
+
+  .successFlashMessage {
+    background-color: #28c76f;
+
+    .closeMessageButton {
+      background-color: #28c76f;
+    }
+  }
+
+  .errorFlashMessage {
+    background-color: rgb(223, 47, 74);
+  
+    .closeMessageButton {
+      background-color: rgb(223, 47, 74);
+    }
+  }
+}
+
+.flashMessage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+  box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+  padding: 0px 16px;
+  border-radius: 5px;
+  width: 460px;
+  height: 135px;
+  padding-right: 0px;
+  padding-top: 8px;
+  position: relative;
+  transition: .3s;
+  margin-bottom: 14px;
+
+  .fa-solid.fa-xmark-large {
+    &:hover {
+      cursor: default;
+    }
+  }
+
+  .closeMessageButton {
+    position: absolute;
+    height: 25px;
+    width: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    margin-left: 0px;
+    right: 12px;
+    top: 12px;
+    //border: 1px solid rgba(240, 240, 240, 1);
+
+    &:hover {
+      background-color: rgba(240, 240, 240, .3);
+      border: none;
+      cursor: pointer;
+    }
+  }
+
+  .flashContainer {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    flex-direction: row;
+    width: 410px;
+    overflow: hidden;
+
+    .flashContent {
+      display: flex;
+      justify-content: flex-start;
+      align-items: flex-start;
+      flex-direction: column;
+      margin-left: 10px;
+      width: 365px;
+      max-height: 65px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+    }
+
+    h6 {
+      margin-bottom: 0;
+      font-weight: bold;
+    }
+
+    .circleContainer {
+      width: 45px;
+
+      .circleBackground {
+        background-color: rgba(240, 240, 240, .3);
+        height: 45px;
+        width: 45px;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      i {
+        font-size: 25px;
+      }
+    }
+  }
+
+  .bottomBumper {
+    background-color: rgba(240, 240, 240, .3);
+    width: 100%;
+    position: absolute;
+    height: 10px;
+    bottom: 0;
+    left: 0;
+  }
+
+  &:hover {
+    transition: .3s;
+
+    .flashContent {
+      overflow-y: auto;
+    }
+  }
+}
