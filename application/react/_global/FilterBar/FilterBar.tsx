@@ -110,10 +110,8 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
           instantSearch={true}
         />
         <div>
-          <TfiClose className={styles.clearButton} onClick={(e) => clearSearchBar(e)}/>
+          <TfiClose className={styles.clearButton} onClick={(e) => clearSearchBar(e)} />
         </div>
-
-        {/* <i className={clsx('fa-light', 'fa-xmark')} ></i> */}
       </div>
 
       <div className={clsx(buttonStyles.splitBtnFrame, buttonStyles.btnFilter, flexboxStyles.flexCenterCenterRow, sharedStyles.tooltipTop)}>
@@ -127,7 +125,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             <FaChevronDown />
           </button>
         </div>
-        <div className={clsx(styles.quickFilterDropdown, sharedStyles.dropdown, isDropdownDisplayed && styles.active)}>  {/* TODO: Figure out the active */}
+        <div className={clsx(styles.quickFilterDropdown, sharedStyles.dropdown, isDropdownDisplayed && styles.active)}>
           <h5><b>Quick filters</b></h5>
           {renderTextQuickFilters(textQuickFilters, store)}
         </div>
