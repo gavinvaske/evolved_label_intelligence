@@ -12,7 +12,7 @@ import * as styles from './FilterBar.module.scss';
 import * as buttonStyles from '@ui/styles/button.module.scss'
 import { FaChevronDown } from "react-icons/fa6";
 import { ImFilter } from "react-icons/im";
-import { BiReset } from "react-icons/bi";
+import { FaEye } from "react-icons/fa";
 import { TfiClose } from "react-icons/tfi";
 
 const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], store: Filter<T>) => {
@@ -142,7 +142,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
           clearSearchBar(e);
         }}>
           <div className={flexboxStyles.flexCenterSpaceAroundRow}>
-            <BiReset />
+            <FaEye className={styles.seeAllButton} />
             <div className={styles.seeAllButtonText}>See All ({<span>{filterableItemsCount}</span>})</div>
           </div>
         </button>
