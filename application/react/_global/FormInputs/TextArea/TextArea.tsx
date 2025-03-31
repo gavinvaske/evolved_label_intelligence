@@ -1,5 +1,3 @@
-import React from 'react';
-import './TextArea.scss';
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 
@@ -23,7 +21,7 @@ export const TextArea = <T extends FieldValues>(props: Props<T>) => {
   );
 
   return (
-    <div className='input-wrapper text-area'>
+    <div>
       <label>{label}<span className='red'>{isRequired ? '*' : ''}</span>:</label>
       <textarea
         {...register(attribute,
@@ -32,8 +30,8 @@ export const TextArea = <T extends FieldValues>(props: Props<T>) => {
         placeholder={placeholder}
         name={attribute}
         {...dataAttributes}
-        { ...(rows ? { rows: rows } : {}) }
-        { ...(cols ? { cols: cols } : {}) }
+        {...(rows ? { rows: rows } : {})}
+        {...(cols ? { cols: cols } : {})}
       />
       <FormErrorMessage errors={errors} name={attribute} />
     </div>
