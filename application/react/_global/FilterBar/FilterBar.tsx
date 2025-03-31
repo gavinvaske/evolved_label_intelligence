@@ -94,6 +94,8 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
       ref.current.value = '';
     }
     setIsSearchBarActive(false)
+    setIsDropdownDisplayed(false)
+    setIsAdvancedDropdownDisplayed(false)
     e.stopPropagation();
   }
 
