@@ -43,7 +43,7 @@
 
   .errorFlashMessage {
     background-color: rgb(223, 47, 74);
-  
+
     .closeMessageButton {
       background-color: rgb(223, 47, 74);
     }
@@ -66,12 +66,6 @@
   transition: .3s;
   margin-bottom: 14px;
 
-  .fa-solid.fa-xmark-large {
-    &:hover {
-      cursor: default;
-    }
-  }
-
   .closeMessageButton {
     position: absolute;
     height: 25px;
@@ -83,7 +77,6 @@
     margin-left: 0px;
     right: 12px;
     top: 12px;
-    //border: 1px solid rgba(240, 240, 240, 1);
 
     &:hover {
       background-color: rgba(240, 240, 240, .3);
@@ -153,4 +146,11 @@
       overflow-y: auto;
     }
   }
+}
+
+.errorIcon,
+.successIcon {
+  width: 100%;
+  height: 100%;
+  opacity: 0.75;
 }

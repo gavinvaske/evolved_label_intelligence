@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
-import './FlashMessagePanel.scss';
 import flashMessageStore from '../../stores/flashMessageStore';
 import { FlashMessageOption } from "@ui/types/flashMessage";
 import { observer } from 'mobx-react-lite';
 import * as styles from './FlashMessagePanel.module.scss'
 import clsx from 'clsx';
 import { TfiClose } from 'react-icons/tfi';
+import { BiErrorCircle } from "react-icons/bi";
+import { IoCheckmarkCircleOutline } from "react-icons/io5";
+
 
 type FlashMessageProps = {
   flashMessage: FlashMessageOption
@@ -18,19 +20,19 @@ export const FlashMessagePanel = observer(() => {
 
   return (
     <>
-    {shouldRenderFlashMessagePanel &&
-      <div className={styles.flashMessageContainer}>
-        {flashMessages.map((flashMessage) => <FlashMessage flashMessage={flashMessage} key={flashMessage.uuid}/>)}
-        {shouldRenderClearAllFlashMessagesButton &&
-          <button className={styles.clearAllBtn} onClick={() => flashMessageStore.clearAllMessages()}>Clear All Messages</button>
-        }
-      </div>
-    }
+      {shouldRenderFlashMessagePanel &&
+        <div className={styles.flashMessageContainer}>
+          {flashMessages.map((flashMessage) => <FlashMessage flashMessage={flashMessage} key={flashMessage.uuid} />)}
+          {shouldRenderClearAllFlashMessagesButton &&
+            <button className={styles.clearAllBtn} onClick={() => flashMessageStore.clearAllMessages()}>Clear All Messages</button>
+          }
+        </div>
+      }
     </>
   )
 })
 
-const FlashMessage = (props : FlashMessageProps) => {
+const FlashMessage = (props: FlashMessageProps) => {
   const { flashMessage } = props;
   const { message, uuid, type } = flashMessage;
   const [shouldSuccessMessageBeRendered, setShouldSuccessMessageBeRendered] = useState(true);
@@ -51,19 +53,19 @@ const FlashMessage = (props : FlashMessageProps) => {
           <div className={styles.flashContainer}>
             <div className={styles.circleContainer}>
               <div className={styles.circleBackground}>
-                {type === 'ERROR' && (<i className="fa-solid fa-xmark-large"></i>) } 
-                {type === 'SUCCESS' && (<i className="fa-duotone fa-check"></i>) } 
+                {type === 'ERROR' && (<BiErrorCircle className={styles.errorIcon} />)}
+                {type === 'SUCCESS' && (<IoCheckmarkCircleOutline className={styles.successIcon} />)}
               </div>
             </div>
             <div className={styles.flashContent}>
 
-              {type === 'ERROR' && (<h6>Error</h6>) } 
-              {type === 'SUCCESS' && (<h6>Success</h6>) } 
-              
+              {type === 'ERROR' && (<h6>Error</h6>)}
+              {type === 'SUCCESS' && (<h6>Success</h6>)}
+
               <p>{message}</p>
             </div>
           </div>
-          
+
           <TfiClose className={styles.closeMessageButton} onClick={() => flashMessageStore.removeFlashMessage(uuid)} />
           <div className={styles.bottomBumper}></div>
         </div>
