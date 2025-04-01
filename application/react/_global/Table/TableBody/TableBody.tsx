@@ -1,10 +1,6 @@
-import React from 'react'
-
-export const TableBody = (props) => {
-  const { children } = props;
-
+export const TableBody: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
-    <div className='primary-table-body'>
+    <div>
       {children}
     </div>
   )
