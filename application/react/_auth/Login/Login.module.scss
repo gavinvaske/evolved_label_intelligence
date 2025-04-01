@@ -101,22 +101,11 @@
   }
 
   .loginForm {
-    // todo
     width: 400px;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-
-    // .inputWrapper {
-    //   width: 100%;
-    // }
-
-    // .inputWrapper {
-    //   &:nth-child(1) {
-    //     margin-bottom: 20px;
-    //   }
-    // }
 
     .rememberResetContainer {
       height: 40px;
