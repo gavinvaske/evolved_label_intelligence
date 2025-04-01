@@ -7,10 +7,10 @@ import axios from 'axios';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
-import './Login.scss';
 import { FaEyeSlash, FaEye } from "react-icons/fa6";
 import { IconBaseProps } from "react-icons";
 import * as sharedStyles from '@ui/styles/shared.module.scss';
+import * as styles from './Login.module.scss'
 
 export const Login = () => {
   const { setAuth } = useAuth();
@@ -54,10 +54,10 @@ export const Login = () => {
 
   return (
     <>
-      <div className='login-frame'>
-        <div className='login-container'>
-          <div className='col-left'>
-            <div className='logo-header-container'>
+      <div className={styles.loginFrame}>
+        <div className={styles.loginContainer}>
+          <div className={styles.colLeft}>
+            <div className={styles.logoHeaderContainer}>
             <svg
               id="Layer_2"
               xmlns="http://www.w3.org/2000/svg"
@@ -126,55 +126,59 @@ export const Login = () => {
               </svg>
               <span>ELI</span>
             </div>
-            <img className='eli-welcome-splash' src={'../images/eli-welcome-splash.png'} />
-            <img className='gray-background-shape' src={'../images/gray-background-shape.png'} />
+            <img className={styles.eliWelcomeSplash} src={'../images/eli-welcome-splash.png'} />
+            <img className={styles.grayBackgroundShape} src={'../images/gray-background-shape.png'} />
           </div>
-          <div className='col-right'>
-            <div className='login-form-container'>
-              <div className='welcome-container'>
+          <div className={styles.colRight}>
+            <div className={styles.loginFormContainer}>
+              <div className={styles.welcomeContainer}>
                 <h4>Welcome to ELI.</h4>
                 <p>Please sign in below.</p>
               </div>
-              <form className='' id='login-form' onSubmit={handleSubmit(onSubmit)}>
-                  <Input
-                      attribute='email'
-                      label="Email"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                      ref={userRef}
-                      dataAttributes={
-                        {'data-test': 'username-input'}
-                      }
-                  />
-                  <Input
-                      attribute='password'
-                      label="Password"
-                      register={register}
-                      isRequired={true}
-                      errors={errors}
-                      fieldType={showPassword ? 'text' : 'password'}
-                      dataAttributes={
-                        {'data-test': 'password-input'}
-                      }
-                      //rightUnit='mm'
-                      RightIcon={<PasswordIcon showPassword={showPassword} onClick={handlePasswordIconClicked} />}
-                  />
-                  <div className='remember-reset-container'>
-                    <div className='checkbox-container'>
+              <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
+                  <div className={styles.inputWrapper}>
+                    <Input
+                        attribute='email'
+                        label="Email"
+                        register={register}
+                        isRequired={true}
+                        errors={errors}
+                        ref={userRef}
+                        dataAttributes={
+                          {'data-test': 'username-input'}
+                        }
+                    />
+                  </div>
+                  <div className={styles.inputWrapper}>
+                    <Input
+                        attribute='password'
+                        label="Password"
+                        register={register}
+                        isRequired={true}
+                        errors={errors}
+                        fieldType={showPassword ? 'text' : 'password'}
+                        dataAttributes={
+                          {'data-test': 'password-input'}
+                        }
+                        //rightUnit='mm'
+                        RightIcon={<PasswordIcon showPassword={showPassword} onClick={handlePasswordIconClicked} />}
+                    />
+                  </div>
+                  <div className={styles.rememberResetContainer}>
+                    <div className={styles.checkboxContainer}>
                       <input type="checkbox" id="remember" name="remember" value=""></input>
                       <label htmlFor="remember"> Remember me</label>
                     </div>
-                    <div className='reset-container'>
+                    <div>
                       <Link to='/react-ui/forgot-password' id='forgot-password-btn'>Forgot Password?</Link>
                     </div>
                   </div>
                   <button className={sharedStyles.submitButton} type='submit' data-test='login-btn'>Login</button>
                 </form>
                 
-                <div className='register-link-container'>
+                <div className={styles.registerLinkContainer}>
                   Don't have an account?
-                  <Link to='/react-ui/register' id='register-btn'>Create Account</Link>
+                  <Link to='/react-ui/register'>Create Account</Link>
                 </div>
             </div>
 

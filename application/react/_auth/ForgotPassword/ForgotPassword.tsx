@@ -54,7 +54,7 @@ export const ForgotPassword = () => {
             <button className={sharedStyles.submitButton} type='submit' data-test='reset-password-btn'>Reset</button>
           </form>
           <div className='register-link-container'>
-            <a href='/react-ui/register' id='register-btn'>Back to login</a>
+            <a href='/react-ui/login'>Back to login</a>
           </div>
         </div>
       </div>
