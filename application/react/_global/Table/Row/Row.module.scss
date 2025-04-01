@@ -1,0 +1,22 @@
+.rowBody {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 56px;
+  border-top: 1px solid #ebe9f1;
+
+  &:hover {
+    background-color: rgba(115, 103, 240, .12);
+  }
+
+  .rowCell {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
+}

@@ -5,8 +5,8 @@ import clsx from 'clsx';
 
 export const RowActions = (props) => {
   const [isOpened, setIsOpened] = React.useState(false);
-  const { children }: {children: React.ReactNode} = props;
-  
+  const { children }: { children: React.ReactNode } = props;
+
   const toggleRowActions = () => setIsOpened(!isOpened)
 
   return (
@@ -14,7 +14,7 @@ export const RowActions = (props) => {
       <div className={clsx(styles.dropdownBtn, isOpened ? styles.active : '')} onClick={toggleRowActions}>
         <RxDotsVertical />
         <div className={clsx(styles.dropdownOptions, isOpened ? styles.show : '')}>
-          { children }
+          {children}
         </div>
       </div>
     </div>
