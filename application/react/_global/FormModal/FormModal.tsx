@@ -1,6 +1,7 @@
-import './FormModal.scss'
 import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as styles from './FormModal.module.scss';
+import { TfiClose } from "react-icons/tfi";
 
 export const FormModal = (props) => {
   const {
@@ -11,10 +12,10 @@ export const FormModal = (props) => {
   } = props;
 
   return (
-    <div className='modal-wrapper'>
-      <div className={clsx('modal', sharedStyles.card)}>
-      <button className='close-button' type="button" onClick={() => onCancel()}><i className="fa-solid fa-x"></i></button>
-        <div className='modal-content'>
+    <div className={styles.modalWrapper}>
+      <div className={clsx(styles.modal, sharedStyles.card)}>
+        <button className={styles.closeButton} type="button" onClick={() => onCancel()}><TfiClose /></button>
+        <div className={styles.modalContent}>
           <Form
             onSubmit={onSubmit}
             onCancel={onCancel}
