@@ -15,7 +15,7 @@ export const FormModal = (props) => {
     <div className={styles.modalWrapper}>
       <div className={clsx(styles.modal, sharedStyles.card)}>
         <button className={styles.closeButton} type="button" onClick={() => onCancel()}><TfiClose /></button>
-        <div className={styles.modalContent}>
+        <div>
           <Form
             onSubmit={onSubmit}
             onCancel={onCancel}
