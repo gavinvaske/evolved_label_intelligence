@@ -1,5 +1,6 @@
 import React from 'react';
-import './Modal.scss';
+import * as styles from './Modal.module.scss'
+import { TfiClose } from 'react-icons/tfi';
 
 type Props = {
   onClose: () => void,
@@ -21,9 +22,9 @@ export const Modal = (props: Props) => {
     };
 
   return (
-    <div className='modal-background' onClick={handleBackgroundClick}>
-      <div className='modal-box'>
-        <i className='fa-light fa-xmark close-modal' onClick={() => onClose()}></i>
+    <div className={styles.modalBackground} onClick={handleBackgroundClick}>
+      <div className={styles.modalBox}>
+        <TfiClose className={styles.closeModal} onClick={() => onClose()}/>
         {children}
       </div>
     </div>

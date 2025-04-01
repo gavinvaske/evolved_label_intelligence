@@ -1,17 +1,17 @@
-import React from 'react'
+
 import { Row as RowType, RowData, flexRender } from '@tanstack/react-table'
-import './Row.scss'
+import * as styles from './Row.module.scss'
 
 const Row = (props) => {
-  const { row } : {row: RowType<RowData>} = props;
-  
+  const { row }: { row: RowType<RowData> } = props;
+
   return (
-    <div className='row row-body' key={row.id}>
+    <div className={styles.rowBody} key={row.id}>
       {row.getVisibleCells().map(cell => (
-        <div className='row-cell' key={cell.id}>
+        <div className={styles.rowCell} key={cell.id}>
           {
             flexRender(
-              cell.column.columnDef.cell, 
+              cell.column.columnDef.cell,
               cell.getContext()
             )
           }

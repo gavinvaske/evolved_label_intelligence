@@ -1,10 +1,10 @@
 import React, { forwardRef } from 'react';
-import './Input.scss'
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import { BsCurrencyDollar } from "react-icons/bs";
 import * as formStyles from '@ui/styles/form.module.scss'
 import clsx from 'clsx';
+import * as styles from './Input.module.scss';
 
 type Props<T extends FieldValues> = {
   attribute: Path<T>;
@@ -36,20 +36,20 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
   });
 
   return (
-    <div className={clsx(formStyles.inputWrapper, 'input-wrapper')}>
+    <div className={clsx(formStyles.inputWrapper, styles.inputWrapper)}>
       <label>
         {label} <span className="red">{isRequired ? '*' : ''}</span>:
       </label>
-      <div className="input-field-container">
+      <div className={styles.inputFieldContainer}>
 
         {/* Left Unit / Icon */}
         {(LeftIcon || leftUnit || fieldType === 'currency') && (
-          <div className="left-container">
+          <div className={styles.leftContainer}>
             {/* Set default icon on currency fields IFF no override was provided */}
-            {(!LeftIcon && !leftUnit) && fieldType === 'currency' && (<span className="left-input-field-icon"><BsCurrencyDollar /></span>)}
+            {(!LeftIcon && !leftUnit) && fieldType === 'currency' && (<span><BsCurrencyDollar /></span>)}
             
-            {LeftIcon && <span className="left-input-field-icon">{LeftIcon}</span>}
-            {leftUnit && <span className="left-input-field-unit">{leftUnit}</span>}
+            {LeftIcon && <span>{LeftIcon}</span>}
+            {leftUnit && <span>{leftUnit}</span>}
           </div>
         )}
 
@@ -69,9 +69,9 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
 
         {/* Right Unit / Icon */}
         {(RightIcon || rightUnit) && (
-          <div className="right-container">
-            {RightIcon && <span className="right-input-field-icon">{RightIcon}</span>}
-            {rightUnit && <span className="right-input-field-unit">{rightUnit}</span>}
+          <div className={styles.rightContainer}>
+            {RightIcon && <span>{RightIcon}</span>}
+            {rightUnit && <span>{rightUnit}</span>}
           </div>
         )}
       </div>

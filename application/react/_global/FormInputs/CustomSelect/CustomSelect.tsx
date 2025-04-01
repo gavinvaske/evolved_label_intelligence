@@ -1,9 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './CustomSelect.scss';
+import { useEffect, useRef, useState } from 'react';
 import { FieldErrors, FieldValues, UseFormRegister, Path, Controller, Control } from 'react-hook-form';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage.tsx';
 import clsx from 'clsx';
 import * as formStyles from '@ui/styles/form.module.scss'
+import * as styles from './CustomSelect.module.scss';
+import { FaChevronDown } from "react-icons/fa6";
 
 export type SelectOption = {
   displayName: string,
@@ -60,19 +61,19 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
         render={({ field: { onChange, value } }) => (
           <div>
             {/* Selected Option */}
-            <div className={`select-selected ${value && 'active'}`} onClick={toggleDropdown}>
+            <div className={clsx(styles.selectSelected, value && styles.active)} onClick={toggleDropdown}>
               {(value && options.find(option => value == option.value))?.displayName || 'Nothing Selected'}
-              <span className={`dropdown-arrow ${isOpen ? "active" : ""}`}><i className="fa-regular fa-chevron-down"></i></span>
+              <span className={clsx(styles.dropdownArrow, isOpen && styles.active)}><FaChevronDown /></span>
             </div>
 
             {/* Dropdown Options */}
             {isOpen && (
-              <div className="select-items-dropdown">
+              <div className={styles.selectItemsDropdown}>
                 {/* Search Input */}
                 <input
                   type="text"
                   placeholder="Search..."
-                  className="search-input"
+                  className={styles.searchInput}
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   autoFocus
@@ -80,7 +81,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
                 {/* "Nothing Selected" Option */}
                 <DropdownOption
-                  className={`border-bottom ${!value && "same-as-selected"}`}
+                  className={clsx(styles.borderBottom, !value && styles.sameAsSelected)}
                   option={{ displayName: `Nothing Selected`, value: '' }}
                   key={-1}
                   onClick={() => {
@@ -103,7 +104,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
                     />
                   ))
                 ) : (
-                  <div className="dropdown-item no-results">No options found</div>
+                  <div className={clsx(styles.dropdownItem, styles.noResults)}>No options found</div>
                 )}
               </div>
             )}
@@ -128,7 +129,7 @@ const DropdownOption = ({ option, key, onClick, isSelected, className = '' }: Dr
   return (
     <div
       key={key}
-      className={`dropdown-item ${isSelected ? "same-as-selected" : ""} ${className} `}
+      className={clsx(styles.dropdownItem, className, isSelected && styles.sameAsSelected)}
       onClick={onClick}
 
     >

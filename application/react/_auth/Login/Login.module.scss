@@ -1,0 +1,151 @@
+.loginFrame {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  .loginContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .colLeft {
+      width: 66.6666%;
+      position: relative;
+
+      .eliWelcomeSplash {
+        width: 60%;
+      }
+
+      .grayBackgroundShape {
+        position: absolute;
+        bottom: -87px;
+        width: 100%;
+      }
+
+      .logoHeaderContainer {
+        position: fixed;
+        top: 25px;
+        left: 25px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+
+        svg {
+          height: 40px;
+        }
+
+        span {
+          margin-left: 10px;
+          font-size: 30px;
+          font-weight: bold;
+        }
+      }
+    }
+
+    .colRight {
+      width: 33.3333%;
+      background-color: white;
+    }
+
+    .colLeft,
+    .colRight {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.loginFormContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  margin-bottom: 75px;
+
+  .welcomeContainer {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    flex-direction: column;
+
+    .logoBox {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 140px;
+      width: 140px;
+      border-radius: 0.428rem;
+      -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+      box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+    }
+
+    h4 {
+      margin: 0;
+    }
+
+    p {
+      margin: 10px 0 20px 0;
+      font-weight: lighter;
+    }
+  }
+
+  .loginForm {
+    width: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    .rememberResetContainer {
+      height: 40px;
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 20px;
+
+      .checkboxContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: row;
+
+        input {
+          height: 20px;
+          width: 20px;
+        }
+
+        label {
+          margin: 0 0 0 7px;
+        }
+      }
+    }
+  }
+
+  .registerLinkContainer {
+    margin-top: 15px;
+
+    a {
+      margin-left: 5px;
+    }
+  }
+}
+
+.inputWrapper {
+  width: 100%;
+
+  &:nth-child(1) {
+    margin-bottom: 20px;
+  }
+}

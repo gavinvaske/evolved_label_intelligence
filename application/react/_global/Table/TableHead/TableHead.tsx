@@ -1,12 +1,14 @@
-import React from 'react'
-import './TableHead.scss'
 import RowHeader from '../RowHeader/RowHeader';
 import { RowData, Table } from '@tanstack/react-table';
 
-export const TableHead = (props) => {
-  const { table }: {table: Table<RowData>} = props;
+interface TableHeadProps {
+  table: Table<RowData>;
+}
+
+export const TableHead = (props: TableHeadProps) => {
+  const { table }: TableHeadProps = props;
 
   return (
-      <RowHeader columnHeaders={table.getFlatHeaders()} />
+    <RowHeader columnHeaders={table.getFlatHeaders()} />
   )
 }

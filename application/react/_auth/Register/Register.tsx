@@ -102,7 +102,7 @@ export const Register = () => {
 
               <div className='register-link-container'>
                 Already have an account?
-                <Link to='/react-ui/login' id='register-btn'>Sign in</Link>
+                <Link to='/react-ui/login'>Sign in</Link>
               </div>
 
             </div>

@@ -1,44 +1,46 @@
-import React from 'react'
 import { Header, RowData, flexRender } from '@tanstack/react-table'
-import './RowHeader.scss'
+import * as styles from './RowHeader.module.scss'
+import { LuArrowUpDown } from "react-icons/lu";
+import { FaArrowDown } from "react-icons/fa6";
+import { FaArrowUp } from "react-icons/fa6";
 
 const RowHeader = (props) => {
-  const { columnHeaders }: {columnHeaders: Header<RowData, unknown>[]} = props;
+  const { columnHeaders }: { columnHeaders: Header<RowData, unknown>[] } = props;
 
   const getSortIcon = (sortDirection) => {
     if (sortDirection === 'asc') {
-      return <i className="fa-regular fa-arrow-down"></i>
+      return <FaArrowDown />
     } else if (sortDirection === 'desc') {
-      return <i className="fa-regular fa-arrow-up"></i>
+      return <FaArrowUp />
     } else {
-      return <i className="fa-regular fa-arrow-up-arrow-down"></i>
+      return <LuArrowUpDown />
     }
   }
 
   return (
-    <div className='primary-table-header'>
-      <div className='row-header'>
-      {
-        columnHeaders.map(header => (
-          <div className='column-header' key={header.id} onClick={header.column.getToggleSortingHandler()} style={{cursor: header.column.getCanSort() ? 'pointer' : ''}}>
-            <div className='column-icon'>
-              {
-                header.column.getCanSort() && getSortIcon(header.column.getIsSorted())
-              }
-            </div>
-            <div className='column-name'>
-              {
-                header.isPlaceholder
-                  ? null
-                  : flexRender(
+    <div className={styles.wrapper}>
+      <div className={styles.rowHeader}>
+        {
+          columnHeaders.map(header => (
+            <div className={styles.columnHeader} key={header.id} onClick={header.column.getToggleSortingHandler()} style={{ cursor: header.column.getCanSort() ? 'pointer' : '' }}>
+              <div className={styles.columnIcon}>
+                {
+                  header.column.getCanSort() && getSortIcon(header.column.getIsSorted())
+                }
+              </div>
+              <div>
+                {
+                  header.isPlaceholder
+                    ? null
+                    : flexRender(
                       header.column.columnDef.header,
                       header.getContext()
                     )
-              }
+                }
+              </div>
             </div>
-          </div>
-        ))
-      }
+          ))
+        }
       </div>
     </div>
   )

@@ -1,5 +1,5 @@
 import React, { forwardRef } from 'react'
-import './SearchBar.scss'
+import * as styles from './SearchBar.module.scss'
 
 type Props = {
   value: string,
@@ -35,15 +35,15 @@ const SearchBar = forwardRef((props: Props, inputRef: any) => {
   }
 
   return (
-    <div className={value ? 'search-bar has-text' : 'search-bar'} data-test='searchbar'>
-      <input 
-        ref={inputRef} 
-        id='primarySearch' 
-        type='text' 
-        defaultValue={value} 
-        onKeyUp={handleButtonPressed} 
-        onChange={(e) => handleUserTypedSomething(e.currentTarget.value)} 
-        placeholder="Search" 
+    <div className={styles.searchBar} data-test='searchbar'>
+      <input
+        ref={inputRef}
+        id='primarySearch'
+        type='text'
+        defaultValue={value}
+        onKeyUp={handleButtonPressed}
+        onChange={(e) => handleUserTypedSomething(e.currentTarget.value)}
+        placeholder="Search"
       />
     </div>
   )

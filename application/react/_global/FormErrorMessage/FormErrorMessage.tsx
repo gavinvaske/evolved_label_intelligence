@@ -19,7 +19,7 @@ const FormErrorMessage = <T extends FieldValues>({ errors, name }: Props<T>) => 
     ? String(errorMessage.message)
     : undefined;
 
-    if (!message) return null;
+  if (!message) return null;
 
   return (
     <div className={styles.formErrorMessage}>
