@@ -1,6 +1,3 @@
-import React from 'react';
-import './Image.scss';
-
 type Props = {
   img: string | File | null,
   width: number,

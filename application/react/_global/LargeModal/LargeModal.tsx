@@ -1,5 +1,6 @@
 import React from 'react';
-import './LargeModal.scss';
+import * as styles from './LargeModal.module.scss';
+import { TfiClose } from 'react-icons/tfi';
 
 type Props = {
   onClose: () => void,
@@ -16,9 +17,9 @@ export const FullScreenModal = (props: Props) => {
   }
 
   return (
-    <div className='modal fullscreen-modal-background' onClick={(e) => closeModalIfBackgroundWasClicked(e) }>
-      <div className='modal-box'>
-        <i className='fa-light fa-xmark close-modal' onClick={() => onClose()}></i>
+    <div className={styles.fullscreenModalBackground} onClick={(e) => closeModalIfBackgroundWasClicked(e) }>
+      <div className={styles.modalBox}>
+        <TfiClose className={styles.closeModal} onClick={() => onClose()}/>
         {children}
       </div>
     </div>
