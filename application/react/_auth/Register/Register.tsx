@@ -1,5 +1,4 @@
 import { useEffect, useRef } from 'react';
-import './Register.scss';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
@@ -7,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import * as sharedStyles from '../../_styles/shared.module.scss';
+import * as styles from './Register.module.scss';
 
 export const Register = () => {
   const emailFieldRef = useRef<HTMLInputElement>(null);
@@ -20,7 +20,7 @@ export const Register = () => {
 
   const onSubmit = (formData: any) => {
     axios.post('/auth/register', formData)
-      .then((response: AxiosResponse) => {
+      .then((_: AxiosResponse) => {
         navigate('/react-ui/login', { replace: true });
         useSuccessMessage('Registration was successful! Login to access your new account.')
       })
@@ -29,78 +29,78 @@ export const Register = () => {
 
   return (
     <>
-      <div className='register-frame'>
-        <div className='register-container'>
-          <div className='col-left'>
-            <img className='eli-welcome-splash' src={'../images/standing-ivy-figure.png'} />
-            <img className='gray-background-shape' src={'../images/gray-background-smaller.png'} />
+      <div className={styles.registerFrame}>
+        <div className={styles.registerContainer}>
+          <div className={styles.colLeft}>
+            <img className={styles.eliWelcomeSplash} src={'../images/standing-ivy-figure.png'} />
+            <img className={styles.grayBackgroundShape} src={'../images/gray-background-smaller.png'} />
           </div>
-          <div className='col-right'>
-            <div className='register-form-container'>
+          <div className={styles.colRight}>
+            <div className={styles.registerFormContainer}>
 
-              <div className='welcome-container'>
+              <div>
                 <h4>Hello! Lets get started</h4>
               </div>
 
-              <form id='register-form' onSubmit={handleSubmit(onSubmit)}>
-                <div className='form-container'>
-                  <div className='form-col-left'>
+              <form className={styles.registerForm} onSubmit={handleSubmit(onSubmit)}>
+                <div className={styles.formContainer}>
+                  <div className={styles.formColLeft}>
                     <Input
-                        attribute='firstName'
-                        label="First Name"
-                        register={register}
-                        isRequired={true}
-                        errors={errors}
+                      attribute='firstName'
+                      label="First Name"
+                      register={register}
+                      isRequired={true}
+                      errors={errors}
                     />
                     <Input
-                        attribute='lastName'
-                        label="Last Name"
-                        register={register}
-                        isRequired={true}
-                        errors={errors}
+                      attribute='lastName'
+                      label="Last Name"
+                      register={register}
+                      isRequired={true}
+                      errors={errors}
                     />
                     <Input
-                        attribute='birthDate'
-                        label="Birth Date"
-                        register={register}
-                        isRequired={true}
-                        errors={errors}
-                        fieldType='date'
+                      attribute='birthDate'
+                      label="Birth Date"
+                      register={register}
+                      isRequired={true}
+                      errors={errors}
+                      fieldType='date'
                     />
                   </div>
-                  <div className='form-col-right'>
+                  <div className={styles.formColRight}>
                     <Input
-                        attribute='email'
-                        label="Email"
-                        register={register}
-                        isRequired={true}
-                        errors={errors}
-                        ref={emailFieldRef}
+                      attribute='email'
+                      label="Email"
+                      register={register}
+                      isRequired={true}
+                      errors={errors}
+                      ref={emailFieldRef}
                     />
                     <Input
-                        attribute='password'
-                        label="Password"
-                        register={register}
-                        isRequired={true}
-                        errors={errors}
-                        fieldType='password'
+                      attribute='password'
+                      label="Password"
+                      register={register}
+                      isRequired={true}
+                      errors={errors}
+                      fieldType='password'
                     />
                     <Input
-                        attribute='repeatPassword'
-                        label="Re-type Password"
-                        register={register}
-                        isRequired={true}
-                        errors={errors}
-                        fieldType='password'
+                      attribute='repeatPassword'
+                      label="Re-type Password"
+                      register={register}
+                      isRequired={true}
+                      errors={errors}
+                      fieldType='password'
                     />
                   </div>
                 </div>
-                <div className='button-container'>
+                <div className={styles.buttonContainer}>
                   <button className={sharedStyles.submitButton} type='submit' data-test='login-btn'>Register</button>
                 </div>
               </form>
 
-              <div className='register-link-container'>
+              <div className={styles.registerLinkContainer}>
                 Already have an account?
                 <Link to='/react-ui/login'>Sign in</Link>
               </div>
