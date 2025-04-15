@@ -1,0 +1,374 @@
+.navbarMain {
+  top: 0;
+  left: 0;
+  box-sizing: border-box;
+  position: fixed;
+  width: 100%;
+  height: 80px;
+  padding-left: 15px;
+  padding-right: 15px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+  box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+  z-index: 61;
+
+  .column {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .columnLeft {
+    width: 15%;
+    font-size: 27px;
+    color: var(--primary-text-color);
+    font-weight: bold;
+
+    svg {
+      height: 45px;
+      margin-right: 7px;
+    }
+  }
+
+  .columnCenter {
+    width: 70%;
+
+    .feather-chevron-down {
+      margin-left: 7px;
+      margin-right: 0 !important;
+    }
+
+    .navbarLinks {
+      border-radius: 5px;
+      margin-right: 10px;
+
+      a {
+        border-radius: 5px;
+        padding: 12px 20px;
+
+        &:hover {
+          background-color: rgba(var(--primary-dark-background), var(--opacity-1));
+          transition: .3s;
+          cursor: pointer;
+        }
+
+        svg {
+          margin-right: 7px;
+        }
+      }
+
+      a.active {
+        color: rgba(var(--primary-purple), var(--opacity-10));
+        background-color: rgba(var(--action-background), .12);
+      }
+
+      a,
+      div.recipes {
+        color: rgba(var(--primary-text-color), var(--opacity-10));
+        font-size: 1rem;
+        font-weight: 400;
+      }
+
+      .div.recipes {
+        svg {
+          margin-right: 7px;
+        }
+      }
+
+      .material,
+      .recipes,
+      .insights {
+        padding: 12px 20px;
+      }
+
+      .fa-toilet-paper,
+      .fa-light,
+      .fa-chart-network,
+      .fa-table-tree,
+      .fa-react,
+      .fa-wave-pulse {
+        font-size: 20px;
+        margin-right: 7px;
+      }
+
+      .tickets {
+        .fa-sharp {
+          font-size: 20px;
+          margin-right: 7px;
+          transform: rotate(90deg);
+        }
+      }
+    }
+  }
+
+  .columnRight {
+    width: 15%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+
+    ul.primary {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: row;
+      height: 45px;
+
+      li {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 45px;
+        color: rgba(var(--primary-text-color), var(--opacity-10));
+      }
+    }
+  }
+
+  .userFrame {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+
+    img {
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+    }
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+
+  .userDetails {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    flex-direction: column;
+  }
+
+  .userProfilePicture {
+    position: relative;
+    height: 45px;
+    // background: #7367F6;
+    background: #2F2B3D;
+    width: 45px;
+    border-radius: 50%;
+  }
+
+  .sidebarMain {
+    .userProfilePicture {
+      background: #f8f8f8;
+      margin-left: 0;
+      width: 35px;
+      height: 35px;
+    }
+  }
+
+  .userName {
+    font-weight: 600;
+  }
+
+  .jobJole {
+    line-height: 1;
+  }
+
+  .activeUser {
+    height: 15px;
+    width: 15px;
+    border-radius: 50%;
+    background-color: #28c76f;
+    border: 2px solid white;
+    position: absolute;
+    bottom: -2px;
+    right: -3px;
+  }
+
+  #materialDropdownTrigger,
+  #insightsDropdownTrigger {
+    position: relative;
+  }
+
+  .dropdownMenu {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    top: calc(100% + 5px);
+    z-index: 10;
+    min-width: 10rem;
+    font-size: 1rem;
+    color: #2F2B3D;
+    margin: 0 0 0;
+    background-color: #fff;
+    background-clip: padding-box;
+    border: 1px solid rgba(34, 41, 47, .05);
+    border-radius: 0.358rem;
+    box-shadow: 0 5px 25px rgb(34 41 47 / 10%);
+    right: 0;
+    padding: .5rem .5rem 0 .5rem;
+    visibility: hidden;
+  }
+
+  .dropdownMenu.userOptions {
+    width: 13rem;
+    transform: scale(0);
+    right: 10px;
+    transform-origin: right top;
+    top: 95%;
+    transition: .2s;
+    padding: 0;
+
+    .userOptionsDropdownHeader {
+      height: 70px;
+      width: 100%;
+      padding: 0.5rem;
+
+      .userOptionsDropdownHeaderContainer {
+        height: 100%;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        flex-direction: row;
+
+        &:hover {
+          background-color: #f3f2f3;
+          border-radius: 5px;
+          cursor: pointer;
+        }
+
+        .userPictureColumn {
+          width: 55px;
+          display: flex;
+          justify-content: flex-end;
+          align-items: center;
+
+          .userPictureContainer {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            position: relative;
+
+            .userPictureBackground {
+              background-color: #2f2b3d;
+              height: 45px;
+              width: 45px;
+              border-radius: 50%;
+
+              img {
+                width: 45px;
+                height: 45px;
+                border-radius: 50%;
+              }
+
+              .activeIndicator {
+                background-color: #28c76f;
+                border: 2px solid #fff;
+                border-radius: 50%;
+                width: 15px;
+                height: 15px;
+                position: absolute;
+                bottom: -2px;
+                right: -3px;
+              }
+            }
+          }
+        }
+
+        .userTitleColumn {
+          width: calc(100% - 55px);
+          display: flex;
+          justify-content: center;
+          align-items: flex-start;
+          flex-direction: column;
+          padding-left: 10px;
+
+          .userName {
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 3px;
+            color: #2f2b3d;
+          }
+
+          .userTitle {
+            font-size: 12px;
+            font-weight: 400;
+            color: #2f2b3d;
+          }
+        }
+      }
+    }
+
+    .lineDivide {
+      height: 1px;
+      background-color: rgba(47, 43, 61, .12);
+      width: calc(100% - 1rem);
+    }
+
+    .userOptionsList {
+      padding: 0.5rem;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      .userOptionRow {
+        font-size: 15px;
+        border-radius: 5px;
+        margin-bottom: 2px;
+        width: 100%;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+
+        &:hover {
+          background-color: #f3f2f3;
+        }
+
+        color: black;
+      }
+    }
+
+    .userLogoutFooter {
+      width: 100%;
+      padding: 0.5rem;
+
+      button {
+        height: 42px;
+        width: 100%;
+        background-color: rgba(255, 76, 81, 1);
+        color: white;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        border-radius: 5px;
+
+        &:hover {
+          background-color: #e64449;
+        }
+
+        i {
+          margin-left: 10px;
+        }
+      }
+    }
+  }
+
+  .dropdownMenu.userOptions.active {
+    visibility: visible;
+    top: calc(100% + 15px);
+    -moz-transform: scale(1);
+    -webkit-transform: scale(1);
+    transform: scale(1);
+    transform-origin: right top;
+    transition: .3s;
+  }
+}

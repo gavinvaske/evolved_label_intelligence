@@ -4,18 +4,16 @@ import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Image } from '../../_global/Image/Image';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
-import { Dropdown } from '../../_global/Dropdown/Dropdown';
 import { useLoggedInUser } from '../../_hooks/useLoggedInUser';
 import { AuthRoles } from '@shared/enums/auth';
 import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
 import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as styles from './Navbar.module.scss';
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [isUserOptionsDropdownDisplayed, setIsUserOptionsDropdownDisplayed] = useState(false)
-  const [isUserNotificationsDropdownDisplayed, setIsUserNotificationsDropdownDisplayed] = useState(false)
-  const [isShortcutDropdownDisplayed, setIsShortcutDropdownDisplayed] = useState(false)
 
   const { user, error } = useLoggedInUser()
   const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`
@@ -30,239 +28,95 @@ export const Navbar = () => {
   }
 
   function toggleUserOptionsDrpdwnMenu() {
-    setIsUserNotificationsDropdownDisplayed(false)
-    setIsShortcutDropdownDisplayed(false)
     setIsUserOptionsDropdownDisplayed(!isUserOptionsDropdownDisplayed)
   }
-  function toggleUserNotificationsDrpdwnMenu() {
-    setIsUserOptionsDropdownDisplayed(false)
-    setIsShortcutDropdownDisplayed(false)
-    setIsUserNotificationsDropdownDisplayed(!isUserNotificationsDropdownDisplayed)
-  }
-  function toggleShortcutDrpdwnMenu() {
-    setIsUserOptionsDropdownDisplayed(false)
-    setIsUserNotificationsDropdownDisplayed(false)
-    setIsShortcutDropdownDisplayed(!isShortcutDropdownDisplayed)
-  }
-
-  const dropdownLists = [
-    <ul className='shortcut-body-create'>
-      <li><NavLink to='/react-ui/forms/ticket'>Create Ticket</NavLink></li>
-      <li><NavLink to='/react-ui/forms/quote'>Create Quote</NavLink></li>
-      <li><NavLink to='/react-ui/forms/product'>Create Product</NavLink></li>
-      <li><NavLink to='/react-ui/forms/customer' className={({ isActive, isPending }) => `${isPending ? "pending" : isActive ? "active" : ""}`}>Create Customer</NavLink></li>
-      <li><NavLink to='/react-ui/forms/die'>Create Die</NavLink></li>
-      <li><NavLink to='/'>Create Plate</NavLink></li>
-      <li><NavLink to='/'>Create PO</NavLink></li>
-    </ul>,
-    <ul className='shortcut-body-view'>
-      <li><NavLink to='/react-ui/tables/ticket'>View Ticket</NavLink></li>
-      <li><NavLink to='/react-ui/tables/quote'>View Quote</NavLink></li>
-      <li><NavLink to='/react-ui/tables/product'>View Product</NavLink></li>
-      <li><NavLink to='/react-ui/tables/customer'>View Customer</NavLink></li>
-      <li><NavLink to='/react-ui/tables/die'>View Die</NavLink></li>
-      <li><NavLink to='/react-ui/tables/plate'>View Plate</NavLink></li>
-      <li><NavLink to='/react-ui/tables/po'>View PO</NavLink></li>
-    </ul>,
-    <ul className='shortcut-body-purchase'>
-      <li><NavLink to='/'>Purchase Plates</NavLink></li>
-      <li><NavLink to='/'>Purchase Dies</NavLink></li>
-      <li><NavLink to='/'></NavLink></li>
-      <li><NavLink to='/'></NavLink></li>
-      <li><NavLink to='/'></NavLink></li>
-      <li><NavLink to='/'></NavLink></li>
-      <li><NavLink to='/'></NavLink></li>
-    </ul>,
-  ];
-
-  const listName = [
-    'Create',
-    'View',
-    'Purchase'
-  ];
-
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentNameIndex, setCurrentNameIndex] = useState(0);
-
-  const handlePrev = (e) => {
-    e.stopPropagation();
-    setCurrentIndex((prevIndex) =>
-      prevIndex === 0 ? dropdownLists.length - 1 : prevIndex - 1
-    );
-    setCurrentNameIndex((prevIndex) =>
-      prevIndex === 0 ? listName.length - 1 : prevIndex - 1
-    );
-  };
-
-  const handleNext = (e) => {
-    e.stopPropagation();
-    setCurrentIndex((prevIndex) =>
-      prevIndex === dropdownLists.length - 1 ? 0 : prevIndex + 1
-    );
-    setCurrentNameIndex((prevIndex) =>
-      prevIndex === listName.length - 1 ? 0 : prevIndex + 1
-    );
-  };
-
 
   return (
-    <nav className="navbar-main">
-      <div className={clsx('column', 'column-left')}>
-        <div className={flexboxStyles.flexCenterCenterRow} onClick={() => navigate('/react-ui/inventory')} style={{cursor: 'pointer'}}>
+    <nav className={styles.navbarMain}>
+      <div className={clsx(styles.column, styles.columnLeft)}>
+        <div className={flexboxStyles.flexCenterCenterRow} onClick={() => navigate('/react-ui/inventory')} style={{ cursor: 'pointer' }}>
           <NavbarSvgIcon />
           Eli
         </div>
       </div>
-      <div className={clsx("column", "column-center")}>
-        <ul className={clsx(sharedStyles.fullWidth, flexboxStyles.flexCenterCenterRow, "main-navbar-links")}>
-          <li className="navbar-links">
-            <NavLink className={({ isActive, isPending }) => clsx('production', flexboxStyles.flexCenterCenterRow, isPending ? "pending" : isActive ? "active" : '')} to='/react-ui/production'>
+      <div className={clsx(styles.column, styles.columnCenter)}>
+        <ul className={clsx(sharedStyles.fullWidth, flexboxStyles.flexCenterCenterRow)}>
+          <li className={styles.navbarLinks}>
+            <NavLink className={({ isActive }) =>
+              clsx(
+                flexboxStyles.flexCenterCenterRow,
+                isActive && styles.active
+              )} to='/react-ui/production'>
               <i className="fa-regular fa-table-tree"></i>
               Production
             </NavLink>
           </li>
-          <li className={clsx("navbar-links", "nav-dropdown-trigger")} id="material-dropdown-trigger">
-            <NavLink className={({ isActive, isPending }) => clsx("material", flexboxStyles.flexCenterCenterRow, isPending ? "pending" : isActive ? "active" : "")} to='/react-ui/inventory'>
+          <li className={clsx(styles.navbarLinks, styles.materialDropdownTrigger)}>
+            <NavLink className={({ isActive }) =>
+              clsx(
+                styles.material,
+                flexboxStyles.flexCenterCenterRow,
+                isActive && styles.active
+              )} to='/react-ui/inventory'>
               <i className="fa-regular fa-toilet-paper"></i>
               Inventory
             </NavLink>
           </li>
-          <li className={clsx("navbar-links", "nav-dropdown-trigger")} id="insights-dropdown-trigger">
-            <NavLink className={({ isActive, isPending }) => clsx("recipes", flexboxStyles.flexCenterCenterRow, isPending ? "pending" : isActive ? "active" : "")} to='/react-ui/recipes'>
+          <li className={clsx(styles.navbarLinks, styles.insightsDropdownTrigger)}>
+            <NavLink className={({ isActive }) => clsx(styles.recipes, flexboxStyles.flexCenterCenterRow, isActive && styles.active)} to='/react-ui/recipes'>
               <i className="fa-regular fa-chart-network"></i>
               Recipes
             </NavLink>
           </li>
-          <li className={clsx("navbar-links", "nav-dropdown-trigger")} id="insights-dropdown-trigger">
-            <NavLink className={({ isActive, isPending }) => clsx("vitals", flexboxStyles.flexCenterCenterRow, isPending ? "pending" : isActive ? "active" : "")} to='/react-ui/vitals'>
+          <li className={clsx(styles.navbarLinks, styles.insightsDropdownTrigger)}>
+            <NavLink className={({ isActive }) => clsx(flexboxStyles.flexCenterCenterRow, isActive && styles.active)} to='/react-ui/vitals'>
               <i className="fa-regular fa-wave-pulse"></i>
               Vitals
             </NavLink>
           </li>
         </ul>
       </div>
-      <div className={clsx("column", "column-right")}>
-        <ul className="primary">
-          <li className={clsx("secondary-navbar-links", "settings-option", "settings", "tooltip-bottom", isShortcutDropdownDisplayed ? 'active' : '')} onClick={() => toggleShortcutDrpdwnMenu()}>
-            <span className='tooltiptext'>Shortcuts</span>
-            <i className="navbar-icon fa-solid fa-grid-2-plus"></i>
-            <Dropdown
-              className='shortcut-options'
-              isActive={isShortcutDropdownDisplayed}
-              onClose={() => {
-                setIsShortcutDropdownDisplayed(false);
-
-              }}
-            >
-              <div className="header">
-                <div className='left'>
-                  {listName[currentNameIndex]}
-                </div>
-                <div className='right'>
-                  <div className='shortcut-mark-all-wrapper'>
-                    <div className='shortcut-controls-container'>
-                      <button className={clsx("carousel-control", "prev")} onClick={handlePrev}>
-                        <i className="fa-regular fa-arrow-left"></i>
-                      </button>
-                      <button className={clsx("carousel-control", "next")} onClick={handleNext}>
-                        <i className="fa-regular fa-arrow-right"></i>
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
-              <div className='carousel-container'>
-                {dropdownLists[currentIndex]}
-              </div>
-            </Dropdown>
-          </li>
-          <li className={clsx("secondary-navbar-links", "activity-option", "tooltip-bottom")}>
-            <span className="tooltiptext">Intelligence</span>
-            <i className="navbar-icon fa-solid fa-brain-circuit"></i>
-          </li>
-          <li className={clsx("secondary-navbar-links", "notification-option", "tooltip-bottom", isUserNotificationsDropdownDisplayed ? 'active' : '')} onClick={() => toggleUserNotificationsDrpdwnMenu()}>
-            <span className="tooltiptext">Notifications</span>
-            <div className='notification-counter'>1</div>
-            <i className="navbar-icon fa-regular fa-bell"></i>
-            <Dropdown
-              className={`notification-teaser`}
-              isActive={isUserNotificationsDropdownDisplayed}
-              onClose={() => setIsUserNotificationsDropdownDisplayed(false)}
-            >
-              <div className="header">
-                <div className='left'>
-                  Notifications
-                </div>
-                <div className='right'>
-                  <div className='notification-mark-all-wrapper'>
-                    <i className="fa-light fa-envelope"></i>
-                  </div>
-                </div>
-              </div>
-              <ul className='notification-body'>
-                <li>Sam Tarrant asked you do better</li>
-                <li>Sam Tarrant asked you do better</li>
-                <li>Sam Tarrant asked you do better</li>
-                <li>Sam Tarrant asked you do better</li>
-                <li>Sam Tarrant asked you do better</li>
-              </ul>
-              <div className={clsx("footer", flexboxStyles.flexCenterCenterRow)}>
-                <a href='#' className={clsx("btn", "btn-primary")}>See All Notifications</a>
-              </div>
-            </Dropdown>
-          </li>
-          <li className={clsx("list-item-user-detail", "nav-dropdown-trigger")} onClick={() => toggleUserOptionsDrpdwnMenu()}>
-            <div className="user-frame">
-              <div className={clsx("user-profile-picture", "profile-picture")}>
+      <div className={clsx(styles.column, styles.columnRight)}>
+        <ul className={styles.primary}>
+          <li onClick={() => toggleUserOptionsDrpdwnMenu()}>
+            <div className={styles.userFrame}>
+              <div className={clsx(styles.userProfilePicture)}>
                 {profilePictureUrl && <Image img={profilePictureUrl} width={250} />}
-                <div className="active-user"></div>
+                <div className={styles.activeUser}></div>
               </div>
             </div>
-            <div className={clsx("dropdown-menu", "user-options", isUserOptionsDropdownDisplayed ? 'active' : '')}>
-              <NavLink className={({ isActive, isPending }) => clsx("user-options-dropdown-header", isPending ? "pending" : isActive ? "active" : "")} to="/react-ui/profile">
-                <div className='user-options-dropdown-header-container'>
-                  <div className='user-picture-column'>
-                    <div className='user-picture-container'>
-                      <div className='user-picture-background'>
+            <div className={clsx(styles.dropdownMenu, styles.userOptions, isUserOptionsDropdownDisplayed ? styles.active : '')}>
+              <NavLink className={({ isActive }) => clsx(styles.userOptionsDropdownHeader, isActive && styles.active)} to="/react-ui/profile">
+                <div className={styles.userOptionsDropdownHeaderContainer}>
+                  <div className={styles.userPictureColumn}>
+                    <div className={styles.userPictureContainer}>
+                      <div className={styles.userPictureBackground}>
                         {profilePictureUrl && <Image img={profilePictureUrl} width={250} />}
-                        <div className='active-indicator'></div>
+                        <div className={styles.activeIndicator}></div>
                       </div>
                     </div>
                   </div>
-                  <div className='user-title-column'>
-                    <h6 className='user-name'>{`${user?.firstName} ${user?.lastName}`}</h6>
-                    <span className='user-title'>{user?.jobRole}</span>
+                  <div className={styles.userTitleColumn}>
+                    <h6 className={styles.userName}>{`${user?.firstName} ${user?.lastName}`}</h6>
+                    <span className={styles.userTitle}>{user?.jobRole}</span>
                   </div>
                 </div>
               </NavLink>
-              <div className='line-divide'></div>
-              <ul className='user-options-list'>
-                <li>
-                  <NavLink to="/react-ui/profile" className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}>
-                    <i className="fa-regular fa-user"></i>
-                    My Account
-                  </NavLink>
-                </li>
+              <div className={styles.lineDivide}></div>
+              <div className={styles.userOptionsList}>
+                <NavLink to="/react-ui/profile" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.userOptionRow)}>
+                  My Account
+                </NavLink>
                 {user?.authRoles.some((role) => [AuthRoles.ADMIN, AuthRoles.SUPER_ADMIN].includes(role)) && (
-                  <li>
-                    <NavLink to="/react-ui/admin"
-                      className={({ isActive, isPending }) => isPending ? "pending" : isActive ? "active" : ""}
-                    >
-                      <i className="fa-regular fa-crown"></i>
-                      Admin Panel
-                    </NavLink>
-                  </li>
+                  <NavLink to="/react-ui/admin"
+                    className={({ isActive }) => clsx(isActive ? styles.active : '', styles.userOptionRow)}
+                  >
+                    Admin Panel
+                  </NavLink>
                 )}
-                <li>
-                  <a href="#">
-                    <i className="fa-regular fa-books"></i>
-                    Resources
-                  </a>
-                </li>
-              </ul>
-              <div className='line-divide'></div>
-              <div className='user-logout-footer'>
+              </div>
+              <div className={styles.lineDivide}></div>
+              <div className={styles.userLogoutFooter}>
                 <button onClickCapture={logoutUser}>Log Out <i className="fa-regular fa-right-from-bracket"></i></button>
               </div>
             </div>
