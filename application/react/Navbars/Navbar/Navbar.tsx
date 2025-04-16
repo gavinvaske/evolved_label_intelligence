@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
+import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Image } from '../../_global/Image/Image';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
@@ -10,6 +10,7 @@ import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './Navbar.module.scss';
 import { FaAngleDown } from "react-icons/fa6";
+
 
 type DropdownItem = {
   path: string;
@@ -31,12 +32,13 @@ const FORM_ITEMS: DropdownItem[] = [
 
 const TABLE_ITEMS: DropdownItem[] = FORM_ITEMS.map(item => ({
   path: item.path.replace('/forms/', '/tables/'),
-  label: `${item.label}s`
+  label: `${item.label}`
 }));
 
 
 export const Navbar = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isUserOptionsDropdownDisplayed, setIsUserOptionsDropdownDisplayed] = useState(false);
   const [isFormsDropdownDisplayed, setIsFormsDropdownDisplayed] = useState(false);
   const [isTablesDropdownDisplayed, setIsTablesDropdownDisplayed] = useState(false);
@@ -52,6 +54,9 @@ export const Navbar = () => {
     await axios.get('/auth/logout');
     navigate('/react-ui/login', { replace: true });
   };
+
+  const isFormsActive = FORM_ITEMS.some(item => location.pathname === item.path);
+  const isTablesActive = TABLE_ITEMS.some(item => location.pathname === item.path);
 
   return (
     <nav className={styles.navbarMain}>
@@ -73,7 +78,7 @@ export const Navbar = () => {
           </li>
           <li className={styles.navbarLinks}>
             <div 
-              className={clsx(flexboxStyles.flexCenterCenterRow, styles.active)}
+              className={clsx(flexboxStyles.flexCenterCenterRow, isFormsActive ? styles.active : '')}
               onClick={() => setIsFormsDropdownDisplayed(!isFormsDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
             >
@@ -88,7 +93,7 @@ export const Navbar = () => {
           </li>
           <li className={styles.navbarLinks}>
             <div 
-              className={clsx(flexboxStyles.flexCenterCenterRow, styles.active)}
+              className={clsx(flexboxStyles.flexCenterCenterRow, isTablesActive ? styles.active : '')}
               onClick={() => setIsTablesDropdownDisplayed(!isTablesDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
             >

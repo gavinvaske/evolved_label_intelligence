@@ -46,7 +46,7 @@
     border-radius: 5px;
     margin-right: 10px;
 
-    a {
+    a, div {
       border-radius: 5px;
       padding: 12px 20px;
       color: rgba(var(--primary-text-color), var(--opacity-10));
@@ -59,6 +59,28 @@
       &.active {
         color: rgba(var(--primary-purple), var(--opacity-10));
         background-color: rgba(var(--action-background), .12);
+      }
+    }
+
+    .dropdownRow {
+      width: 100%;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding: 0 1rem;
+      color: black;
+      font-size: 15px;
+      border-radius: 5px;
+      margin-bottom: 2px;
+
+      &:hover {
+        background-color: rgba(var(--primary-dark-background), var(--opacity-1));
+        cursor: pointer;
+      }
+
+      &.active {
+        background-color: #f3f2f3;
+        color: rgba(var(--primary-purple), var(--opacity-10));
       }
     }
   }
@@ -110,6 +132,8 @@
     transform-origin: top center;
     transition: .2s;
     z-index: 10;
+    display: flex;
+    flex-direction: column;
 
     &.active {
       visibility: visible;
@@ -213,6 +237,7 @@
     font-size: 15px;
     border-radius: 5px;
     margin-bottom: 2px;
+    text-decoration: none;
 
     &:hover {
       background-color: rgba(var(--primary-dark-background), var(--opacity-1));
@@ -221,6 +246,7 @@
 
     &.active {
       background-color: #f3f2f3;
+      color: rgba(var(--primary-purple), var(--opacity-10));
     }
   }
 
