@@ -75,7 +75,7 @@ export const Navbar = () => {
               <FaAngleDown />
             </div>
             <div className={clsx(styles.dropdown, isFormsDropdownDisplayed ? styles.active : '')}>
-            <NavLink to="/react-ui/forms/adhesive-category" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+              <NavLink to="/react-ui/forms/adhesive-category" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
                 Adhesive Category
               </NavLink>
               <NavLink to="/react-ui/forms/credit-term" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
@@ -163,7 +163,7 @@ export const Navbar = () => {
                 <div className={styles.activeUser}></div>
               </div>
             </div>
-            <div className={clsx(styles.dropdownMenu, styles.userOptions, isUserOptionsDropdownDisplayed ? styles.active : '')}>
+            <div className={clsx(styles.dropdown, styles.userOptions, isUserOptionsDropdownDisplayed ? styles.active : '')}>
               <NavLink className={({ isActive }) => clsx(styles.userOptionsDropdownHeader, isActive && styles.active)} to="/react-ui/profile">
                 <div className={styles.userOptionsDropdownHeaderContainer}>
                   <div className={styles.userPictureColumn}>

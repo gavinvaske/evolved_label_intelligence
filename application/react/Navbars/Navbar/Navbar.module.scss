@@ -126,7 +126,7 @@
     top: calc(100% + 5px);
     font-size: 1rem;
     color: #2F2B3D;
-    margin: 0 0 0;
+    margin: 0;
     background-color: #fff;
     border: 1px solid rgba(34, 41, 47, .05);
     border-radius: 0.358rem;
@@ -135,6 +135,173 @@
     transform: scale(0);
     transform-origin: top center;
     transition: .2s;
+    z-index: 10;
+    min-width: 10rem;
+    width: 200px;
+    background-clip: padding-box;
+    padding: .5rem .5rem 0 .5rem;
+
+    &.userOptions {
+      width: 13rem;
+      transform: scale(0);
+      right: 10px;
+      transform-origin: right top;
+      top: 95%;
+      transition: .2s;
+      padding: 0;
+
+      .userOptionsDropdownHeader {
+        height: 70px;
+        width: 100%;
+        padding: 0.5rem;
+
+        .userOptionsDropdownHeaderContainer {
+          height: 100%;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-content: center;
+          flex-direction: row;
+
+          &:hover {
+            background-color: #f3f2f3;
+            border-radius: 5px;
+            cursor: pointer;
+          }
+
+          .userPictureColumn {
+            width: 55px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+
+            .userPictureContainer {
+              display: flex;
+              justify-content: center;
+              align-items: flex-start;
+              position: relative;
+
+              .userPictureBackground {
+                background-color: #2f2b3d;
+                height: 45px;
+                width: 45px;
+                border-radius: 50%;
+
+                img {
+                  width: 45px;
+                  height: 45px;
+                  border-radius: 50%;
+                }
+
+                .activeIndicator {
+                  background-color: #28c76f;
+                  border: 2px solid #fff;
+                  border-radius: 50%;
+                  width: 15px;
+                  height: 15px;
+                  position: absolute;
+                  bottom: -2px;
+                  right: -3px;
+                }
+              }
+            }
+          }
+
+          .userTitleColumn {
+            width: calc(100% - 55px);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            flex-direction: column;
+            padding-left: 10px;
+
+            .userName {
+              font-size: 12px;
+              font-weight: 600;
+              margin-bottom: 3px;
+              color: #2f2b3d;
+            }
+
+            .userTitle {
+              font-size: 12px;
+              font-weight: 400;
+              color: #2f2b3d;
+            }
+          }
+        }
+      }
+
+      .lineDivide {
+        height: 1px;
+        background-color: rgba(47, 43, 61, .12);
+        width: calc(100% - 1rem);
+      }
+
+      .userOptionsList {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        padding: 0.5rem;
+
+        .userOptionRow {
+          font-size: 15px;
+          border-radius: 5px;
+          margin-bottom: 2px;
+          width: 100%;
+          height: 40px;
+          display: flex;
+          align-items: center;
+          padding: 0 1rem;
+          color: black;
+
+          i {
+            margin-right: 10px;
+          }
+
+          &:hover {
+            background-color: #f3f2f3;
+          }
+        }
+      }
+
+      .userLogoutFooter {
+        width: 100%;
+        padding: 0.5rem;
+
+        button {
+          height: 42px;
+          width: 100%;
+          background-color: rgba(255, 76, 81, 1);
+          color: white;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          border-radius: 5px;
+
+          &:hover {
+            background-color: #e64449;
+          }
+
+          i {
+            margin-left: 10px;
+          }
+        }
+      }
+    }
+
+    &.userOptions.active {
+      visibility: visible;
+      top: calc(100% + 15px);
+      transform: scale(1);
+      transform-origin: right top;
+      transition: .3s;
+    }
+
+    &.active {
+      visibility: visible;
+      transform: scale(1);
+      transition: .3s;
+    }
   }
 
   .dropdownRow {
@@ -149,198 +316,5 @@
       transition: .3s;
       cursor: pointer;
     }
-  }
-
-  .dropdownMenu {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    position: absolute;
-    top: calc(100% + 5px);
-    z-index: 10;
-    min-width: 10rem;
-    width: 200px;
-    font-size: 1rem;
-    color: #2F2B3D;
-    margin: 0 0 0;
-    background-color: #fff;
-    background-clip: padding-box;
-    border: 1px solid rgba(34, 41, 47, .05);
-    border-radius: 0.358rem;
-    box-shadow: 0 5px 25px rgb(34 41 47 / 10%);
-    padding: .5rem .5rem 0 .5rem;
-    visibility: hidden;
-    transform: scale(0);
-    transform-origin: top center;
-    transition: .2s;
-  }
-
-  .dropdownMenu.userOptions {
-    width: 13rem;
-    transform: scale(0);
-    right: 10px;
-    transform-origin: right top;
-    top: 95%;
-    transition: .2s;
-    padding: 0;
-
-    .userOptionsDropdownHeader {
-      height: 70px;
-      width: 100%;
-      padding: 0.5rem;
-
-      .userOptionsDropdownHeaderContainer {
-        height: 100%;
-        width: 100%;
-        display: flex;
-        justify-content: center;
-        align-content: center;
-        flex-direction: row;
-
-        &:hover {
-          background-color: #f3f2f3;
-          border-radius: 5px;
-          cursor: pointer;
-        }
-
-        .userPictureColumn {
-          width: 55px;
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-
-          .userPictureContainer {
-            display: flex;
-            justify-content: center;
-            align-items: flex-start;
-            position: relative;
-
-            .userPictureBackground {
-              background-color: #2f2b3d;
-              height: 45px;
-              width: 45px;
-              border-radius: 50%;
-
-              img {
-                width: 45px;
-                height: 45px;
-                border-radius: 50%;
-              }
-
-              .activeIndicator {
-                background-color: #28c76f;
-                border: 2px solid #fff;
-                border-radius: 50%;
-                width: 15px;
-                height: 15px;
-                position: absolute;
-                bottom: -2px;
-                right: -3px;
-              }
-            }
-          }
-        }
-
-        .userTitleColumn {
-          width: calc(100% - 55px);
-          display: flex;
-          justify-content: center;
-          align-items: flex-start;
-          flex-direction: column;
-          padding-left: 10px;
-
-          .userName {
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 3px;
-            color: #2f2b3d;
-          }
-
-          .userTitle {
-            font-size: 12px;
-            font-weight: 400;
-            color: #2f2b3d;
-          }
-        }
-      }
-    }
-
-    .lineDivide {
-      height: 1px;
-      background-color: rgba(47, 43, 61, .12);
-      width: calc(100% - 1rem);
-    }
-
-    .userOptionsList {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      padding: 0.5rem;
-
-      .userOptionRow {
-        font-size: 15px;
-        border-radius: 5px;
-        margin-bottom: 2px;
-        width: 100%;
-        height: 40px;
-        display: flex;
-        align-items: center;
-        padding: 0 1rem;
-        color: black;
-
-        i {
-          margin-right: 10px;
-        }
-
-        &:hover {
-          background-color: #f3f2f3;
-        }
-      }
-    }
-
-    .userLogoutFooter {
-      width: 100%;
-      padding: 0.5rem;
-
-      button {
-        height: 42px;
-        width: 100%;
-        background-color: rgba(255, 76, 81, 1);
-        color: white;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-
-        &:hover {
-          background-color: #e64449;
-        }
-
-        i {
-          margin-left: 10px;
-        }
-      }
-    }
-  }
-
-  .dropdownMenu.userOptions.active {
-    visibility: visible;
-    top: calc(100% + 15px);
-    transform: scale(1);
-    transform-origin: right top;
-    transition: .3s;
-  }
-
-  .dropdownMenu.active {
-    visibility: visible;
-    transform: scale(1);
-    transition: .3s;
-  }
-
-  .dropdown.active {
-    visibility: visible;
-    transform: scale(1);
-    transition: .3s;
   }
 }
