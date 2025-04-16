@@ -130,12 +130,12 @@
     position: absolute;
     top: calc(100% + 5px);
     min-width: 10rem;
-    width: 200px;
+    min-width: 200px;
     padding: .5rem .5rem 0 .5rem;
     background-color: #fff;
     border: 1px solid rgba(34, 41, 47, .05);
     border-radius: 0.358rem;
-    box-shadow: 0 5px 25px rgb(34 41 47 / 10%);
+    box-shadow: 0 5px 25px rgb(34 41 47 / 30%);
     visibility: hidden;
     transform: scale(0);
     transform-origin: top center;
