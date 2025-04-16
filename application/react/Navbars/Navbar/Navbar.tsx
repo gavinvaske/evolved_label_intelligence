@@ -72,13 +72,13 @@ export const Navbar = () => {
       <div className={clsx(styles.column, styles.columnCenter)}>
         <ul className={clsx(sharedStyles.fullWidth, flexboxStyles.flexCenterCenterRow)}>
           <li className={styles.navbarLinks}>
-            <NavLink className={({ isActive }) => clsx(flexboxStyles.flexCenterCenterRow, isActive && styles.active)} to='/react-ui/inventory'>
+            <NavLink className={({ isActive }) => clsx(flexboxStyles.flexCenterCenterRow, styles.navButton, isActive && styles.active)} to='/react-ui/inventory'>
               Inventory
             </NavLink>
           </li>
           <li className={styles.navbarLinks}>
             <div 
-              className={clsx(flexboxStyles.flexCenterCenterRow, isFormsActive ? styles.active : '')}
+              className={clsx(flexboxStyles.flexCenterCenterRow, styles.navButton, isFormsActive ? styles.active : '')}
               onClick={() => setIsFormsDropdownDisplayed(!isFormsDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
             >
@@ -93,7 +93,7 @@ export const Navbar = () => {
           </li>
           <li className={styles.navbarLinks}>
             <div 
-              className={clsx(flexboxStyles.flexCenterCenterRow, isTablesActive ? styles.active : '')}
+              className={clsx(flexboxStyles.flexCenterCenterRow, styles.navButton, isTablesActive ? styles.active : '')}
               onClick={() => setIsTablesDropdownDisplayed(!isTablesDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
             >
