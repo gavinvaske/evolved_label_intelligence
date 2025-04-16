@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import './Navbar.scss';
 import { NavLink, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Image } from '../../_global/Image/Image';
