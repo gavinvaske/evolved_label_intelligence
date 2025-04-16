@@ -10,10 +10,13 @@ import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
 import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './Navbar.module.scss';
+import { FaAngleDown } from "react-icons/fa6";
 
 export const Navbar = () => {
   const navigate = useNavigate();
   const [isUserOptionsDropdownDisplayed, setIsUserOptionsDropdownDisplayed] = useState(false)
+  const [isFormsDropdownDisplayed, setIsFormsDropdownDisplayed] = useState(false)
+  const [isTablesDropdownDisplayed, setIsTablesDropdownDisplayed] = useState(false)
 
   const { user, error } = useLoggedInUser()
   const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`
@@ -31,6 +34,16 @@ export const Navbar = () => {
     setIsUserOptionsDropdownDisplayed(!isUserOptionsDropdownDisplayed)
   }
 
+  function toggleFormsDropdown() {
+    setIsFormsDropdownDisplayed(!isFormsDropdownDisplayed)
+  }
+
+  function toggleTablesDropdown() {
+    setIsTablesDropdownDisplayed(!isTablesDropdownDisplayed)
+  }
+
+  console.log(isFormsDropdownDisplayed)
+
   return (
     <nav className={styles.navbarMain}>
       <div className={clsx(styles.column, styles.columnLeft)}>
@@ -46,33 +59,99 @@ export const Navbar = () => {
               clsx(
                 flexboxStyles.flexCenterCenterRow,
                 isActive && styles.active
-              )} to='/react-ui/production'>
-              <i className="fa-regular fa-table-tree"></i>
-              Production
-            </NavLink>
-          </li>
-          <li className={clsx(styles.navbarLinks, styles.materialDropdownTrigger)}>
-            <NavLink className={({ isActive }) =>
-              clsx(
-                styles.material,
-                flexboxStyles.flexCenterCenterRow,
-                isActive && styles.active
               )} to='/react-ui/inventory'>
-              <i className="fa-regular fa-toilet-paper"></i>
               Inventory
             </NavLink>
           </li>
-          <li className={clsx(styles.navbarLinks, styles.insightsDropdownTrigger)}>
-            <NavLink className={({ isActive }) => clsx(styles.recipes, flexboxStyles.flexCenterCenterRow, isActive && styles.active)} to='/react-ui/recipes'>
-              <i className="fa-regular fa-chart-network"></i>
-              Recipes
-            </NavLink>
+          <li className={clsx(styles.navbarLinks)}>
+            <div 
+              className={clsx(
+                flexboxStyles.flexCenterCenterRow,
+                styles.active
+              )}
+              onClick={toggleFormsDropdown}
+              style={{ cursor: 'pointer' }}
+            >
+              Forms
+              <FaAngleDown />
+            </div>
+            <div className={clsx(styles.dropdown, isFormsDropdownDisplayed ? styles.active : '')}>
+            <NavLink to="/react-ui/forms/adhesive-category" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Adhesive Category
+              </NavLink>
+              <NavLink to="/react-ui/forms/credit-term" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Credit Term
+              </NavLink>
+              <NavLink to="/react-ui/forms/customer" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Customer
+              </NavLink>
+              <NavLink to="/react-ui/forms/die" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Die
+              </NavLink>
+              <NavLink to="/react-ui/forms/liner-type" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Liner Type
+              </NavLink>
+              <NavLink to="/react-ui/forms/material" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Material
+              </NavLink>
+              <NavLink to="/react-ui/forms/material-category" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Material Category
+              </NavLink>
+              <NavLink to="/react-ui/forms/material-length-adjustment" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Material Length Adjustment
+              </NavLink>
+              <NavLink to="/react-ui/forms/material-order" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Material Order
+              </NavLink>
+              <NavLink to="/react-ui/forms/vendor" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Vendor
+              </NavLink>
+            </div>
           </li>
-          <li className={clsx(styles.navbarLinks, styles.insightsDropdownTrigger)}>
-            <NavLink className={({ isActive }) => clsx(flexboxStyles.flexCenterCenterRow, isActive && styles.active)} to='/react-ui/vitals'>
-              <i className="fa-regular fa-wave-pulse"></i>
-              Vitals
-            </NavLink>
+          <li className={clsx(styles.navbarLinks)}>
+            <div 
+              className={clsx(
+                flexboxStyles.flexCenterCenterRow,
+                styles.active
+              )}
+              onClick={toggleTablesDropdown}  
+              style={{ cursor: 'pointer' }}
+            >
+              Tables
+              <FaAngleDown />
+            </div>
+            <div className={clsx(styles.dropdown, isTablesDropdownDisplayed ? styles.active : '')}>
+              <NavLink to="/react-ui/tables/adhesive-category" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Adhesive Categories
+              </NavLink>
+              <NavLink to="/react-ui/tables/credit-term" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Credit Terms
+              </NavLink>
+              <NavLink to="/react-ui/tables/customer" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Customers
+              </NavLink>
+              <NavLink to="/react-ui/tables/die" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Dies
+              </NavLink>
+              <NavLink to="/react-ui/tables/liner-type" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Liner Types
+              </NavLink>
+              <NavLink to="/react-ui/tables/material" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Materials
+              </NavLink>
+              <NavLink to="/react-ui/tables/material-category" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Material Categories
+              </NavLink>
+              <NavLink to="/react-ui/tables/material-length-adjustment" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Material Length Adjustments
+              </NavLink>
+              <NavLink to="/react-ui/tables/material-order" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Material Orders
+              </NavLink>
+              <NavLink to="/react-ui/tables/vendor" className={({ isActive }) => clsx(isActive ? styles.active : '', styles.dropdownRow)}>
+                Vendors
+              </NavLink>
+            </div>
           </li>
         </ul>
       </div>
