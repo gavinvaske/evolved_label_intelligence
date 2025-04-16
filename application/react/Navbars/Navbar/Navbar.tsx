@@ -10,7 +10,9 @@ import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './Navbar.module.scss';
 import { FaAngleDown } from "react-icons/fa6";
+import pluralize from 'pluralize';
 
+pluralize.addIrregularRule('die', 'dies');
 
 type DropdownItem = {
   path: string;
@@ -32,7 +34,7 @@ const FORM_ITEMS: DropdownItem[] = [
 
 const TABLE_ITEMS: DropdownItem[] = FORM_ITEMS.map(item => ({
   path: item.path.replace('/forms/', '/tables/'),
-  label: `${item.label}`
+  label: pluralize(item.label)
 }));
 
 
@@ -82,7 +84,7 @@ export const Navbar = () => {
               onClick={() => setIsFormsDropdownDisplayed(!isFormsDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
             >
-              Forms
+              Create
               <FaAngleDown />
             </div>
             <Dropdown 
@@ -97,7 +99,7 @@ export const Navbar = () => {
               onClick={() => setIsTablesDropdownDisplayed(!isTablesDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
             >
-              Tables
+              View
               <FaAngleDown />
             </div>
             <Dropdown 
@@ -118,7 +120,8 @@ export const Navbar = () => {
           isOpen={isUserOptionsDropdownDisplayed}
           user={user}
           profilePictureUrl={profilePictureUrl}
-          onClose={handleLogout}
+          onClose={() => setIsUserOptionsDropdownDisplayed(false)}
+          onLogout={handleLogout}
         />
       </div>
     </nav>
@@ -160,13 +163,15 @@ const Dropdown = ({
 const UserOptionsDropdown = ({ 
   isOpen, 
   user, 
-  profilePictureUrl, 
-  onClose 
+  profilePictureUrl,
+  onClose,
+  onLogout 
 }: { 
   isOpen: boolean, 
   user: any, 
   profilePictureUrl: string, 
-  onClose: () => void 
+  onClose: () => void,
+  onLogout: () => void,
 }) => (
   <div className={clsx(styles.dropdown, styles.userOptions, isOpen ? styles.active : '')}>
     <NavLink className={({ isActive }) => clsx(styles.userOptionsDropdownHeader, isActive && styles.active)} to="/react-ui/profile">
@@ -182,18 +187,18 @@ const UserOptionsDropdown = ({
     </NavLink>
     <div className={styles.lineDivide}></div>
     <div className={styles.userOptionsList}>
-      <NavLink to="/react-ui/profile" className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')}>
+      <NavLink to="/react-ui/profile" className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')} onClick={onClose}>
         My Account
       </NavLink>
       {user?.authRoles.some((role: AuthRoles) => [AuthRoles.ADMIN, AuthRoles.SUPER_ADMIN].includes(role)) && (
-        <NavLink to="/react-ui/admin" className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')}>
+        <NavLink to="/react-ui/admin" className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')} onClick={onClose}>
           Admin Panel
         </NavLink>
       )}
     </div>
     <div className={styles.lineDivide}></div>
     <div className={styles.userLogoutFooter}>
-      <button onClick={onClose}>
+      <button onClick={onLogout}>
         Log Out
         <FaAngleDown />
       </button>
