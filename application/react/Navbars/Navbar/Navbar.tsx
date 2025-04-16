@@ -85,7 +85,7 @@ export const Navbar = () => {
               style={{ cursor: 'pointer' }}
             >
               Create
-              <FaAngleDown />
+              <FaAngleDown className={clsx(styles.dropdownArrow, isFormsDropdownDisplayed && styles.rotated)} />
             </div>
             <Dropdown 
               isOpen={isFormsDropdownDisplayed} 
@@ -100,7 +100,7 @@ export const Navbar = () => {
               style={{ cursor: 'pointer' }}
             >
               View
-              <FaAngleDown />
+              <FaAngleDown className={clsx(styles.dropdownArrow, isTablesDropdownDisplayed && styles.rotated)} />
             </div>
             <Dropdown 
               isOpen={isTablesDropdownDisplayed} 

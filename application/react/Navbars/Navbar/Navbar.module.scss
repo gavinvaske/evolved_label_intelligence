@@ -60,6 +60,14 @@
         color: rgba(var(--primary-purple), var(--opacity-10));
         background-color: rgba(var(--action-background), .12);
       }
+
+      .dropdownArrow {
+        transition: transform 0.3s ease;
+        
+        &.rotated {
+          transform: rotate(180deg);
+        }
+      }
     }
 
     .dropdownRow {
