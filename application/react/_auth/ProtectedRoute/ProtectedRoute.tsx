@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { useLocation, Navigate, Outlet, useNavigate } from "react-router-dom";
 import { useAuth } from "../../_hooks/useAuth";
 import { useRefreshToken } from '../../_hooks/useRefreshToken';
@@ -14,7 +14,7 @@ type Props = {
 export const ProtectedRoute = (props: Props) => {
   const { allowedRoles } = props
   const [isLoading, setIsLoading] = useState(true);
-  const { auth }: { auth: UserAuth} = useAuth();
+  const { auth }: { auth: UserAuth } = useAuth();
   const refreshAccessToken = useRefreshToken();
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,15 +27,15 @@ export const ProtectedRoute = (props: Props) => {
     let isMounted = true;
 
     const getNewAccessToken = async () => {
-        try {
-          await refreshAccessToken(); // throws if the refreshToken is expired or non-existant.
-        }
-        catch (err) {
-          navigate('/react-ui/login', {state: { from: location }, replace: true });
-        }
-        finally {
-          isMounted && setIsLoading(false);
-        }
+      try {
+        await refreshAccessToken(); // throws if the refreshToken is expired or non-existant.
+      }
+      catch (err) {
+        navigate('/react-ui/login', { state: { from: location }, replace: true });
+      }
+      finally {
+        isMounted && setIsLoading(false);
+      }
     }
 
     const doesAccessTokenNeedRefreshed = !auth?.accessToken;
@@ -68,15 +68,15 @@ export const ProtectedRoute = (props: Props) => {
 
   return (
     <>
-    {
-      isLoading ? (<LoadingIndicator />) : (
-        auth?.authRoles?.find((role) => allowedRolesUppercased?.includes(role.toUpperCase()))
-          ? <Outlet />
-          : auth?.accessToken
-            ? <Navigate to="/react-ui/unauthorized" state={{ from: location }} replace />
-            : <Navigate to="/react-ui/login" state={{ from: location }} replace />
-      )
-    }
+      {
+        isLoading ? (<LoadingIndicator />) : (
+          auth?.authRoles?.find((role) => allowedRolesUppercased?.includes(role.toUpperCase()))
+            ? <Outlet />
+            : auth?.accessToken
+              ? <Navigate to="/react-ui/unauthorized" state={{ from: location }} replace />
+              : <Navigate to="/react-ui/login" state={{ from: location }} replace />
+        )
+      }
     </>
   )
 }

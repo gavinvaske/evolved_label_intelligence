@@ -1,4 +1,6 @@
-.adminPanel {
+@import '../_styles/shared.module.scss';
+
+.pageWrapper {
   display: flex;
   justify-content: center;
   align-items: center;

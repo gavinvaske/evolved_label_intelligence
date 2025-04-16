@@ -1,0 +1,147 @@
+.registerFrame {
+  height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  .registerContainer {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    .colLeft {
+      width: 33.3333%;
+      position: relative;
+
+      .eliWelcomeSplash {
+        width: 50%;
+      }
+
+      .grayBackgroundShape {
+        position: absolute;
+        bottom: -87px;
+        width: 100%;
+      }
+
+      .logoHeaderContainer {
+        position: fixed;
+        top: 25px;
+        left: 25px;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        flex-direction: row;
+
+        svg {
+          fill: #157efb;
+          height: 30px;
+        }
+
+        span {
+          margin-left: 15px;
+          font-size: 30px;
+        }
+      }
+    }
+
+    .colRight {
+      width: 66.6666%;
+      background-color: white;
+
+      .registerFormContainer {
+        width: 85%;
+
+        .registerForm {
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          flex-direction: column;
+
+          .formContainer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+
+            .formColLeft,
+            .formColRight {
+              width: 50%;
+            }
+
+            .formColRight {
+              padding: 0 0 0 12px;
+            }
+
+            .formColLeft {
+              padding: 0 12px 0 0;
+            }
+          }
+
+          .buttonContainer {
+            width: 100%;
+            margin-top: 12px;
+
+            .submitButton {
+              width: 100%;
+            }
+          }
+
+          .inputWrapper {
+            width: 100%;
+
+            span {
+              display: none;
+            }
+          }
+
+          .rememberResetContainer {
+            height: 40px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 20px;
+
+            .checkboxContainer {
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              flex-direction: row;
+
+              input {
+                height: 20px;
+                width: 20px;
+              }
+
+              label {
+                margin: 0 0 0 7px;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .colLeft,
+    .colRight {
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+
+.registerLinkContainer {
+  text-align: center;
+  margin-top: 15px;
+
+  a {
+    margin-left: 5px;
+  }
+}
