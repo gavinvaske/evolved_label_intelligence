@@ -76,8 +76,10 @@ export function App() {
 
                   {/* PROTECTED ROUTES */}
                   <Route element={<ProtectedRoute allowedRoles={[ADMIN]} />}>
-                    <Route path='admin' element={<AdminPanel />}></Route>
-                    <Route path='tables/user' element={<UserTable />} />
+                    <Route element={<TopNavbarLayout />}>
+                      <Route path='admin' element={<AdminPanel />}></Route>
+                      <Route path='tables/user' element={<UserTable />} />
+                    </Route>
                   </Route>
                   <Route element={<ProtectedRoute allowedRoles={ANY_ROLE} />}>
                     <Route element={<TopNavbarLayout />}>

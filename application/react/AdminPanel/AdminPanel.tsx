@@ -1,9 +1,9 @@
 import axios from 'axios';
-import * as styles from './AdminPanel.module.scss';
 import { useSuccessMessage } from '../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../_hooks/useErrorMessage';
 import { useNavigate } from 'react-router-dom';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import * as styles from './AdminPanel.module.scss';
 
 export const AdminPanel = () => {
   const navigate = useNavigate();
@@ -15,7 +15,7 @@ export const AdminPanel = () => {
   }
 
   return (
-    <div className={styles.adminPanel}>
+    <div className={styles.pageWrapper}>
       <h2>Admin Panel</h2>
       <div>
         <button className={sharedStyles.submitButton} onClick={calculateInventory}>Force Inventory Recalculation</button>

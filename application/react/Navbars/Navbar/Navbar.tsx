@@ -195,12 +195,16 @@ const UserOptionsDropdown = ({
           Admin Panel
         </NavLink>
       )}
+      {user?.authRoles.some((role: AuthRoles) => [AuthRoles.ADMIN, AuthRoles.SUPER_ADMIN].includes(role)) && (
+        <NavLink to="/react-ui/tables/user" className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')} onClick={onClose}>
+          Manage Users
+        </NavLink>
+      )}
     </div>
     <div className={styles.lineDivide}></div>
     <div className={styles.userLogoutFooter}>
       <button onClick={onLogout}>
         Log Out
-        <FaAngleDown />
       </button>
     </div>
   </div>
