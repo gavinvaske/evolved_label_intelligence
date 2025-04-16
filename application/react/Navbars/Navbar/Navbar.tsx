@@ -11,13 +11,11 @@ import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './Navbar.module.scss';
 import { FaAngleDown } from "react-icons/fa6";
 
-// Types
 type DropdownItem = {
   path: string;
   label: string;
 };
 
-// Constants
 const FORM_ITEMS: DropdownItem[] = [
   { path: '/react-ui/forms/adhesive-category', label: 'Adhesive Category' },
   { path: '/react-ui/forms/credit-term', label: 'Credit Term' },
@@ -36,7 +34,92 @@ const TABLE_ITEMS: DropdownItem[] = FORM_ITEMS.map(item => ({
   label: `${item.label}s`
 }));
 
-// Components
+
+export const Navbar = () => {
+  const navigate = useNavigate();
+  const [isUserOptionsDropdownDisplayed, setIsUserOptionsDropdownDisplayed] = useState(false);
+  const [isFormsDropdownDisplayed, setIsFormsDropdownDisplayed] = useState(false);
+  const [isTablesDropdownDisplayed, setIsTablesDropdownDisplayed] = useState(false);
+
+  const { user, error } = useLoggedInUser();
+  const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`;
+
+  if (error) {
+    useErrorMessage(error);
+  }
+
+  const handleLogout = async () => {
+    await axios.get('/auth/logout');
+    navigate('/react-ui/login', { replace: true });
+  };
+
+  return (
+    <nav className={styles.navbarMain}>
+      {/* Left Column */}
+      <div className={clsx(styles.column, styles.columnLeft)}>
+        <div className={flexboxStyles.flexCenterCenterRow} onClick={() => navigate('/react-ui/inventory')} style={{ cursor: 'pointer' }}>
+          <NavbarSvgIcon />
+          Eli
+        </div>
+      </div>
+
+      {/* Center Column */}
+      <div className={clsx(styles.column, styles.columnCenter)}>
+        <ul className={clsx(sharedStyles.fullWidth, flexboxStyles.flexCenterCenterRow)}>
+          <li className={styles.navbarLinks}>
+            <NavLink className={({ isActive }) => clsx(flexboxStyles.flexCenterCenterRow, isActive && styles.active)} to='/react-ui/inventory'>
+              Inventory
+            </NavLink>
+          </li>
+          <li className={styles.navbarLinks}>
+            <div 
+              className={clsx(flexboxStyles.flexCenterCenterRow, styles.active)}
+              onClick={() => setIsFormsDropdownDisplayed(!isFormsDropdownDisplayed)}
+              style={{ cursor: 'pointer' }}
+            >
+              Forms
+              <FaAngleDown />
+            </div>
+            <Dropdown 
+              isOpen={isFormsDropdownDisplayed} 
+              items={FORM_ITEMS} 
+              onClose={() => setIsFormsDropdownDisplayed(false)} 
+            />
+          </li>
+          <li className={styles.navbarLinks}>
+            <div 
+              className={clsx(flexboxStyles.flexCenterCenterRow, styles.active)}
+              onClick={() => setIsTablesDropdownDisplayed(!isTablesDropdownDisplayed)}
+              style={{ cursor: 'pointer' }}
+            >
+              Tables
+              <FaAngleDown />
+            </div>
+            <Dropdown 
+              isOpen={isTablesDropdownDisplayed} 
+              items={TABLE_ITEMS} 
+              onClose={() => setIsTablesDropdownDisplayed(false)} 
+            />
+          </li>
+        </ul>
+      </div>
+
+      {/* Right Column */}
+      <div className={clsx(styles.column, styles.columnRight)}>
+        <div className={styles.userFrame} onClick={() => setIsUserOptionsDropdownDisplayed(!isUserOptionsDropdownDisplayed)}>
+          <UserProfile user={user} profilePictureUrl={profilePictureUrl} />
+        </div>
+        <UserOptionsDropdown 
+          isOpen={isUserOptionsDropdownDisplayed}
+          user={user}
+          profilePictureUrl={profilePictureUrl}
+          onClose={handleLogout}
+        />
+      </div>
+    </nav>
+  );
+};
+
 const UserProfile = ({ user, profilePictureUrl }: { user: any, profilePictureUrl: string }) => (
   <div className={styles.userPictureContainer}>
     <div className={styles.userPictureBackground}>
@@ -176,89 +259,3 @@ const NavbarSvgIcon = () => (
     </g>
   </svg>
 );
-
-// Main Component
-export const Navbar = () => {
-  const navigate = useNavigate();
-  const [isUserOptionsDropdownDisplayed, setIsUserOptionsDropdownDisplayed] = useState(false);
-  const [isFormsDropdownDisplayed, setIsFormsDropdownDisplayed] = useState(false);
-  const [isTablesDropdownDisplayed, setIsTablesDropdownDisplayed] = useState(false);
-
-  const { user, error } = useLoggedInUser();
-  const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`;
-
-  if (error) {
-    useErrorMessage(error);
-  }
-
-  const handleLogout = async () => {
-    await axios.get('/auth/logout');
-    navigate('/react-ui/login', { replace: true });
-  };
-
-  return (
-    <nav className={styles.navbarMain}>
-      {/* Left Column */}
-      <div className={clsx(styles.column, styles.columnLeft)}>
-        <div className={flexboxStyles.flexCenterCenterRow} onClick={() => navigate('/react-ui/inventory')} style={{ cursor: 'pointer' }}>
-          <NavbarSvgIcon />
-          Eli
-        </div>
-      </div>
-
-      {/* Center Column */}
-      <div className={clsx(styles.column, styles.columnCenter)}>
-        <ul className={clsx(sharedStyles.fullWidth, flexboxStyles.flexCenterCenterRow)}>
-          <li className={styles.navbarLinks}>
-            <NavLink className={({ isActive }) => clsx(flexboxStyles.flexCenterCenterRow, isActive && styles.active)} to='/react-ui/inventory'>
-              Inventory
-            </NavLink>
-          </li>
-          <li className={styles.navbarLinks}>
-            <div 
-              className={clsx(flexboxStyles.flexCenterCenterRow, styles.active)}
-              onClick={() => setIsFormsDropdownDisplayed(!isFormsDropdownDisplayed)}
-              style={{ cursor: 'pointer' }}
-            >
-              Forms
-              <FaAngleDown />
-            </div>
-            <Dropdown 
-              isOpen={isFormsDropdownDisplayed} 
-              items={FORM_ITEMS} 
-              onClose={() => setIsFormsDropdownDisplayed(false)} 
-            />
-          </li>
-          <li className={styles.navbarLinks}>
-            <div 
-              className={clsx(flexboxStyles.flexCenterCenterRow, styles.active)}
-              onClick={() => setIsTablesDropdownDisplayed(!isTablesDropdownDisplayed)}
-              style={{ cursor: 'pointer' }}
-            >
-              Tables
-              <FaAngleDown />
-            </div>
-            <Dropdown 
-              isOpen={isTablesDropdownDisplayed} 
-              items={TABLE_ITEMS} 
-              onClose={() => setIsTablesDropdownDisplayed(false)} 
-            />
-          </li>
-        </ul>
-      </div>
-
-      {/* Right Column */}
-      <div className={clsx(styles.column, styles.columnRight)}>
-        <div className={styles.userFrame} onClick={() => setIsUserOptionsDropdownDisplayed(!isUserOptionsDropdownDisplayed)}>
-          <UserProfile user={user} profilePictureUrl={profilePictureUrl} />
-        </div>
-        <UserOptionsDropdown 
-          isOpen={isUserOptionsDropdownDisplayed}
-          user={user}
-          profilePictureUrl={profilePictureUrl}
-          onClose={handleLogout}
-        />
-      </div>
-    </nav>
-  );
-};
