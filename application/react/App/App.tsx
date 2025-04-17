@@ -23,7 +23,6 @@ const AdminPanel = lazy(() => import('../AdminPanel/AdminPanel'));
 const UserTable = lazy(() => import('../User/UserTable/UserTable'));
 const Inventory = lazy(() => import('../Inventory/Inventory'));
 const Profile = lazy(() => import('../User/Profile/Profile'));
-const CrudNavigation = lazy(() => import('../CrudNavigation/CrudNavigation'));
 
 const ViewCustomer = lazy(() => import('../Customer/ViewCustomer/ViewCustomer'));
 
@@ -85,7 +84,6 @@ export function App() {
                     <Route element={<TopNavbarLayout />}>
                       <Route path='inventory' element={<Inventory />}></Route>
                       <Route path='profile' element={<Profile />} />
-                      <Route path='crud-navigation' element={<CrudNavigation />} />
 
                       <Route path='views'>
                         <Route path='customer/:mongooseId' element={<ViewCustomer />} />
