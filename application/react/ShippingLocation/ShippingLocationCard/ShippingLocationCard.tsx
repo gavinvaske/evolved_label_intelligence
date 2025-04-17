@@ -1,4 +1,5 @@
 import * as styles from './ShippingLocationCard.module.scss'
+import { IoTrashOutline } from 'react-icons/io5';
 
 const ShippingLocationCard = (props) => {
   const { data, onDelete } = props;
@@ -14,7 +15,7 @@ const ShippingLocationCard = (props) => {
       <div className={styles.columnTd}>{state}</div>
       <div className={styles.columnTd}>{zipCode}</div>
 
-      <div className={styles.columnTd} onClick={onDelete}><i className="fa-regular fa-trash-can"></i></div>
+      <div className={styles.columnTd} onClick={onDelete}><IoTrashOutline /></div>
     </div>
   )
 }

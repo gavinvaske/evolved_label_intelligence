@@ -13,6 +13,7 @@ import { FaChevronDown } from "react-icons/fa6";
 import { ImFilter } from "react-icons/im";
 import { FaEye } from "react-icons/fa";
 import { TfiClose } from "react-icons/tfi";
+import { SlMagnifier } from "react-icons/sl";
 
 const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], store: Filter<T>) => {
   return (
@@ -101,7 +102,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
   return (
     <>
       <div className={clsx(styles.searchWrapper, flexboxStyles.flexCenterLeftRow, store.getSearchBarInput() && styles.hasText, isSearchBarActive && styles.active)} onClick={toggleSearchActive}>
-        <i className={clsx('fa-regular', 'fa-magnifying-glass', flexboxStyles.flexCenterCenterRow)}></i>
+        <SlMagnifier />
         <SearchBar
           ref={ref}
           value={store.getSearchBarInput()}

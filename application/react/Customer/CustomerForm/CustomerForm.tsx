@@ -30,6 +30,7 @@ import * as tableStyles from '@ui/styles/table.module.scss';
 import * as styles from './CustomerForm.module.scss';
 import { MongooseId } from '@shared/types/typeAliases';
 import clsx from 'clsx';
+import { FaPlus } from "react-icons/fa6";
 
 const customerTableUrl = '/react-ui/tables/customer'
 
@@ -229,7 +230,7 @@ export const CustomerForm = () => {
                   }
                 </div>
               </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowBusinessLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Business Location</button>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowBusinessLocationForm(true)}><FaPlus /> Add Business Location</button>
 
               <div className={styles.titleHeader}>
                 <h3>Shipping Locations:</h3>
@@ -261,7 +262,7 @@ export const CustomerForm = () => {
                   }
                 </div>
               </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowShippingLocationForm(true)}><i className="fa-solid fa-plus"></i>Add Shipping Location</button>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowShippingLocationForm(true)}><FaPlus /> Add Shipping Location</button>
 
               <div className={styles.titleHeader}>
                 <h3>Billing Locations:</h3>
@@ -291,7 +292,7 @@ export const CustomerForm = () => {
                   }
                 </div>
               </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowBillingLocationForm(true)}><i className="fa-solid fa-plus"></i> Add Billing Location</button>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowBillingLocationForm(true)}><FaPlus /> Add Billing Location</button>
 
               <div className={styles.titleHeader}>
                 <h3>Contacts:</h3>
@@ -323,7 +324,7 @@ export const CustomerForm = () => {
                   }
                 </div>
               </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><i className="fa-solid fa-plus"></i> Add Contact</button>
+              <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><FaPlus /> Add Contact</button>
               {/* Let user know some form inputs had errors */}
               <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 

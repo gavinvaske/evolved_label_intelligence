@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as styles from './MaterialCard.module.scss'
 import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
+import { FaPenToSquare } from "react-icons/fa6";
 
 type Props = {
   material: IMaterial,
@@ -82,7 +83,7 @@ const MaterialCard = observer((props: Props) => {
             <div className={clsx(styles.materialOption, styles.editContainer, sharedStyles.tooltipTop)}>
               <Link to={`/react-ui/forms/material/${material._id}`} onClick={(e) => e.stopPropagation()}>
                 <div className={clsx(styles.iconContainer)}>
-                  <i className={clsx('fa-regular', 'fa-pen-to-square')}></i>
+                  <i><FaPenToSquare /></i>
                 </div>
               </Link>
               <span className={clsx(sharedStyles.tooltipText)}>Edit material details</span>

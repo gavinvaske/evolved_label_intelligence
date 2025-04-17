@@ -29,7 +29,10 @@
     width: 100%;
     border: 1px dashed #ebe9f1;
     margin-bottom: 25px;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
     &:hover {
         background-color: #f3f2f7;
     }
