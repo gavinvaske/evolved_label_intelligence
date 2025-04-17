@@ -38,7 +38,7 @@ export const Register = () => {
           <div className={styles.colRight}>
             <div className={styles.registerFormContainer}>
 
-              <div>
+              <div className={styles.registerFormHeader}>
                 <h4>Hello! Lets get started</h4>
               </div>
 
