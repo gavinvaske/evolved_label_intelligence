@@ -456,23 +456,6 @@
   }
 }
 
-.fa-light.fa-xmark {
-  position: absolute;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  right: 15px;
-  top: 10px;
-  height: 28px;
-  width: 32px;
-  border-radius: 0.428rem;
-
-  &:hover {
-    background-color: rgba(103, 104, 121, 0.1);
-    cursor: pointer;
-  }
-}
-
 .poContainer {
   display: flex;
 
