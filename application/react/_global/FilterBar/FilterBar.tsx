@@ -10,10 +10,12 @@ import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './FilterBar.module.scss';
 import * as buttonStyles from '@ui/styles/button.module.scss'
 import { FaChevronDown } from "react-icons/fa6";
-import { ImFilter } from "react-icons/im";
-import { FaEye } from "react-icons/fa";
+import { VscFilter } from "react-icons/vsc";
+import { TbZoomReset } from "react-icons/tb";
+
 import { TfiClose } from "react-icons/tfi";
 import { SlMagnifier } from "react-icons/sl";
+import inventoryStore from '../../stores/inventoryStore';
 
 const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], store: Filter<T>) => {
   return (
@@ -68,8 +70,10 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
   const { conditionalQuickFilters, textQuickFilters, store, filterableItemsCount } = props
   const [isDropdownDisplayed, setIsDropdownDisplayed] = useState(false)
   const [isAdvancedDropdownDisplayed, setIsAdvancedDropdownDisplayed] = useState(false)
-  const [isSearchBarActive, setIsSearchBarActive] = useState(false)
+  const [isSearchFocused, setIsSearchFocused] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
+
+  console.log(isSearchFocused)
 
   function toggleQuickFilterMenu() {
     setIsAdvancedDropdownDisplayed(false)
@@ -82,18 +86,17 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
   }
 
   function toggleSearchActive() {
-    setIsSearchBarActive(!isSearchBarActive)
     if (ref.current) {
       ref.current.focus();
     }
   }
 
-  function clearSearchBar(e) {
+  function clearSearchBar(e: React.MouseEvent) {
     store.setSearchBarInput('')
     if (ref.current) {
       ref.current.value = '';
     }
-    setIsSearchBarActive(false)
+    setIsSearchFocused(false)
     setIsDropdownDisplayed(false)
     setIsAdvancedDropdownDisplayed(false)
     e.stopPropagation();
@@ -101,16 +104,23 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
 
   return (
     <>
-      <div className={clsx(styles.searchWrapper, flexboxStyles.flexCenterLeftRow, store.getSearchBarInput() && styles.hasText, isSearchBarActive && styles.active)} onClick={toggleSearchActive}>
-        <SlMagnifier />
+      <div className={clsx(styles.searchWrapper, flexboxStyles.flexCenterLeftRow, store.getSearchBarInput() && styles.hasText, isSearchFocused && styles.active)} onClick={toggleSearchActive}>
+        <div className={styles.searchIconWrapper}>
+          <SlMagnifier />
+        </div>
         <SearchBar
           ref={ref}
           value={store.getSearchBarInput()}
           performSearch={(userInput: string) => store.setSearchBarInput(userInput)}
           instantSearch={true}
+          onFocus={() => setIsSearchFocused(true)}
+          onBlur={() => setIsSearchFocused(false)}
         />
-        <div>
-          <TfiClose className={styles.clearButton} onClick={(e) => clearSearchBar(e)} />
+        <div className={styles.clearButtonWrapper}>
+          <TfiClose
+            className={clsx(styles.clearButton, isSearchFocused && styles.active)}
+            onClick={(e) => clearSearchBar(e)}
+          />
         </div>
       </div>
 
@@ -118,7 +128,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         <span className={clsx(sharedStyles.tooltipText)}>Filter materials</span>
         <div className={clsx(buttonStyles.filterBtnWrapper, flexboxStyles.flexCenterCenterRow, styles.active)}>
           <button className={clsx(buttonStyles.btnSplit, buttonStyles.quickFilter, flexboxStyles.flexCenterCenterRow)} onClick={() => toggleQuickFilterMenu()}>
-            <ImFilter />
+            <VscFilter />
             <div className={styles.filterText}>Filter</div>
           </button>
           <button className={clsx(buttonStyles.btnSplitArrowDropdown, buttonStyles.btnAdvancedFilter)} onClick={() => toggleAdvancedQuickFilterMenu()}>
@@ -143,10 +153,13 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
           clearSearchBar(e);
         }}>
           <div className={flexboxStyles.flexCenterSpaceAroundRow}>
-            <FaEye className={styles.seeAllButton} />
-            <div className={styles.seeAllButtonText}>See All ({<span>{filterableItemsCount}</span>})</div>
+            <TbZoomReset className={styles.seeAllButton} />
+            <div className={styles.seeAllButtonText}>Reset Filters</div>
           </div>
         </button>
+      </div>
+      <div className={styles.viewingResults}>
+        Viewing <span className={sharedStyles.textBlue}>{inventoryStore.getFilteredMaterials().length}</span> of <span className={sharedStyles.textBlue}>{filterableItemsCount}</span> results.
       </div>
     </>
   );

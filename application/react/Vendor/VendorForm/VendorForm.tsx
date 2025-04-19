@@ -54,6 +54,12 @@ export const VendorForm = () => {
       })
   }, [])
 
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      useErrorMessage(new Error('Some inputs had errors, please fix before attempting resubmission'))
+    }
+  }, [errors])
+
   const onVendorFormSubmit = (vendor: IVendorForm) => {
     if (isPrimaryAddressSameAsRemittance) {
       vendor.remittanceAddress = null;
@@ -154,14 +160,23 @@ export const VendorForm = () => {
               />
 
               <div className={formStyles.inputGroupWrapper}>
-                <label>
+              <Input
+                  attribute='remittanceAddress'
+                  label="Remittance same as Primary Address?"
+                  register={register}
+                  isRequired={false}
+                  errors={errors}
+                  fieldType='checkbox'
+                  defaultChecked={true}
+                />
+                {/* <label>
                   <input
                     type="checkbox"
                     checked={isPrimaryAddressSameAsRemittance}
                     onChange={(e) => setIsPrimaryAddressSameAsRemittance(e.target.checked)}
                   />
                   Remittance same as Primary Address?
-                </label>
+                </label> */}
               </div>
 
               {/* Primary Address Input Fields */}
@@ -171,9 +186,6 @@ export const VendorForm = () => {
                 <AddressFormAttributes label='Remittance Address' attribute='remittanceAddress' register={register} errors={errors} />
               )
               }
-
-              {/* Let user know some form inputs had errors */}
-              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>

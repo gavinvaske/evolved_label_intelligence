@@ -1,5 +1,8 @@
 import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
+import * as textStyles from '@ui/styles/typography.module.scss';
+import clsx from 'clsx';
+import * as styles from './TextArea.module.scss';
 
 type Props<T extends FieldValues> = {
   attribute: Path<T>
@@ -21,8 +24,8 @@ export const TextArea = <T extends FieldValues>(props: Props<T>) => {
   );
 
   return (
-    <div>
-      <label>{label}<span className='red'>{isRequired ? '*' : ''}</span>:</label>
+    <div className={styles.textAreaContainer}>
+      <label>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span></label>
       <textarea
         {...register(attribute,
           { required: isRequired ? "This is required" : undefined }

@@ -1,11 +1,34 @@
+@import '../../../_styles/constants.module.scss';
+
 .inputWrapper {
   display: flex;
   flex-direction: column;
   gap: 4px;
   margin-bottom: 15px;
+  min-height: 85px;
 
   label {
     font-weight: bold;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    text-align: left;
+  }
+
+  .checkboxContainer {
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+    input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin: 0;
+      cursor: pointer;
+    }
   }
 
   .inputFieldContainer {
@@ -16,41 +39,60 @@
     height: 40px;
     transition: border-color 0.2s ease-in-out;
 
+    &.error {
+      border-color: #dc3545;
+    }
+
     &:focus-within {
       border-color: #007bff;
+
+      &.error {
+        border-color: #dc3545;
+      }
     }
 
     .leftContainer,
     .rightContainer {
       display: flex;
       align-items: center;
+      justify-content: center;
       padding: 0 8px;
       white-space: nowrap;
       font-size: 14px;
       font-weight: bold;
       color: #333;
       flex-shrink: 0;
+      height: 100%;
+      min-width: 40px;
+      line-height: 1;
+      
+      span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+      }
     }
 
     .leftContainer {
       border-right: 1px solid #ddd;
-
+      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
     }
 
     .rightContainer {
       border-left: 1px solid #ddd;
+      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
     }
 
     input {
       flex: 1;
-      padding: 10px 12px;
+      padding: 0 10px;
       border: none;
       outline: none;
       width: 100%;
       min-width: 50px;
       max-height: 100%;
       border-radius: 0px;
-
       background-color: #fff;
       background-clip: padding-box;
       height: 43px;
@@ -61,9 +103,22 @@
       line-height: 1.45;
       color: #6e6b7b;
 
+      // Override browser autofill styles
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-text-fill-color: #6e6b7b !important;
+        transition: background-color 5000s ease-in-out 0s;
+      }
+
       &::placeholder {
         color: #aaa;
       }
     }
   }
+}
+
+.requiredIndicator {
+  font-size: 18px;
 }

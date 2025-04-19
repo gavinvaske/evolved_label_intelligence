@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
@@ -52,6 +52,12 @@ export const MaterialOrderForm = () => {
       return await preloadFormData()
     },
   })
+
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      useErrorMessage(new Error('Some inputs had errors, please fix before attempting resubmission'))
+    }
+  }, [errors])
 
   const preloadFormData = async () => {
     const materialSearchResults = await performTextSearch<IMaterial>('/materials/search', { limit: '100' });
@@ -195,7 +201,7 @@ export const MaterialOrderForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  leftUnit='@storm'
+                  leftUnit='ft / roll'
                 />
                 <Input
                   attribute='totalRolls'
@@ -248,12 +254,12 @@ export const MaterialOrderForm = () => {
               <TextArea
                 attribute='notes'
                 label="Notes"
+                placeholder='Enter notes here...'
                 register={register}
                 isRequired={false}
                 errors={errors}
               />
-              {/* Let user know some form inputs had errors */}
-              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
+
               <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>

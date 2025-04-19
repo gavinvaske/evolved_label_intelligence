@@ -123,6 +123,12 @@ export const CustomerForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      useErrorMessage(new Error('Some inputs had errors, please fix before attempting resubmission'))
+    }
+  }, [errors])
+
 
   const hideBillingLocationForm = () => setShowBillingLocationForm(false);
   const hideShippingLocationForm = () => setShowShippingLocationForm(false);
@@ -325,8 +331,6 @@ export const CustomerForm = () => {
                 </div>
               </div>
               <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><FaPlus /> Add Contact</button>
-              {/* Let user know some form inputs had errors */}
-              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>

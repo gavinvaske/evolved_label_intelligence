@@ -19,7 +19,6 @@ export const AdminPanel = () => {
       <h2>Admin Panel</h2>
       <div>
         <button className={sharedStyles.submitButton} onClick={calculateInventory}>Force Inventory Recalculation</button>
-        <button className={sharedStyles.submitButton} onClick={() => navigate('/react-ui/tables/user')}>View Users</button>
       </div>
 
     </div>

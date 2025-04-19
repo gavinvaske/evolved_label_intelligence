@@ -1,0 +1,17 @@
+.requiredIndicator {
+  font-size: 18px;
+}
+
+.textAreaContainer {
+  label {
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    margin-bottom: 4px;
+  }
+
+  textarea {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  }
+}

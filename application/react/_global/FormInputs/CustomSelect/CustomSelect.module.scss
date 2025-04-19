@@ -4,7 +4,7 @@
 }
 
 .selectSelected {
-  padding: 10px;
+  padding: 0 8px;
   background-color: #fff;
   border: 1px solid #ccc;
   cursor: pointer;
@@ -12,9 +12,11 @@
   justify-content: space-between;
   align-items: center;
   border-radius: 5px;
-  height: 43px;
+  height: 40px;
   overflow-x: hidden;
   overflow-y: hidden;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+  font-size: 14px;
 }
 
 .selectSelected.active {
@@ -42,8 +44,8 @@
   z-index: 999;
   margin-top: 5px;
   border-radius: 5px;
-  -webkit-box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
-  box-shadow: 0 4px 24px 0 rgb(34 41 47 / 10%);
+  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.25);
+  box-shadow: 0 4px 24px 0 rgba(0, 0, 0, 0.25);
   transition: .175s;
   padding: 5px;
   overflow-y: auto;
@@ -55,11 +57,11 @@
 }
 
 .dropdownItem {
-  padding: 10px;
+  padding: 10px 8px;
   cursor: pointer;
   border-radius: 5px;
   color: #6e6b7b;
-  font-size: 15px;
+  font-size: 14px;
   margin-bottom: 3px;
   overflow-x: hidden;
 }
@@ -85,7 +87,7 @@
 
 .searchInput {
   width: 100%;
-  padding: 5px;
+  padding: 6px;
   margin-bottom: 5px;
   border: 1px solid #ccc;
   border-radius: 4px;
@@ -95,5 +97,14 @@
 .noResults {
   padding: 8px;
   color: #888;
-  text-align: center;
+  text-align: left;
+}
+
+.requiredIndicator {
+  font-size: 18px;
+}
+
+.customSelectLabel {
+  font-weight: bold;
+  text-align: left;
 }
