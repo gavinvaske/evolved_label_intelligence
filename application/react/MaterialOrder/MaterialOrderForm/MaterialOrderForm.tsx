@@ -195,7 +195,7 @@ export const MaterialOrderForm = () => {
                   register={register}
                   isRequired={true}
                   errors={errors}
-                  leftUnit='@storm'
+                  leftUnit='ft / roll'
                 />
                 <Input
                   attribute='totalRolls'
