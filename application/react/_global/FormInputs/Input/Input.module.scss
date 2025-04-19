@@ -68,11 +68,12 @@
 
     .leftContainer {
       border-right: 1px solid #ddd;
-
+      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.4) 100%);
     }
 
     .rightContainer {
       border-left: 1px solid #ddd;
+      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.4) 100%);
     }
 
     input {
