@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
@@ -76,6 +76,12 @@ export const MaterialLengthAdjustmentForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      useErrorMessage(new Error('Some inputs had errors, please fix before attempting resubmission'))
+    }
+  }, [errors])
+
   if (fetchingMaterialsError) useErrorMessage(fetchingMaterialsError)
   if (fetchingFormError) useErrorMessage(fetchingFormError)
 
@@ -118,9 +124,6 @@ export const MaterialLengthAdjustmentForm = () => {
                 isRequired={false}
                 errors={errors}
               />
-
-              {/* Let user know some form inputs had errors */}
-              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'} </button>
             </div>

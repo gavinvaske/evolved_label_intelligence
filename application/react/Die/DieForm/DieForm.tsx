@@ -89,6 +89,12 @@ export const DieForm = () => {
     }
   }
 
+  useEffect(() => {
+    if (Object.keys(errors).length) {
+      useErrorMessage(new Error('Some inputs had errors, please fix before attempting resubmission'))
+    }
+  }, [errors])
+
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
@@ -279,8 +285,6 @@ export const DieForm = () => {
                 errors={errors}
                 isRequired={true}
               />
-              {/* Let user know some form inputs had errors */}
-              <p className='red'>{Object.keys(errors).length ? 'Some inputs had errors, please fix before attempting resubmission' : ''}</p>
 
               <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>

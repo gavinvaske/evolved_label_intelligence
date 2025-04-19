@@ -23,6 +23,7 @@ type Props<T extends FieldValues> = {
   rightUnit?: string; // Renamed: Represents unit on the right (e.g., 'mm')
   RightIcon?: React.ReactNode; // Mutually exclusive with `rightUnit`
   LeftIcon?: React.ReactNode; // Mutually exclusive with `leftUnit`
+  defaultChecked?: boolean;
 };
 
 interface WithForwardRefType extends React.FC<Props<FieldValues>> {
@@ -30,7 +31,7 @@ interface WithForwardRefType extends React.FC<Props<FieldValues>> {
 }
 
 export const Input: WithForwardRefType = forwardRef((props, customRef) => {
-  const { placeholder, errors, attribute, label, register, isRequired, fieldType, dataAttributes, leftUnit, rightUnit, RightIcon, LeftIcon } = props;
+  const { placeholder, errors, attribute, label, register, isRequired, fieldType, dataAttributes, leftUnit, rightUnit, RightIcon, LeftIcon, defaultChecked } = props;
 
   const { ref, ...rest } = register(attribute, {
     required: isRequired ? 'This is required' : undefined,
@@ -45,6 +46,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
         <div className={styles.checkboxContainer}>
           <input
             type="checkbox"
+            defaultChecked={defaultChecked}
             {...rest}
             ref={(e) => {
               ref(e);
