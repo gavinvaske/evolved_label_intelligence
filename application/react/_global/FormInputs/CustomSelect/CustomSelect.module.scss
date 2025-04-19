@@ -12,12 +12,16 @@
   justify-content: space-between;
   align-items: center;
   transition: border-color 0.2s ease-in-out;
-  border-radius: 5px;
+  border-radius: 0px;
   height: 40px;
   overflow-x: hidden;
   overflow-y: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
+
+  &.active {
+    border-color: #007bff;
+  }
 
   &.error {
     border-color: #dc3545;

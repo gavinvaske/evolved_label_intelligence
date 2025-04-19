@@ -35,8 +35,8 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
   // Close dropdown if clicked outside
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
         setIsOpen(false);
       }
     };
@@ -68,7 +68,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
               <div 
                 className={clsx(
                   styles.selectSelected, 
-                  value ? styles.active : null,
+                  value && styles.active,
                   requiredFieldIsEmpty && styles.error
                 )} 
                 onClick={toggleDropdown}
