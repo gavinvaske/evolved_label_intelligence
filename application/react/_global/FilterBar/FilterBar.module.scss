@@ -190,6 +190,7 @@
 .viewingResults {
   font-size: 14px;
   color: #676879;
-  text-align: center;
-  margin-top: 8px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
