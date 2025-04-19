@@ -12,7 +12,7 @@
     margin: 0;
     padding: 0;
     line-height: 1.2;
-    text-align: center;
+    text-align: left;
   }
 
   .checkboxContainer {
@@ -84,7 +84,6 @@
       min-width: 50px;
       max-height: 100%;
       border-radius: 0px;
-
       background-color: #fff;
       background-clip: padding-box;
       height: 43px;
@@ -94,8 +93,15 @@
       font-weight: 400;
       line-height: 1.45;
       color: #6e6b7b;
-      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
-      font-weight: bold;
+
+      // Override browser autofill styles
+      &:-webkit-autofill,
+      &:-webkit-autofill:hover,
+      &:-webkit-autofill:focus,
+      &:-webkit-autofill:active {
+        -webkit-text-fill-color: #6e6b7b !important;
+        transition: background-color 5000s ease-in-out 0s;
+      }
 
       &::placeholder {
         color: #aaa;

@@ -97,7 +97,7 @@
 .noResults {
   padding: 8px;
   color: #888;
-  text-align: center;
+  text-align: left;
 }
 
 .requiredIndicator {
@@ -106,7 +106,5 @@
 
 .customSelectLabel {
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  text-align: left;
 }
