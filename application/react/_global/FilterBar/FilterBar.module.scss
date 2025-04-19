@@ -8,13 +8,12 @@
   padding: 0;
   background-color: unset;
   padding-left: 5px;
-  width: 60px;
+  width: 100%;
   transition: background-color .1s cubic-bezier(0, 0, 0.35, 1), width .1s cubic-bezier(0, 0, 0.35, 1);
   border: unset;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  border-radius: 4px;
   outline: none;
   box-sizing: border-box;
   cursor: pointer;
@@ -22,23 +21,37 @@
 }
 
 .searchWrapper:hover {
-  background-color: #dcdfec;
+  background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
   cursor: pointer;
 }
 
 .searchWrapper {
   height: 33px;
-  min-width: 94px;
+  min-width: 80px;
+  width: 250px;
   border-radius: 3px;
   line-height: 14px;
   font-size: 14px;
   margin: 0 7px;
   overflow: hidden;
+  border: 1px solid #877e7e;
 }
 
-.searchWrapper i {
-  margin-left: 10px;
-  width: 20px;
+.searchIconWrapper {
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.clearButtonWrapper {
+  width: 40px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  align-self: right;
 }
 
 .quickFilterDropdown.active {
@@ -106,7 +119,6 @@
 }
 
 .searchWrapper {
-  padding-right: 15px;
   height: 34px;
   position: relative;
   overflow-x: hidden;
@@ -135,19 +147,8 @@
   }
 }
 
-.searchWrapper.active {
-  &:hover {
-    background-color: white;
-  }
-
-  input {
-    width: 170px;
-    transition: 0.3s;
-  }
-
-  .clearButton {
-    visibility: visible;
-  }
+.clearButton.active {
+  visibility: visible;
 }
 
 .searchWrapper.hasText {
@@ -169,7 +170,7 @@
 }
 
 .seeAllButtonText {
-  padding-left: 5px;
+  padding-left: 6px;
   font-size: 16px;
 }
 
@@ -178,5 +179,17 @@
 }
 
 .seeAllButton {
-  font-size: 18px;
+  font-size: 16px;
+}
+
+.btnSort {
+  min-width: 124px;
+  width: auto;
+}
+
+.viewingResults {
+  font-size: 14px;
+  color: #676879;
+  text-align: center;
+  margin-top: 8px;
 }

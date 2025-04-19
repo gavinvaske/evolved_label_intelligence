@@ -31,7 +31,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
   options.sort((a, b) => a.displayName?.localeCompare(b.displayName));
 
-  register(attribute, { required: isRequired ? "Nothing Selected" : false });
+  register(attribute, { required: isRequired ? "Nothing Selected" : undefined });
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -59,69 +59,58 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
       <Controller
         control={control}
         name={attribute}
-        render={({ field: { onChange, value } }) => {
-          const requiredFieldIsEmpty = isRequired && (!value || value === '');
-          
-          return (
-            <div>
-              {/* Selected Option */}
-              <div 
-                className={clsx(
-                  styles.selectSelected, 
-                  value && styles.active,
-                  requiredFieldIsEmpty && styles.error
-                )} 
-                onClick={toggleDropdown}
-              >
-                {(value && options.find(option => value == option.value))?.displayName || 'Nothing Selected'}
-                <span className={clsx(styles.dropdownArrow, isOpen && styles.active)}><FaChevronDown /></span>
-              </div>
-
-              {/* Dropdown Options */}
-              {isOpen && (
-                <div className={styles.selectItemsDropdown}>
-                  {/* Search Input */}
-                  <input
-                    type="text"
-                    placeholder="Search..."
-                    className={styles.searchInput}
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    autoFocus
-                  />
-
-                  {/* "Nothing Selected" Option */}
-                  <DropdownOption
-                    className={clsx(styles.borderBottom, !value && styles.sameAsSelected)}
-                    option={{ displayName: `Nothing Selected`, value: '' }}
-                    key={-1}
-                    onClick={() => {
-                      onChange('');
-                      setIsOpen(false);
-                    }}
-                  />
-
-                  {/* Filtered Options */}
-                  {filteredOptions.length > 0 ? (
-                    filteredOptions.map((option, index) => (
-                      <DropdownOption
-                        option={option}
-                        isSelected={option.value == value}
-                        key={index}
-                        onClick={() => {
-                          onChange(option.value);
-                          setIsOpen(false);
-                        }}
-                      />
-                    ))
-                  ) : (
-                    <div className={clsx(styles.dropdownItem, styles.noResults)}>No options found</div>
-                  )}
-                </div>
-              )}
+        render={({ field: { onChange, value } }) => (
+          <div>
+            {/* Selected Option */}
+            <div className={clsx(styles.selectSelected, value && styles.active)} onClick={toggleDropdown}>
+              {(value && options.find(option => value == option.value))?.displayName || 'Nothing Selected'}
+              <span className={clsx(styles.dropdownArrow, isOpen && styles.active)}><FaChevronDown /></span>
             </div>
-          );
-        }}
+
+            {/* Dropdown Options */}
+            {isOpen && (
+              <div className={styles.selectItemsDropdown}>
+                {/* Search Input */}
+                <input
+                  type="text"
+                  placeholder="Search..."
+                  className={styles.searchInput}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  autoFocus
+                />
+
+                {/* "Nothing Selected" Option */}
+                <DropdownOption
+                  className={clsx(styles.borderBottom, !value && styles.sameAsSelected)}
+                  option={{ displayName: `Nothing Selected`, value: '' }}
+                  key={-1}
+                  onClick={() => {
+                    onChange('');
+                    setIsOpen(false);
+                  }}
+                />
+
+                {/* Filtered Options */}
+                {filteredOptions.length > 0 ? (
+                  filteredOptions.map((option, index) => (
+                    <DropdownOption
+                      option={option}
+                      isSelected={option.value == value}
+                      key={index}
+                      onClick={() => {
+                        onChange(option.value);
+                        setIsOpen(false);
+                      }}
+                    />
+                  ))
+                ) : (
+                  <div className={clsx(styles.dropdownItem, styles.noResults)}>No options found</div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
       />
       <FormErrorMessage errors={errors} name={attribute} />
     </div>

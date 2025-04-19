@@ -4,11 +4,13 @@ import * as styles from './SearchBar.module.scss'
 type Props = {
   value: string,
   performSearch: (value: string) => void,
-  instantSearch?: boolean
+  instantSearch?: boolean,
+  onFocus?: () => void,
+  onBlur?: () => void
 }
 
 const SearchBar = forwardRef((props: Props, inputRef: any) => {
-  const { value, performSearch, instantSearch = false } = props;
+  const { value, performSearch, instantSearch = false, onFocus, onBlur } = props;
 
   const handleUserTypedSomething = (userInput: string) => {
     if (instantSearch) {
@@ -43,6 +45,8 @@ const SearchBar = forwardRef((props: Props, inputRef: any) => {
         defaultValue={value}
         onKeyUp={handleButtonPressed}
         onChange={(e) => handleUserTypedSomething(e.currentTarget.value)}
+        onFocus={onFocus}
+        onBlur={onBlur}
         placeholder="Search"
       />
     </div>
