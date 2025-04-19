@@ -1,4 +1,4 @@
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { IContactForm, IAddressForm } from '@ui/types/forms';
 import { Input } from '../../../_global/FormInputs/Input/Input';
 import { IShippingLocationForm } from '@ui/types/forms';
@@ -19,6 +19,9 @@ export const ContactForm = (props: Props) => {
     locations
   } = props;
 
+  const methods = useForm<IContactForm>();
+  const { handleSubmit } = methods;
+
   const selectableLocations: SelectOption[] = locations.map((address: IAddressForm | IShippingLocationForm, index: number) => {
     return {
       displayName: `${address.name}: ${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`,
@@ -26,80 +29,63 @@ export const ContactForm = (props: Props) => {
     }
   });
 
-  const { register, handleSubmit, formState: { errors }, control } = useForm<IContactForm>();
-
   return (
     <div>
       <div className={formStyles.formCardHeader}>
         <h3>New Business Contact</h3>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
-        <div className={formStyles.formElementsWrapper}>
-          <div className={formStyles.inputGroupWrapper}>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
+          <div className={formStyles.formElementsWrapper}>
+            <div className={formStyles.inputGroupWrapper}>
             <Input
               attribute='fullName'
               label="Name"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
             <Input
               attribute='phoneNumber'
               label="Phone Number"
-              register={register}
               isRequired={false}
-              errors={errors}
             />
           </div>
           <div className={formStyles.inputGroupWrapper}>
             <Input
               attribute='phoneExtension'
               label="Phone Extension"
-              register={register}
               isRequired={false}
-              errors={errors}
             />
             <Input
               attribute='email'
               label="Email"
-              register={register}
               isRequired={false}
-              errors={errors}
             />
             <Input
               attribute='contactStatus'
               label="Contact Status"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
           </div>
           <TextArea
             attribute='notes'
             label="Notes"
-            register={register}
             isRequired={false}
-            errors={errors}
           />
           <Input
             attribute='position'
             label="Position"
-            register={register}
             isRequired={false}
-            errors={errors}
           />
           <CustomSelect
             attribute='location'
             label="Location"
             options={selectableLocations}
-            register={register}
             isRequired={false}
-            errors={errors}
-            control={control}
           />
           <button className={sharedStyles.submitButton} type="submit">Submit</button>
-        </div>
-      </form>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   )
 }

@@ -15,7 +15,6 @@ const creditTermTableUrl = '/react-ui/tables/credit-term'
 
 export const CreditTermForm = () => {
   const { mongooseId } = useParams();
-  // const { register, handleSubmit, formState: { errors }, reset } = useForm<ICreditTermForm>();
   const methods = useForm<ICreditTermForm>();
   const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();

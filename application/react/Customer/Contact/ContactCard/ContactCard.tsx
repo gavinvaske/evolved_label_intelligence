@@ -23,7 +23,7 @@ const ContactCard = (props: Props) => {
       <div className={styles.columnTd}>{contactStatus}</div>
       <div className={styles.columnTd}>{notes}</div>
       <div className={styles.columnTd}>{position}</div>
-      <div className={styles.columnTd}>{location.name}</div>
+      <div className={styles.columnTd}>{location?.name}</div>
       <div className={styles.columnTd}>
         <i><IoTrashOutline className={styles.deleteIcon} onClick={onDelete} /></i>
       </div>
