@@ -1,3 +1,5 @@
+@import '../../../_styles/constants.module.scss';
+
 .inputWrapper {
   display: flex;
   flex-direction: column;
@@ -11,7 +13,6 @@
     padding: 0;
     line-height: 1.2;
     text-align: center;
-    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
   }
 
   .checkboxContainer {
@@ -76,7 +77,7 @@
 
     input {
       flex: 1;
-      padding: 0 8px;
+      padding: 0 10px;
       border: none;
       outline: none;
       width: 100%;
@@ -94,6 +95,7 @@
       line-height: 1.45;
       color: #6e6b7b;
       box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+      font-weight: bold;
 
       &::placeholder {
         color: #aaa;
