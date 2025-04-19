@@ -5,7 +5,7 @@ import clsx from 'clsx';
 import * as formStyles from '@ui/styles/form.module.scss'
 import * as styles from './CustomSelect.module.scss';
 import { FaChevronDown } from "react-icons/fa6";
-import textStyles from '@ui/styles/typography.module.scss';
+import * as textStyles from '@ui/styles/typography.module.scss';
 
 export type SelectOption = {
   displayName: string,
@@ -55,7 +55,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
   return (
     <div className={clsx(formStyles.customSelectContainer)} ref={dropdownRef}>
-      <label className={styles.label}>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span>:</label>
+      <label className={styles.customSelectLabel}>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span></label>
       <Controller
         control={control}
         name={attribute}

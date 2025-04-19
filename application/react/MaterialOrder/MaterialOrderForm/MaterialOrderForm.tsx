@@ -248,6 +248,7 @@ export const MaterialOrderForm = () => {
               <TextArea
                 attribute='notes'
                 label="Notes"
+                placeholder='Enter notes here...'
                 register={register}
                 isRequired={false}
                 errors={errors}

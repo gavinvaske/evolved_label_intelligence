@@ -98,10 +98,13 @@
   text-align: center;
 }
 
-.label {
-  font-weight: bold;
-}
-
 .requiredIndicator {
   font-size: 18px;
+}
+
+.customSelectLabel {
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
