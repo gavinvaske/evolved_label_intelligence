@@ -5,6 +5,7 @@ import { BsCurrencyDollar } from "react-icons/bs";
 import * as formStyles from '@ui/styles/form.module.scss'
 import clsx from 'clsx';
 import * as styles from './Input.module.scss';
+import textStyles from '@ui/styles/typography.module.scss';
 
 type Props<T extends FieldValues> = {
   attribute: Path<T>;
@@ -38,7 +39,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
   return (
     <div className={clsx(formStyles.inputWrapper, styles.inputWrapper)}>
       <label>
-        {label} <span className="red">{isRequired ? '*' : ''}</span>:
+        {label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span>:
       </label>
       <div className={styles.inputFieldContainer}>
 

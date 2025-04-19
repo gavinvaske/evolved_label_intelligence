@@ -55,7 +55,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
   return (
     <div className={clsx(formStyles.customSelectContainer)} ref={dropdownRef}>
-      <label className={styles.label}>{label}<span className={textStyles.textRed}>{isRequired ? '*' : ''}</span>:</label>
+      <label className={styles.label}>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span>:</label>
       <Controller
         control={control}
         name={attribute}
