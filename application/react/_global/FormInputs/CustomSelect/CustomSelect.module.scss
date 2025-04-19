@@ -5,22 +5,31 @@
 
 .selectSelected {
   padding: 0 8px;
-  background-color: #fff;
-  border: 1px solid #ccc;
+  background-color: white;
+  border: 1px solid #877e7e;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  transition: border-color 0.2s ease-in-out;
   border-radius: 5px;
   height: 40px;
   overflow-x: hidden;
   overflow-y: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
-}
 
-.selectSelected.active {
-  border: 2px solid #7367F0;
+  &.error {
+    border-color: #dc3545;
+  }
+
+  &:hover {
+    border-color: #007bff;
+
+    &.error {
+      border-color: #dc3545;
+    }
+  }
 }
 
 .dropdownArrow {
@@ -78,11 +87,6 @@
     background: rgba(115, 103, 240, .1);
     color: #7367F0;
   }
-}
-
-.error {
-  color: red;
-  margin-top: 10px;
 }
 
 .searchInput {

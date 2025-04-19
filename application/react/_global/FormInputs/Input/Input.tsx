@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
+import React, { forwardRef, useState } from 'react';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
-import { FieldErrors, FieldValues, Path, UseFormRegister } from 'react-hook-form';
+import { FieldErrors, FieldValues, Path, UseFormRegister, RegisterOptions } from 'react-hook-form';
 import { BsCurrencyDollar } from "react-icons/bs";
 import * as formStyles from '@ui/styles/form.module.scss'
 import clsx from 'clsx';
@@ -32,10 +32,22 @@ interface WithForwardRefType extends React.FC<Props<FieldValues>> {
 
 export const Input: WithForwardRefType = forwardRef((props, customRef) => {
   const { placeholder, errors, attribute, label, register, isRequired, fieldType, dataAttributes, leftUnit, rightUnit, RightIcon, LeftIcon, defaultChecked } = props;
+  const [value, setValue] = useState('');
 
-  const { ref, ...rest } = register(attribute, {
-    required: isRequired ? 'This is required' : undefined,
-  });
+  const registerOptions: RegisterOptions = {
+    required: isRequired ? 'This is required' : false,
+  };
+
+  const { ref, ...rest } = register(attribute, registerOptions);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setValue(e.target.value);
+    if (rest.onChange) {
+      rest.onChange(e);
+    }
+  };
+
+  const requiredFieldIsEmpty = isRequired && !value;
 
   return (
     <div className={clsx(formStyles.inputWrapper, styles.inputWrapper)}>
@@ -50,7 +62,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
             {...rest}
             ref={(e) => {
               ref(e);
-              if (customRef) {
+              if (customRef && 'current' in customRef) {
                 customRef.current = e;
               }
             }}
@@ -58,7 +70,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
           />
         </div>
       ) : (
-        <div className={styles.inputFieldContainer}>
+        <div className={clsx(styles.inputFieldContainer, requiredFieldIsEmpty && styles.error)}>
           {/* Left Unit / Icon */}
           {(LeftIcon || leftUnit || fieldType === 'currency') && (
             <div className={styles.leftContainer}>
@@ -71,11 +83,12 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
           {/* Input Field */}
           <input
             {...rest}
+            onChange={handleChange}
             type={fieldType || 'text'}
             placeholder={placeholder}
             ref={(e) => {
               ref(e);
-              if (customRef) {
+              if (customRef && 'current' in customRef) {
                 customRef.current = e;
               }
             }}
