@@ -15,6 +15,7 @@
   height: 43px;
   overflow-x: hidden;
   overflow-y: hidden;
+  box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 }
 
 .selectSelected.active {
@@ -107,4 +108,5 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
 }

@@ -3,12 +3,31 @@
   flex-direction: column;
   gap: 4px;
   margin-bottom: 15px;
+  min-height: 85px;
 
   label {
     font-weight: bold;
+    margin: 0;
+    padding: 0;
+    line-height: 1.2;
+    text-align: center;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+  }
+
+  .checkboxContainer {
+    height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
+    margin: 0;
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+
+    input[type="checkbox"] {
+      width: 22px;
+      height: 22px;
+      margin: 0;
+      cursor: pointer;
+    }
   }
 
   .inputFieldContainer {
@@ -74,6 +93,7 @@
       font-weight: 400;
       line-height: 1.45;
       color: #6e6b7b;
+      box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
 
       &::placeholder {
         color: #aaa;

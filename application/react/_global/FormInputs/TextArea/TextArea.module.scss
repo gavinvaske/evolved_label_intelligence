@@ -9,5 +9,10 @@
     align-items: center;
     justify-content: flex-start;
     margin-bottom: 4px;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.08);
+  }
+
+  textarea {
+    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   }
 }

@@ -41,41 +41,54 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
       <label>
         {label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span>
       </label>
-      <div className={styles.inputFieldContainer}>
+      {fieldType === 'checkbox' ? (
+        <div className={styles.checkboxContainer}>
+          <input
+            type="checkbox"
+            {...rest}
+            ref={(e) => {
+              ref(e);
+              if (customRef) {
+                customRef.current = e;
+              }
+            }}
+            {...dataAttributes}
+          />
+        </div>
+      ) : (
+        <div className={styles.inputFieldContainer}>
+          {/* Left Unit / Icon */}
+          {(LeftIcon || leftUnit || fieldType === 'currency') && (
+            <div className={styles.leftContainer}>
+              {(!LeftIcon && !leftUnit) && fieldType === 'currency' && (<span><BsCurrencyDollar /></span>)}
+              {LeftIcon && <span>{LeftIcon}</span>}
+              {leftUnit && <span>{leftUnit}</span>}
+            </div>
+          )}
 
-        {/* Left Unit / Icon */}
-        {(LeftIcon || leftUnit || fieldType === 'currency') && (
-          <div className={styles.leftContainer}>
-            {/* Set default icon on currency fields IFF no override was provided */}
-            {(!LeftIcon && !leftUnit) && fieldType === 'currency' && (<span><BsCurrencyDollar /></span>)}
-            
-            {LeftIcon && <span>{LeftIcon}</span>}
-            {leftUnit && <span>{leftUnit}</span>}
-          </div>
-        )}
+          {/* Input Field */}
+          <input
+            {...rest}
+            type={fieldType || 'text'}
+            placeholder={placeholder}
+            ref={(e) => {
+              ref(e);
+              if (customRef) {
+                customRef.current = e;
+              }
+            }}
+            {...dataAttributes}
+          />
 
-        {/* Input Field */}
-        <input
-          {...rest}
-          type={fieldType || 'text'}
-          placeholder={placeholder}
-          ref={(e) => {
-            ref(e);
-            if (customRef) {
-              customRef.current = e;
-            }
-          }}
-          {...dataAttributes}
-        />
-
-        {/* Right Unit / Icon */}
-        {(RightIcon || rightUnit) && (
-          <div className={styles.rightContainer}>
-            {RightIcon && <span>{RightIcon}</span>}
-            {rightUnit && <span>{rightUnit}</span>}
-          </div>
-        )}
-      </div>
+          {/* Right Unit / Icon */}
+          {(RightIcon || rightUnit) && (
+            <div className={styles.rightContainer}>
+              {RightIcon && <span>{RightIcon}</span>}
+              {rightUnit && <span>{rightUnit}</span>}
+            </div>
+          )}
+        </div>
+      )}
       <FormErrorMessage errors={errors} name={attribute} />
     </div>
   );

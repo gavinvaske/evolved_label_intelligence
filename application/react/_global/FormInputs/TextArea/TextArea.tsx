@@ -25,7 +25,7 @@ export const TextArea = <T extends FieldValues>(props: Props<T>) => {
 
   return (
     <div className={styles.textAreaContainer}>
-      <label>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span>:</label>
+      <label>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span></label>
       <textarea
         {...register(attribute,
           { required: isRequired ? "This is required" : undefined }
