@@ -1,41 +1,43 @@
-/* BLUE TEXT */
-/* .text-blue {
-	color: #157efb;
-} */
+@import './constants.module.scss';
 
 /* RED TEXT */
 .textRed {
-  color: #ea5455;
+  color: $RED;
+}
+
+/* BLUE TEXT */
+.textBlue {
+  color: $BLUE;
 }
 
 /* PURPLE TEXT */
 .textPurple {
-  color: #7367f0;
+  color: $PURPLE;
 }
 
 /* GREEN TEXT */
 .textGreen {
-  color: #28c76f;
+  color: $GREEN;
 }
 
 /* ORANGE TEXT */
 .textOrange {
-  color: #ff8510;
+  color: $ORANGE;
 }
 
 /* LIGHT BLUE TEXT */
 .textLightBlue {
-  color: #00cfe8;
+  color: $LIGHT_BLUE;
 }
 
 /* YELLOW TEXT */
 .textYellow {
-  color: #ffcb00;
+  color: $YELLOW;
 }
 
 /* MAGENTA TEXT */
 .textMagenta {
-  color: #f74875;
+  color: $MAGENTA;
 }
 
 /* WHITE TEXT */
@@ -45,5 +47,5 @@
 
 /* DARK GREY TEXT */
 .textDarkGrey {
-  color: #676879;
+  color: $DARK_GREY;
 }
