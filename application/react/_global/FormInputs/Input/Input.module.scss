@@ -50,7 +50,7 @@
       justify-content: center;
       padding: 0 8px;
       white-space: nowrap;
-      font-size: 16px;
+      font-size: 14px;
       font-weight: bold;
       color: #333;
       flex-shrink: 0;
@@ -68,12 +68,12 @@
 
     .leftContainer {
       border-right: 1px solid #ddd;
-      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.4) 100%);
+      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
     }
 
     .rightContainer {
       border-left: 1px solid #ddd;
-      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.4) 100%);
+      background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
     }
 
     input {
