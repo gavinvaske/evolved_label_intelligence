@@ -32,7 +32,7 @@ export const TextQuickFilter = observer((props: Props) => {
       variant="action"
       style={isEnabled() ? "default" : "white"}
       onClick={onClick}
-      className={styles.filterButton}
+      className={clsx(styles.filterButton, { [styles.enabled]: isEnabled() })}
     >
       {filterValue}
     </Button>
