@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { useAuth } from '../../_hooks/useAuth';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { Input } from '../../_global/FormInputs/Input/Input';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import axios from 'axios';
 import { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
@@ -21,7 +21,8 @@ export const Login = () => {
 
   const userRef = useRef<HTMLInputElement>(null);
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const methods = useForm();
+  const { handleSubmit } = methods;
 
   const handlePasswordIconClicked = () => {
     setShowPassword(!showPassword);
@@ -135,14 +136,13 @@ export const Login = () => {
                 <h4>Welcome to ELI.</h4>
                 <p>Please sign in below.</p>
               </div>
-              <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
+              <FormProvider {...methods}>
+                <form className={styles.loginForm} onSubmit={handleSubmit(onSubmit)}>
                   <div className={styles.inputWrapper}>
                     <Input
                         attribute='email'
                         label="Email"
-                        register={register}
                         isRequired={true}
-                        errors={errors}
                         ref={userRef}
                         dataAttributes={
                           {'data-test': 'username-input'}
@@ -153,14 +153,11 @@ export const Login = () => {
                     <Input
                         attribute='password'
                         label="Password"
-                        register={register}
                         isRequired={true}
-                        errors={errors}
                         fieldType={showPassword ? 'text' : 'password'}
                         dataAttributes={
                           {'data-test': 'password-input'}
                         }
-                        //rightUnit='mm'
                         RightIcon={<PasswordIcon showPassword={showPassword} onClick={handlePasswordIconClicked} />}
                     />
                   </div>
@@ -180,6 +177,7 @@ export const Login = () => {
                   Don't have an account?
                   <Link to='/react-ui/register'>Create Account</Link>
                 </div>
+              </FormProvider>
             </div>
 
           </div>

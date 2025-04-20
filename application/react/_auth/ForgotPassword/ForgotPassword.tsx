@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
@@ -10,7 +10,8 @@ import * as styles from './ForgotPassword.module.scss'
 
 export const ForgotPassword = () => {
   const resetPasswordFieldRef = useRef<HTMLInputElement>(null);
-  const { register, handleSubmit, formState: { errors }, reset } = useForm();
+  const methods = useForm();
+  const { handleSubmit } = methods;
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -39,20 +40,20 @@ export const ForgotPassword = () => {
               <h4>Forgot Password? 🔒</h4>
               <p>Enter your email and we'll send you instructions to reset your password.</p>
             </div>
-            <form onSubmit={handleSubmit(onSubmit)}>
-              <Input
-                attribute='email'
-                label="Email"
-                register={register}
-                isRequired={true}
-                errors={errors}
-                ref={resetPasswordFieldRef}
-                dataAttributes={
-                  { 'data-test': 'email-input' }
-                }
-              />
-              <button className={sharedStyles.submitButton} type='submit' data-test='reset-password-btn'>Reset</button>
-            </form>
+            <FormProvider {...methods}>
+              <form onSubmit={handleSubmit(onSubmit)}>
+                <Input
+                  attribute='email'
+                  label="Email"
+                  isRequired={true}
+                  ref={resetPasswordFieldRef}
+                  dataAttributes={
+                    { 'data-test': 'email-input' }
+                  }
+                />
+                <button className={sharedStyles.submitButton} type='submit' data-test='reset-password-btn'>Reset</button>
+              </form>
+            </FormProvider>
             <div>
               <a href='/react-ui/login'>Back to login</a>
             </div>

@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Input } from '../../_global/FormInputs/Input/Input';
@@ -15,7 +15,8 @@ const deliveryMethodTableUrl = '/react-ui/tables/delivery-method'
 
 export const DeliveryMethodForm = () => {
   const { mongooseId } = useParams();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IDeliveryMethodForm>();
+  const methods = useForm<IDeliveryMethodForm>();
+  const { handleSubmit, reset } = methods;
   const navigate = useNavigate();
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
@@ -61,20 +62,20 @@ export const DeliveryMethodForm = () => {
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Delivery Method</h3>
         </div>
         <div>
-          <form onSubmit={handleSubmit(onSubmit)} data-test='delivery-method-form' className={formStyles.form}>
-            <div className={formStyles.formElementsWrapper}>
-              <div className={formStyles.inputGroupWrapper}>
-                <Input
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} data-test='delivery-method-form' className={formStyles.form}>
+              <div className={formStyles.formElementsWrapper}>
+                <div className={formStyles.inputGroupWrapper}>
+                  <Input
                   attribute='name'
                   label="Name"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
               </div>
               <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
-            </div>
-          </form>
+              </div>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </div>
