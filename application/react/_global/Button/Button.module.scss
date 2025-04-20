@@ -25,17 +25,7 @@
     font-size: 1rem;
   }
 
-  &.action {
-    background-color: #f8f9fa;
-    color: #495057;
-    border-color: #e9ecef;
-
-    &:hover:not(.disabled) {
-      background-color: #e9ecef;
-    }
-  }
-
-  &.create {
+  &.link {
     background-color: #7367F0;
     color: white;
 

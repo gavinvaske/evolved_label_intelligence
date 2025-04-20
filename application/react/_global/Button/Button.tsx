@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import * as styles from './Button.module.scss';
 
-type ButtonVariant = 'submit' | 'action' | 'create';
+type ButtonVariant = 'submit' | 'link';
 type ButtonSize = 'small' | 'medium' | 'large';
 
 type BaseButtonProps = {
@@ -22,13 +22,13 @@ type SubmitButtonProps = BaseButtonProps & {
   onClick?: () => void;
 };
 
-type ActionButtonProps = BaseButtonProps & {
-  variant: 'action' | 'create';
+type LinkButtonProps = BaseButtonProps & {
+  variant: 'link';
   to?: string;
   onClick?: () => void;
 };
 
-type ButtonProps = SubmitButtonProps | ActionButtonProps;
+type ButtonProps = SubmitButtonProps | LinkButtonProps;
 
 export const Button = (props: ButtonProps) => {
   const {
