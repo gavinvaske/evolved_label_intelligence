@@ -2,7 +2,6 @@ import inventoryStore from '../../stores/inventoryStore';
 import { observer } from 'mobx-react-lite';
 import { conditionalQuickFilters, textQuickFilters } from './quickFilters';
 import { FilterBar } from '../../_global/FilterBar/FilterBar';
-import { Link } from 'react-router-dom';
 import * as styles from './InventoryFilterBar.module.scss';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import clsx from 'clsx';
@@ -14,11 +13,12 @@ const InventoryFilterBar = observer((_) => {
 
   return (
     <div className={clsx(flexboxStyles.flexCenterLeftRow, sharedStyles.fullWidth, sharedStyles.card, styles.inventoryFilterBar)}>
-      <Button
-        variant="link"
-        to="/react-ui/forms/material-order"
-        tooltip="Order material"
-        icon={<GoPlus />}
+      <div className={styles.createButtonsWrapper}>
+        <Button
+          variant="link"
+          to="/react-ui/forms/material-order"
+          tooltip="Order material"
+          icon={<GoPlus />}
       >
         Order
       </Button>
@@ -36,8 +36,9 @@ const InventoryFilterBar = observer((_) => {
         tooltip="Adjust footage for material"
         icon={<GoPlus />}
       >
-        Adjustment
-      </Button>
+          Adjustment
+        </Button>
+      </div>
 
       <FilterBar
           conditionalQuickFilters={conditionalQuickFilters}

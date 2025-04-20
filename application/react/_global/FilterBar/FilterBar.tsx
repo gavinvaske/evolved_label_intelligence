@@ -126,61 +126,64 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         </div>
       </div>
 
-      <div className={clsx(styles.filterWrapper, flexboxStyles.flexCenterCenterRow)}>
-        <div className={flexboxStyles.flexCenterCenterRow}>
+      <div className={clsx(flexboxStyles.flexCenterCenterRow)} style={{ gap: '10px' }}>
+        <div className={clsx(styles.filterWrapper)}>
+          <div className={clsx(flexboxStyles.flexCenterCenterRow)} style={{ gap: '10px' }}>
+            <Button
+              variant="action"
+              style="white"
+              onClick={() => toggleQuickFilterMenu()}
+              icon={<VscFilter />}
+              ref={quickFilterButtonRef}
+            >
+              Quick Filters
+            </Button>
+            <Button 
+              variant="action"
+              style="white"
+              onClick={() => toggleAdvancedQuickFilterMenu()}
+              icon={<FaChevronDown />}
+              ref={advancedFilterButtonRef}
+            >
+              Advanced Filters
+            </Button>
+          </div>
+          <Dropdown
+            isOpen={isDropdownDisplayed}
+            onClose={() => setIsDropdownDisplayed(false)}
+            triggerRef={quickFilterButtonRef}
+          >
+            <h5><b>Quick filters</b></h5>
+            {renderTextQuickFilters(textQuickFilters, store)}
+          </Dropdown>
+
+          <Dropdown
+            isOpen={isAdvancedDropdownDisplayed}
+            onClose={() => setIsAdvancedDropdownDisplayed(false)}
+            align="right"
+            triggerRef={advancedFilterButtonRef}
+          >
+            <h5><b>Advanced Filter</b></h5>
+            {renderConditionalQuickFilters(conditionalQuickFilters, store)}
+          </Dropdown>
+        </div>
+
+        <div className={clsx(sharedStyles.tooltipTop)}>
+          <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>
           <Button
             variant="action"
             style="white"
-            onClick={() => toggleQuickFilterMenu()}
-            icon={<VscFilter />}
-            ref={quickFilterButtonRef}
+            onClick={(e) => {
+              store.resetAllFilters();
+              clearSearchBar(e);
+            }}
           >
-            Quick Filters
-          </Button>
-          <Button
-            variant="action"
-            style="white"
-            onClick={() => toggleAdvancedQuickFilterMenu()}
-            icon={<FaChevronDown />}
-            ref={advancedFilterButtonRef}
-          >
-            Advanced Filters
+            <div className={flexboxStyles.flexCenterSpaceAroundRow}>
+              <TbZoomReset className={styles.seeAllButton} />
+              <div className={styles.seeAllButtonText}>Reset Filters</div>
+            </div>
           </Button>
         </div>
-        <Dropdown
-          isOpen={isDropdownDisplayed}
-          onClose={() => setIsDropdownDisplayed(false)}
-          triggerRef={quickFilterButtonRef}
-        >
-          <h5><b>Quick filters</b></h5>
-          {renderTextQuickFilters(textQuickFilters, store)}
-        </Dropdown>
-
-        <Dropdown
-          isOpen={isAdvancedDropdownDisplayed}
-          onClose={() => setIsAdvancedDropdownDisplayed(false)}
-          align="right"
-          triggerRef={advancedFilterButtonRef}
-        >
-          <h5><b>Advanced Filter</b></h5>
-          {renderConditionalQuickFilters(conditionalQuickFilters, store)}
-        </Dropdown>
-      </div>
-      <div className={clsx(styles.allWrapper, sharedStyles.tooltipTop)}>
-        <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>
-        <Button
-          variant="action"
-          style="white"
-          onClick={(e) => {
-            store.resetAllFilters();
-            clearSearchBar(e);
-          }}
-        >
-          <div className={flexboxStyles.flexCenterSpaceAroundRow}>
-            <TbZoomReset className={styles.seeAllButton} />
-            <div className={styles.seeAllButtonText}>Reset Filters</div>
-          </div>
-        </Button>
       </div>
       <div className={styles.viewingResults}>
         Viewing <span className={sharedStyles.textBlue}>{inventoryStore.getFilteredMaterials().length}</span> of <span className={sharedStyles.textBlue}>{filterableItemsCount}</span> results.

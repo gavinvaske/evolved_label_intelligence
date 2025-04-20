@@ -159,12 +159,6 @@
   }
 }
 
-.allWrapper {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
 .filterText {
   padding-left: 5px;
 }
@@ -195,6 +189,8 @@
 
 .filterWrapper {
   position: relative;
+  display: flex;
+  gap: 10px;
 }
 
 .quickFilterDropdown {
@@ -241,11 +237,6 @@
   &.active {
     display: block;
   }
-}
-
-.allWrapper {
-  position: relative;
-  margin-right: 1rem;
 }
 
 .seeAllButton {
