@@ -37,7 +37,7 @@ const customerTableUrl = '/react-ui/tables/customer'
 export const CustomerForm = () => {
   const { mongooseId } = useParams();
   const methods = useForm<ICustomerForm>();
-  const { handleSubmit, formState: { errors }, reset, control, register } = methods;
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
@@ -65,7 +65,7 @@ export const CustomerForm = () => {
   const preloadFormData = async () => {
     const creditTermSearchResults = await performTextSearch<ICreditTerm>('/credit-terms/search', { query: '', limit: '100' })
     const creditTerms = creditTermSearchResults.results
-
+  
     setCreditTerms(creditTerms.map((creditTerm: ICreditTerm) => (
       {
         displayName: creditTerm.description,
@@ -175,19 +175,16 @@ export const CustomerForm = () => {
                   attribute='customerId'
                   label="Customer ID"
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='name'
                   label="Name"
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='overun'
                   label="Overun"
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
               </div>
@@ -200,10 +197,7 @@ export const CustomerForm = () => {
                 attribute='creditTerms'
                 label="Credit Term"
                 options={creditTerms}
-                register={register}
                 isRequired={false}
-                errors={errors}
-                control={control}
               />
               <div className={styles.titleHeader}>
                 <h3>Business Locations:</h3>

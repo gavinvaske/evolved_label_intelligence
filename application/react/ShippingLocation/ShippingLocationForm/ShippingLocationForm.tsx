@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { IShippingLocationForm } from '@ui/types/forms.ts';
@@ -17,6 +17,9 @@ export const ShippingLocationForm = (props: Props) => {
   const {
     onSubmit,
   } = props;
+
+  const methods = useForm<IShippingLocationForm>();
+  const { handleSubmit } = methods;
 
   const [deliveryMethods, setDeliveryMethods] = useState<SelectOption[]>([]);
 
@@ -35,78 +38,61 @@ export const ShippingLocationForm = (props: Props) => {
       .catch((error: AxiosError) => useErrorMessage(error))
   }, [])
 
-  const { register, handleSubmit, formState: { errors }, control } = useForm<IShippingLocationForm>();
-
   return (
     <div>
       <div className={formStyles.formCardHeader}>
         <h3>New Shipping Address</h3>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
-        <div className={formStyles.formElementsWrapper}>
-          <div className={formStyles.inputGroupWrapper}>
+      <FormProvider {...methods}>
+        <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
+          <div className={formStyles.formElementsWrapper}>
+            <div className={formStyles.inputGroupWrapper}>
             <Input
               attribute='name'
               label="Name"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
             <Input
               attribute='freightAccountNumber'
               label="Freight Account Number"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
             <CustomSelect
               attribute='deliveryMethod'
               label="Delivery Method"
               options={deliveryMethods}
-              register={register}
               isRequired={false}
-              errors={errors}
-              control={control}
             />
             <Input
               attribute='street'
               label="Street"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
             <Input
               attribute='unitOrSuite'
               label="Unit or Suite #"
-              register={register}
               isRequired={false}
-              errors={errors}
             />
             <Input
               attribute='city'
               label="City"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
             <Input
               attribute='state'
               label="State"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
             <Input
               attribute='zipCode'
               label="Zip"
-              register={register}
               isRequired={true}
-              errors={errors}
             />
           </div>
           <button className={sharedStyles.submitButton} type="submit">Submit</button>
-        </div>
-      </form>
+          </div>
+        </form>
+      </FormProvider>
     </div>
   )
 }
