@@ -17,3 +17,10 @@
   height: 45px;
   overflow-x: hidden;
 }
+
+.deleteIcon {
+  cursor: pointer;
+  font-size: 22px;
+  color: red;
+  transition: transform 0.3s;
+}

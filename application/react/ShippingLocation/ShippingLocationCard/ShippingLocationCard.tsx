@@ -1,6 +1,7 @@
 import { IShippingLocationForm } from '@ui/types/forms';
 import * as styles from './ShippingLocationCard.module.scss'
 import { IoTrashOutline } from 'react-icons/io5';
+import clsx from 'clsx';
 
 type Props = {
   data: IShippingLocationForm,
@@ -21,8 +22,7 @@ const ShippingLocationCard = (props: Props) => {
       <div className={styles.columnTd}>{city}</div>
       <div className={styles.columnTd}>{state}</div>
       <div className={styles.columnTd}>{zipCode}</div>
-
-      <div className={styles.columnTd} onClick={onDelete}><IoTrashOutline /></div>
+      <div className={clsx(styles.columnTd, styles.deleteIcon)} onClick={onDelete}><IoTrashOutline /></div>
     </div>
   )
 }
