@@ -125,16 +125,24 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         </div>
       </div>
 
-      <div className={clsx(buttonStyles.splitBtnFrame, buttonStyles.btnFilter, flexboxStyles.flexCenterCenterRow, sharedStyles.tooltipTop)}>
-        <span className={clsx(sharedStyles.tooltipText)}>Filter materials</span>
-        <div className={clsx(buttonStyles.filterBtnWrapper, flexboxStyles.flexCenterCenterRow, styles.active)}>
-          <button className={clsx(buttonStyles.btnSplit, buttonStyles.quickFilter, flexboxStyles.flexCenterCenterRow)} onClick={() => toggleQuickFilterMenu()}>
-            <VscFilter />
-            <div className={styles.filterText}>Filter</div>
-          </button>
-          <button className={clsx(buttonStyles.btnSplitArrowDropdown, buttonStyles.btnAdvancedFilter)} onClick={() => toggleAdvancedQuickFilterMenu()}>
-            <FaChevronDown />
-          </button>
+      <div className={clsx(styles.filterWrapper, flexboxStyles.flexCenterCenterRow)}>
+        <div className={flexboxStyles.flexCenterCenterRow}>
+          <Button
+            variant="action"
+            style="white"
+            onClick={() => toggleQuickFilterMenu()}
+            icon={<VscFilter />}
+          >
+            Quick Filters
+          </Button>
+          <Button
+            variant="action"
+            style="white"
+            onClick={() => toggleAdvancedQuickFilterMenu()}
+            icon={<FaChevronDown />}
+          >
+            Advanced Filters
+          </Button>
         </div>
         <div className={clsx(styles.quickFilterDropdown, sharedStyles.dropdown, isDropdownDisplayed && styles.active)}>
           <h5><b>Quick filters</b></h5>
@@ -145,7 +153,6 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
           <h5><b>Advanced Filter</b></h5>
           {renderConditionalQuickFilters(conditionalQuickFilters, store)}
         </div>
-
       </div>
       <div className={clsx(styles.allWrapper, sharedStyles.tooltipTop)}>
         <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>

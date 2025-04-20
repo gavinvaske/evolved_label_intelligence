@@ -192,3 +192,118 @@
   color: #676879;
   text-align: center;
 }
+
+.filterWrapper {
+  position: relative;
+  margin-right: 1rem;
+}
+
+.quickFilterDropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+
+  &.active {
+    display: block;
+  }
+}
+
+.advancedFilterDropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  display: none;
+  min-width: 10rem;
+  padding: 0.5rem 0;
+  margin: 0.125rem 0 0;
+  font-size: 1rem;
+  color: #212529;
+  text-align: left;
+  list-style: none;
+  background-color: #fff;
+  background-clip: padding-box;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 0.25rem;
+
+  &.active {
+    display: block;
+  }
+}
+
+.allWrapper {
+  position: relative;
+  margin-right: 1rem;
+}
+
+.seeAllButton {
+  margin-right: 0.5rem;
+}
+
+.seeAllButtonText {
+  font-weight: 500;
+}
+
+.viewingResults {
+  margin-left: auto;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
+
+.searchWrapper {
+  position: relative;
+  margin-right: 1rem;
+  padding: 0.5rem 1rem;
+  border: 1px solid #e9ecef;
+  border-radius: 3px;
+  transition: all 0.2s ease-in-out;
+
+  &.hasText {
+    border-color: #7367F0;
+  }
+
+  &.active {
+    border-color: #7367F0;
+    box-shadow: 0 0 0 0.2rem rgba(115, 103, 240, 0.25);
+  }
+}
+
+.searchIconWrapper {
+  margin-right: 0.5rem;
+  color: #6c757d;
+}
+
+.clearButtonWrapper {
+  margin-left: 0.5rem;
+}
+
+.clearButton {
+  color: #6c757d;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+
+  &.active {
+    opacity: 1;
+  }
+}
+
+.filterDescription {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #6c757d;
+}
