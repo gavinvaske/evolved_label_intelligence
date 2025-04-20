@@ -17,6 +17,7 @@ import { TfiClose } from "react-icons/tfi";
 import { SlMagnifier } from "react-icons/sl";
 import inventoryStore from '../../stores/inventoryStore';
 import { Button } from '../Button/Button';
+import { Dropdown } from '../Dropdown/Dropdown';
 
 const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], store: Filter<T>) => {
   return (
@@ -73,17 +74,17 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
   const [isAdvancedDropdownDisplayed, setIsAdvancedDropdownDisplayed] = useState(false)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
-
-  console.log(isSearchFocused)
+  const quickFilterButtonRef = useRef<HTMLButtonElement>(null);
+  const advancedFilterButtonRef = useRef<HTMLButtonElement>(null);
 
   function toggleQuickFilterMenu() {
-    setIsAdvancedDropdownDisplayed(false)
-    setIsDropdownDisplayed(!isDropdownDisplayed)
+    setIsAdvancedDropdownDisplayed(false);
+    setIsDropdownDisplayed(!isDropdownDisplayed);
   }
 
   function toggleAdvancedQuickFilterMenu() {
-    setIsDropdownDisplayed(false)
-    setIsAdvancedDropdownDisplayed(!isAdvancedDropdownDisplayed)
+    setIsDropdownDisplayed(false);
+    setIsAdvancedDropdownDisplayed(!isAdvancedDropdownDisplayed);
   }
 
   function toggleSearchActive() {
@@ -132,6 +133,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             style="white"
             onClick={() => toggleQuickFilterMenu()}
             icon={<VscFilter />}
+            ref={quickFilterButtonRef}
           >
             Quick Filters
           </Button>
@@ -140,19 +142,29 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             style="white"
             onClick={() => toggleAdvancedQuickFilterMenu()}
             icon={<FaChevronDown />}
+            ref={advancedFilterButtonRef}
           >
             Advanced Filters
           </Button>
         </div>
-        <div className={clsx(styles.quickFilterDropdown, sharedStyles.dropdown, isDropdownDisplayed && styles.active)}>
+        <Dropdown
+          isOpen={isDropdownDisplayed}
+          onClose={() => setIsDropdownDisplayed(false)}
+          triggerRef={quickFilterButtonRef}
+        >
           <h5><b>Quick filters</b></h5>
           {renderTextQuickFilters(textQuickFilters, store)}
-        </div>
+        </Dropdown>
 
-        <div className={clsx(styles.advancedFilterDropdown, sharedStyles.dropdown, isAdvancedDropdownDisplayed && styles.active)}>
+        <Dropdown
+          isOpen={isAdvancedDropdownDisplayed}
+          onClose={() => setIsAdvancedDropdownDisplayed(false)}
+          align="right"
+          triggerRef={advancedFilterButtonRef}
+        >
           <h5><b>Advanced Filter</b></h5>
           {renderConditionalQuickFilters(conditionalQuickFilters, store)}
-        </div>
+        </Dropdown>
       </div>
       <div className={clsx(styles.allWrapper, sharedStyles.tooltipTop)}>
         <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>
