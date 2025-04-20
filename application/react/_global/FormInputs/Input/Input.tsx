@@ -1,6 +1,6 @@
 import React, { forwardRef, useState, useEffect } from 'react';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
-import { FieldErrors, FieldValues, Path, UseFormRegister, RegisterOptions, useFormContext } from 'react-hook-form';
+import { FieldValues, Path, RegisterOptions, useFormContext } from 'react-hook-form';
 import { BsCurrencyDollar } from "react-icons/bs";
 import * as formStyles from '@ui/styles/form.module.scss'
 import clsx from 'clsx';
@@ -10,11 +10,8 @@ import * as textStyles from '@ui/styles/typography.module.scss';
 type Props<T extends FieldValues> = {
   attribute: Path<T>;
   label: string;
-  register?: UseFormRegister<T>;
-  errors?: FieldErrors;
   placeholder?: string;
   isRequired?: boolean;
-  additionalRegisterOptions?: any;
   onChange?: () => void;
   fieldType?: 'text' | 'checkbox' | 'date' | 'password' | 'currency' | 'percent';
   ref?: any;

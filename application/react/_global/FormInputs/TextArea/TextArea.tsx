@@ -1,4 +1,4 @@
-import { FieldErrors, FieldValues, Path, RegisterOptions, useFormContext, UseFormRegister } from 'react-hook-form';
+import { FieldValues, Path, RegisterOptions, useFormContext } from 'react-hook-form';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
 import * as textStyles from '@ui/styles/typography.module.scss';
 import clsx from 'clsx';
@@ -7,8 +7,6 @@ import * as styles from './TextArea.module.scss';
 type Props<T extends FieldValues> = {
   attribute: Path<T>
   label: string
-  register?: UseFormRegister<T>
-  errors?: FieldErrors,
   isRequired?: boolean,
   placeholder?: string,
   dataAttributes?: { [key: `data-${string}`]: string },

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FieldErrors, FieldValues, UseFormRegister, Path, Controller, Control, useFormContext, RegisterOptions } from 'react-hook-form';
+import { FieldValues, Path, Controller, useFormContext, RegisterOptions } from 'react-hook-form';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage.tsx';
 import clsx from 'clsx';
 import * as formStyles from '@ui/styles/form.module.scss'
@@ -16,11 +16,8 @@ type Props<T extends FieldValues> = {
   attribute: Path<T>,
   options: SelectOption[],
   label: string,
-  errors?: FieldErrors,
   defaultValue?: string,
   isRequired?: boolean,
-  control?: Control<T, any>,
-  register?: UseFormRegister<T>,
 }
 
 export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
