@@ -3,12 +3,14 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import * as styles from './Button.module.scss';
 
-type ButtonVariant = 'submit' | 'link';
+type ButtonVariant = 'submit' | 'link' | 'action';
 type ButtonSize = 'small' | 'medium' | 'large';
+type ButtonStyle = 'default' | 'white';
 
 type BaseButtonProps = {
-  variant: ButtonVariant;
+  variant?: ButtonVariant;
   size?: ButtonSize;
+  style?: ButtonStyle;
   className?: string | undefined;
   disabled?: boolean;
   tooltip?: string;
@@ -19,21 +21,27 @@ type BaseButtonProps = {
 type SubmitButtonProps = BaseButtonProps & {
   variant: 'submit';
   type?: 'submit' | 'button';
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
 type LinkButtonProps = BaseButtonProps & {
   variant: 'link';
   to?: string;
-  onClick?: () => void;
+  onClick?: React.MouseEventHandler<HTMLElement>;
 };
 
-type ButtonProps = SubmitButtonProps | LinkButtonProps;
+type ActionButtonProps = BaseButtonProps & {
+  variant?: 'action';
+  onClick: React.MouseEventHandler<HTMLElement>;
+};
+
+type ButtonProps = SubmitButtonProps | LinkButtonProps | ActionButtonProps;
 
 export const Button = (props: ButtonProps) => {
   const {
     variant,
     size = 'medium',
+    style = 'default',
     className,
     disabled = false,
     tooltip,
@@ -45,7 +53,8 @@ export const Button = (props: ButtonProps) => {
   const buttonClasses = clsx(
     styles.button,
     variant === 'submit' && styles.submitButton,
-    !className && styles[variant],
+    style === 'white' && styles.white,
+    !className && variant && styles[variant],
     !className && styles[size],
     disabled && styles.disabled,
     className
@@ -67,7 +76,7 @@ export const Button = (props: ButtonProps) => {
       );
     }
 
-    if (props.to) {
+    if (variant === 'link' && props.to) {
       return (
         <Link
           to={props.to}
