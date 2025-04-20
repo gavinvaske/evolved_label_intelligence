@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import * as styles from './Button.module.scss';
@@ -37,7 +37,7 @@ type ActionButtonProps = BaseButtonProps & {
 
 type ButtonProps = SubmitButtonProps | LinkButtonProps | ActionButtonProps;
 
-export const Button = (props: ButtonProps) => {
+export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((props, ref) => {
   const {
     variant,
     size = 'medium',
@@ -64,6 +64,7 @@ export const Button = (props: ButtonProps) => {
     if (variant === 'submit') {
       return (
         <button
+          ref={ref as React.RefObject<HTMLButtonElement>}
           className={buttonClasses}
           type={props.type || 'button'}
           disabled={disabled}
@@ -79,6 +80,7 @@ export const Button = (props: ButtonProps) => {
     if (variant === 'link' && props.to) {
       return (
         <Link
+          ref={ref as React.RefObject<HTMLAnchorElement>}
           to={props.to}
           className={buttonClasses}
           onClick={props.onClick}
@@ -92,6 +94,7 @@ export const Button = (props: ButtonProps) => {
 
     return (
       <button
+        ref={ref as React.RefObject<HTMLButtonElement>}
         className={buttonClasses}
         onClick={props.onClick}
         disabled={disabled}
@@ -113,5 +116,5 @@ export const Button = (props: ButtonProps) => {
   }
 
   return renderButton();
-};
+});
 
