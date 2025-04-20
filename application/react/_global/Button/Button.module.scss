@@ -70,6 +70,11 @@
   margin-right: 0.5rem;
   display: flex;
   align-items: center;
+  transition: transform 0.5s ease-in-out;
+}
+
+.button:hover .icon {
+  transform: rotate(360deg);
 }
 
 .tooltipWrapper {
