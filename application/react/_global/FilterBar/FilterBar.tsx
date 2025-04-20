@@ -16,6 +16,7 @@ import { TbZoomReset } from "react-icons/tb";
 import { TfiClose } from "react-icons/tfi";
 import { SlMagnifier } from "react-icons/sl";
 import inventoryStore from '../../stores/inventoryStore';
+import { Button } from '../Button/Button';
 
 const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], store: Filter<T>) => {
   return (
@@ -148,15 +149,19 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
       </div>
       <div className={clsx(styles.allWrapper, sharedStyles.tooltipTop)}>
         <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>
-        <button className={clsx(styles.btnSort)} onClick={(e) => {
-          store.resetAllFilters();
-          clearSearchBar(e);
-        }}>
+        <Button
+          variant="action"
+          style="white"
+          onClick={(e) => {
+            store.resetAllFilters();
+            clearSearchBar(e);
+          }}
+        >
           <div className={flexboxStyles.flexCenterSpaceAroundRow}>
             <TbZoomReset className={styles.seeAllButton} />
             <div className={styles.seeAllButtonText}>Reset Filters</div>
           </div>
-        </button>
+        </Button>
       </div>
       <div className={styles.viewingResults}>
         Viewing <span className={sharedStyles.textBlue}>{inventoryStore.getFilteredMaterials().length}</span> of <span className={sharedStyles.textBlue}>{filterableItemsCount}</span> results.
