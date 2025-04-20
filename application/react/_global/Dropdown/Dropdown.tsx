@@ -6,7 +6,7 @@ type DropdownProps = {
   isOpen: boolean;
   onClose: () => void;
   children: React.ReactNode;
-  className?: string;
+  className?: string | undefined;
   align?: 'left' | 'right';
   triggerRef?: React.RefObject<HTMLElement>;
 };
