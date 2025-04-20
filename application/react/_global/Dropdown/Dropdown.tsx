@@ -1,58 +1,51 @@
-import React, { PropsWithChildren, useEffect, useRef } from 'react';
-import { useDropdownContext } from '../../_context/dropdownProvider';
-import { v4 as uuidv4 } from 'uuid';
+import React, { useRef, useEffect } from 'react';
+import clsx from 'clsx';
+import * as styles from './Dropdown.module.scss';
 
-type Props = {
-  isActive?: boolean;
+type DropdownProps = {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
   className?: string;
-  onClose?: () => void
+  align?: 'left' | 'right';
+  triggerRef?: React.RefObject<HTMLElement>;
 };
 
-export const Dropdown = (props: PropsWithChildren<Props>) => {
-  const { isActive, className, children, onClose } = props;
-  const context = useDropdownContext();
-  const [isOpen, setIsOpen] = React.useState(isActive || false);
-
-  if (!context) {
-    throw new Error('useDropdownContext() must be used within a DropdownProvider');
-  }
-
-  const { registerDropdown, unregisterDropdown } = context;
-  const elementRef = useRef<HTMLDivElement>(null);
+export const Dropdown = ({ isOpen, onClose, children, className, align = 'left', triggerRef }: DropdownProps) => {
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    setIsOpen(isActive || false);
-  }, [isActive]);
+    const handleClickOutside = (event: MouseEvent) => {
+      // Don't close if clicking the trigger button
+      if (triggerRef?.current?.contains(event.target as Node)) {
+        return;
+      }
 
-  useEffect(() => {
-    if (!elementRef.current) return;
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
 
-    const uuid = uuidv4();
-
-    registerDropdown(uuid, elementRef);
+    if (isOpen) {
+      document.addEventListener('mousedown', handleClickOutside);
+    }
 
     return () => {
-      unregisterDropdown(uuid);
-    }
-  }, []);
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [isOpen, onClose, triggerRef]);
 
-  useEffect(() => {
-    if (elementRef.current) {
-      const closeMethod = {
-        close: () => {
-          if (isOpen && elementRef.current) {
-            setIsOpen(false);
-            onClose && onClose();
-          }
-        }
-      };
-      // Add custom close() to ref.current
-      Object.assign(elementRef.current, closeMethod);
-    }
-  }, [isOpen, onClose]);
+  if (!isOpen) return null;
 
   return (
-    <div className={`dropdown-menu ${className} ${isOpen ? 'active' : ''}`} ref={elementRef}>
+    <div 
+      ref={dropdownRef}
+      className={clsx(
+        styles.dropdown,
+        align === 'right' && styles.alignRight,
+        className
+      )}
+    >
       {children}
     </div>
   );
