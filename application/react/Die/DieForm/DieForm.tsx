@@ -16,6 +16,7 @@ import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import { IDieForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 const dieTableUrl = '/react-ui/tables/die'
 
@@ -233,7 +234,12 @@ export const DieForm = () => {
                 isRequired={true}
               />
 
-              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <Button
+                variant="submit"
+                type="submit"
+              >
+                {isUpdateRequest ? 'Update' : 'Create'}
+              </Button>
             </div>
           </form>
         </FormProvider>

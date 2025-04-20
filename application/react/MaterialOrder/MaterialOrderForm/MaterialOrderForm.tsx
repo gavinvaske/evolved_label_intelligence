@@ -18,6 +18,7 @@ import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicato
 import { useQuery } from '@tanstack/react-query';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 const materialOrderTableUrl = '/react-ui/tables/material-order'
 
@@ -232,7 +233,12 @@ export const MaterialOrderForm = () => {
                 isRequired={false}
               />
 
-              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <Button
+                variant="submit"
+                type="submit"
+              >
+                {isUpdateRequest ? 'Update' : 'Create'}
+              </Button>
             </div>
           </form>
         </FormProvider>
