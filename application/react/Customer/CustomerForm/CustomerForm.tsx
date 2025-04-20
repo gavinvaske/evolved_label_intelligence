@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { ShippingLocationForm } from '../../ShippingLocation/ShippingLocationForm/ShippingLocationForm';
 import { IShippingLocationForm } from '@ui/types/forms';
 import { FormModal } from '../../_global/FormModal/FormModal';
@@ -36,7 +36,8 @@ const customerTableUrl = '/react-ui/tables/customer'
 
 export const CustomerForm = () => {
   const { mongooseId } = useParams();
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<ICustomerForm>();
+  const methods = useForm<ICustomerForm>();
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
@@ -64,7 +65,7 @@ export const CustomerForm = () => {
   const preloadFormData = async () => {
     const creditTermSearchResults = await performTextSearch<ICreditTerm>('/credit-terms/search', { query: '', limit: '100' })
     const creditTerms = creditTermSearchResults.results
-
+  
     setCreditTerms(creditTerms.map((creditTerm: ICreditTerm) => (
       {
         displayName: creditTerm.description,
@@ -166,47 +167,37 @@ export const CustomerForm = () => {
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Customer</h3>
         </div>
         <div>
-          <form onSubmit={handleSubmit(onCustomerFormSubmit)} data-test='customer-form' className={formStyles.form}>
-            <div className={formStyles.formElementsWrapper}>
-              <div className={formStyles.inputGroupWrapper}>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onCustomerFormSubmit)} data-test='customer-form' className={formStyles.form}>
+              <div className={formStyles.formElementsWrapper}>
+                <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='customerId'
                   label="Customer ID"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='name'
                   label="Name"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='overun'
                   label="Overun"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
               </div>
               <TextArea
                 attribute='notes'
                 label="Notes"
-                register={register}
                 isRequired={false}
-                errors={errors}
               />
               <CustomSelect
                 attribute='creditTerms'
                 label="Credit Term"
                 options={creditTerms}
-                register={register}
                 isRequired={false}
-                errors={errors}
-                control={control}
               />
               <div className={styles.titleHeader}>
                 <h3>Business Locations:</h3>
@@ -335,6 +326,7 @@ export const CustomerForm = () => {
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
+          </FormProvider>
         </div>
         {/* Code Below Renders a modal IFF user initiated one to open */}
         {

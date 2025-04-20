@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { FieldErrors, FieldValues, UseFormRegister, Path, Controller, Control } from 'react-hook-form';
+import { FieldValues, Path, Controller, useFormContext, RegisterOptions } from 'react-hook-form';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage.tsx';
 import clsx from 'clsx';
 import * as formStyles from '@ui/styles/form.module.scss'
@@ -16,27 +16,26 @@ type Props<T extends FieldValues> = {
   attribute: Path<T>,
   options: SelectOption[],
   label: string,
-  errors: FieldErrors,
   defaultValue?: string,
   isRequired?: boolean,
-  control: Control<T, any>,
-  register: UseFormRegister<T>,
 }
 
 export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
-  const { attribute, options, label, errors, isRequired, control, register } = props;
+  const { attribute, options, label, isRequired } = props;
+  const formContext = useFormContext();
+  const { register, formState: { errors }, control } = formContext;
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   options.sort((a, b) => a.displayName?.localeCompare(b.displayName));
 
-  register(attribute, { required: isRequired ? "Nothing Selected" : undefined });
+  register(attribute, { required: isRequired ? "Nothing Selected" : undefined } as RegisterOptions);
 
   // Close dropdown if clicked outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
         setIsOpen(false);
       }
     };

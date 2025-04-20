@@ -1,9 +1,16 @@
+import { IShippingLocationForm } from '@ui/types/forms';
 import * as styles from './ShippingLocationCard.module.scss'
 import { IoTrashOutline } from 'react-icons/io5';
 
-const ShippingLocationCard = (props) => {
+type Props = {
+  data: IShippingLocationForm,
+  onDelete: () => void
+}
+
+const ShippingLocationCard = (props: Props) => {
   const { data, onDelete } = props;
   const { freightAccountNumber, deliveryMethod, name, street, unitOrSuite, city, state, zipCode } = data;
+
   return (
     <div className={styles.shippingLocationCard}>
       <div className={styles.columnTd}>{freightAccountNumber}</div>

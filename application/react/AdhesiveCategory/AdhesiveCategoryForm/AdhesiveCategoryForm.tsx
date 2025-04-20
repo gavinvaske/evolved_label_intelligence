@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
-import { useForm } from 'react-hook-form';
+import { useForm, FormProvider } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
@@ -15,7 +15,8 @@ const adhesiveCategoryTableUrl = '/react-ui/tables/adhesive-category'
 
 export const AdhesiveCategoryForm = () => {
   const { mongooseId } = useParams();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IAdhesiveCategoryForm>();
+  const methods = useForm<IAdhesiveCategoryForm>();
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
@@ -67,21 +68,21 @@ export const AdhesiveCategoryForm = () => {
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Adhesive Category</h3>
         </div>
         <div>
-          <form onSubmit={handleSubmit(onSubmit)} data-test='adhesive-category-form' className={formStyles.form}>
-            <div className={formStyles.formElementsWrapper}>
-              <div className={formStyles.inputGroupWrapper}>
-                <Input
-                  attribute='name'
-                  label="Name"
-                  register={register}
-                  isRequired={true}
-                  errors={errors}
-                />
-              </div>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} data-test='adhesive-category-form' className={formStyles.form}>
+              <div className={formStyles.formElementsWrapper}>
+                <div className={formStyles.inputGroupWrapper}>
+                  <Input
+                    attribute='name'
+                    label="Name"
+                    isRequired={true}
+                  />
+                </div>
 
-              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
-            </div>
-          </form>
+                <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              </div>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </div>

@@ -1,6 +1,6 @@
-import React, { forwardRef, useState } from 'react';
+import React, { forwardRef, useState, useEffect } from 'react';
 import FormErrorMessage from '../../FormErrorMessage/FormErrorMessage';
-import { FieldErrors, FieldValues, Path, UseFormRegister, RegisterOptions } from 'react-hook-form';
+import { FieldValues, Path, RegisterOptions, useFormContext } from 'react-hook-form';
 import { BsCurrencyDollar } from "react-icons/bs";
 import * as formStyles from '@ui/styles/form.module.scss'
 import clsx from 'clsx';
@@ -10,11 +10,8 @@ import * as textStyles from '@ui/styles/typography.module.scss';
 type Props<T extends FieldValues> = {
   attribute: Path<T>;
   label: string;
-  register: UseFormRegister<T>;
-  errors: FieldErrors;
   placeholder?: string;
   isRequired?: boolean;
-  additionalRegisterOptions?: any;
   onChange?: () => void;
   fieldType?: 'text' | 'checkbox' | 'date' | 'password' | 'currency' | 'percent';
   ref?: any;
@@ -31,14 +28,24 @@ interface WithForwardRefType extends React.FC<Props<FieldValues>> {
 }
 
 export const Input: WithForwardRefType = forwardRef((props, customRef) => {
-  const { placeholder, errors, attribute, label, register, isRequired, fieldType, dataAttributes, leftUnit, rightUnit, RightIcon, LeftIcon, defaultChecked } = props;
+  const { placeholder, attribute, label,  isRequired, fieldType, dataAttributes, leftUnit, rightUnit, RightIcon, LeftIcon, defaultChecked } = props;
   const [value, setValue] = useState('');
+  const formContext = useFormContext();
+  const {getValues, register, formState: { errors }} = formContext;
 
   const registerOptions: RegisterOptions = {
     required: isRequired ? 'This is required' : false,
   };
-
   const { ref, ...rest } = register(attribute, registerOptions);
+
+  useEffect(() => {
+    // Check if the field has a value from react-hook-form
+    const formValue = getValues(attribute);
+  
+    if (formValue) {
+      setValue(formValue);
+    }
+  }, [formContext, attribute]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
@@ -47,7 +54,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
     }
   };
 
-  const requiredFieldIsEmpty = isRequired && !value;
+  const requiredFieldIsEmpty = isRequired && (!value);
 
   return (
     <div className={clsx(formStyles.inputWrapper, styles.inputWrapper)}>

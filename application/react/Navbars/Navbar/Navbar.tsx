@@ -23,6 +23,7 @@ const FORM_ITEMS: DropdownItem[] = [
   { path: '/react-ui/forms/adhesive-category', label: 'Adhesive Category' },
   { path: '/react-ui/forms/credit-term', label: 'Credit Term' },
   { path: '/react-ui/forms/customer', label: 'Customer' },
+  { path: '/react-ui/forms/delivery-method', label: 'Delivery Method' },
   { path: '/react-ui/forms/die', label: 'Die' },
   { path: '/react-ui/forms/liner-type', label: 'Liner Type' },
   { path: '/react-ui/forms/material', label: 'Material' },

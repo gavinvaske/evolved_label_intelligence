@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 import { useQueryClient } from '@tanstack/react-query';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { Input } from '../../_global/FormInputs/Input/Input';
@@ -17,7 +17,8 @@ export const Profile = () => {
   const queryClient = useQueryClient()
   const { user: loggedInUser, isLoading: isLoadingUser, isFetching: isFetchingUser, error } = useLoggedInUser();
 
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IUserForm>();
+  const methods = useForm<IUserForm>();
+  const { handleSubmit, reset } = methods;
 
   useEffect(() => {
     reset({
@@ -59,51 +60,42 @@ export const Profile = () => {
       <div className={sharedStyles.card}>
         {
           (isLoadingUser || isFetchingUser) ? <LoadingIndicator /> : (
-            <form onSubmit={handleSubmit(onSubmit)} data-test='user-form'>
-              <Input
-                attribute='email'
-                label="Email"
-                isRequired
-                register={register}
-                errors={errors}
-              />
-              <Input
-                attribute='firstName'
-                label="First Name"
-                isRequired
-                register={register}
-                errors={errors}
-              />
-              <Input
-                attribute='lastName'
-                label="Last Name"
-                isRequired
-                register={register}
-                errors={errors}
-              />
-              <Input
-                attribute='jobRole'
-                label="Job Role"
-                register={register}
-                errors={errors}
-              />
-              <Input
-                attribute='birthDate'
-                fieldType='date'
-                isRequired
-                label="Birth Date"
-                register={register}
-                errors={errors}
-              />
-              <Input
-                attribute='phoneNumber'
-                label="Phone"
-                register={register}
-                errors={errors}
-              />
-              <button className={sharedStyles.submitButton} type='submit'>{'Update'}</button>
-            </form>
-          )}
+            <FormProvider {...methods}>
+              <form onSubmit={handleSubmit(onSubmit)} data-test='user-form'>
+                <Input
+                  attribute='email'
+                  label="Email"
+                  isRequired
+                />
+                <Input
+                  attribute='firstName'
+                  label="First Name"
+                  isRequired
+                />
+                <Input
+                  attribute='lastName'
+                  label="Last Name"
+                  isRequired
+                />
+                <Input
+                  attribute='jobRole'
+                  label="Job Role"
+                />
+                <Input
+                  attribute='birthDate'
+                  fieldType='date'
+                  isRequired
+                  label="Birth Date"
+                />
+                <Input
+                  attribute='phoneNumber'
+                  label="Phone"
+                />
+                <button className={sharedStyles.submitButton} type='submit'>{'Update'}</button>
+              </form>
+            </FormProvider>
+          )
+        }
       </div>
 
 

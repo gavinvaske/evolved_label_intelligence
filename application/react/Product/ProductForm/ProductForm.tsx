@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { unwindDirections } from '../../../api/enums/unwindDirectionsEnum';
 import { ovOrEpmOptions } from '../../../api/enums/ovOrEpmEnum';
 import { defaultFinishType, finishTypes } from '../../../api/enums/finishTypesEnum';
@@ -33,7 +33,7 @@ export const ProductForm = () => {
   const [finishes, setFinishes] = useState<SelectOption[]>([])
   const [customers, setCustomers] = useState<SelectOption[]>([])
 
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IProductForm>({
+  const methods = useForm<IProductForm>({
     defaultValues: {
       unwindDirection: defaultUnwindDirection,
       ovOrEpm: defaultOvOrEpm,
@@ -43,6 +43,7 @@ export const ProductForm = () => {
       spotPlate: false
     },
   });
+  const { handleSubmit, reset } = methods
 
   const preloadFormData = async () => {
     const diesSearchResults = await performTextSearch<IDie>('/dies/search', { limit: '100', });
@@ -117,149 +118,111 @@ export const ProductForm = () => {
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Product</h3>
         </div>
         <div>
-          <form onSubmit={handleSubmit(onSubmit)} data-test='product-form' className={formStyles.form}>
-            <div className={formStyles.formElementsWrapper}>
-              <div className={formStyles.inputGroupWrapper}>
-                <CustomSelect
-                  attribute='customer'
-                  label="Customer"
-                  options={customers}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  isRequired={true}
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} data-test='product-form' className={formStyles.form}>
+              <div className={formStyles.formElementsWrapper}>
+                <div className={formStyles.inputGroupWrapper}>
+                  <CustomSelect
+                    attribute='customer'
+                    label="Customer"
+                    options={customers}
+                    isRequired={true}
+                  />
+                  <Input
+                    attribute='productDescription'
+                    label="Product Description"
+                    isRequired={true}
+                  />
+                </div>
+                <div className={formStyles.inputGroupWrapper}>
+                  <CustomSelect
+                    attribute='unwindDirection'
+                    label='Unwind Direction'
+                    options={unwindDirections.map((direction) => ({ value: String(direction), displayName: String(direction) }))}
+                    isRequired={true}
+                  />
+                  <CustomSelect
+                    attribute='ovOrEpm'
+                    label='OV / EPM'
+                    options={ovOrEpmOptions.map((option) => ({ value: option, displayName: option }))}
+                    isRequired={true}
+                  />
+                  <CustomSelect
+                    attribute='finishType'
+                    label='Finish Types'
+                    options={finishTypes.map((finishType) => ({ value: finishType, displayName: finishType }))}
+                    isRequired={true}
+                  />
+                </div>
+                <div className={formStyles.inputGroupWrapper}>
+                  <CustomSelect
+                    attribute='die'
+                    label="Die"
+                    options={dies}
+                    isRequired={true}
+                  />
+                  <CustomSelect
+                    attribute='primaryMaterial'
+                    label="Primary Material"
+                    options={materials}
+                    isRequired={true}
+                  />
+                  <CustomSelect
+                    attribute='secondaryMaterial'
+                    label="Secondary Material"
+                    options={materials}
+                    isRequired={true}
+                  />
+                  <CustomSelect
+                    attribute='finish'
+                    label="Finish"
+                    options={finishes}
+                    isRequired={true}
+                  />
+                </div>
+                <div className={formStyles.inputGroupWrapper}>
+                  <Input
+                    attribute='coreDiameter'
+                    label="Core Diameter"
+                    isRequired={true}
+                  />
+                  <Input
+                    attribute='labelsPerRoll'
+                    label="Labels Per Roll"
+                    isRequired={true}
+                  />
+                  <Input
+                    attribute='overun'
+                    label="Overun"
+                    isRequired={true}
+                  />
+                  <Input
+                    attribute='numberOfColors'
+                    label="Number of Colors"
+                    isRequired={true}
+                  />
+                  <Input
+                    attribute='spotPlate'
+                    label="Has Spot Plate"
+                    fieldType='checkbox'
+                  />
+                </div>
+                <TextArea
+                  attribute='artNotes'
+                  label="Art Notes"
                 />
-                <Input
-                  attribute='productDescription'
-                  label="Product Description"
-                  register={register}
-                  errors={errors}
-                  isRequired={true}
+                <TextArea
+                  attribute='pressNotes'
+                  label="Press Notes"
                 />
+                <TextArea
+                  attribute='dieCuttingNotes'
+                  label="Die Cutting Notes"
+                />
+                <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
               </div>
-              <div className={formStyles.inputGroupWrapper}>
-                <CustomSelect
-                  attribute='unwindDirection'
-                  label='Unwind Direction'
-                  options={unwindDirections.map((direction) => ({ value: String(direction), displayName: String(direction) }))}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  isRequired={true}
-                />
-                <CustomSelect
-                  attribute='ovOrEpm'
-                  label='OV / EPM'
-                  options={ovOrEpmOptions.map((option) => ({ value: option, displayName: option }))}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  isRequired={true}
-                />
-                <CustomSelect
-                  attribute='finishType'
-                  label='Finish Types'
-                  options={finishTypes.map((finishType) => ({ value: finishType, displayName: finishType }))}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  isRequired={true}
-                />
-              </div>
-              <div className={formStyles.inputGroupWrapper}>
-                <CustomSelect
-                  attribute='die'
-                  label="Die"
-                  options={dies}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  isRequired={true}
-                />
-                <CustomSelect
-                  attribute='primaryMaterial'
-                  label="Primary Material"
-                  options={materials}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                  isRequired={true}
-                />
-                <CustomSelect
-                  attribute='secondaryMaterial'
-                  label="Secondary Material"
-                  options={materials}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                />
-                <CustomSelect
-                  attribute='finish'
-                  label="Finish"
-                  options={finishes}
-                  register={register}
-                  errors={errors}
-                  control={control}
-                />
-              </div>
-              <div className={formStyles.inputGroupWrapper}>
-                <Input
-                  attribute='coreDiameter'
-                  label="Core Diameter"
-                  register={register}
-                  errors={errors}
-                  isRequired={true}
-                />
-                <Input
-                  attribute='labelsPerRoll'
-                  label="Labels Per Roll"
-                  register={register}
-                  errors={errors}
-                  isRequired={true}
-                />
-                <Input
-                  attribute='overun'
-                  label="Overun"
-                  register={register}
-                  errors={errors}
-                />
-                <Input
-                  attribute='numberOfColors'
-                  label="Number of Colors"
-                  register={register}
-                  errors={errors}
-                  isRequired={true}
-                />
-                <Input
-                  attribute='spotPlate'
-                  label="Has Spot Plate"
-                  register={register}
-                  errors={errors}
-                  fieldType='checkbox'
-                />
-              </div>
-              <TextArea
-                attribute='artNotes'
-                label="Art Notes"
-                register={register}
-                errors={errors}
-              />
-              <TextArea
-                attribute='pressNotes'
-                label="Press Notes"
-                register={register}
-                errors={errors}
-              />
-              <TextArea
-                attribute='dieCuttingNotes'
-                label="Die Cutting Notes"
-                register={register}
-                errors={errors}
-              />
-
-              <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
-            </div>
-          </form>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </div>

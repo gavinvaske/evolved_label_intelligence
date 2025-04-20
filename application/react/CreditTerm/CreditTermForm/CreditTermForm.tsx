@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { Input } from '../../_global/FormInputs/Input/Input';
@@ -15,7 +15,8 @@ const creditTermTableUrl = '/react-ui/tables/credit-term'
 
 export const CreditTermForm = () => {
   const { mongooseId } = useParams();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<ICreditTermForm>();
+  const methods = useForm<ICreditTermForm>();
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
@@ -67,21 +68,21 @@ export const CreditTermForm = () => {
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Credit Term</h3>
         </div>
         <div>
-          <form onSubmit={handleSubmit(onSubmit)} data-test='credit-term-form' className={formStyles.form}>
-            <div className={formStyles.formElementsWrapper}>
-              <div className={formStyles.inputGroupWrapper}>
-                <Input
-                  attribute='description'
-                  label="Description"
-                  register={register}
-                  isRequired={true}
-                  errors={errors}
-                />
-              </div>
+          <FormProvider {...methods}>
+            <form onSubmit={handleSubmit(onSubmit)} data-test='credit-term-form' className={formStyles.form}>
+              <div className={formStyles.formElementsWrapper}>
+                <div className={formStyles.inputGroupWrapper}>
+                  <Input
+                    attribute='description'
+                    label="Description"
+                    isRequired={true}
+                  />
+                </div>
 
-              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
-            </div>
-          </form>
+                <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              </div>
+            </form>
+          </FormProvider>
         </div>
       </div>
     </div>

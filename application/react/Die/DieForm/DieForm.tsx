@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { Input } from '../../_global/FormInputs/Input/Input';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
@@ -24,12 +24,8 @@ export const DieForm = () => {
   const { mongooseId } = useParams();
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
 
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IDieForm>({
-    defaultValues: {
-      quantity: 1,
-      isLamination: true
-    }
-  });
+  const methods = useForm<IDieForm>();
+  const { handleSubmit, formState: { errors }, reset } = methods;
 
   useEffect(() => {
     preloadFormData()
@@ -101,97 +97,73 @@ export const DieForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Die</h3>
         </div>
-        <div>
+        <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} data-test='die-form' className={formStyles.form}>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='dieNumber'
                   label="Die Number"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                 />
                 <CustomSelect
                   attribute='shape'
                   label='Shape'
                   options={dieShapes.map((option) => ({ value: option, displayName: option }))}
-                  register={register}
-                  errors={errors}
                   isRequired={true}
-                  control={control}
                 />
                 <Input
                   attribute='quantity'
                   label="Quantity"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                 />
                 <CustomSelect
                   attribute='status'
                   label='Status'
                   options={dieStatuses.map((option) => ({ value: option, displayName: option }))}
-                  register={register}
-                  errors={errors}
                   isRequired={true}
-                  control={control}
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='sizeAcross'
                   label="Size Across"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='sizeAround'
                   label="Size Around"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='numberAcross'
                   label="Number Across"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='numberAround'
                   label="Number Around"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='cornerRadius'
                   label="Corner Radius"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='topAndBottom'
                   label="Across Matrix"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='leftAndRight'
                   label="Around Matrix"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   leftUnit='@storm'
                 />
@@ -200,47 +172,33 @@ export const DieForm = () => {
                 <Input
                   attribute='gear'
                   label="Gear"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                 />
                 <CustomSelect
                   attribute='toolType'
                   label='Tool Type'
                   options={toolTypes.map((option) => ({ value: option, displayName: option }))}
-                  register={register}
-                  errors={errors}
                   isRequired={true}
-                  control={control}
                 />
                 <CustomSelect
                   attribute='magCylinder'
                   label='Magnetic Cylinder'
                   options={dieMagCylinders.map((option) => ({ value: String(option), displayName: String(option) }))}
-                  register={register}
-                  errors={errors}
                   isRequired={true}
-                  control={control}
                 />
                 <Input
                   attribute='facestock'
                   label="Facestock"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                 />
                 <Input
                   attribute='liner'
                   label="Liner"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                 />
                 <Input
                   attribute='specialType'
                   label="Special Type"
-                  register={register}
-                  errors={errors}
                   isRequired={false}
                 />
               </div>
@@ -248,8 +206,6 @@ export const DieForm = () => {
                 <Input
                   attribute='cost'
                   label="Cost"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                   fieldType='currency'
                 />
@@ -257,39 +213,30 @@ export const DieForm = () => {
                   attribute='vendor'
                   label='Vendor'
                   options={dieVendors.map((option) => ({ value: option, displayName: option }))}
-                  register={register}
-                  errors={errors}
                   isRequired={true}
-                  control={control}
                 />
                 <Input
                   attribute='serialNumber'
                   label="Serial Number"
-                  register={register}
-                  errors={errors}
                   isRequired={true}
                 />
                 <Input
                   attribute='isLamination'
                   label="Lamination"
-                  register={register}
                   isRequired={false}
-                  errors={errors}
                   fieldType='checkbox'
                 />
               </div>
               <TextArea
                 attribute='notes'
                 label="Notes"
-                register={register}
-                errors={errors}
                 isRequired={true}
               />
 
               <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
-        </div>
+        </FormProvider>
       </div>
     </div>
   )

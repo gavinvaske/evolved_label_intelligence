@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { getUsers } from '../../_queries/users';
@@ -23,13 +23,14 @@ const materialOrderTableUrl = '/react-ui/tables/material-order'
 
 export const MaterialOrderForm = () => {
   const { state } = useLocation();
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IMaterialOrderForm>({
+  const methods = useForm<IMaterialOrderForm>({
     defaultValues: {
       freightCharge: 0,
       fuelCharge: 0,
       ...state || {}
     }
   });
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();
   const { mongooseId } = useParams();
   const [users, setUsers] = useState<SelectOption[]>([])
@@ -147,7 +148,7 @@ export const MaterialOrderForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>Create Material Order</h3>
         </div>
-        <div>
+        <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} data-test='material-order-form' className={formStyles.form}>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
@@ -155,99 +156,72 @@ export const MaterialOrderForm = () => {
                   attribute='author'
                   label="Author"
                   options={users}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
                 <CustomSelect
                   attribute='material'
                   label="Material"
                   options={materials}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
                 <CustomSelect
                   attribute='vendor'
                   label="Vendors"
                   options={vendors}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='purchaseOrderNumber'
                   label="Purchase Order Number"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='orderDate'
                   label="Order Date"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='date'
                 />
                 <Input
                   attribute='feetPerRoll'
                   label="Feet per Roll"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='ft / roll'
                 />
                 <Input
                   attribute='totalRolls'
                   label="Total Rolls"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='totalCost'
                   label="Total Cost"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='currency'
                 />
                 <Input
                   attribute='hasArrived'
                   label="Has Arrived"
-                  register={register}
                   isRequired={false}
-                  errors={errors}
                   fieldType='checkbox'
                 />
                 <Input
                   attribute='arrivalDate'
                   label="Arrival Date"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='date'
                 />
                 <Input
                   attribute='freightCharge'
                   label="Freight Charge"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='currency'
                 />
                 <Input
                   attribute='fuelCharge'
                   label="Fuel Charge"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='currency'
                 />
               </div>
@@ -255,15 +229,13 @@ export const MaterialOrderForm = () => {
                 attribute='notes'
                 label="Notes"
                 placeholder='Enter notes here...'
-                register={register}
                 isRequired={false}
-                errors={errors}
               />
 
               <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
-        </div>
+        </FormProvider>
       </div>
     </div>
   )
