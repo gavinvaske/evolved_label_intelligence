@@ -191,3 +191,51 @@
   font-size: 0.875rem;
   color: #6c757d;
 }
+
+.quickFilterDropdown,
+.advancedFilterDropdown {
+  position: absolute;
+  box-shadow: 0 4px 17px 6px rgb(0 0 0 / 10%);
+  padding: 20px;
+  border-radius: 8px;
+  background-color: white;
+  visibility: hidden;
+  z-index: 0;
+  opacity: 0;
+  top: calc(100% + 10px);
+  min-width: 250px;
+  max-width: 300px;
+}
+
+.dropdownTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 20px 0;
+  color: #323338;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #e9ecef;
+}
+
+.filterSection {
+  margin-bottom: 20px;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.filterDescription {
+  display: block;
+  color: #676879;
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+.quickFilterDropdown.active,
+.advancedFilterDropdown.active {
+  visibility: visible;
+  opacity: 1;
+  z-index: 99;
+}

@@ -8,7 +8,6 @@ import clsx from 'clsx';
 import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './FilterBar.module.scss';
-import * as buttonStyles from '@ui/styles/button.module.scss'
 import { FaChevronDown } from "react-icons/fa6";
 import { VscFilter } from "react-icons/vsc";
 import { TbZoomReset } from "react-icons/tb";
@@ -24,8 +23,8 @@ const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], s
     textQuickFilters.map((quickFilter: TextFilter) => {
       const { description, options } = quickFilter;
       return (
-        <div>
-          <span className={clsx(styles.filterDescription)}>Description: {description}</span>
+        <div className={styles.filterSection}>
+          <span className={styles.filterDescription}>{description}</span>
           {options.map((option: TextFilterOption) => (
             <TextQuickFilter
               uuid={option.uuid}
@@ -153,7 +152,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             onClose={() => setIsDropdownDisplayed(false)}
             triggerRef={quickFilterButtonRef}
           >
-            <h5><b>Quick filters</b></h5>
+            <h5 className={styles.dropdownTitle}>Quick filters</h5>
             {renderTextQuickFilters(textQuickFilters, store)}
           </Dropdown>
 
@@ -163,7 +162,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             align="right"
             triggerRef={advancedFilterButtonRef}
           >
-            <h5><b>Advanced Filter</b></h5>
+            <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
             {renderConditionalQuickFilters(conditionalQuickFilters, store)}
           </Dropdown>
         </div>

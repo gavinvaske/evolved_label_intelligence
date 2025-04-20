@@ -1,4 +1,6 @@
 import { observer } from 'mobx-react-lite';
+import { Button } from '../../Button/Button';
+import * as styles from './QuickFilterButton.module.scss';
 import clsx from 'clsx';
 
 type Props = {
@@ -25,10 +27,14 @@ export const TextQuickFilter = observer((props: Props) => {
     else onDisabled(uuid)
   }
 
-
   return (
-    <div className={clsx('quick-filter-btn', 'filter-btn', isEnabled() && 'filter-active')} onClick={(_) => onClick()}>
+    <Button
+      variant="action"
+      style={isEnabled() ? "default" : "white"}
+      onClick={onClick}
+      className={styles.filterButton}
+    >
       {filterValue}
-    </div>
+    </Button>
   )
 });
