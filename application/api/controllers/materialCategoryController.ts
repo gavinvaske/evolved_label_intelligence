@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 const router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { MaterialCategoryModel } from '../models/materialCategory.ts';
-import { BAD_REQUEST, SERVER_ERROR } from '../enums/httpStatusCodes.ts';
+import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR } from '../enums/httpStatusCodes.ts';
 import { SearchQuery, SearchResult } from '@shared/types/http.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
@@ -87,7 +87,22 @@ router.get('/form/:id', async (request, response) => {
     console.log(error);
     request.flash('errors', [error.message]);
 
-    return response.status(SERVER_ERROR_CODE).redirect('back');
+    return response.status(SERVER_ERROR).redirect('back');
+  }
+});
+
+router.post('/', async (request, response) => {
+  try {
+      const materialCategory = await MaterialCategoryModel.create(request.body);
+
+      return response
+          .status(CREATED_SUCCESSFULLY)
+          .json(materialCategory);
+  } catch (error) {
+      console.error('Failed to create materialCategory: ', error);
+      return response
+          .status(SERVER_ERROR)
+          .send(error.message);
   }
 });
 
@@ -100,7 +115,7 @@ router.post('/form/:id', async (request, response) => {
     console.log(error);
     request.flash('errors', [error.message]);
 
-    return response.status(SERVER_ERROR_CODE).redirect('back');
+    return response.status(SERVER_ERROR).redirect('back');
   }
 });
 

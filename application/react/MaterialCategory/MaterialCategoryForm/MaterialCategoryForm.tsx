@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { IMaterialCategory } from '@shared/types/models';
 import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
@@ -15,7 +15,8 @@ const materialCategoryTableUrl = '/react-ui/tables/material-category'
 
 export const MaterialCategoryForm = () => {
   const { mongooseId } = useParams();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IMaterialCategoryForm>();
+  const methods = useForm<IMaterialCategoryForm>();
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
@@ -66,23 +67,21 @@ export const MaterialCategoryForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Material Category</h3>
         </div>
-        <div>
+        <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onSubmit)} data-test='material-category-form' className={formStyles.form}>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='name'
                   label="Name"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
               </div>
 
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
-        </div>
+        </FormProvider>
       </div>
     </div>
   )

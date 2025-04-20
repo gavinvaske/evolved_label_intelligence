@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
@@ -15,7 +15,8 @@ const vendorTableUrl = '/react-ui/tables/vendor'
 
 export const VendorForm = () => {
   const { mongooseId } = useParams();
-  const { register, handleSubmit, formState: { errors }, reset } = useForm<IVendorForm>();
+  const methods = useForm<IVendorForm>();
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const navigate = useNavigate();
 
   const isUpdateRequest = mongooseId && mongooseId.length > 0;
@@ -88,109 +89,82 @@ export const VendorForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Update' : 'Create'} Vendor</h3>
         </div>
-        <div>
+        <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onVendorFormSubmit)} data-test='vendor-form' className={formStyles.form}>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='name'
                   label="Name"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='phoneNumber'
                   label="Phone #"
-                  register={register}
                   isRequired={false}
-                  errors={errors}
                 />
                 <Input
                   attribute='email'
                   label="Email"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='website'
                   label="Website"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='primaryContactName'
                   label="P.C Name"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='primaryContactPhoneNumber'
                   label="P.C Phone #"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='primaryContactEmail'
                   label="P.C Email"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='mfgSpecNumber'
                   label="MFG Spec #"
-                  register={register}
                   isRequired={false}
-                  errors={errors}
                 />
               </div>
               <TextArea
                 attribute='notes'
                 label="Notes"
-                register={register}
                 isRequired={false}
-                errors={errors}
               />
 
               <div className={formStyles.inputGroupWrapper}>
-              <Input
-                  attribute='remittanceAddress'
-                  label="Remittance same as Primary Address?"
-                  register={register}
-                  isRequired={false}
-                  errors={errors}
-                  fieldType='checkbox'
-                  defaultChecked={true}
-                />
-                {/* <label>
+                <label>
                   <input
                     type="checkbox"
                     checked={isPrimaryAddressSameAsRemittance}
                     onChange={(e) => setIsPrimaryAddressSameAsRemittance(e.target.checked)}
                   />
                   Remittance same as Primary Address?
-                </label> */}
+                </label>
               </div>
 
               {/* Primary Address Input Fields */}
-              <AddressFormAttributes label='Primary Address' attribute='primaryAddress' register={register} errors={errors} />
+              <AddressFormAttributes label='Primary Address' attribute='primaryAddress' />
               {/* Remittance Address Input Fields */}
               {!isPrimaryAddressSameAsRemittance && (
-                <AddressFormAttributes label='Remittance Address' attribute='remittanceAddress' register={register} errors={errors} />
+                <AddressFormAttributes label='Remittance Address' attribute='remittanceAddress' />
               )
               }
 
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
-        </div>
+        </FormProvider>
       </div>
     </div>
   );
@@ -199,12 +173,10 @@ export const VendorForm = () => {
 interface AddressProps {
   attribute: string;
   label: string;
-  register: any;
-  errors: any
 }
 
 const AddressFormAttributes = (props: AddressProps) => {
-  const { attribute, register, errors, label } = props;
+  const { attribute, label } = props;
 
   return (
     <div>
@@ -215,44 +187,32 @@ const AddressFormAttributes = (props: AddressProps) => {
         <Input
           attribute={`${attribute}.name`}
           label="Name"
-          register={register}
           isRequired={true}
-          errors={errors}
         />
         <Input
           attribute={`${attribute}.street`}
           label="Street"
-          register={register}
           isRequired={true}
-          errors={errors}
         />
         <Input
           attribute={`${attribute}.unitOrSuite`}
           label="Unit or Suite #"
-          register={register}
           isRequired={false}
-          errors={errors}
         />
         <Input
           attribute={`${attribute}.city`}
           label="City"
-          register={register}
           isRequired={true}
-          errors={errors}
         />
         <Input
           attribute={`${attribute}.state`}
           label="State"
-          register={register}
           isRequired={true}
-          errors={errors}
         />
         <Input
           attribute={`${attribute}.zipCode`}
           label="Zip"
-          register={register}
           isRequired={true}
-          errors={errors}
         />
       </div>
     </div>

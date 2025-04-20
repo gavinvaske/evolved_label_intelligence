@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import axios, { AxiosError, AxiosResponse } from 'axios';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
@@ -20,11 +20,12 @@ export const MaterialLengthAdjustmentForm = () => {
   const [materials, setMaterials] = useState<SelectOption[]>([])
   const { mongooseId } = useParams();
   const { state } = useLocation();
-  const { register, handleSubmit, formState: { errors }, reset, control } = useForm<IMaterialLengthAdjustmentForm>({
+  const methods = useForm<IMaterialLengthAdjustmentForm>({
     defaultValues: {
       ...state || {}
     }
   });
+  const { handleSubmit, formState: { errors }, reset } = methods;
   const isUpdateRequest: boolean = !!mongooseId && mongooseId.length > 0;
 
   const { isFetching: isFetchingFormToUpdate, isLoading: isLoadingFormToUpdate, error: fetchingFormError } = useQuery<IMaterialLengthAdjustmentForm>({
@@ -95,7 +96,7 @@ export const MaterialLengthAdjustmentForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>Create Material Adjustment</h3>
         </div>
-        <div>
+        <FormProvider {...methods}>
           <form onSubmit={handleSubmit(onFormSubmit)} data-test='material-length-adjustment-form' className={formStyles.form}>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
@@ -103,32 +104,25 @@ export const MaterialLengthAdjustmentForm = () => {
                   attribute='material'
                   label="Material"
                   options={materials}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
                 <Input
                   attribute='length'
                   label="Length"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
               </div>
               <TextArea
                 attribute='notes'
                 label="Notes"
-                register={register}
                 isRequired={false}
-                errors={errors}
               />
 
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'} </button>
             </div>
           </form>
-        </div>
+        </FormProvider>
       </div>
     </div>
   )
