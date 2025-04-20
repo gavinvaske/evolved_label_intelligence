@@ -1,4 +1,3 @@
-
 import inventoryStore from '../../stores/inventoryStore';
 import { observer } from 'mobx-react-lite';
 import { conditionalQuickFilters, textQuickFilters } from './quickFilters';
@@ -9,23 +8,36 @@ import * as sharedStyles from '@ui/styles/shared.module.scss'
 import clsx from 'clsx';
 import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
 import { GoPlus } from "react-icons/go";
+import { Button } from '../../_global/Button/Button';
 
 const InventoryFilterBar = observer((_) => {
 
   return (
     <div className={clsx(flexboxStyles.flexCenterLeftRow, sharedStyles.fullWidth, sharedStyles.card, styles.inventoryFilterBar)}>
-      <div className={clsx(sharedStyles.tooltipTop, styles.btnWrapper)}> 
-        <Link to='/react-ui/forms/material-order' className={sharedStyles.btnCreate}><GoPlus /> Order</Link>
-        <span className={clsx(sharedStyles.tooltipText)}>Order material</span>
-      </div>
-      <div className={clsx(sharedStyles.tooltipTop, styles.btnWrapper)}> 
-        <Link to='/react-ui/forms/material' className={sharedStyles.btnCreate}><GoPlus /> Material</Link>
-        <span className={clsx(sharedStyles.tooltipText)}>Create a new material</span>
-      </div>
-      <div className={clsx(sharedStyles.tooltipTop, styles.btnWrapper)}>
-        <Link to='/react-ui/forms/material-length-adjustment' className={sharedStyles.btnCreate}><GoPlus /> Adjustment</Link>
-        <span className={clsx(sharedStyles.tooltipText)}>Adjust footage for material</span>
-      </div>
+      <Button
+        variant="link"
+        to="/react-ui/forms/material-order"
+        tooltip="Order material"
+        icon={<GoPlus />}
+      >
+        Order
+      </Button>
+      <Button
+        variant="link"
+        to="/react-ui/forms/material"
+        tooltip="Create a new material"
+        icon={<GoPlus />}
+      >
+        Material
+      </Button>
+      <Button
+        variant="link"
+        to="/react-ui/forms/material-length-adjustment"
+        tooltip="Adjust footage for material"
+        icon={<GoPlus />}
+      >
+        Adjustment
+      </Button>
 
       <FilterBar
           conditionalQuickFilters={conditionalQuickFilters}

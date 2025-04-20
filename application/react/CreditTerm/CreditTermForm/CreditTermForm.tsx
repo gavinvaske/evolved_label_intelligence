@@ -10,6 +10,7 @@ import { ICreditTerm } from '@shared/types/models';
 import { ICreditTermForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 const creditTermTableUrl = '/react-ui/tables/credit-term'
 
@@ -79,7 +80,12 @@ export const CreditTermForm = () => {
                   />
                 </div>
 
-                <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+                <Button
+                  variant="submit"
+                  type="submit"
+                >
+                  {isUpdateRequest ? 'Update' : 'Create'}
+                </Button>
               </div>
             </form>
           </FormProvider>
