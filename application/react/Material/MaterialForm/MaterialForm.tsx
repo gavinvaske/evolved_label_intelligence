@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
+import { FormProvider, useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { AxiosError } from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -21,7 +21,8 @@ const materialTableUrl = '/react-ui/tables/material'
 const locationRegex = /^[a-zA-Z][1-9][0-9]?$/;
 
 export const MaterialForm = () => {
-  const { register, handleSubmit, formState: { errors }, setError, reset, control } = useForm<IMaterialForm>();
+  const methods = useForm<IMaterialForm>();
+  const { handleSubmit, formState: { errors }, setError, reset } = methods;
   const navigate = useNavigate();
   const { mongooseId } = useParams();
   const axios = useAxios();
@@ -177,30 +178,24 @@ export const MaterialForm = () => {
         <div className={formStyles.formCardHeader}>
           <h3>{isUpdateRequest ? 'Edit' : 'Create'} Material</h3>
         </div>
-        <div>
+        <FormProvider {...methods}>
           <form id='material-form' className={formStyles.form} onSubmit={handleSubmit(onSubmit)} data-test='material-form'>
             <div className={formStyles.formElementsWrapper}>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='name'
                   label="Name"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='materialId'
                   label="Material ID"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='width'
                   label="Width"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                   rightUnit='@storm'
                 />
@@ -208,74 +203,55 @@ export const MaterialForm = () => {
                   attribute='vendor'
                   label="Vendor"
                   options={vendors}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
                 <Input
                   attribute='locationsAsStr'
                   label="Locations (comma-separated)"
-                  register={register}
                   isRequired={false}
-                  errors={errors}
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='thickness'
-                  label="Thickness"
-                  register={register}
+                  label="Thickness" 
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='weight'
                   label="Weight"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='faceColor'
                   label="Face Color"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='adhesive'
                   label="Adhesive"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='freightCostPerMsi'
                   label="Freight Cost (per MSI)"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='currency'
                 />
                 <Input
                   attribute='costPerMsi'
                   label="Cost (per MSI)"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='currency'
                 />
                 <Input
                   attribute='quotePricePerMsi'
                   label="Quote Price (Per MSI)"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   fieldType='currency'
                 />
               </div>
@@ -283,17 +259,13 @@ export const MaterialForm = () => {
                 <Input
                   attribute='lowStockThreshold'
                   label="Low Stock Threshold"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='lowStockBuffer'
                   label="Low Stock Buffer"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
               </div>
@@ -301,116 +273,86 @@ export const MaterialForm = () => {
                 <Input
                   attribute='description'
                   label="Description"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='whenToUse'
                   label="When-to-use"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='alternativeStock'
                   label="Alternative Stock"
-                  register={register}
                   isRequired={false}
-                  errors={errors}
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
                 <Input
                   attribute='length'
                   label="Length"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='facesheetWeightPerMsi'
                   label="Facesheet Weight (Per MSI)"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='adhesiveWeightPerMsi'
                   label="Adhesive Weight (Per MSI)"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='linerWeightPerMsi'
                   label="Liner Weight (Per MSI)"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
                 />
                 <Input
                   attribute='productNumber'
                   label="Product Number"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <Input
                   attribute='masterRollSize'
                   label="Master Roll Size"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                   leftUnit='@storm'
-                  unit={'mm'}
                 />
                 <Input
                   attribute='image'
                   label="Image"
-                  register={register}
                   isRequired={true}
-                  errors={errors}
                 />
                 <CustomSelect
                   attribute='linerType'
                   label="Liner Type"
                   options={linerTypes}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
                 <CustomSelect
                   attribute='adhesiveCategory'
                   label="Adhesive Category"
                   options={adhesiveCategories}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
                 <CustomSelect
                   attribute='materialCategory'
                   label="Material Category"
                   options={materialCategories}
-                  register={register}
                   isRequired={true}
-                  errors={errors}
-                  control={control}
                 />
               </div>
 
               <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
             </div>
           </form>
-        </div>
+        </FormProvider>
       </div>
     </div>
   )
