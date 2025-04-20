@@ -173,15 +173,13 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
           <Button
             variant="action"
             style="white"
+            icon={<TbZoomReset />}
             onClick={(e) => {
               store.resetAllFilters();
               clearSearchBar(e);
             }}
           >
-            <div className={flexboxStyles.flexCenterSpaceAroundRow}>
-              <TbZoomReset className={styles.seeAllButton} />
-              <div className={styles.seeAllButtonText}>Reset Filters</div>
-            </div>
+            Reset Filters
           </Button>
         </div>
       </div>
