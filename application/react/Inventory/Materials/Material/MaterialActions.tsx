@@ -4,7 +4,7 @@ import { FaPenToSquare, FaEye } from 'react-icons/fa6';
 import { BsPlusSlashMinus } from 'react-icons/bs';
 import { IconButton } from '../../../_global/IconButton/IconButton';
 import { IMaterial } from '@shared/types/models';
-import styles from './MaterialActions.module.scss';
+import * as styles from './MaterialActions.module.scss';
 import clsx from 'clsx';
 
 interface MaterialActionsProps {
@@ -86,7 +86,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
                 onClick={(e) => !action.disabled && handleViewActionClick(e, action.onClick)}
               >
                 <span className={styles.label}>View {action.label}</span>
-                {action.count > 0 && <span className={styles.count}>({action.count})</span>}
+                {<span className={styles.count}>({action.count})</span>}
               </div>
             ))}
           </div>
