@@ -1,0 +1,35 @@
+@import '../../../_styles/constants.module.scss';
+
+.actionsContainer {
+  display: flex;
+  gap: 8px;
+  position: relative;
+}
+
+.actionGroup {
+  position: relative;
+}
+
+.dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  border: 1px solid rgba($DARK_GREY, 0.24);
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 4px;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 120px;
+}
+
+.poCounter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+} 

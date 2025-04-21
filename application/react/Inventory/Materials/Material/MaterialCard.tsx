@@ -12,6 +12,7 @@ import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
 import { FaPenToSquare } from "react-icons/fa6";
 import { Modal } from '../../../_global/Modal/Modal';
 import { IconButton } from '../../../_global/IconButton/IconButton';
+import { MaterialActions } from './MaterialActions';
 
 type Props = {
   material: IMaterial,
@@ -53,41 +54,12 @@ const MaterialCard = observer((props: Props) => {
         </div>
         <div className={clsx(styles.col, styles.colRight)}>
           <div className={clsx(styles.materialCardOptionsContainer)}>
-            <IconButton /* View Purchase Orders */
-              icon={<div className={clsx(styles.poCounter)}>{`${numMaterialOrders}`}</div>}
-              tooltip={numMaterialOrders === 0 ? 'No purchase orders' : `View ${numMaterialOrders} purchase orders`}
-              onClick={(e) => numMaterialOrders > 0 && showPurchaseOrderModal(e)}
-              disabled={numMaterialOrders === 0}
-              variant={'green'}
-            />
-
-            <IconButton /* Create Purchase Order */
-              icon={<FaPenToSquare />}
-              tooltip="Create Purchase Order"
-              onClick={() => navigate(`/react-ui/forms/material-order`, { state: { material: material._id } })}
-              variant={'darkGrey'}
-            />
-
-            <IconButton /* View Length Adjustments */
-              icon={<BsPlusSlashMinus />}
-              tooltip={numLengthAdjustments === 0 ? 'No Adjustments' : `View ${numLengthAdjustments} Adjustments`}
-              onClick={(e) => numLengthAdjustments > 0 && showLengthAdjustmentsModal(e)}
-              disabled={numLengthAdjustments === 0}
-              variant={'blue'}
-            />
-
-            <IconButton /* Create Length Adjustment */
-              icon={<FaPenToSquare />}
-              tooltip="Create Length Adjustment"
-              onClick={() => navigate(`/react-ui/forms/material-length-adjustment`, { state: { material: material._id } })}
-              variant={'purple'}
-            />
-
-            <IconButton /* Edit Material Details */
-              icon={<FaPenToSquare />}
-              tooltip="Edit material details"
-              onClick={() => navigate(`/react-ui/forms/material/${material._id}`)}
-              variant={'magenta'}
+            <MaterialActions
+              material={material}
+              numMaterialOrders={numMaterialOrders}
+              numLengthAdjustments={numLengthAdjustments}
+              showPurchaseOrderModal={showPurchaseOrderModal}
+              showLengthAdjustmentsModal={showLengthAdjustmentsModal}
             />
           </div>
         </div>
