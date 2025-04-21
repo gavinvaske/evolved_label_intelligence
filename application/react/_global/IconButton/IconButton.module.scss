@@ -1,0 +1,213 @@
+@import '../../_styles/constants.module.scss';
+
+.iconButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  &.blue {
+    background-color: rgba($BLUE, 0.12);
+    color: rgba($BLUE, 1);
+    border: 1px solid rgba($BLUE, 0.24);
+
+    &:hover {
+      background-color: rgba($BLUE, 0.24);
+    }
+  }
+
+  &.red {
+    background-color: rgba($RED, 0.12);
+    color: rgba($RED, 1);
+    border: 1px solid rgba($RED, 0.24);
+
+    &:hover {
+      background-color: rgba($RED, 0.24);
+    }
+  }
+
+  &.purple {
+    background-color: rgba($PURPLE, 0.12);
+    color: rgba($PURPLE, 1);
+    border: 1px solid rgba($PURPLE, 0.24);
+
+    &:hover {
+      background-color: rgba($PURPLE, 0.24);
+    }
+  }
+
+  &.orange {
+    background-color: rgba($ORANGE, 0.12);
+    color: rgba($ORANGE, 1);
+    border: 1px solid rgba($ORANGE, 0.24);
+
+    &:hover {
+      background-color: rgba($ORANGE, 0.24);
+    }
+  }
+
+  &.lightBlue {
+    background-color: rgba($LIGHT_BLUE, 0.12);
+    color: rgba($LIGHT_BLUE, 1);
+    border: 1px solid rgba($LIGHT_BLUE, 0.24);
+
+    &:hover {
+      background-color: rgba($LIGHT_BLUE, 0.24);
+    }
+  }
+
+  &.yellow {
+    background-color: rgba($YELLOW, 0.12);
+    color: rgba($YELLOW, 1);
+    border: 1px solid rgba($YELLOW, 0.24);
+
+    &:hover {
+      background-color: rgba($YELLOW, 0.24);
+    }
+  }
+
+  &.magenta {
+    background-color: rgba($MAGENTA, 0.12);
+    color: rgba($MAGENTA, 1);
+    border: 1px solid rgba($MAGENTA, 0.24);
+
+    &:hover {
+      background-color: rgba($MAGENTA, 0.24);
+    }
+  }
+
+  &.darkGrey {
+    background-color: rgba($DARK_GREY, 0.12);
+    color: rgba($DARK_GREY, 1);
+    border: 1px solid rgba($DARK_GREY, 0.24);
+
+    &:hover {
+      background-color: rgba($DARK_GREY, 0.24);
+    }
+  }
+
+  &.green {
+    background-color: rgba($GREEN, 0.12);
+    color: rgba($GREEN, 1);
+    border: 1px solid rgba($GREEN, 0.24);
+
+    &:hover {
+      background-color: rgba($GREEN, 0.24);
+    }
+  }
+
+  &.disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+    pointer-events: none;
+    border: 1px solid rgba($DARK_GREY, 0.24);
+  }
+
+  &.small {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+  }
+
+  &.medium {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+  }
+
+  &.large {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+  }
+
+  &.disabled {
+    position: relative;
+    height: 35px;
+    width: 35px;
+    overflow: hidden;
+    border-radius: 5px;
+    background-color: rgba(128, 131, 144, .12);
+    color: rgba(128, 131, 144, 1);
+    transition: all 0.3s;
+
+    i {
+      position: absolute;
+      top: -35px;
+      transition: top 0.3s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 35px;
+      width: 35px;
+    }
+
+    &:hover {
+      background-color: rgba(var(--primary-dark-background), var(--opacity-2));
+      
+      i {
+        top: 0;
+      }
+    }
+
+    &.enabled {
+      background-color: rgba(var(--primary-green), .12);
+      color: rgba(var(--primary-green), 1);
+
+      &:hover {
+        background-color: rgba(var(--primary-green), .24);
+      }
+    }
+
+    &.disabled {
+      &:hover {
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+.tooltipWrapper {
+  position: relative;
+  display: inline-block;
+
+  &:hover .tooltipText {
+    visibility: visible;
+    opacity: 1;
+  }
+}
+
+.tooltipText {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #333;
+  color: white;
+  text-align: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #333 transparent transparent transparent;
+  }
+} 
