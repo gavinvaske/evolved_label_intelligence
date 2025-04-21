@@ -1,17 +1,9 @@
-import { useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useNavigate } from 'react-router-dom';
 import { IMaterial } from '@shared/types/models';
-import { BsPlusSlashMinus } from "react-icons/bs";
-import { LengthAdjustmentsModal } from './LengthAdjustmentsModal/LengthAdjustmentsModal';
-import { PurchaseOrdersModal } from './PurchaseOrdersModal/PurchaseOrdersModal';
 import clsx from 'clsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as styles from './MaterialCard.module.scss'
 import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
-import { FaPenToSquare } from "react-icons/fa6";
-import { Modal } from '../../../_global/Modal/Modal';
-import { IconButton } from '../../../_global/IconButton/IconButton';
 import { MaterialActions } from './MaterialActions';
 
 type Props = {
@@ -21,21 +13,8 @@ type Props = {
 
 const MaterialCard = observer((props: Props) => {
   const { material, onClick } = props;
-  const [shouldShowPoModal, setShouldShowPoModal] = useState(false);
-  const [shouldShowLengthAdjustmentsModal, setShouldShowLengthAdjustmentsModal] = useState(false);
   const numMaterialOrders = material.inventory.materialOrders.length;
   const numLengthAdjustments = material.inventory.lengthAdjustments.length
-  const navigate = useNavigate();
-
-  const showPurchaseOrderModal = (e: React.MouseEvent) => {
-    setShouldShowPoModal(true)
-    e.stopPropagation() // This is required to prevent any parents' onClick from being called
-  };
-
-  const showLengthAdjustmentsModal = (e: React.MouseEvent) => {
-    setShouldShowLengthAdjustmentsModal(true)
-    e.stopPropagation() // This is required to prevent any parents' onClick from being called
-  };
 
   return (
     <div id={material._id as string} className={clsx(styles.card)} onClick={() => onClick()} data-test='material-inventory-card'>
@@ -58,8 +37,6 @@ const MaterialCard = observer((props: Props) => {
               material={material}
               numMaterialOrders={numMaterialOrders}
               numLengthAdjustments={numLengthAdjustments}
-              showPurchaseOrderModal={showPurchaseOrderModal}
-              showLengthAdjustmentsModal={showLengthAdjustmentsModal}
             />
           </div>
         </div>
@@ -90,18 +67,6 @@ const MaterialCard = observer((props: Props) => {
           <span className={clsx(styles.materialLocation)}>{material?.locations?.length > 0 ? material.locations.join(', ') : 'N/A'}</span>
         </div>
       </div>
-
-      {shouldShowPoModal && (
-        <Modal onClose={() => setShouldShowPoModal(false)}>
-          <PurchaseOrdersModal material={material} />
-        </Modal>
-      )}
-
-      {shouldShowLengthAdjustmentsModal && (
-        <Modal onClose={() => setShouldShowLengthAdjustmentsModal(false)}>
-          <LengthAdjustmentsModal material={material} />
-        </Modal>
-      )}
     </div>
   );
 });
