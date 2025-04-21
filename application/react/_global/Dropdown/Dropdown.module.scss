@@ -1,0 +1,14 @@
+.dropdown {
+  position: absolute;
+  box-shadow: 0 4px 17px 6px rgb(0 0 0 / 10%);
+  padding: 16px;
+  border-radius: 8px;
+  background-color: white;
+  top: calc(100% + 10px);
+  min-width: 600px;
+  z-index: 99;
+
+  &.alignRight {
+    right: 0;
+  }
+} 

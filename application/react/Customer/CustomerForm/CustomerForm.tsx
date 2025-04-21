@@ -31,6 +31,7 @@ import * as styles from './CustomerForm.module.scss';
 import { MongooseId } from '@shared/types/typeAliases';
 import clsx from 'clsx';
 import { FaPlus } from "react-icons/fa6";
+import { Button } from '../../_global/Button/Button';
 
 const customerTableUrl = '/react-ui/tables/customer'
 
@@ -323,7 +324,12 @@ export const CustomerForm = () => {
               </div>
               <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><FaPlus /> Add Contact</button>
 
-              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <Button
+                variant="submit"
+                type="submit"
+              >
+                {isUpdateRequest ? 'Update' : 'Create'}
+              </Button>
             </div>
           </form>
           </FormProvider>

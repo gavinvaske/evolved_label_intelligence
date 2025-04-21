@@ -10,7 +10,7 @@ import { getOneMaterialCategory } from '../../_queries/materialCategory';
 import { IMaterialCategoryForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
-
+import { Button } from '../../_global/Button/Button';
 const materialCategoryTableUrl = '/react-ui/tables/material-category'
 
 export const MaterialCategoryForm = () => {
@@ -78,7 +78,12 @@ export const MaterialCategoryForm = () => {
                 />
               </div>
 
-              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <Button
+                variant="submit"
+                type="submit"
+              >
+                {isUpdateRequest ? 'Update' : 'Create'}
+              </Button>
             </div>
           </form>
         </FormProvider>

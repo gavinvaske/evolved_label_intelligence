@@ -47,7 +47,7 @@ const SearchBar = forwardRef((props: Props, inputRef: any) => {
         onChange={(e) => handleUserTypedSomething(e.currentTarget.value)}
         onFocus={onFocus}
         onBlur={onBlur}
-        placeholder="Search"
+        placeholder="Search..."
       />
     </div>
   )

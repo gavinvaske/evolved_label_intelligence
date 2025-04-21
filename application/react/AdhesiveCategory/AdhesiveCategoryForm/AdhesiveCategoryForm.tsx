@@ -3,6 +3,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm, FormProvider } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
+import { Button } from '../../_global/Button/Button';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { getOneAdhesiveCategory } from '../../_queries/adhesiveCategory';
@@ -79,7 +80,12 @@ export const AdhesiveCategoryForm = () => {
                   />
                 </div>
 
-                <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+                <Button
+                  variant="submit"
+                  type="submit"
+                >
+                  {isUpdateRequest ? 'Update' : 'Create'}
+                </Button>
               </div>
             </form>
           </FormProvider>

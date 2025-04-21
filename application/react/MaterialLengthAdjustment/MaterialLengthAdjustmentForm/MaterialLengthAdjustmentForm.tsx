@@ -14,6 +14,7 @@ import { useQuery } from '@tanstack/react-query';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator.tsx';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 export const MaterialLengthAdjustmentForm = () => {
   const navigate = useNavigate();
@@ -119,7 +120,12 @@ export const MaterialLengthAdjustmentForm = () => {
                 isRequired={false}
               />
 
-              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'} </button>
+              <Button
+                variant="submit"
+                type="submit"
+              >
+                {isUpdateRequest ? 'Update' : 'Create'}
+              </Button>
             </div>
           </form>
         </FormProvider>

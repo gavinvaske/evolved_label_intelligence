@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useRef } from 'react';
 import { NavLink, useNavigate, useLocation } from 'react-router-dom';
 import axios from 'axios';
 import { Image } from '../../_global/Image/Image';
@@ -11,6 +11,7 @@ import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './Navbar.module.scss';
 import { FaAngleDown } from "react-icons/fa6";
 import pluralize from 'pluralize';
+import { Dropdown } from '../../_global/Dropdown/Dropdown';
 
 pluralize.addIrregularRule('die', 'dies');
 
@@ -45,6 +46,8 @@ export const Navbar = () => {
   const [isUserOptionsDropdownDisplayed, setIsUserOptionsDropdownDisplayed] = useState(false);
   const [isFormsDropdownDisplayed, setIsFormsDropdownDisplayed] = useState(false);
   const [isTablesDropdownDisplayed, setIsTablesDropdownDisplayed] = useState(false);
+  const formsButtonRef = useRef<HTMLDivElement>(null);
+  const tablesButtonRef = useRef<HTMLDivElement>(null);
 
   const { user, error } = useLoggedInUser();
   const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`;
@@ -81,6 +84,7 @@ export const Navbar = () => {
           </li>
           <li className={styles.navbarLinks}>
             <div 
+              ref={formsButtonRef}
               className={clsx(flexboxStyles.flexCenterCenterRow, styles.navButton, isFormsActive ? styles.active : '')}
               onClick={() => setIsFormsDropdownDisplayed(!isFormsDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
@@ -89,13 +93,26 @@ export const Navbar = () => {
               <FaAngleDown className={clsx(styles.dropdownArrow, isFormsDropdownDisplayed && styles.rotated)} />
             </div>
             <Dropdown 
-              isOpen={isFormsDropdownDisplayed} 
-              items={FORM_ITEMS} 
-              onClose={() => setIsFormsDropdownDisplayed(false)} 
-            />
+              isOpen={isFormsDropdownDisplayed}
+              onClose={() => setIsFormsDropdownDisplayed(false)}
+              triggerRef={formsButtonRef}
+              className={styles.dropdownContent}
+            >
+              {FORM_ITEMS.map(item => (
+                <NavLink 
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')}
+                  onClick={() => setIsFormsDropdownDisplayed(false)}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </Dropdown>
           </li>
           <li className={styles.navbarLinks}>
             <div 
+              ref={tablesButtonRef}
               className={clsx(flexboxStyles.flexCenterCenterRow, styles.navButton, isTablesActive ? styles.active : '')}
               onClick={() => setIsTablesDropdownDisplayed(!isTablesDropdownDisplayed)}
               style={{ cursor: 'pointer' }}
@@ -104,10 +121,22 @@ export const Navbar = () => {
               <FaAngleDown className={clsx(styles.dropdownArrow, isTablesDropdownDisplayed && styles.rotated)} />
             </div>
             <Dropdown 
-              isOpen={isTablesDropdownDisplayed} 
-              items={TABLE_ITEMS} 
-              onClose={() => setIsTablesDropdownDisplayed(false)} 
-            />
+              isOpen={isTablesDropdownDisplayed}
+              onClose={() => setIsTablesDropdownDisplayed(false)}
+              triggerRef={tablesButtonRef}
+              className={styles.dropdownContent}
+            >
+              {TABLE_ITEMS.map(item => (
+                <NavLink 
+                  key={item.path}
+                  to={item.path}
+                  className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')}
+                  onClick={() => setIsTablesDropdownDisplayed(false)}
+                >
+                  {item.label}
+                </NavLink>
+              ))}
+            </Dropdown>
           </li>
         </ul>
       </div>
@@ -135,29 +164,6 @@ const UserProfile = ({ user, profilePictureUrl }: { user: any, profilePictureUrl
       {profilePictureUrl && <Image img={profilePictureUrl} width={250} />}
       <div className={styles.activeIndicator}></div>
     </div>
-  </div>
-);
-
-const Dropdown = ({ 
-  isOpen, 
-  items, 
-  onClose 
-}: { 
-  isOpen: boolean, 
-  items: DropdownItem[], 
-  onClose: () => void 
-}) => (
-  <div className={clsx(styles.dropdown, isOpen ? styles.active : '')}>
-    {items.map(item => (
-      <NavLink 
-        key={item.path}
-        to={item.path}
-        className={({ isActive }) => clsx(styles.dropdownRow, isActive ? styles.active : '')}
-        onClick={onClose}
-      >
-        {item.label}
-      </NavLink>
-    ))}
   </div>
 );
 

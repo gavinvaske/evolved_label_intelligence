@@ -1,0 +1,13 @@
+.filterButton {
+  width: auto;
+  margin-right: 8px;
+  margin-bottom: 8px;
+  padding: 0.5rem 1rem;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+
+  &.enabled {
+    background-color: rgba(115, 103, 240, 0.1);
+    color: rgba(115, 103, 240, 1);
+  }
+} 

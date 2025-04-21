@@ -10,6 +10,7 @@ import { ILinerType } from '@shared/types/models';
 import { ILinerTypeForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 const linerTypeTableUrl = '/react-ui/tables/liner-type'
 
@@ -78,7 +79,12 @@ export const LinerTypeForm = () => {
                 />
               </div>
 
-              <button className={sharedStyles.submitButton} type="submit">{isUpdateRequest ? 'Update' : 'Create'}</button>
+              <Button
+                variant="submit"
+                type="submit"
+              >
+                {isUpdateRequest ? 'Update' : 'Create'}
+              </Button>
             </div>
           </form>
         </FormProvider>
