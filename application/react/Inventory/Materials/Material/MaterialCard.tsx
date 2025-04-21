@@ -53,7 +53,7 @@ const MaterialCard = observer((props: Props) => {
         </div>
         <div className={clsx(styles.col, styles.colRight)}>
           <div className={clsx(styles.materialCardOptionsContainer)}>
-            <IconButton
+            <IconButton /* View Purchase Orders */
               icon={<div className={clsx(styles.poCounter)}>{`${numMaterialOrders}`}</div>}
               tooltip={numMaterialOrders === 0 ? 'No purchase orders' : `View ${numMaterialOrders} purchase orders`}
               onClick={(e) => numMaterialOrders > 0 && showPurchaseOrderModal(e)}
@@ -61,7 +61,14 @@ const MaterialCard = observer((props: Props) => {
               variant={'green'}
             />
 
-            <IconButton
+            <IconButton /* Create Purchase Order */
+              icon={<FaPenToSquare />}
+              tooltip="Create Purchase Order"
+              onClick={() => navigate(`/react-ui/forms/material-order`, { state: { material: material._id } })}
+              variant={'darkGrey'}
+            />
+
+            <IconButton /* View Length Adjustments */
               icon={<BsPlusSlashMinus />}
               tooltip={numLengthAdjustments === 0 ? 'No Adjustments' : `View ${numLengthAdjustments} Adjustments`}
               onClick={(e) => numLengthAdjustments > 0 && showLengthAdjustmentsModal(e)}
@@ -69,11 +76,18 @@ const MaterialCard = observer((props: Props) => {
               variant={'blue'}
             />
 
-            <IconButton
+            <IconButton /* Create Length Adjustment */
+              icon={<FaPenToSquare />}
+              tooltip="Create Length Adjustment"
+              onClick={() => navigate(`/react-ui/forms/material-length-adjustment`, { state: { material: material._id } })}
+              variant={'purple'}
+            />
+
+            <IconButton /* Edit Material Details */
               icon={<FaPenToSquare />}
               tooltip="Edit material details"
-              to={`/materials/${material._id}/edit`}
-              variant={'darkGrey'}
+              onClick={() => navigate(`/react-ui/forms/material/${material._id}`)}
+              variant={'magenta'}
             />
           </div>
         </div>
