@@ -34,7 +34,10 @@ export const IconButton = ({
   );
 
   const handleClick = (e: React.MouseEvent) => {
-    if (disabled) return;
+    if (disabled) {
+      e.stopPropagation();
+      return;
+    };
     onClick?.(e);
   };
 

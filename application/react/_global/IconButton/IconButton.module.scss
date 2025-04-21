@@ -7,9 +7,62 @@
   cursor: pointer;
   border-radius: 4px;
   transition: background-color 0.2s;
+  position: relative;
+  height: 35px;
+  width: 35px;
+  overflow: hidden;
+
+  i {
+    position: absolute;
+    top: -35px;
+    transition: top 0.3s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 35px;
+    width: 35px;
+  }
 
   &:hover {
-    background-color: rgba(0, 0, 0, 0.05);
+    i {
+      top: 0;
+    }
+  }
+
+  &.small {
+    width: 24px;
+    height: 24px;
+    font-size: 16px;
+
+    i {
+      width: 24px;
+      height: 24px;
+      top: -24px;
+    }
+  }
+
+  &.medium {
+    width: 32px;
+    height: 32px;
+    font-size: 20px;
+
+    i {
+      width: 32px;
+      height: 32px;
+      top: -32px;
+    }
+  }
+
+  &.large {
+    width: 40px;
+    height: 40px;
+    font-size: 24px;
+
+    i {
+      width: 40px;
+      height: 40px;
+      top: -40px;
+    }
   }
 
   &.blue {
@@ -17,7 +70,7 @@
     color: rgba($BLUE, 1);
     border: 1px solid rgba($BLUE, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($BLUE, 0.24);
     }
   }
@@ -27,7 +80,7 @@
     color: rgba($RED, 1);
     border: 1px solid rgba($RED, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($RED, 0.24);
     }
   }
@@ -37,7 +90,7 @@
     color: rgba($PURPLE, 1);
     border: 1px solid rgba($PURPLE, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($PURPLE, 0.24);
     }
   }
@@ -47,7 +100,7 @@
     color: rgba($ORANGE, 1);
     border: 1px solid rgba($ORANGE, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($ORANGE, 0.24);
     }
   }
@@ -57,7 +110,7 @@
     color: rgba($LIGHT_BLUE, 1);
     border: 1px solid rgba($LIGHT_BLUE, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($LIGHT_BLUE, 0.24);
     }
   }
@@ -67,7 +120,7 @@
     color: rgba($YELLOW, 1);
     border: 1px solid rgba($YELLOW, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($YELLOW, 0.24);
     }
   }
@@ -77,7 +130,7 @@
     color: rgba($MAGENTA, 1);
     border: 1px solid rgba($MAGENTA, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($MAGENTA, 0.24);
     }
   }
@@ -87,7 +140,7 @@
     color: rgba($DARK_GREY, 1);
     border: 1px solid rgba($DARK_GREY, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($DARK_GREY, 0.24);
     }
   }
@@ -97,7 +150,7 @@
     color: rgba($GREEN, 1);
     border: 1px solid rgba($GREEN, 0.24);
 
-    &:hover {
+    &:hover:not(.disabled) {
       background-color: rgba($GREEN, 0.24);
     }
   }
@@ -105,70 +158,17 @@
   &.disabled {
     cursor: not-allowed;
     opacity: 0.5;
-    pointer-events: none;
     border: 1px solid rgba($DARK_GREY, 0.24);
-  }
-
-  &.small {
-    width: 24px;
-    height: 24px;
-    font-size: 16px;
-  }
-
-  &.medium {
-    width: 32px;
-    height: 32px;
-    font-size: 20px;
-  }
-
-  &.large {
-    width: 40px;
-    height: 40px;
-    font-size: 24px;
-  }
-
-  &.disabled {
-    position: relative;
-    height: 35px;
-    width: 35px;
-    overflow: hidden;
-    border-radius: 5px;
-    background-color: rgba(128, 131, 144, .12);
-    color: rgba(128, 131, 144, 1);
-    transition: all 0.3s;
+    background-color: rgba($DARK_GREY, 0.12);
+    color: rgba($DARK_GREY, .5);
 
     i {
-      position: absolute;
-      top: -35px;
-      transition: top 0.3s;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 35px;
-      width: 35px;
+      top: 0;
     }
 
     &:hover {
-      background-color: rgba(var(--primary-dark-background), var(--opacity-2));
-      
-      i {
-        top: 0;
-      }
-    }
-
-    &.enabled {
-      background-color: rgba(var(--primary-green), .12);
-      color: rgba(var(--primary-green), 1);
-
-      &:hover {
-        background-color: rgba(var(--primary-green), .24);
-      }
-    }
-
-    &.disabled {
-      &:hover {
-        cursor: not-allowed;
-      }
+      cursor: not-allowed;
+      background-color: rgba($DARK_GREY, 0.24);
     }
   }
 }
