@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import * as styles from './IconButton.module.scss';
+import styles from './IconButton.module.scss';
 
-type IconButtonProps = {
+interface IconButtonProps {
   icon: React.ReactNode;
   onClick?: (e: React.MouseEvent) => void;
   to?: string;
@@ -11,10 +11,10 @@ type IconButtonProps = {
   className?: string;
   tooltip?: string;
   disabled?: boolean;
-  variant?: 'blue' | 'green' | 'red' | 'purple' | 'orange' | 'lightBlue' | 'yellow' | 'magenta' | 'darkGrey';
-};
+  variant?: 'default' | 'material' | 'blue' | 'red' | 'purple' | 'orange' | 'lightBlue' | 'yellow' | 'magenta' | 'darkGrey' | 'green';
+}
 
-export const IconButton = ({
+export const IconButton: React.FC<IconButtonProps> = ({
   icon,
   onClick,
   to,
@@ -22,53 +22,42 @@ export const IconButton = ({
   className,
   tooltip,
   disabled = false,
-  variant
-}: IconButtonProps) => {
-  const buttonClasses = clsx(
-    styles.iconButton,
-    styles[size],
-    styles.default,
-    disabled && styles['disabled'],
-    variant && styles[variant],
-    className
-  );
-
+  variant = 'default',
+}) => {
   const handleClick = (e: React.MouseEvent) => {
-    if (disabled) {
-      e.stopPropagation();
-      return;
-    };
-    onClick?.(e);
+    e.stopPropagation();
+    if (onClick && !disabled) {
+      onClick(e);
+    }
   };
 
-  const iconElement = (
-    <div className={buttonClasses} onClick={handleClick}>
+  const buttonContent = (
+    <div
+      className={clsx(
+        styles.iconButton,
+        styles[size],
+        styles[variant],
+        disabled && styles.disabled,
+        className
+      )}
+      onClick={handleClick}
+    >
       {icon}
     </div>
   );
 
-  if (tooltip) {
-    return (
-      <div className={clsx(styles.tooltipWrapper)}>
-        {to ? (
-          <Link to={to} onClick={handleClick}>
-            {iconElement}
-          </Link>
-        ) : (
-          iconElement
-        )}
-        <span className={styles.tooltipText}>{tooltip}</span>
-      </div>
-    );
-  }
+  const content = (
+    <div className={styles.tooltipWrapper}>
+      {to && !disabled ? (
+        <Link to={to} onClick={handleClick}>
+          {buttonContent}
+        </Link>
+      ) : (
+        buttonContent
+      )}
+      {tooltip && <span className={styles.tooltipText}>{tooltip}</span>}
+    </div>
+  );
 
-  if (to) {
-    return (
-      <Link to={to} onClick={handleClick}>
-        {iconElement}
-      </Link>
-    );
-  }
-
-  return iconElement;
+  return content;
 }; 
