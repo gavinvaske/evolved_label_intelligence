@@ -151,9 +151,12 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             isOpen={isDropdownDisplayed}
             onClose={() => setIsDropdownDisplayed(false)}
             triggerRef={quickFilterButtonRef}
+            className={styles.dropdownWrapper}
           >
-            <h5 className={styles.dropdownTitle}>Quick filters</h5>
-            {renderTextQuickFilters(textQuickFilters, store)}
+            <div className={styles.dropdownContent}>
+              <h5 className={styles.dropdownTitle}>Quick filters</h5>
+              {renderTextQuickFilters(textQuickFilters, store)}
+            </div>
           </Dropdown>
 
           <Dropdown
@@ -161,9 +164,12 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             onClose={() => setIsAdvancedDropdownDisplayed(false)}
             align="right"
             triggerRef={advancedFilterButtonRef}
+            className={styles.dropdownWrapper}
           >
-            <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
-            {renderConditionalQuickFilters(conditionalQuickFilters, store)}
+            <div className={styles.dropdownContent}>
+              <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
+              {renderConditionalQuickFilters(conditionalQuickFilters, store)}
+            </div>
           </Dropdown>
         </div>
 

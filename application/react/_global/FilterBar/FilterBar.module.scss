@@ -192,19 +192,10 @@
   color: #6c757d;
 }
 
-.quickFilterDropdown,
-.advancedFilterDropdown {
-  position: absolute;
-  box-shadow: 0 4px 17px 6px rgb(0 0 0 / 10%);
-  padding: 20px;
-  border-radius: 8px;
-  background-color: white;
-  visibility: hidden;
-  z-index: 0;
-  opacity: 0;
-  top: calc(100% + 10px);
+.dropdownContent {
   min-width: 250px;
-  max-width: 300px;
+  max-width: 350px;
+  padding: 8px;
 }
 
 .dropdownTitle {
