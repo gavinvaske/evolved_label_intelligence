@@ -31,7 +31,23 @@
       width: 100%;
       border-bottom-left-radius: 5px;
       border-bottom-right-radius: 5px;
-
     }
+  }
+
+  .formContainer {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+  }
+
+  .formColumn {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .submitButton {
+    grid-column: 1;
+    margin-top: 1rem;
+    padding-left: 0;
   }
 }
