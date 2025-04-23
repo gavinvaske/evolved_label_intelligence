@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import clsx from 'clsx';
-import styles from './IconButton.module.scss';
+import * as styles from './IconButton.module.scss';
 
 interface IconButtonProps {
   icon: React.ReactNode;

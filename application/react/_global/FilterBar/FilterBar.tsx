@@ -106,7 +106,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
   return (
     <>
       <div className={clsx(styles.searchWrapper, flexboxStyles.flexCenterLeftRow, store.getSearchBarInput() && styles.hasText, isSearchFocused && styles.active)} onClick={toggleSearchActive}>
-        <div className={styles.searchIconWrapper}>
+        <div>
           <SlMagnifier />
         </div>
         <SearchBar
@@ -117,7 +117,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
           onFocus={() => setIsSearchFocused(true)}
           onBlur={() => setIsSearchFocused(false)}
         />
-        <div className={styles.clearButtonWrapper}>
+        <div>
           <TfiClose
             className={clsx(styles.clearButton, isSearchFocused && styles.active)}
             onClick={(e) => clearSearchBar(e)}
@@ -151,7 +151,6 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             isOpen={isDropdownDisplayed}
             onClose={() => setIsDropdownDisplayed(false)}
             triggerRef={quickFilterButtonRef}
-            className={styles.dropdownWrapper}
           >
             <div className={styles.dropdownContent}>
               <h5 className={styles.dropdownTitle}>Quick filters</h5>
@@ -164,7 +163,6 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             onClose={() => setIsAdvancedDropdownDisplayed(false)}
             align="right"
             triggerRef={advancedFilterButtonRef}
-            className={styles.dropdownWrapper}
           >
             <div className={styles.dropdownContent}>
               <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
