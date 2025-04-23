@@ -49,7 +49,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
 
   const viewActions = [
     {
-      label: 'Material Orders',
+      label: 'Orders',
       count: numMaterialOrders,
       onClick: () => navigate(`/react-ui/tables/material-order`, { state: { query: material.materialId } }),
       disabled: numMaterialOrders === 0,
@@ -64,7 +64,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
 
   const createActions = [
     {
-      label: 'Material Order',
+      label: 'Order',
       onClick: () => navigate(`/react-ui/forms/material-order`, { state: { material: material._id } }),
     },
     {
