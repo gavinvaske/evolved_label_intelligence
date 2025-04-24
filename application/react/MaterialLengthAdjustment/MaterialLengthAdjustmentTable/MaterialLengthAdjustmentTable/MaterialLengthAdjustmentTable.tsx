@@ -62,7 +62,7 @@ export const MaterialLengthAdjustmentTable = () => {
   const defaultData = useMemo(() => [], [])
 
   const { state } = useLocation();
-  const { query } = state;
+  const { query } = state || {};
 
   useEffect(() => {
     if (query) {
