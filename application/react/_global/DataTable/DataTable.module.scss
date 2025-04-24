@@ -1,0 +1,69 @@
+@import '../../_styles/constants.module.scss';
+
+.dataTableContainer {
+  margin-bottom: 2rem;
+
+  .titleHeader {
+    margin-bottom: 1rem;
+    
+    h3 {
+      color: rgba(var(--primary-text-color), var(--opacity-10));
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin: 0;
+    }
+  }
+
+  .tableContainer {
+    border-radius: 0.5rem;
+    overflow: hidden;
+    box-shadow: 0 2px 8px 0 rgb(34 41 47 / 10%);
+    margin-bottom: 1rem;
+  }
+
+  .tableBody {
+    background-color: white;
+  }
+
+  .tableRow {
+    display: flex;
+    align-items: center;
+    padding: 0.25rem;
+    border-bottom: 2px solid rgba($DARK_GREY, var(--opacity-1));
+    transition: background-color 0.2s ease;
+
+    & > * {
+      border-radius: 0.25rem;
+    }
+
+    &:last-child {
+      border-bottom: none;
+    }
+
+    &:hover {
+      background-color: rgba(var(--primary-dark-background), var(--opacity-1));
+    }
+  }
+
+  .addButton {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: rgba(var(--primary-purple), var(--opacity-10));
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+
+    &:hover {
+      background-color: rgba(var(--primary-purple), var(--opacity-8));
+    }
+
+    svg {
+      font-size: 0.8rem;
+    }
+  }
+} 
