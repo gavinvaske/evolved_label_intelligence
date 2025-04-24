@@ -31,58 +31,55 @@ export const ContactForm = (props: Props) => {
 
   return (
     <div>
-      <div className={formStyles.formCardHeader}>
-        <h3>New Business Contact</h3>
-      </div>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
           <div className={formStyles.formElementsWrapper}>
             <div className={formStyles.inputGroupWrapper}>
-            <Input
-              attribute='fullName'
-              label="Name"
-              isRequired={true}
-            />
-            <Input
-              attribute='phoneNumber'
-              label="Phone Number"
+              <Input
+                attribute='fullName'
+                label="Name"
+                isRequired={true}
+              />
+              <Input
+                attribute='phoneNumber'
+                label="Phone Number"
+                isRequired={false}
+              />
+            </div>
+            <div className={formStyles.inputGroupWrapper}>
+              <Input
+                attribute='phoneExtension'
+                label="Phone Extension"
+                isRequired={false}
+              />
+              <Input
+                attribute='email'
+                label="Email"
+                isRequired={false}
+              />
+              <Input
+                attribute='contactStatus'
+                label="Contact Status"
+                isRequired={true}
+              />
+            </div>
+            <TextArea
+              attribute='notes'
+              label="Notes"
               isRequired={false}
             />
-          </div>
-          <div className={formStyles.inputGroupWrapper}>
             <Input
-              attribute='phoneExtension'
-              label="Phone Extension"
+              attribute='position'
+              label="Position"
               isRequired={false}
             />
-            <Input
-              attribute='email'
-              label="Email"
+            <CustomSelect
+              attribute='location'
+              label="Location"
+              options={selectableLocations}
               isRequired={false}
             />
-            <Input
-              attribute='contactStatus'
-              label="Contact Status"
-              isRequired={true}
-            />
-          </div>
-          <TextArea
-            attribute='notes'
-            label="Notes"
-            isRequired={false}
-          />
-          <Input
-            attribute='position'
-            label="Position"
-            isRequired={false}
-          />
-          <CustomSelect
-            attribute='location'
-            label="Location"
-            options={selectableLocations}
-            isRequired={false}
-          />
-          <button className={sharedStyles.submitButton} type="submit">Submit</button>
+            <button className={sharedStyles.submitButton} type="submit">Submit</button>
           </div>
         </form>
       </FormProvider>

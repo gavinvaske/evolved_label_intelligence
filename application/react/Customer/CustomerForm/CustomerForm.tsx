@@ -264,39 +264,35 @@ export const CustomerForm = () => {
           </FormProvider>
         </div>
         {/* Code Below Renders a modal IFF user initiated one to open */}
-        {
-          showBillingLocationForm &&
-          <FormModal
-            Form={AddressForm}
-            onSubmit={onBillingLocationFormSubmit}
-            onCancel={hideBillingLocationForm}
-          />
-        }
-        {
-          showShippingLocationForm &&
-          <FormModal
-            Form={ShippingLocationForm}
-            onSubmit={onShippingLocationFormSubmit}
-            onCancel={hideShippingLocationForm}
-          />
-        }
-        {
-          showBusinessLocationForm &&
-          <FormModal
-            Form={AddressForm}
-            onSubmit={onBusinessLocationFormSubmit}
-            onCancel={hideBusinessLocationForm}
-          />
-        }
-        {
-          showContactForm &&
-          <FormModal
-            Form={ContactForm}
-            onSubmit={onContactFormSubmit}
-            onCancel={hideContactForm}
-            locations={locations}
-          />
-        }
+        <FormModal
+          Form={AddressForm}
+          isOpen={showBillingLocationForm}
+          onSubmit={onBillingLocationFormSubmit}
+          onCancel={hideBillingLocationForm}
+          title="Add Billing Location"
+        />
+        <FormModal
+          Form={ShippingLocationForm}
+          isOpen={showShippingLocationForm}
+          onSubmit={onShippingLocationFormSubmit}
+          onCancel={hideShippingLocationForm}
+          title="Add Shipping Location"
+        />
+        <FormModal
+          Form={AddressForm}
+          isOpen={showBusinessLocationForm}
+          onSubmit={onBusinessLocationFormSubmit}
+          onCancel={hideBusinessLocationForm}
+          title="Add Business Location"
+        />
+        <FormModal
+          Form={ContactForm}
+          isOpen={showContactForm}
+          onSubmit={onContactFormSubmit}
+          onCancel={hideContactForm}
+          title="Add Contact"
+          locations={locations}
+        />
       </div>
     </div>
   );
