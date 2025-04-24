@@ -12,6 +12,7 @@ import { IUserForm } from '@ui/types/forms';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as styles from './Profile.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 export const Profile = () => {
   const queryClient = useQueryClient()
@@ -62,43 +63,52 @@ export const Profile = () => {
           (isLoadingUser || isFetchingUser) ? <LoadingIndicator /> : (
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)} data-test='user-form'>
-                <Input
-                  attribute='email'
-                  label="Email"
-                  isRequired
-                />
-                <Input
-                  attribute='firstName'
-                  label="First Name"
-                  isRequired
-                />
-                <Input
-                  attribute='lastName'
-                  label="Last Name"
-                  isRequired
-                />
-                <Input
-                  attribute='jobRole'
-                  label="Job Role"
-                />
-                <Input
-                  attribute='birthDate'
-                  fieldType='date'
-                  isRequired
-                  label="Birth Date"
-                />
-                <Input
-                  attribute='phoneNumber'
-                  label="Phone"
-                />
-                <button className={sharedStyles.submitButton} type='submit'>{'Update'}</button>
+                <div className={styles.formContainer}>
+                  <div className={styles.formColumn}>
+                    <Input
+                      attribute='email'
+                      label="Email"
+                      isRequired
+                    />
+                    <Input
+                      attribute='firstName'
+                      label="First Name"
+                      isRequired
+                    />
+                    <Input
+                      attribute='lastName'
+                      label="Last Name"
+                      isRequired
+                    />
+                  </div>
+                  <div className={styles.formColumn}>
+                    <Input
+                      attribute='jobRole'
+                      label="Job Role"
+                    />
+                    <Input
+                      attribute='birthDate'
+                      fieldType='date'
+                      isRequired
+                      label="Birth Date"
+                    />
+                    <Input
+                      attribute='phoneNumber'
+                      label="Phone"
+                    />
+                  </div>
+                </div>
+                <Button
+                  variant='submit'
+                  type='submit'
+                >
+                  {'Update'}
+                </Button>
               </form>
             </FormProvider>
           )
         }
       </div>
-
-
     </div>
   )
 }

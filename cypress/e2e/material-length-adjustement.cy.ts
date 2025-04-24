@@ -15,7 +15,7 @@ describe('MaterialLengthAdjustment Views', () => {
     cy.url().should('include', url)
   });
 
-  it('Should render the Material Order table and searchbar', () => {
+  it('Should render the Material Length Adjustment table and searchbar', () => {
     const url = `${tableUrlPrefix}/material-length-adjustment`;
 
     cy.visit(url);

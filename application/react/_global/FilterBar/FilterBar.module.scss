@@ -8,98 +8,48 @@
   border-radius: 3px;
   line-height: 14px;
   font-size: 14px;
+  margin: 10px;
   overflow: hidden;
   border: 1px solid #877e7e;
   display: flex;
   align-items: center;
   padding: 0 5px;
-}
-
-.searchIconWrapper {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.clearButtonWrapper {
-  width: 24px;
-  height: 24px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.searchWrapper input {
-  border: none;
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  background-color: unset;
-  outline: none;
-  box-sizing: border-box;
-  cursor: pointer;
-  transition: 0.3s;
-  margin: 0 5px;
-}
-
-.searchWrapper:hover {
-  background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
-  cursor: pointer;
-}
-
-.searchWrapper {
-  height: 33px;
-  min-width: 80px;
-  width: 250px;
-  border-radius: 3px;
-  line-height: 14px;
-  font-size: 14px;
-  margin: 10px;
-  overflow: hidden;
-  border: 1px solid #877e7e;
-  padding-left: 0px;
-}
-
-.clearButtonWrapper {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  align-self: right;
-}
-
-.searchIconWrapper {
-  width: 25px;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 0px;
-}
-
-.filterActive {
-  background-color: #cce5ff;
-
-  &:hover {
-    background-color: #aed4fc;
-  }
-}
-
-.filterDescription {
-  color: #676879;
-}
-
-.searchWrapper {
-  height: 34px;
   position: relative;
-  overflow-x: hidden;
 
   &:focus-within {
     border: 1px solid #0073ea;
+  }
+
+  input {
+    border: none;
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    background-color: unset;
+    outline: none;
+    box-sizing: border-box;
+    cursor: pointer;
+    transition: 0.3s;
+    margin: 0 5px;
+  }
+
+  &:hover {
+    background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
+    cursor: pointer;
+  }
+
+  &.hasText {
+    background-color: #cce5ff;
+    border-color: #7367F0;
+
+    &:hover {
+      background-color: #cce5ff;
+    }
+  }
+
+  &.active {
+    border-color: #7367F0;
+    box-shadow: 0 0 0 0.2rem rgba(115, 103, 240, 0.25);
   }
 
   .clearButton {
@@ -113,35 +63,21 @@
     width: 16px;
     height: 16px;
     display: flex;
+    color: #6c757d;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
 
     &:hover {
       color: red;
-      cursor: pointer;
       transition: .3s;
     }
+
+    &.active {
+      visibility: visible;
+      opacity: 1;
+    }
   }
-}
-
-.clearButton.active {
-  visibility: visible;
-}
-
-.searchWrapper.hasText {
-  background-color: #cce5ff;
-
-  &:hover {
-    background-color: #cce5ff;
-  }
-}
-
-.filterText {
-  padding-left: 5px;
-}
-
-.viewingResults {
-  font-size: 14px;
-  color: #676879;
-  text-align: center;
 }
 
 .filterWrapper {
@@ -156,55 +92,10 @@
   color: #6c757d;
 }
 
-.searchWrapper {
-  position: relative;
-  margin-right: 1rem;
-  padding: 0.5rem 1rem 0.6rem 0;
-  border: 1px solid #e9ecef;
-  border-radius: 3px;
-  transition: all 0.2s ease-in-out;
-
-  &.hasText {
-    border-color: #7367F0;
-  }
-
-  &.active {
-    border-color: #7367F0;
-    box-shadow: 0 0 0 0.2rem rgba(115, 103, 240, 0.25);
-  }
-}
-
-.clearButton {
-  color: #6c757d;
-  cursor: pointer;
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-
-  &.active {
-    opacity: 1;
-  }
-}
-
-.filterDescription {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
-  color: #6c757d;
-}
-
-.quickFilterDropdown,
-.advancedFilterDropdown {
-  position: absolute;
-  box-shadow: 0 4px 17px 6px rgb(0 0 0 / 10%);
-  padding: 20px;
-  border-radius: 8px;
-  background-color: white;
-  visibility: hidden;
-  z-index: 0;
-  opacity: 0;
-  top: calc(100% + 10px);
+.dropdownContent {
   min-width: 250px;
-  max-width: 300px;
+  max-width: 350px;
+  padding: 8px;
 }
 
 .dropdownTitle {
@@ -231,6 +122,29 @@
   font-weight: 500;
   margin-bottom: 12px;
   text-transform: capitalize;
+}
+
+.filterActive {
+  background-color: #cce5ff;
+
+  &:hover {
+    background-color: #aed4fc;
+  }
+}
+
+.filterDescription {
+  color: #676879;
+}
+
+.filterText {
+  padding-left: 5px;
+}
+
+.filterDescription {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.875rem;
+  color: #6c757d;
 }
 
 .quickFilterDropdown.active,

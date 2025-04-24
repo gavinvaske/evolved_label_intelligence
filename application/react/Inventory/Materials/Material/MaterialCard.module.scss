@@ -74,21 +74,6 @@
         }
       }
     }
-
-    .cardHeader {
-      .colRight {
-        .materialCardOptionsContainer {
-          .iconContainer {
-
-            i,
-            .poCounter {
-              top: 0;
-              transition: .3s;
-            }
-          }
-        }
-      }
-    }
   }
 
   .cardHeader {
@@ -113,45 +98,6 @@
       align-items: center;
       position: relative;
       height: 42px;
-
-      i {
-        font-size: 20px;
-      }
-
-      .materialCardOptionsContainer {
-        position: absolute;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        transition: .3s;
-
-        .iconContainer {
-          position: relative;
-          height: 35px;
-          width: 35px;
-          overflow: hidden;
-
-          i,
-          .poCounter {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 35px;
-            width: 35px;
-            border-radius: 5px;
-            position: absolute;
-            top: -35px;
-            transition: .3s;
-          }
-
-          .poCounter.active {
-            &:hover {
-              background: rgba(var(--alert-success), .12);
-              color: rgba(var(--alert-success), 1);
-            }
-          }
-        }
-      }
     }
 
     h2 {
@@ -163,10 +109,6 @@
       padding: 5px 15px;
     }
 
-    .materialOption {
-      border-radius: 5px;
-    }
-
     .materialWidthContainer {
       margin-left: 7px;
 
@@ -174,66 +116,6 @@
         color: rgba(128, 131, 144, 1);
         background-color: rgba(128, 131, 144, .12);
         font-size: 12px;
-      }
-    }
-
-    .poContainer {
-      .poCounter {
-        color: rgba(128, 131, 144, 1);
-        background-color: rgba(128, 131, 144, .12);
-      }
-    }
-
-    .poContainer.enabled {
-      .poCounter {
-        background-color: rgba(var(--primary-green), .12);
-        color: rgba(var(--primary-green), 1);
-
-        &:hover {
-          background-color: rgba(var(--primary-green), .24);
-        }
-      }
-    }
-
-    .openTicketContainer {
-      margin: 0 7px;
-
-      i {
-        color: rgba(128, 131, 144, 1);
-        background-color: rgba(128, 131, 144, .12);
-      }
-    }
-
-    .openTicketContainer.enabled {
-      i {
-        color: rgba(var(--primary-blue), var(--opacity-10));
-        background-color: rgba(var(--primary-blue), .12);
-
-        &:hover {
-          background-color: rgba(var(--primary-blue), .24);
-        }
-      }
-    }
-
-    .editContainer {
-      i {
-        color: rgba(128, 131, 144, 1);
-        background-color: rgba(128, 131, 144, .12);
-
-        &:hover {
-          background-color: rgba(var(--primary-dark-background), var(--opacity-2));
-        }
-      }
-    }
-
-    .poContainer.disabled,
-    .openTicketContainer.disabled {
-
-      .poCounter,
-      .iconContainer {
-        &:hover {
-          cursor: not-allowed;
-        }
       }
     }
   }

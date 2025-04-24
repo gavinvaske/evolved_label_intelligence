@@ -106,7 +106,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
   return (
     <>
       <div className={clsx(styles.searchWrapper, flexboxStyles.flexCenterLeftRow, store.getSearchBarInput() && styles.hasText, isSearchFocused && styles.active)} onClick={toggleSearchActive}>
-        <div className={styles.searchIconWrapper}>
+        <div>
           <SlMagnifier />
         </div>
         <SearchBar
@@ -117,7 +117,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
           onFocus={() => setIsSearchFocused(true)}
           onBlur={() => setIsSearchFocused(false)}
         />
-        <div className={styles.clearButtonWrapper}>
+        <div>
           <TfiClose
             className={clsx(styles.clearButton, isSearchFocused && styles.active)}
             onClick={(e) => clearSearchBar(e)}
@@ -152,8 +152,10 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             onClose={() => setIsDropdownDisplayed(false)}
             triggerRef={quickFilterButtonRef}
           >
-            <h5 className={styles.dropdownTitle}>Quick filters</h5>
-            {renderTextQuickFilters(textQuickFilters, store)}
+            <div className={styles.dropdownContent}>
+              <h5 className={styles.dropdownTitle}>Quick filters</h5>
+              {renderTextQuickFilters(textQuickFilters, store)}
+            </div>
           </Dropdown>
 
           <Dropdown
@@ -162,8 +164,10 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             align="right"
             triggerRef={advancedFilterButtonRef}
           >
-            <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
-            {renderConditionalQuickFilters(conditionalQuickFilters, store)}
+            <div className={styles.dropdownContent}>
+              <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
+              {renderConditionalQuickFilters(conditionalQuickFilters, store)}
+            </div>
           </Dropdown>
         </div>
 

@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, SortingState, useReactTable, PaginationState } from '@tanstack/react-table';
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { MaterialLengthAdjustmentRowActions } from '../MaterialLengthAdjustmentRowActions/MaterialLengthAdjustmentRowActions';
 import SearchBar from '../../../_global/SearchBar/SearchBar';
@@ -16,6 +16,7 @@ import { IMaterial, IMaterialLengthAdjustment } from '@shared/types/models.ts';
 import { isRefPopulated } from '@shared/types/_utility';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { useLocation } from 'react-router-dom';
 
 const columnHelper = createColumnHelper<IMaterialLengthAdjustment>()
 
@@ -59,6 +60,15 @@ export const MaterialLengthAdjustmentTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+
+  const { state } = useLocation();
+  const { query } = state || {};
+
+  useEffect(() => {
+    if (query) {
+      setGlobalSearch(query);
+    }
+  }, [query]);
 
   const { isError, data: materialLengthAdjustmentSearchResults, error, isLoading } = useQuery({
     queryKey: ['get-material-length-adjustments', pagination, sorting, globalSearch],

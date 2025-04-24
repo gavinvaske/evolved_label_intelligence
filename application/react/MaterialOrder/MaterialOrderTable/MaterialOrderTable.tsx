@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { MaterialOrderRowActions } from './MaterialOrderRowActions/MaterialOrderRowActions';
 import { useQuery } from '@tanstack/react-query';
@@ -15,6 +15,7 @@ import { performTextSearch } from '../../_queries/_common';
 import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { useLocation } from 'react-router-dom';
 
 const columnHelper = createColumnHelper<IMaterialOrder>()
 
@@ -57,6 +58,15 @@ export const MaterialOrderTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+
+  const { state } = useLocation();
+  const { query } = state || {};
+
+  useEffect(() => {
+    if (query) {
+      setGlobalSearch(query);
+    }
+  }, [query]);
 
   const { isError, data: materialOrderResults, error, isLoading } = useQuery({
     queryKey: ['get-material-orders', pagination, sorting, globalSearch],

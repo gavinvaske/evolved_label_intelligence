@@ -48,6 +48,7 @@ export const Navbar = () => {
   const [isTablesDropdownDisplayed, setIsTablesDropdownDisplayed] = useState(false);
   const formsButtonRef = useRef<HTMLDivElement>(null);
   const tablesButtonRef = useRef<HTMLDivElement>(null);
+  const userOptionsButtonRef = useRef<HTMLDivElement>(null);
 
   const { user, error } = useLoggedInUser();
   const profilePictureUrl = `data:image/${user?.profilePicture?.contentType};base64,${user?.profilePicture?.data.toString('base64')}`;
@@ -63,6 +64,7 @@ export const Navbar = () => {
 
   const isFormsActive = FORM_ITEMS.some(item => location.pathname === item.path);
   const isTablesActive = TABLE_ITEMS.some(item => location.pathname === item.path);
+  const isUserOptionsActive = user !== null;
 
   return (
     <nav className={styles.navbarMain}>
@@ -143,15 +145,21 @@ export const Navbar = () => {
 
       {/* Right Column */}
       <div className={clsx(styles.column, styles.columnRight)}>
-        <div className={styles.userFrame} onClick={() => setIsUserOptionsDropdownDisplayed(!isUserOptionsDropdownDisplayed)}>
+        <div 
+          ref={userOptionsButtonRef}
+          className={clsx(styles.navButton, isUserOptionsActive ? styles.active : '')}
+          onClick={() => setIsUserOptionsDropdownDisplayed(!isUserOptionsDropdownDisplayed)}
+          style={{ cursor: 'pointer' }}
+        >
           <UserProfile user={user} profilePictureUrl={profilePictureUrl} />
         </div>
-        <UserOptionsDropdown 
+        <UserOptionsDropdown
           isOpen={isUserOptionsDropdownDisplayed}
           user={user}
           profilePictureUrl={profilePictureUrl}
           onClose={() => setIsUserOptionsDropdownDisplayed(false)}
           onLogout={handleLogout}
+          triggerRef={userOptionsButtonRef}
         />
       </div>
     </nav>
@@ -172,15 +180,23 @@ const UserOptionsDropdown = ({
   user, 
   profilePictureUrl,
   onClose,
-  onLogout 
+  onLogout,
+  triggerRef
 }: { 
   isOpen: boolean, 
   user: any, 
   profilePictureUrl: string, 
   onClose: () => void,
   onLogout: () => void,
+  triggerRef: React.RefObject<HTMLElement>
 }) => (
-  <div className={clsx(styles.dropdown, styles.userOptions, isOpen ? styles.active : '')}>
+  <Dropdown
+    isOpen={isOpen}
+    onClose={onClose}
+    triggerRef={triggerRef}
+    align="right"
+    className={styles.userOptions}
+  >
     <NavLink className={({ isActive }) => clsx(styles.userOptionsDropdownHeader, isActive && styles.active)} to="/react-ui/profile">
       <div className={styles.userOptionsDropdownHeaderContainer}>
         <div className={styles.userPictureColumn}>
@@ -214,7 +230,7 @@ const UserOptionsDropdown = ({
         Log Out
       </button>
     </div>
-  </div>
+  </Dropdown>
 );
 
 const NavbarSvgIcon = () => (
