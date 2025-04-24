@@ -11,7 +11,7 @@ interface IconButtonProps {
   className?: string;
   tooltip?: string;
   disabled?: boolean;
-  variant?: 'default' | 'material' | 'blue' | 'red' | 'purple' | 'orange' | 'lightBlue' | 'yellow' | 'magenta' | 'darkGrey' | 'green';
+  color: 'blue' | 'red' | 'purple' | 'orange' | 'lightBlue' | 'yellow' | 'magenta' | 'darkGrey' | 'green';
 }
 
 export const IconButton: React.FC<IconButtonProps> = ({
@@ -22,7 +22,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   className,
   tooltip,
   disabled = false,
-  variant = 'default',
+  color,
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -36,7 +36,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
       className={clsx(
         styles.iconButton,
         styles[size],
-        styles[variant],
+        styles[color],
         disabled && styles.disabled,
         className
       )}

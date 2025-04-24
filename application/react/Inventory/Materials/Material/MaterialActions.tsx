@@ -80,7 +80,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
           icon={<FaEye />}
           tooltip="View Actions"
           onClick={handleViewClick}
-          variant="blue"
+          color="blue"
         />
         <Dropdown
           isOpen={isViewOpen}
@@ -107,7 +107,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
           icon={<BsPlusSlashMinus />}
           tooltip="Create Actions"
           onClick={handleCreateClick}
-          variant="green"
+          color="green"
         />
         <Dropdown
           isOpen={isCreateOpen}
@@ -135,7 +135,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
           e.stopPropagation();
           navigate(`/react-ui/forms/material/${material._id}`);
         }}
-        variant="magenta"
+        color="magenta"
       />
     </div>
   );
