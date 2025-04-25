@@ -32,7 +32,7 @@ const MaterialCard = observer((props: Props) => {
           </div>
         </div>
         <div className={clsx(styles.col, styles.colRight)}>
-          <div>
+          <div className={styles.actionsContainer}>
             <MaterialActions
               material={material}
               numMaterialOrders={numMaterialOrders}
