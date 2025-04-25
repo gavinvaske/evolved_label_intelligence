@@ -1,40 +1,91 @@
+@import '../../_styles/constants.module.scss';
+
 .modalWrapper {
   position: fixed;
-  z-index: 1;
+  z-index: 1000;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
-  background-color: rgb(0, 0, 0);
   background-color: rgba(0, 0, 0, 0.4);
   display: flex;
   justify-content: center;
   align-items: center;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+
+  &.open {
+    opacity: 1;
+    visibility: visible;
+  }
 
   .modal {
     width: 60%;
+    max-width: 800px;
     position: relative;
+    transform: translateY(-20px);
+    transition: transform 0.3s ease;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 8px 0 rgb(34 41 47 / 10%);
+
+    .open & {
+      transform: translateY(0);
+    }
+
+    .modalHeader {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 1.5rem 0.5rem;
+      border-bottom: 1px solid rgba(var(--primary-dark-background), var(--opacity-1));
+
+      h3 {
+        font-weight: 700;
+        line-height: 1.75rem;
+        margin-bottom: 15px;
+      }
+    }
+
+    .modalContent {
+      padding: 1.5rem;
+
+      :global {
+        .form {
+          margin: 0;
+          padding: 0;
+          background: none;
+          box-shadow: none;
+        }
+
+        .formCardHeader {
+          display: none;
+        }
+      }
+    }
 
     .closeButton {
-      position: absolute;
-      right: 20px;
-      top: 20px;
-      border-radius: 50%;
+      position: relative;
+      border: none;
+      background: none;
       width: 35px;
       height: 35px;
-      z-index: 15;
+      border-radius: 50%;
       display: flex;
       justify-content: center;
       align-items: center;
+      cursor: pointer;
+      transition: background-color 0.2s ease;
 
       svg {
         stroke-width: 2;
+        color: rgba(var(--primary-text-color), var(--opacity-8));
       }
 
       &:hover {
-        background-color: #f3f2f3;
-        cursor: pointer;
+        background-color: rgba(var(--primary-dark-background), var(--opacity-1));
       }
     }
   }

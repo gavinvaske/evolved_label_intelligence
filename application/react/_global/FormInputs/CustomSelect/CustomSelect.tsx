@@ -18,10 +18,13 @@ type Props<T extends FieldValues> = {
   label: string,
   defaultValue?: string,
   isRequired?: boolean,
+  isMulti?: boolean,
 }
 
+const NOTHING_SELECTED_MESSAGE = 'Nothing Selected';
+
 export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
-  const { attribute, options, label, isRequired } = props;
+  const { attribute, options, label, isRequired, isMulti } = props;
   const formContext = useFormContext();
   const { register, formState: { errors }, control } = formContext;
   const [isOpen, setIsOpen] = useState(false);
@@ -30,7 +33,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
   options.sort((a, b) => a.displayName?.localeCompare(b.displayName));
 
-  register(attribute, { required: isRequired ? "Nothing Selected" : undefined } as RegisterOptions);
+  register(attribute, { required: isRequired ? NOTHING_SELECTED_MESSAGE : undefined } as RegisterOptions);
 
   // Close dropdown if clicked outside
   useEffect(() => {
@@ -62,7 +65,11 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
           <div>
             {/* Selected Option */}
             <div className={clsx(styles.selectSelected, value && styles.active)} onClick={toggleDropdown}>
-              {(value && options.find(option => value == option.value))?.displayName || 'Nothing Selected'}
+              {isMulti ? (
+                value && value.length > 0 ? value.map((val: string) => options.find(option => val === option.value)?.displayName).join(', ') : NOTHING_SELECTED_MESSAGE
+              ) : (
+                (value && options.find(option => value == option.value))?.displayName || NOTHING_SELECTED_MESSAGE
+              )}
               <span className={clsx(styles.dropdownArrow, isOpen && styles.active)}><FaChevronDown /></span>
             </div>
 
@@ -82,10 +89,10 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
                 {/* "Nothing Selected" Option */}
                 <DropdownOption
                   className={clsx(styles.borderBottom, !value && styles.sameAsSelected)}
-                  option={{ displayName: `Nothing Selected`, value: '' }}
+                  option={{ displayName: NOTHING_SELECTED_MESSAGE, value: '' }}
                   key={-1}
                   onClick={() => {
-                    onChange('');
+                    onChange(isMulti ? [] : '');
                     setIsOpen(false);
                   }}
                 />
@@ -95,10 +102,22 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
                   filteredOptions.map((option, index) => (
                     <DropdownOption
                       option={option}
-                      isSelected={option.value == value}
+                      isSelected={isMulti ? value?.includes(option.value) : option.value == value}
                       key={index}
                       onClick={() => {
-                        onChange(option.value);
+                        if (isMulti) {
+                          const newValue = value ? [...value] : [];
+                          if (newValue.includes(option.value)) {
+                            // Remove the option if it's already selected
+                            onChange(newValue.filter(val => val !== option.value));
+                          } else {
+                            // Add the option if it's not selected
+                            newValue.push(option.value);
+                            onChange(newValue);
+                          }
+                        } else {
+                          onChange(option.value);
+                        }
                         setIsOpen(false);
                       }}
                     />

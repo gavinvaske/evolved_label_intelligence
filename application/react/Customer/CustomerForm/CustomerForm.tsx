@@ -26,12 +26,9 @@ import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import AddressListItem from './AddressListItem/AddressListItem';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as formStyles from '@ui/styles/form.module.scss';
-import * as tableStyles from '@ui/styles/table.module.scss';
-import * as styles from './CustomerForm.module.scss';
 import { MongooseId } from '@shared/types/typeAliases';
-import clsx from 'clsx';
-import { FaPlus } from "react-icons/fa6";
 import { Button } from '../../_global/Button/Button';
+import { DataTable } from '../../_global/DataTable/DataTable';
 
 const customerTableUrl = '/react-ui/tables/customer'
 
@@ -83,7 +80,7 @@ export const CustomerForm = () => {
       name: customer.name,
       overun: customer.overun ? String(customer.overun) : '',
       notes: customer.notes || '',
-      creditTerms: customer.creditTerms as MongooseId[]
+      creditTerms: (customer.creditTerms as ICreditTerm[])?.map((creditTerm: ICreditTerm) => creditTerm._id) || []
     }
 
     reset(formValues) // Populates the form with loaded values
@@ -199,130 +196,63 @@ export const CustomerForm = () => {
                 label="Credit Term"
                 options={creditTerms}
                 isRequired={false}
+                isMulti={true}
               />
-              <div className={styles.titleHeader}>
-                <h3>Business Locations:</h3>
-              </div>
-              <div className={clsx(styles.businessLocationCards, tableStyles.tblPri)}>
-                <div className={tableStyles.tblHdr}>
-                  <div className={tableStyles.tblCell}>Name</div>
-                  <div className={tableStyles.tblCell}>Address</div>
-                  <div className={tableStyles.tblCell}>Unit #</div>
-                  <div className={tableStyles.tblCell}>City</div>
-                  <div className={tableStyles.tblCell}>State</div>
-                  <div className={tableStyles.tblCell}>Zip</div>
-                  <div className={tableStyles.tblCell}>Delete</div>
-                </div>
-                <div className='table'>
-                  {
-                    businessLocations.map((businessLocation, index) => {
-                      return (
-                        <div className={styles.tableRow} key={index}>
-                          <AddressListItem
-                            data={businessLocation}
-                            onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
-                          />
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowBusinessLocationForm(true)}><FaPlus /> Add Business Location</button>
+              <DataTable
+                title="Business Locations"
+                columns={['Name', 'Address', 'Unit #', 'City', 'State', 'Zip', 'Delete']}
+                data={businessLocations}
+                onAdd={() => setShowBusinessLocationForm(true)}
+                onDelete={(index) => removeElementFromArray(index, businessLocations, setBusinessLocations)}
+                renderRow={(data, index) => (
+                  <AddressListItem
+                    data={data}
+                    onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
+                  />
+                )}
+              />
 
-              <div className={styles.titleHeader}>
-                <h3>Shipping Locations:</h3>
-              </div>
-              <div className={clsx(styles.shippingLocationCards, tableStyles.tblPri)}>
-                <div className={tableStyles.tblHdr}>
-                  <div className={tableStyles.tblCell}>Freight Acct #:</div>
-                  <div className={tableStyles.tblCell}>Delivery Method</div>
-                  <div className={tableStyles.tblCell}>Name</div>
-                  <div className={tableStyles.tblCell}>Street</div>
-                  <div className={tableStyles.tblCell}>Unit</div>
-                  <div className={tableStyles.tblCell}>City</div>
-                  <div className={tableStyles.tblCell}>State</div>
-                  <div className={tableStyles.tblCell}>Zip</div>
-                  <div className={tableStyles.tblCell}>Delete</div>
-                </div>
-                <div className='table'>
-                  {
-                    shippingLocations.map((shippingLocation, index) => {
-                      return (
-                        <div key={index}>
-                          <ShippingLocationCard
-                            data={shippingLocation}
-                            onDelete={() => removeElementFromArray(index, shippingLocations, setShippingLocations)}
-                          />
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowShippingLocationForm(true)}><FaPlus /> Add Shipping Location</button>
+              <DataTable
+                title="Shipping Locations"
+                columns={['Freight Acct #', 'Delivery Method', 'Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
+                data={shippingLocations}
+                onAdd={() => setShowShippingLocationForm(true)}
+                onDelete={(index) => removeElementFromArray(index, shippingLocations, setShippingLocations)}
+                renderRow={(data, index) => (
+                  <ShippingLocationCard
+                    data={data}
+                    onDelete={() => removeElementFromArray(index, shippingLocations, setShippingLocations)}
+                  />
+                )}
+              />
 
-              <div className={styles.titleHeader}>
-                <h3>Billing Locations:</h3>
-              </div>
-              <div className={clsx(styles.billingLocationCards, tableStyles.tblPri)}>
-                <div className={tableStyles.tblHdr}>
-                  <div className={tableStyles.tblCell}>Name</div>
-                  <div className={tableStyles.tblCell}>Street</div>
-                  <div className={tableStyles.tblCell}>Unit</div>
-                  <div className={tableStyles.tblCell}>City</div>
-                  <div className={tableStyles.tblCell}>State</div>
-                  <div className={tableStyles.tblCell}>Zip</div>
-                  <div className={tableStyles.tblCell}>Delete</div>
-                </div>
-                <div className='table'>
-                  {
-                    billingLocations.map((billingLocation, index) => {
-                      return (
-                        <div key={index}>
-                          <AddressListItem
-                            data={billingLocation}
-                            onDelete={() => removeElementFromArray(index, billingLocations, setBillingLocations)}
-                          />
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowBillingLocationForm(true)}><FaPlus /> Add Billing Location</button>
+              <DataTable
+                title="Billing Locations"
+                columns={['Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
+                data={billingLocations}
+                onAdd={() => setShowBillingLocationForm(true)}
+                onDelete={(index) => removeElementFromArray(index, billingLocations, setBillingLocations)}
+                renderRow={(data, index) => (
+                  <AddressListItem
+                    data={data}
+                    onDelete={() => removeElementFromArray(index, billingLocations, setBillingLocations)}
+                  />
+                )}
+              />
 
-              <div className={styles.titleHeader}>
-                <h3>Contacts:</h3>
-              </div>
-              <div className={clsx(styles.contactCards, tableStyles.tblPri)}>
-                <div className={tableStyles.tblHdr}>
-                  <div className={tableStyles.tblCell}>Name</div>
-                  <div className={tableStyles.tblCell}>Phone Number</div>
-                  <div className={tableStyles.tblCell}>Ext.</div>
-                  <div className={tableStyles.tblCell}>Email</div>
-                  <div className={tableStyles.tblCell}>Contact Status</div>
-                  <div className={tableStyles.tblCell}>Notes</div>
-                  <div className={tableStyles.tblCell}>Position</div>
-                  <div className={tableStyles.tblCell}>Location</div>
-                  <div className={tableStyles.tblCell}>Delete</div>
-                </div>
-                <div className='table'>
-                  {
-                    contacts.map((contact, index) => {
-                      return (
-                        <div key={index}>
-                          <ContactCard
-                            data={contact}
-                            onDelete={() => removeElementFromArray(index, contacts, setContacts)}
-                          />
-                        </div>
-                      )
-                    })
-                  }
-                </div>
-              </div>
-              <button className={styles.addNewRow} type="button" onClick={() => setShowContactForm(true)}><FaPlus /> Add Contact</button>
+              <DataTable
+                title="Contacts"
+                columns={['Name', 'Phone Number', 'Ext.', 'Email', 'Contact Status', 'Notes', 'Position', 'Location', 'Delete']}
+                data={contacts}
+                onAdd={() => setShowContactForm(true)}
+                onDelete={(index) => removeElementFromArray(index, contacts, setContacts)}
+                renderRow={(data, index) => (
+                  <ContactCard
+                    data={data}
+                    onDelete={() => removeElementFromArray(index, contacts, setContacts)}
+                  />
+                )}
+              />
 
               <Button
                 variant="submit"
@@ -335,39 +265,35 @@ export const CustomerForm = () => {
           </FormProvider>
         </div>
         {/* Code Below Renders a modal IFF user initiated one to open */}
-        {
-          showBillingLocationForm &&
-          <FormModal
-            Form={AddressForm}
-            onSubmit={onBillingLocationFormSubmit}
-            onCancel={hideBillingLocationForm}
-          />
-        }
-        {
-          showShippingLocationForm &&
-          <FormModal
-            Form={ShippingLocationForm}
-            onSubmit={onShippingLocationFormSubmit}
-            onCancel={hideShippingLocationForm}
-          />
-        }
-        {
-          showBusinessLocationForm &&
-          <FormModal
-            Form={AddressForm}
-            onSubmit={onBusinessLocationFormSubmit}
-            onCancel={hideBusinessLocationForm}
-          />
-        }
-        {
-          showContactForm &&
-          <FormModal
-            Form={ContactForm}
-            onSubmit={onContactFormSubmit}
-            onCancel={hideContactForm}
-            locations={locations}
-          />
-        }
+        <FormModal
+          Form={AddressForm}
+          isOpen={showBillingLocationForm}
+          onSubmit={onBillingLocationFormSubmit}
+          onCancel={hideBillingLocationForm}
+          title="Add Billing Location"
+        />
+        <FormModal
+          Form={ShippingLocationForm}
+          isOpen={showShippingLocationForm}
+          onSubmit={onShippingLocationFormSubmit}
+          onCancel={hideShippingLocationForm}
+          title="Add Shipping Location"
+        />
+        <FormModal
+          Form={AddressForm}
+          isOpen={showBusinessLocationForm}
+          onSubmit={onBusinessLocationFormSubmit}
+          onCancel={hideBusinessLocationForm}
+          title="Add Business Location"
+        />
+        <FormModal
+          Form={ContactForm}
+          isOpen={showContactForm}
+          onSubmit={onContactFormSubmit}
+          onCancel={hideContactForm}
+          title="Add Contact"
+          locations={locations}
+        />
       </div>
     </div>
   );

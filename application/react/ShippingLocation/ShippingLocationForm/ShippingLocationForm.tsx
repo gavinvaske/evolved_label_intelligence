@@ -40,56 +40,53 @@ export const ShippingLocationForm = (props: Props) => {
 
   return (
     <div>
-      <div className={formStyles.formCardHeader}>
-        <h3>New Shipping Address</h3>
-      </div>
       <FormProvider {...methods}>
         <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
           <div className={formStyles.formElementsWrapper}>
             <div className={formStyles.inputGroupWrapper}>
-            <Input
-              attribute='name'
-              label="Name"
-              isRequired={true}
-            />
-            <Input
-              attribute='freightAccountNumber'
-              label="Freight Account Number"
-              isRequired={true}
-            />
-            <CustomSelect
-              attribute='deliveryMethod'
-              label="Delivery Method"
-              options={deliveryMethods}
-              isRequired={false}
-            />
-            <Input
-              attribute='street'
-              label="Street"
-              isRequired={true}
-            />
-            <Input
-              attribute='unitOrSuite'
-              label="Unit or Suite #"
-              isRequired={false}
-            />
-            <Input
-              attribute='city'
-              label="City"
-              isRequired={true}
-            />
-            <Input
-              attribute='state'
-              label="State"
-              isRequired={true}
-            />
-            <Input
-              attribute='zipCode'
-              label="Zip"
-              isRequired={true}
-            />
-          </div>
-          <button className={sharedStyles.submitButton} type="submit">Submit</button>
+              <Input
+                attribute='name'
+                label="Name"
+                isRequired={true}
+              />
+              <Input
+                attribute='freightAccountNumber'
+                label="Freight Account Number"
+                isRequired={true}
+              />
+              <CustomSelect
+                attribute='deliveryMethod'
+                label="Delivery Method"
+                options={deliveryMethods}
+                isRequired={false}
+              />
+              <Input
+                attribute='street'
+                label="Street"
+                isRequired={true}
+              />
+              <Input
+                attribute='unitOrSuite'
+                label="Unit or Suite #"
+                isRequired={false}
+              />
+              <Input
+                attribute='city'
+                label="City"
+                isRequired={true}
+              />
+              <Input
+                attribute='state'
+                label="State"
+                isRequired={true}
+              />
+              <Input
+                attribute='zipCode'
+                label="Zip"
+                isRequired={true}
+              />
+            </div>
+            <button className={sharedStyles.submitButton} type="submit">Submit</button>
           </div>
         </form>
       </FormProvider>
