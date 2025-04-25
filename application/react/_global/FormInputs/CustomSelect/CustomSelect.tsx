@@ -31,9 +31,6 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  const value = watch(attribute);
-  const requiredFieldIsEmpty = isRequired && (!value || (isMulti && value.length === 0));
-
   options.sort((a, b) => a.displayName?.localeCompare(b.displayName));
 
   register(attribute, { required: isRequired ? NOTHING_SELECTED_MESSAGE : undefined } as RegisterOptions);
@@ -58,6 +55,10 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
     option.displayName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const value = watch(attribute);
+  const doesValueExist: boolean = isMulti ? value && value.length > 0 : value;
+  const requiredFieldIsEmpty = isRequired && (!value || (isMulti && value.length === 0));
+
   return (
     <div className={clsx(formStyles.customSelectContainer)} ref={dropdownRef}>
       <label className={styles.customSelectLabel}>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span></label>
@@ -70,7 +71,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
             <div 
               className={clsx(
                 styles.selectSelected, 
-                value && styles.active,
+                doesValueExist && styles.active,
                 requiredFieldIsEmpty && styles.requiredError
               )} 
               onClick={toggleDropdown}
