@@ -45,16 +45,12 @@ export const Profile = () => {
       .catch((error: AxiosError) => useErrorMessage(error))
   };
 
-  const hourOfDay = new Date().getHours();
-  const timeBasedGreetingMessage = hourOfDay < 12 ? 'Good Morning' : hourOfDay < 18 ? 'Good Afternoon' : 'Good Evening';
-
   return (
     <div className={styles.profilePage}>
       <div className={styles.profileHeaderContainer}>
         <div className={styles.profileCanvasBackground}></div>
         <div className={styles.profileDetailsFooter}>
           <UploadProfilePicture apiEndpoint='/users/me/profile-picture' acceptedMimeTypes={['image/jpeg', 'image/png', 'image/jpg']}></UploadProfilePicture>
-          {timeBasedGreetingMessage}
         </div>
       </div>
 

@@ -80,7 +80,7 @@ export const CustomerForm = () => {
       name: customer.name,
       overun: customer.overun ? String(customer.overun) : '',
       notes: customer.notes || '',
-      creditTerms: customer.creditTerms as MongooseId[]
+      creditTerms: (customer.creditTerms as ICreditTerm[])?.map((creditTerm: ICreditTerm) => creditTerm._id) || []
     }
 
     reset(formValues) // Populates the form with loaded values
@@ -196,6 +196,7 @@ export const CustomerForm = () => {
                 label="Credit Term"
                 options={creditTerms}
                 isRequired={false}
+                isMulti={true}
               />
               <DataTable
                 title="Business Locations"
