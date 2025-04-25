@@ -1,3 +1,5 @@
+@import '../../../_styles/constants.module.scss';
+
 .customSelectContainer {
   position: relative;
   width: 230px;
@@ -20,7 +22,11 @@
   transition: border-color 0.2s ease;
 
   &.requiredError {
-    border-color: #ea5455;
+    border-color: $RED;
+
+    svg {
+      color: $RED;
+    }
   }
 
   &.active {
@@ -86,7 +92,7 @@
 }
 
 .error {
-  color: red;
+  color: $RED;
   margin-top: 10px;
 }
 
