@@ -40,14 +40,14 @@
     transition: border-color 0.2s ease-in-out;
 
     &.error {
-      border-color: #dc3545;
+      border-color: $RED;
     }
 
     &:focus-within {
       border-color: #007bff;
 
       &.error {
-        border-color: #dc3545;
+        border-color: $RED;
       }
     }
 

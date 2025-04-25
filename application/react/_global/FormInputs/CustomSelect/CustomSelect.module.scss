@@ -1,3 +1,5 @@
+@import '../../../_styles/constants.module.scss';
+
 .customSelectContainer {
   position: relative;
   width: 230px;
@@ -17,10 +19,19 @@
   overflow-y: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
-}
+  transition: border-color 0.2s ease;
 
-.selectSelected.active {
-  border: 2px solid #7367F0;
+  &.requiredError {
+    border-color: $RED;
+
+    svg {
+      color: $RED;
+    }
+  }
+
+  &.active {
+    border: 1px solid #877e7e;
+  }
 }
 
 .dropdownArrow {
@@ -81,7 +92,7 @@
 }
 
 .error {
-  color: red;
+  color: $RED;
   margin-top: 10px;
 }
 

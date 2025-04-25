@@ -26,7 +26,7 @@ const NOTHING_SELECTED_MESSAGE = 'Nothing Selected';
 export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
   const { attribute, options, label, isRequired, isMulti } = props;
   const formContext = useFormContext();
-  const { register, formState: { errors }, control } = formContext;
+  const { register, formState: { errors }, control, watch } = formContext;
   const [isOpen, setIsOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -55,6 +55,10 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
     option.displayName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  const value = watch(attribute);
+  const doesValueExist: boolean = isMulti ? value && value.length > 0 : value;
+  const requiredFieldIsEmpty = isRequired && (!value || (isMulti && value.length === 0));
+
   return (
     <div className={clsx(formStyles.customSelectContainer)} ref={dropdownRef}>
       <label className={styles.customSelectLabel}>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span></label>
@@ -64,7 +68,14 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
         render={({ field: { onChange, value } }) => (
           <div>
             {/* Selected Option */}
-            <div className={clsx(styles.selectSelected, value && styles.active)} onClick={toggleDropdown}>
+            <div 
+              className={clsx(
+                styles.selectSelected, 
+                doesValueExist && styles.active,
+                requiredFieldIsEmpty && styles.requiredError
+              )} 
+              onClick={toggleDropdown}
+            >
               {isMulti ? (
                 value && value.length > 0 ? value.map((val: string) => options.find(option => val === option.value)?.displayName).join(', ') : NOTHING_SELECTED_MESSAGE
               ) : (
