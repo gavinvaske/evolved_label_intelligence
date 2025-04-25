@@ -17,10 +17,15 @@
   overflow-y: hidden;
   box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
   font-size: 14px;
-}
+  transition: border-color 0.2s ease;
 
-.selectSelected.active {
-  border: 2px solid #7367F0;
+  &.requiredError {
+    border-color: #ea5455;
+  }
+
+  &.active {
+    border: 2px solid #7367F0;
+  }
 }
 
 .dropdownArrow {
