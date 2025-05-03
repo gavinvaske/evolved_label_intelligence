@@ -234,10 +234,7 @@ export const DieForm = () => {
                 isRequired={true}
               />
 
-              <Button
-                variant="submit"
-                type="submit"
-              >
+              <Button color="blue">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>

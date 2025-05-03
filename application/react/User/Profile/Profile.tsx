@@ -94,10 +94,7 @@ export const Profile = () => {
                     />
                   </div>
                 </div>
-                <Button
-                  variant='submit'
-                  type='submit'
-                >
+                <Button color='blue'>
                   {'Update'}
                 </Button>
               </form>

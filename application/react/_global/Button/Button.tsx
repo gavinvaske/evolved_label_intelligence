@@ -3,87 +3,55 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import * as styles from './Button.module.scss';
 
-type ButtonVariant = 'submit' | 'link' | 'action';
 type ButtonSize = 'small' | 'medium' | 'large';
-type ButtonStyle = 'default' | 'white';
+type ButtonColor = 'white' | 'blue' | 'purple';
 
-type BaseButtonProps = {
-  variant?: ButtonVariant;
+type ButtonProps = {
   size?: ButtonSize;
-  style?: ButtonStyle;
-  className?: string | undefined;
+  color: ButtonColor;
+  className?: string;
   disabled?: boolean;
   tooltip?: string;
   icon?: React.ReactNode;
   children: React.ReactNode;
-};
-
-type SubmitButtonProps = BaseButtonProps & {
-  variant: 'submit';
-  type?: 'submit' | 'button';
   onClick?: React.MouseEventHandler<HTMLElement>;
-};
-
-type LinkButtonProps = BaseButtonProps & {
-  variant: 'link';
   to?: string;
-  onClick?: React.MouseEventHandler<HTMLElement>;
+  type?: 'submit' | 'button';
 };
-
-type ActionButtonProps = BaseButtonProps & {
-  variant?: 'action';
-  onClick: React.MouseEventHandler<HTMLElement>;
-};
-
-type ButtonProps = SubmitButtonProps | LinkButtonProps | ActionButtonProps;
 
 export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonProps>((props, ref) => {
   const {
-    variant,
     size = 'medium',
-    style = 'default',
+    color,
     className,
     disabled = false,
     tooltip,
     icon,
     children,
+    onClick,
+    to,
+    type = 'submit',
     ...rest
   } = props;
 
   const buttonClasses = clsx(
     styles.button,
-    variant === 'submit' && styles.submitButton,
-    style === 'white' && styles.white,
-    !className && variant && styles[variant],
-    !className && styles[size],
+    color === 'white' && styles.white,
+    color === 'blue' && styles.submitButton,
+    color === 'purple' && styles.link,
+    styles[size],
     disabled && styles.disabled,
     className
   );
 
   const renderButton = () => {
-    if (variant === 'submit') {
-      return (
-        <button
-          ref={ref as React.RefObject<HTMLButtonElement>}
-          className={buttonClasses}
-          type={props.type || 'button'}
-          disabled={disabled}
-          onClick={props.onClick}
-          {...rest}
-        >
-          {icon && <span className={styles.icon}>{icon}</span>}
-          {children}
-        </button>
-      );
-    }
-
-    if (variant === 'link' && props.to) {
+    if (to) {
       return (
         <Link
           ref={ref as React.RefObject<HTMLAnchorElement>}
-          to={props.to}
+          to={to}
           className={buttonClasses}
-          onClick={props.onClick}
+          onClick={onClick}
           {...rest}
         >
           {icon && <span className={styles.icon}>{icon}</span>}
@@ -96,8 +64,9 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
       <button
         ref={ref as React.RefObject<HTMLButtonElement>}
         className={buttonClasses}
-        onClick={props.onClick}
+        onClick={onClick}
         disabled={disabled}
+        type={type}
         {...rest}
       >
         {icon && <span className={styles.icon}>{icon}</span>}

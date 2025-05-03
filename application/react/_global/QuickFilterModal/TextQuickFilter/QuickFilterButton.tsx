@@ -29,10 +29,9 @@ export const TextQuickFilter = observer((props: Props) => {
 
   return (
     <Button
-      variant="action"
-      style={isEnabled() ? "default" : "white"}
+      color={isEnabled() ? "default" : "white"}
       onClick={onClick}
-      className={clsx(styles.filterButton, { [styles.enabled]: isEnabled() })}
+      className={clsx(styles.filterButton, isEnabled() ? styles.enabled : '')}
     >
       {filterValue}
     </Button>

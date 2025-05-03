@@ -129,17 +129,15 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         <div className={clsx(styles.filterWrapper)}>
           <div className={clsx(flexboxStyles.flexCenterCenterRow)} style={{ gap: '10px' }}>
             <Button
-              variant="action"
-              style="white"
+              color="white"
               onClick={() => toggleQuickFilterMenu()}
               icon={<VscFilter />}
               ref={quickFilterButtonRef}
             >
               Quick Filters
             </Button>
-            <Button 
-              variant="action"
-              style="white"
+            <Button
+              color="white"
               onClick={() => toggleAdvancedQuickFilterMenu()}
               icon={<FaChevronDown />}
               ref={advancedFilterButtonRef}
@@ -174,8 +172,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         <div className={clsx(sharedStyles.tooltipTop)}>
           <span className={clsx(sharedStyles.tooltipText)}>See all materials</span>
           <Button
-            variant="action"
-            style="white"
+            color="white"
             icon={<TbZoomReset />}
             onClick={(e) => {
               store.resetAllFilters();

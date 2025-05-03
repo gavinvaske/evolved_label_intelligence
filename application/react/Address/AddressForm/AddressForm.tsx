@@ -49,10 +49,7 @@ export const AddressForm = ({ onSubmit }: Props) => {
                 isRequired={true}
               />
             </div>
-            <Button
-              variant="submit"
-              type="submit"
-            >
+            <Button color="blue">
               Create
             </Button>
           </div>

@@ -15,25 +15,25 @@ const InventoryFilterBar = observer((_) => {
     <div className={clsx(flexboxStyles.flexCenterLeftRow, sharedStyles.fullWidth, sharedStyles.card, styles.inventoryFilterBar)}>
       <div className={styles.createButtonsWrapper}>
         <Button
-          variant="link"
+          color="purple"
           to="/react-ui/forms/material-order"
-          tooltip="Order material"
+          tooltip="Order a material"
           icon={<GoPlus />}
       >
         Order
       </Button>
       <Button
-        variant="link"
+        color="purple"
         to="/react-ui/forms/material"
-        tooltip="Create a new material"
+        tooltip="Create a material"
         icon={<GoPlus />}
       >
         Material
       </Button>
       <Button
-        variant="link"
+        color="purple"
         to="/react-ui/forms/material-length-adjustment"
-        tooltip="Adjust footage for material"
+        tooltip="Adjust material footage"
         icon={<GoPlus />}
       >
           Adjustment

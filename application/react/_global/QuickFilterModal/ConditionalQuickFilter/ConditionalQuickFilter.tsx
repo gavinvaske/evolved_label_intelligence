@@ -34,10 +34,9 @@ export const ConditionalQuickFilter = observer(<T extends any>(props: Props<T>) 
 
   return (
     <Button
-      variant="action"
-      style={isEnabled() ? "default" : "white"}
+      color={isEnabled() ? "default" : "white"}
       onClick={onClick}
-      className={clsx(styles.filterButton, { [styles.enabled]: isEnabled() })}
+      className={clsx(styles.filterButton, isEnabled() ? styles.enabled : '')}
     >
       {textToDisplay}
     </Button>

@@ -73,8 +73,7 @@ export const ChangePassword = () => {
                 RightIcon={<PasswordIcon showPassword={showRepeatPassword} onClick={handleRepeatPasswordIconClicked} />}
               />
               <Button
-                variant="submit"
-                type="submit"
+                color="blue"
                 data-test='change-password-btn'
               >
                 Save Password
