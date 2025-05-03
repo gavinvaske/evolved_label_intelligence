@@ -80,10 +80,7 @@ export const AdhesiveCategoryForm = () => {
                   />
                 </div>
 
-                <Button
-                  variant="submit"
-                  type="submit"
-                >
+                <Button color="blue" size="large">
                   {isUpdateRequest ? 'Update' : 'Create'}
                 </Button>
               </div>

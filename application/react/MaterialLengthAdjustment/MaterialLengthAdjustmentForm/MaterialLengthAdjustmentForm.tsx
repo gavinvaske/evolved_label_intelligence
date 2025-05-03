@@ -114,16 +114,16 @@ export const MaterialLengthAdjustmentForm = () => {
                   leftUnit='@storm'
                 />
               </div>
-              <TextArea
-                attribute='notes'
-                label="Notes"
-                isRequired={false}
-              />
+              <div className={formStyles.inputGroupWrapper}>
+                <TextArea
+                  attribute='notes'
+                  label="Notes"
+                  isRequired={false}
+                  placeholder='Enter notes here...'
+                />
+              </div>
 
-              <Button
-                variant="submit"
-                type="submit"
-              >
+              <Button color="blue" size="large">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>

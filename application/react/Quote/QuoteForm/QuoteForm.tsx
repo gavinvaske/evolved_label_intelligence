@@ -1,4 +1,3 @@
-import React from 'react';
 import QuoteHeader from './QuoteHeader/QuoteHeader';
 import CostSummary from './CostSummary/CostSummary';
 import InputSection from './InputSection/InputSection';
@@ -6,8 +5,7 @@ import OutputSection from './OutputSection/OutputSection';
 import axios from 'axios';
 import './QuoteForm.scss';
 import quoteStore from '../../stores/quoteStore'
-import * as sharedStyles from '@ui/styles/shared.module.scss'
-import * as formStyles from '@ui/styles/form.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 const QuoteForm = () => {
   const generateQuotes = (e) => {
@@ -23,7 +21,7 @@ const QuoteForm = () => {
   return (
     <div className='quote-page-wrapper'>
       <div id='quote-form' data-test='quote-form'>
-        <button className='btn-primary temp-button-class flex-center-center-row' onClick={generateQuotes}><i className="fa-duotone fa-bullseye"></i></button>
+        <Button color='blue' size='large' onClick={generateQuotes}><i className="fa-duotone fa-bullseye"></i></Button>
         <QuoteHeader />
         <CostSummary />
         <InputSection />

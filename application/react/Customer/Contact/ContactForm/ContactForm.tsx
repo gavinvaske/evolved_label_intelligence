@@ -5,7 +5,7 @@ import { IShippingLocationForm } from '@ui/types/forms';
 import { CustomSelect, SelectOption } from '../../../_global/FormInputs/CustomSelect/CustomSelect';
 import { TextArea } from '../../../_global/FormInputs/TextArea/TextArea';
 import * as formStyles from '@ui/styles/form.module.scss'
-import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { Button } from '../../../_global/Button/Button';
 
 interface Props {
   onSubmit: (contact: any) => void,
@@ -63,10 +63,12 @@ export const ContactForm = (props: Props) => {
                 isRequired={true}
               />
             </div>
-            <TextArea
-              attribute='notes'
-              label="Notes"
+            <div className={formStyles.inputGroupWrapper}>
+              <TextArea
+                attribute='notes'
+                label="Notes"
               isRequired={false}
+              placeholder='Enter notes here...'
             />
             <Input
               attribute='position'
@@ -79,7 +81,8 @@ export const ContactForm = (props: Props) => {
               options={selectableLocations}
               isRequired={false}
             />
-            <button className={sharedStyles.submitButton} type="submit">Submit</button>
+            </div>
+            <Button color='blue' size='large' type="submit">Add Contact</Button>
           </div>
         </form>
       </FormProvider>

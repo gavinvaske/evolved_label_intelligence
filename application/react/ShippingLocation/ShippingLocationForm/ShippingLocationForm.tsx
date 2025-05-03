@@ -86,10 +86,7 @@ export const ShippingLocationForm = (props: Props) => {
                 isRequired={true}
               />
             </div>
-            <Button
-              variant="submit"
-              type="submit"
-            >
+            <Button color="blue" size="large">
               Create
             </Button>
           </div>

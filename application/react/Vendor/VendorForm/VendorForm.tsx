@@ -141,6 +141,7 @@ export const VendorForm = () => {
                 attribute='notes'
                 label="Notes"
                 isRequired={false}
+                placeholder='Enter notes here...'
               />
 
               <div className={formStyles.inputGroupWrapper}>
@@ -162,10 +163,7 @@ export const VendorForm = () => {
               )
               }
 
-              <Button
-                variant="submit"
-                type="submit"
-              >
+              <Button color="blue" size="large">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>

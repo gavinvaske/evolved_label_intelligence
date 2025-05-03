@@ -20,7 +20,7 @@ import { IDie, IMaterial } from '@shared/types/models';
 import { IProductForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
-
+import { Button } from '../../_global/Button/Button';
 const productTableUrl = '/react-ui/tables/product'
 
 export const ProductForm = () => {
@@ -210,16 +210,19 @@ export const ProductForm = () => {
                 <TextArea
                   attribute='artNotes'
                   label="Art Notes"
+                  placeholder='Enter notes here...'
                 />
                 <TextArea
                   attribute='pressNotes'
                   label="Press Notes"
+                  placeholder='Enter notes here...'
                 />
                 <TextArea
                   attribute='dieCuttingNotes'
                   label="Die Cutting Notes"
+                  placeholder='Enter notes here...'
                 />
-                <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
+                <Button color='blue' size='large' type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</Button>
               </div>
             </form>
           </FormProvider>

@@ -1,8 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { ConditionalFilterFunction } from "@ui/types/filters";
 import { Button } from '../../Button/Button';
-import * as styles from './ConditionalQuickFilter.module.scss';
-import clsx from 'clsx';
 
 type Props<T> = {
   uuid: string,
@@ -34,10 +32,9 @@ export const ConditionalQuickFilter = observer(<T extends any>(props: Props<T>) 
 
   return (
     <Button
-      variant="action"
-      style={isEnabled() ? "default" : "white"}
+      color='white'
       onClick={onClick}
-      className={clsx(styles.filterButton, { [styles.enabled]: isEnabled() })}
+      enabled={isEnabled()}
     >
       {textToDisplay}
     </Button>

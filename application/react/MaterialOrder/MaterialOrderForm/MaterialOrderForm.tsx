@@ -226,17 +226,16 @@ export const MaterialOrderForm = () => {
                   fieldType='currency'
                 />
               </div>
-              <TextArea
-                attribute='notes'
-                label="Notes"
-                placeholder='Enter notes here...'
-                isRequired={false}
-              />
+              <div className={formStyles.inputGroupWrapper}>
+                <TextArea
+                  attribute='notes'
+                  label="Notes"
+                  placeholder='Enter notes here...'
+                  isRequired={false}
+                />
+              </div>
 
-              <Button
-                variant="submit"
-                type="submit"
-              >
+              <Button color="blue" size="large">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>

@@ -4,9 +4,9 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { Input } from '../../_global/FormInputs/Input/Input';
-import { useNavigate } from 'react-router-dom';
-import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { useNavigate, Link } from 'react-router-dom';
 import * as styles from './ForgotPassword.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 export const ForgotPassword = () => {
   const resetPasswordFieldRef = useRef<HTMLInputElement>(null);
@@ -51,11 +51,11 @@ export const ForgotPassword = () => {
                     { 'data-test': 'email-input' }
                   }
                 />
-                <button className={sharedStyles.submitButton} type='submit' data-test='reset-password-btn'>Reset</button>
+                <Button color='blue' size='large' type='submit' data-test='reset-password-btn'>Reset</Button>
               </form>
             </FormProvider>
             <div>
-              <a href='/react-ui/login'>Back to login</a>
+              <Link to='/react-ui/login'>Back to login</Link>
             </div>
           </div>
         </div>

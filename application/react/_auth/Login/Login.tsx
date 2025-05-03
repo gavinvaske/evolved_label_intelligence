@@ -11,6 +11,7 @@ import { FaEyeSlash, FaEye } from "react-icons/fa6";
 import { IconBaseProps } from "react-icons";
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as styles from './Login.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 export const Login = () => {
   const { setAuth } = useAuth();
@@ -170,7 +171,7 @@ export const Login = () => {
                       <Link to='/react-ui/forgot-password' id='forgot-password-btn'>Forgot Password?</Link>
                     </div>
                   </div>
-                  <button className={sharedStyles.submitButton} type='submit' data-test='login-btn'>Login</button>
+                  <Button color='blue' size='large' type='submit' data-test='login-btn'>Login</Button>
                 </form>
                 
                 <div className={styles.registerLinkContainer}>

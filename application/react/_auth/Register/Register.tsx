@@ -7,6 +7,7 @@ import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import * as sharedStyles from '../../_styles/shared.module.scss';
 import * as styles from './Register.module.scss';
+import { Button } from '../../_global/Button/Button';
 
 export const Register = () => {
   const emailFieldRef = useRef<HTMLInputElement>(null);
@@ -86,7 +87,7 @@ export const Register = () => {
                     </div>
                   </div>
                   <div className={styles.buttonContainer}>
-                    <button className={sharedStyles.submitButton} type='submit' data-test='login-btn'>Register</button>
+                    <Button color='blue' size='large' type='submit' data-test='login-btn'>Register</Button>
                   </div>
                 </form>
               </FormProvider>
