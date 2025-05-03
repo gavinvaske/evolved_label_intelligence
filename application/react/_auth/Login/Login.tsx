@@ -191,7 +191,7 @@ interface PasswordIconProps extends IconBaseProps {
   showPassword: boolean;
 }
 
-const PasswordIcon: React.FC<PasswordIconProps> = ({ showPassword, ...rest }) => {
+export const PasswordIcon: React.FC<PasswordIconProps> = ({ showPassword, ...rest }) => {
   return showPassword ? (
     <FaEye {...rest} />
   ) : (

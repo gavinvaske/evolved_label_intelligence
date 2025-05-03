@@ -5,11 +5,11 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useNavigate, useParams } from 'react-router-dom';
-import { Button } from '../../_global/Button/Button';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
 import { PasswordIcon } from '../Login/Login';
 import * as styles from './ChangePassword.module.scss'
+import { Button } from '../../_global/Button/Button';
 
 export const ChangePassword = () => {
   const newPasswordFieldRef = useRef<HTMLInputElement>(null);
