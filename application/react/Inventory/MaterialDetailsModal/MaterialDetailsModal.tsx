@@ -17,20 +17,20 @@ export const MaterialDetailsModal = (props: Props) => {
   return (
     <FullScreenModal onClose={() => onClose()}>
 
-        <div className={sharedStyles.modalHeader}>
+        <div className={styles.modalHeader}>
           <h1>{material.materialId} <span>{material.name}</span></h1>
         </div>
-        <div className={sharedStyles.modalBody}>
-          <div className={sharedStyles.bodyHeader}>
-            <div className={sharedStyles.box}>
+        <div className={styles.modalBody}>
+          <div className={styles.bodyHeader}>
+            <div className={styles.box}>
               <h5>Stock Available:</h5>
               <span>{material.inventory.netLengthAvailable}</span>
               </div>
-            <div className={sharedStyles.box}>
+            <div className={styles.box}>
             <h5>Adjustments:</h5> 
               <span>{material.inventory.sumOfLengthAdjustments}</span>
             </div>
-            <div className={sharedStyles.box}>
+            <div className={styles.box}>
               <h5>On Order:</h5>
               <span> {material.inventory.lengthNotArrived}</span>
             </div>

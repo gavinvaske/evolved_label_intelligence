@@ -7,7 +7,7 @@ import { IShippingLocationForm } from '@ui/types/forms.ts';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect.tsx';
 import { IDeliveryMethod } from '@shared/types/models.ts';
 import * as formStyles from '@ui/styles/form.module.scss'
-import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { Button } from '../../_global/Button/Button.tsx';
 
 interface Props {
   onSubmit: (data: IShippingLocationForm) => void
@@ -86,7 +86,12 @@ export const ShippingLocationForm = (props: Props) => {
                 isRequired={true}
               />
             </div>
-            <button className={sharedStyles.submitButton} type="submit">Submit</button>
+            <Button
+              variant="submit"
+              type="submit"
+            >
+              Create
+            </Button>
           </div>
         </form>
       </FormProvider>

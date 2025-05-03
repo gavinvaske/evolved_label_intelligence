@@ -1,8 +1,8 @@
 import { FormProvider, useForm } from 'react-hook-form';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import * as formStyles from '@ui/styles/form.module.scss'
-import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { IAddressForm } from '@ui/types/forms';
+import { Button } from '../../_global/Button/Button';
 
 interface Props {
   onSubmit: (data: any) => void;
@@ -49,7 +49,12 @@ export const AddressForm = ({ onSubmit }: Props) => {
                 isRequired={true}
               />
             </div>
-            <button className={sharedStyles.submitButton} type="submit">Submit</button>
+            <Button
+              variant="submit"
+              type="submit"
+            >
+              Create
+            </Button>
           </div>
         </form>
       </FormProvider>
