@@ -80,7 +80,7 @@ export const CreditTermForm = () => {
                   />
                 </div>
 
-                <Button color="blue">
+                <Button color="blue" size="large">
                   {isUpdateRequest ? 'Update' : 'Create'}
                 </Button>
               </div>

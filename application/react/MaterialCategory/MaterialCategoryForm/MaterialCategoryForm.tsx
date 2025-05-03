@@ -78,7 +78,7 @@ export const MaterialCategoryForm = () => {
                 />
               </div>
 
-              <Button color="blue">
+              <Button color="blue" size="large">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>

@@ -68,14 +68,14 @@ export const DeliveryMethodForm = () => {
               <div className={formStyles.formElementsWrapper}>
                 <div className={formStyles.inputGroupWrapper}>
                   <Input
-                  attribute='name'
-                  label="Name"
-                  isRequired={true}
-                />
-              </div>
-              <Button color="blue">
-                {isUpdateRequest ? 'Update' : 'Create'}
-              </Button>
+                    attribute='name'
+                    label="Name"
+                    isRequired={true}
+                  />
+                </div>
+                <Button color="blue" size="large">
+                  {isUpdateRequest ? 'Update' : 'Create'}
+                </Button>
               </div>
             </form>
           </FormProvider>

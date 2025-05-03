@@ -350,7 +350,7 @@ export const MaterialForm = () => {
                 />
               </div>
 
-              <Button color="blue">
+              <Button color="blue" size="large">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>

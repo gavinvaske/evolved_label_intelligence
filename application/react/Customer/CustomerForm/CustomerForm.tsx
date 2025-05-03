@@ -63,7 +63,7 @@ export const CustomerForm = () => {
   const preloadFormData = async () => {
     const creditTermSearchResults = await performTextSearch<ICreditTerm>('/credit-terms/search', { query: '', limit: '100' })
     const creditTerms = creditTermSearchResults.results
-  
+
     setCreditTerms(creditTerms.map((creditTerm: ICreditTerm) => (
       {
         displayName: creditTerm.description,
@@ -169,96 +169,101 @@ export const CustomerForm = () => {
             <form onSubmit={handleSubmit(onCustomerFormSubmit)} data-test='customer-form' className={formStyles.form}>
               <div className={formStyles.formElementsWrapper}>
                 <div className={formStyles.inputGroupWrapper}>
-                <Input
-                  attribute='customerId'
-                  label="Customer ID"
-                  isRequired={true}
+                  <Input
+                    attribute='customerId'
+                    label="Customer ID"
+                    isRequired={true}
+                  />
+                  <Input
+                    attribute='name'
+                    label="Name"
+                    isRequired={true}
+                  />
+                  <Input
+                    attribute='overun'
+                    label="Overun"
+                    isRequired={true}
+                    leftUnit='@storm'
+                  />
+                </div>
+                <div className={formStyles.inputGroupWrapper}>
+                  <TextArea
+                    attribute='notes'
+                    label="Notes"
+                    isRequired={false}
+                  />
+                  <CustomSelect
+                    attribute='creditTerms'
+                    label="Credit Term"
+                    options={creditTerms}
+                    isRequired={false}
+                    isMulti={true}
+                  />
+                </div>
+                
+                <DataTable
+                  title="Business Locations"
+                  columns={['Name', 'Address', 'Unit #', 'City', 'State', 'Zip', 'Delete']}
+                  data={businessLocations}
+                  onAdd={() => setShowBusinessLocationForm(true)}
+                  onDelete={(index) => removeElementFromArray(index, businessLocations, setBusinessLocations)}
+                  renderRow={(data, index) => (
+                    <AddressListItem
+                      data={data}
+                      onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
+                    />
+                  )}
                 />
-                <Input
-                  attribute='name'
-                  label="Name"
-                  isRequired={true}
+
+                <DataTable
+                  title="Shipping Locations"
+                  columns={['Freight Acct #', 'Delivery Method', 'Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
+                  data={shippingLocations}
+                  onAdd={() => setShowShippingLocationForm(true)}
+                  onDelete={(index) => removeElementFromArray(index, shippingLocations, setShippingLocations)}
+                  renderRow={(data, index) => (
+                    <ShippingLocationCard
+                      data={data}
+                      onDelete={() => removeElementFromArray(index, shippingLocations, setShippingLocations)}
+                    />
+                  )}
                 />
-                <Input
-                  attribute='overun'
-                  label="Overun"
-                  isRequired={true}
-                  leftUnit='@storm'
+
+                <DataTable
+                  title="Billing Locations"
+                  columns={['Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
+                  data={billingLocations}
+                  onAdd={() => setShowBillingLocationForm(true)}
+                  onDelete={(index) => removeElementFromArray(index, billingLocations, setBillingLocations)}
+                  renderRow={(data, index) => (
+                    <AddressListItem
+                      data={data}
+                      onDelete={() => removeElementFromArray(index, billingLocations, setBillingLocations)}
+                    />
+                  )}
                 />
+
+                <DataTable
+                  title="Contacts"
+                  columns={['Name', 'Phone Number', 'Ext.', 'Email', 'Contact Status', 'Notes', 'Position', 'Location', 'Delete']}
+                  data={contacts}
+                  onAdd={() => setShowContactForm(true)}
+                  onDelete={(index) => removeElementFromArray(index, contacts, setContacts)}
+                  renderRow={(data, index) => (
+                    <ContactCard
+                      data={data}
+                      onDelete={() => removeElementFromArray(index, contacts, setContacts)}
+                    />
+                  )}
+                />
+
+                <div className={formStyles.spacer}></div>
+
+                <Button color="blue" size="large">
+                  {isUpdateRequest ? 'Update' : 'Create'}
+                </Button>
               </div>
-              <TextArea
-                attribute='notes'
-                label="Notes"
-                isRequired={false}
-              />
-              <CustomSelect
-                attribute='creditTerms'
-                label="Credit Term"
-                options={creditTerms}
-                isRequired={false}
-                isMulti={true}
-              />
-              <DataTable
-                title="Business Locations"
-                columns={['Name', 'Address', 'Unit #', 'City', 'State', 'Zip', 'Delete']}
-                data={businessLocations}
-                onAdd={() => setShowBusinessLocationForm(true)}
-                onDelete={(index) => removeElementFromArray(index, businessLocations, setBusinessLocations)}
-                renderRow={(data, index) => (
-                  <AddressListItem
-                    data={data}
-                    onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
-                  />
-                )}
-              />
-
-              <DataTable
-                title="Shipping Locations"
-                columns={['Freight Acct #', 'Delivery Method', 'Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
-                data={shippingLocations}
-                onAdd={() => setShowShippingLocationForm(true)}
-                onDelete={(index) => removeElementFromArray(index, shippingLocations, setShippingLocations)}
-                renderRow={(data, index) => (
-                  <ShippingLocationCard
-                    data={data}
-                    onDelete={() => removeElementFromArray(index, shippingLocations, setShippingLocations)}
-                  />
-                )}
-              />
-
-              <DataTable
-                title="Billing Locations"
-                columns={['Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
-                data={billingLocations}
-                onAdd={() => setShowBillingLocationForm(true)}
-                onDelete={(index) => removeElementFromArray(index, billingLocations, setBillingLocations)}
-                renderRow={(data, index) => (
-                  <AddressListItem
-                    data={data}
-                    onDelete={() => removeElementFromArray(index, billingLocations, setBillingLocations)}
-                  />
-                )}
-              />
-
-              <DataTable
-                title="Contacts"
-                columns={['Name', 'Phone Number', 'Ext.', 'Email', 'Contact Status', 'Notes', 'Position', 'Location', 'Delete']}
-                data={contacts}
-                onAdd={() => setShowContactForm(true)}
-                onDelete={(index) => removeElementFromArray(index, contacts, setContacts)}
-                renderRow={(data, index) => (
-                  <ContactCard
-                    data={data}
-                    onDelete={() => removeElementFromArray(index, contacts, setContacts)}
-                  />
-                )}
-              />
-
-              <Button color="blue">
-                {isUpdateRequest ? 'Update' : 'Create'}
-              </Button>
-            </div>
-          </form>
+            </form>
           </FormProvider>
         </div>
         {/* Code Below Renders a modal IFF user initiated one to open */}

@@ -36,9 +36,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 
   const buttonClasses = clsx(
     styles.button,
-    color === 'white' && styles.white,
-    color === 'blue' && styles.submitButton,
-    color === 'purple' && styles.link,
+    styles[color],
     styles[size],
     disabled && styles.disabled,
     className

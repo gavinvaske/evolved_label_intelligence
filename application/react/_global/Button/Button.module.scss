@@ -7,25 +7,62 @@
   cursor: pointer;
   transition: all 0.2s ease-in-out;
   border: 1px solid transparent;
+  min-height: 2.5rem;
   padding: 0.5rem 1rem;
   font-size: 0.875rem;
-  min-height: 2.5rem;
 
   &.disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
 
+  // Size styles
   &.small {
+    min-height: 2rem;
     padding: 0.25rem 0.5rem;
     font-size: 0.75rem;
-    min-height: 2rem;
+  }
+
+  &.medium {
+    min-height: 2.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
   }
 
   &.large {
+    min-height: 3rem;
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
-    min-height: 3rem;
+  }
+
+  // Color styles
+  &.white {
+    background-color: white;
+    color: inherit;
+    border: 1px solid #e9ecef;
+
+    &:hover:not(.disabled) {
+      background-color: #f8f9fa;
+    }
+  }
+
+  &.blue {
+    background-color: #157efb;
+    color: white;
+    border-color: #157efb;
+
+    &:hover:not(.disabled) {
+      background-color: #1268c9;
+    }
+  }
+
+  &.purple {
+    background-color: #7367F0;
+    color: white;
+
+    &:hover:not(.disabled) {
+      background-color: #5e50ee;
+    }
   }
 
   &.link {
@@ -51,18 +88,6 @@
     font-size: 1rem;
     margin-top: 1rem;
     width: 150px;
-  }
-
-  &.white {
-    background-color: white;
-    color: inherit;
-    border: 1px solid #e9ecef;
-    padding: 0.5rem 1rem;
-    min-height: 2.5rem;
-
-    &:hover:not(.disabled) {
-      background-color: #f8f9fa;
-    }
   }
 }
 

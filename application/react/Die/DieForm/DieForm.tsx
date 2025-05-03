@@ -228,13 +228,15 @@ export const DieForm = () => {
                   fieldType='checkbox'
                 />
               </div>
-              <TextArea
-                attribute='notes'
-                label="Notes"
-                isRequired={true}
-              />
+              <div className={formStyles.inputGroupWrapper}>
+                <TextArea
+                  attribute='notes'
+                  label="Notes"
+                  isRequired={true}
+                />
+              </div>
 
-              <Button color="blue">
+              <Button color="blue" size="large">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>
