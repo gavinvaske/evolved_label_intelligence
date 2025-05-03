@@ -210,14 +210,17 @@ export const ProductForm = () => {
                 <TextArea
                   attribute='artNotes'
                   label="Art Notes"
+                  placeholder='Enter notes here...'
                 />
                 <TextArea
                   attribute='pressNotes'
                   label="Press Notes"
+                  placeholder='Enter notes here...'
                 />
                 <TextArea
                   attribute='dieCuttingNotes'
                   label="Die Cutting Notes"
+                  placeholder='Enter notes here...'
                 />
                 <button className={sharedStyles.submitButton} type='submit'>{isUpdateRequest ? 'Update' : 'Create'}</button>
               </div>

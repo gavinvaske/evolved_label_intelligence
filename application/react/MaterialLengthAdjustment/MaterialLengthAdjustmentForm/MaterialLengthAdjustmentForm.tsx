@@ -119,6 +119,7 @@ export const MaterialLengthAdjustmentForm = () => {
                   attribute='notes'
                   label="Notes"
                   isRequired={false}
+                  placeholder='Enter notes here...'
                 />
               </div>
 

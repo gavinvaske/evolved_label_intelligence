@@ -67,6 +67,7 @@ export const ContactForm = (props: Props) => {
               attribute='notes'
               label="Notes"
               isRequired={false}
+              placeholder='Enter notes here...'
             />
             <Input
               attribute='position'

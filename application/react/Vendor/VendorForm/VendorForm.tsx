@@ -141,6 +141,7 @@ export const VendorForm = () => {
                 attribute='notes'
                 label="Notes"
                 isRequired={false}
+                placeholder='Enter notes here...'
               />
 
               <div className={formStyles.inputGroupWrapper}>

@@ -191,6 +191,7 @@ export const CustomerForm = () => {
                     attribute='notes'
                     label="Notes"
                     isRequired={false}
+                    placeholder='Enter notes here...'
                   />
                   <CustomSelect
                     attribute='creditTerms'

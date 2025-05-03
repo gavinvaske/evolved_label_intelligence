@@ -233,6 +233,7 @@ export const DieForm = () => {
                   attribute='notes'
                   label="Notes"
                   isRequired={true}
+                  placeholder='Enter notes here...'
                 />
               </div>
 
