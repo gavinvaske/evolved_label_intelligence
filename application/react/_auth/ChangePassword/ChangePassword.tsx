@@ -75,6 +75,7 @@ export const ChangePassword = () => {
               <Button
                 variant="submit"
                 type="submit"
+                data-test='change-password-btn'
               >
                 Save Password
               </Button>
