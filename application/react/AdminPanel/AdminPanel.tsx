@@ -1,13 +1,10 @@
 import axios from 'axios';
 import { useSuccessMessage } from '../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../_hooks/useErrorMessage';
-import { useNavigate } from 'react-router-dom';
-import * as sharedStyles from '@ui/styles/shared.module.scss'
-import * as styles from './AdminPanel.module.scss';
+import { Button } from '../_global/Button/Button';
+import * as sharedStyles from '@ui/styles/shared.module.scss';
 
 export const AdminPanel = () => {
-  const navigate = useNavigate();
-  
   function calculateInventory() {
     axios.get('/materials/recalculate-inventory')
       .then(() => useSuccessMessage('Inventory successfully calculated!'))
@@ -15,10 +12,10 @@ export const AdminPanel = () => {
   }
 
   return (
-    <div className={styles.pageWrapper}>
+    <div className={sharedStyles.pageWrapper}>
       <h2>Admin Panel</h2>
       <div>
-        <button className={sharedStyles.submitButton} onClick={calculateInventory}>Force Inventory Recalculation</button>
+        <Button color='blue' size='large' onClick={calculateInventory}>Force Inventory Recalculation</Button>
       </div>
 
     </div>
