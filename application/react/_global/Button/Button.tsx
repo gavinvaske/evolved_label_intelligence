@@ -8,7 +8,7 @@ type ButtonColor = 'white' | 'blue' | 'purple';
 
 type ButtonProps = {
   size?: ButtonSize;
-  color: ButtonColor;
+  color?: ButtonColor;
   className?: string;
   disabled?: boolean;
   enabled?: boolean;
@@ -38,7 +38,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
 
   const buttonClasses = clsx(
     styles.button,
-    styles[color],
+    color && styles[color],
     styles[size],
     disabled && styles.disabled,
     enabled && styles.enabled,

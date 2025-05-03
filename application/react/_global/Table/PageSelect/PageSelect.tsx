@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import * as styles from './PageSelect.module.scss'
 import { Table } from '@tanstack/react-table';
 import { LoadingIndicator } from '../../LoadingIndicator/LoadingIndicator';
+import { Button } from '../../Button/Button';
 
 interface Props {
   table: Table<any>;
@@ -92,19 +93,23 @@ export const PageSelect = (props: Props) => {
 
   return (
     <div style={{ marginTop: '1rem' }}>
-      <button
+      <Button
+        color='white'
+        size='small'
         onClick={() => table.previousPage()}
         disabled={!table.getCanPreviousPage()}
       >
         Previous
-      </button>
+      </Button>
       <span style={{ margin: '0 1rem' }}>{pageNumberDescription}</span>
-      <button
+      <Button
+        color='white'
+        size='small'
         onClick={() => table.nextPage()}
         disabled={!table.getCanNextPage()}
       >
         Next
-      </button>
+      </Button>
       <div>
         <span className={styles.pageSelectError}>{errorMessage}</span>
         <br></br>
