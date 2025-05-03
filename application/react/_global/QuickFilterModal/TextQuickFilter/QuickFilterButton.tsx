@@ -1,7 +1,5 @@
 import { observer } from 'mobx-react-lite';
 import { Button } from '../../Button/Button';
-import * as styles from './QuickFilterButton.module.scss';
-import clsx from 'clsx';
 
 type Props = {
   uuid: string,
@@ -31,7 +29,7 @@ export const TextQuickFilter = observer((props: Props) => {
     <Button
       color='white'
       onClick={onClick}
-      className={clsx(styles.filterButton, isEnabled() ? styles.enabled : '')}
+      enabled={isEnabled()}
     >
       {filterValue}
     </Button>

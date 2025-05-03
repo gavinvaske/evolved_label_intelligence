@@ -25,16 +25,18 @@ const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], s
       return (
         <div className={styles.filterSection}>
           <span className={styles.filterDescription}>{description}</span>
-          {options.map((option: TextFilterOption) => (
-            <TextQuickFilter
-              uuid={option.uuid}
+          <div className={styles.filterOptions}>
+            {options.map((option: TextFilterOption) => (
+              <TextQuickFilter
+                uuid={option.uuid}
               filterValue={option.value}
               onDisabled={(uuid) => store.removeTextQuickFilter(uuid)}
               onEnabled={(uuid, filterValue) => store.setTextQuickFilter(uuid, filterValue)}
               key={option.uuid}
               filtersStore={store}
-            />
-          ))}
+              />
+            ))}
+          </div>
         </div>)
     })
   )
@@ -45,7 +47,7 @@ const renderConditionalQuickFilters = <T extends any>(conditionalFilterFunctions
     conditionalFilterFunctions.map((filterFunction: ConditionalFilter<T>) => {
       const { uuid, textToDisplay, conditionalFilter } = filterFunction;
       return (
-        <div>
+        <div className={styles.filterOptions}>
           <ConditionalQuickFilter
             uuid={uuid}
             conditionalFilterFunction={conditionalFilter}

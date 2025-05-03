@@ -1,5 +1,11 @@
 @import '../../_styles/shared.module.scss';
 
+.filterOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
 .searchWrapper {
   height: 34px;
   min-width: 80px;

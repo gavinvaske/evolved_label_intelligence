@@ -16,6 +16,26 @@
     cursor: not-allowed;
   }
 
+  &.enabled {
+    &.white {
+      background-color: rgba(115, 103, 240, 0.1);
+      color: rgba(115, 103, 240, 1);
+      border-color: rgba(115, 103, 240, 0.2);
+    }
+
+    &.blue {
+      background-color: rgba(21, 126, 251, 0.1);
+      color: rgba(21, 126, 251, 1);
+      border-color: rgba(21, 126, 251, 0.2);
+    }
+
+    &.purple {
+      background-color: rgba(115, 103, 240, 0.1);
+      color: rgba(115, 103, 240, 1);
+      border-color: rgba(115, 103, 240, 0.2);
+    }
+  }
+
   // Size styles
   &.small {
     min-height: 2rem;

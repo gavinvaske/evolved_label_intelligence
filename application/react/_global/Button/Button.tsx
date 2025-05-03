@@ -11,6 +11,7 @@ type ButtonProps = {
   color: ButtonColor;
   className?: string;
   disabled?: boolean;
+  enabled?: boolean;
   tooltip?: string;
   icon?: React.ReactNode;
   children: React.ReactNode;
@@ -25,6 +26,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     color,
     className,
     disabled = false,
+    enabled = false,
     tooltip,
     icon,
     children,
@@ -39,6 +41,7 @@ export const Button = forwardRef<HTMLButtonElement | HTMLAnchorElement, ButtonPr
     styles[color],
     styles[size],
     disabled && styles.disabled,
+    enabled && styles.enabled,
     className
   );
 
