@@ -12,6 +12,7 @@ import * as styles from './Navbar.module.scss';
 import { FaAngleDown } from "react-icons/fa6";
 import pluralize from 'pluralize';
 import { Dropdown } from '../../_global/Dropdown/Dropdown';
+import { Button } from '../../_global/Button/Button';
 
 pluralize.addIrregularRule('die', 'dies');
 
@@ -226,9 +227,9 @@ const UserOptionsDropdown = ({
     </div>
     <div className={styles.lineDivide}></div>
     <div className={styles.userLogoutFooter}>
-      <button onClick={onLogout}>
+      <Button onClick={onLogout}>
         Log Out
-      </button>
+      </Button>
     </div>
   </Dropdown>
 );
