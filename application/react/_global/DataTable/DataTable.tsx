@@ -3,13 +3,13 @@ import { FaPlus } from 'react-icons/fa';
 import clsx from 'clsx';
 import * as tableStyles from '@ui/styles/table.module.scss';
 import * as styles from './DataTable.module.scss';
+import { Button } from '../Button/Button';
 
 interface DataTableProps {
   title: string;
   columns: string[];
   data: any[];
   onAdd: () => void;
-  onDelete: (index: number) => void;
   renderRow: (data: any, index: number) => React.ReactNode;
 }
 
@@ -18,7 +18,6 @@ export const DataTable: React.FC<DataTableProps> = ({
   columns,
   data,
   onAdd,
-  onDelete,
   renderRow
 }) => {
   return (
@@ -42,13 +41,9 @@ export const DataTable: React.FC<DataTableProps> = ({
           ))}
         </div>
       </div>
-      <button 
-        className={styles.addButton} 
-        type="button" 
-        onClick={onAdd}
-      >
-        <FaPlus /> Add {title}
-      </button>
+      <Button color='purple' size='small' onClick={onAdd} icon={<FaPlus />} type='button'>
+        Add {title}
+      </Button>
     </div>
   );
 }; 

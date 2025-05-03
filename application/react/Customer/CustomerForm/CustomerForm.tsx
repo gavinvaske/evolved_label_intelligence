@@ -207,7 +207,6 @@ export const CustomerForm = () => {
                   columns={['Name', 'Address', 'Unit #', 'City', 'State', 'Zip', 'Delete']}
                   data={businessLocations}
                   onAdd={() => setShowBusinessLocationForm(true)}
-                  onDelete={(index) => removeElementFromArray(index, businessLocations, setBusinessLocations)}
                   renderRow={(data, index) => (
                     <AddressListItem
                       data={data}
@@ -221,7 +220,6 @@ export const CustomerForm = () => {
                   columns={['Freight Acct #', 'Delivery Method', 'Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
                   data={shippingLocations}
                   onAdd={() => setShowShippingLocationForm(true)}
-                  onDelete={(index) => removeElementFromArray(index, shippingLocations, setShippingLocations)}
                   renderRow={(data, index) => (
                     <ShippingLocationCard
                       data={data}
@@ -235,7 +233,6 @@ export const CustomerForm = () => {
                   columns={['Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
                   data={billingLocations}
                   onAdd={() => setShowBillingLocationForm(true)}
-                  onDelete={(index) => removeElementFromArray(index, billingLocations, setBillingLocations)}
                   renderRow={(data, index) => (
                     <AddressListItem
                       data={data}
@@ -249,7 +246,6 @@ export const CustomerForm = () => {
                   columns={['Name', 'Phone Number', 'Ext.', 'Email', 'Contact Status', 'Notes', 'Position', 'Location', 'Delete']}
                   data={contacts}
                   onAdd={() => setShowContactForm(true)}
-                  onDelete={(index) => removeElementFromArray(index, contacts, setContacts)}
                   renderRow={(data, index) => (
                     <ContactCard
                       data={data}
