@@ -3,7 +3,6 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "version": "1.0.0",
   "description": "An application used to get up and running with a new nodejs project with a linter, test library and basic configuration already setup",
-  "type": "module",
   "targets": {
     "main": false,
     "resources": {

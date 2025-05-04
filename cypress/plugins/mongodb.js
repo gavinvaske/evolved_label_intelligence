@@ -1,5 +1,11 @@
-import mongoose from 'mongoose';
-import { connectToTestMongoDatabase, closeDatabase, clearDatabase } from './databaseService.js';
+const mongoose = require('mongoose');
+const { connectToTestMongoDatabase, closeDatabase, clearDatabase } = require('./databaseService.js');
+const { UserModel } = require('../../application/api/models/user.ts');
+const { MaterialCategoryModel } = require('../../application/api/models/materialCategory.ts');
+
+// Register models with Mongoose
+mongoose.model('User', UserModel.schema);
+mongoose.model('MaterialCategory', MaterialCategoryModel.schema);
 
 const mongodbPlugin = async (on, config) => {
     on('before:run', async () => {
@@ -29,4 +35,4 @@ const mongodbPlugin = async (on, config) => {
     return config;
 };
 
-export default mongodbPlugin; 
+module.exports = mongodbPlugin; 

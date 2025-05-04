@@ -4,6 +4,19 @@
   "compilerOptions": {
     "target": "es5",
     "lib": ["es5", "dom"],
-    "types": ["cypress"]
-  }
+    "types": ["cypress", "node"],
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["../../*"]
+    }
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.js",
+    "../../application/api/**/*.ts"
+  ]
 }

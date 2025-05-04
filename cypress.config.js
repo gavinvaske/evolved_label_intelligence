@@ -1,10 +1,10 @@
-import { defineConfig } from 'cypress';
-import mongodbPlugin from './cypress/plugins/mongodb.mjs';
-import dotenv from 'dotenv';
+const { defineConfig } = require('cypress');
+const mongodbPlugin = require('./cypress/plugins/mongodb.js');
+const dotenv = require('dotenv');
 
 dotenv.config();
 
-export default defineConfig({
+module.exports = defineConfig({
     e2e: {
         setupNodeEvents(on, config) {
             return mongodbPlugin(on, config);
