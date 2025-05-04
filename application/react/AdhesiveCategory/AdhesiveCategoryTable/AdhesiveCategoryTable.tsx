@@ -28,7 +28,7 @@ export const AdhesiveCategoryTable = () => {
   const confirmation = useConfirmation();
   const { ConfirmationDialog } = confirmation;
 
-  const columnHelper = createColumnHelper<any>();
+  const columnHelper = createColumnHelper<IAdhesiveCategory>();
 
   const columns = [
     columnHelper.accessor('name', {
@@ -69,7 +69,7 @@ export const AdhesiveCategoryTable = () => {
     useErrorMessage(error)
   }
 
-  const table = useReactTable<any>({
+  const table = useReactTable<IAdhesiveCategory>({
     data: adhesiveCategorySearchResults?.results ?? defaultData,
     columns,
     rowCount: adhesiveCategorySearchResults?.totalResults ?? 0,

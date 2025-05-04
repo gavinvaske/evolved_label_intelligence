@@ -1,4 +1,3 @@
-import { AdhesiveCategory } from '../../../_types/databasemodels/adhesiveCategory.ts';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -9,9 +8,10 @@ import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/RowActions';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 import { ConfirmationResult } from '../../../_global/Modal/useConfirmation';
+import { IAdhesiveCategory } from '@shared/types/models.ts';
 
 type Props = {
-  row: Row<AdhesiveCategory>;
+  row: Row<IAdhesiveCategory>;
   confirmation: ConfirmationResult;
 }
 
