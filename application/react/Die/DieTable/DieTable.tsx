@@ -15,27 +15,9 @@ import { performTextSearch } from '../../_queries/_common';
 import { IDie } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
-
-const columnHelper = createColumnHelper<IDie>()
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 
 export const GET_DIES_QUERY_KEY = 'get-dies'
-
-const columns = [
-  columnHelper.accessor('dieNumber', {
-    header: 'Die Number',
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <DieRowActions row={props.row} />
-  })
-];
 
 export const DieTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -45,6 +27,27 @@ export const DieTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const columnHelper = createColumnHelper<IDie>()
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+
+  const columns = [
+    columnHelper.accessor('dieNumber', {
+      header: 'Die Number',
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <DieRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { isError, data: dieSearchResults, error, isLoading } = useQuery({
     queryKey: ['get-dies', pagination, sorting, globalSearch],
@@ -62,7 +65,7 @@ export const DieTable = () => {
       return results
     },
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
-    })
+  })
 
   if (isError) {
     useErrorMessage(error)
@@ -84,9 +87,9 @@ export const DieTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -103,14 +106,14 @@ export const DieTable = () => {
           <h1 className={sharedStyles.textBlue}>Dies</h1>
           <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{dieSearchResults?.totalResults || 0}</p> results.</p>
         </div>
-         <SearchBar value={globalSearch} performSearch={(value: string) => {
+        <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
 
         <Table id='die-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
@@ -122,6 +125,7 @@ export const DieTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )
