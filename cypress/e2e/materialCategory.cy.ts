@@ -6,40 +6,45 @@ describe('Material Category CRUD Operations', () => {
     });
 
     it('should create a new material category', () => {
-        cy.visit('/material-categories');
-        cy.get('[data-test="create-material-category"]').click();
+        // Visit the form page
+        cy.visit('/react-ui/forms/material-category');
         
-        cy.get('input[name="name"]').type('Test Category');
-        cy.get('textarea[name="description"]').type('Test Description');
-        cy.get('button[type="submit"]').click();
+        // Fill out and submit the form
+        cy.get('[data-test="material-category-name-input"]').type('Test Category');
+        cy.get('[data-test="material-category-submit"]').click();
 
-        cy.get('[data-test="material-category-list"]')
-            .should('contain', 'Test Category');
+        // Should redirect to the table page and show the new category
+        cy.url().should('include', '/react-ui/tables/material-category');
+        cy.get('[data-test="material-category-table"]').should('contain', 'Test Category');
     });
 
     it('should update an existing material category', () => {
         // First create a material category
         cy.seedDatabase('MaterialCategory', 1);
         
-        cy.visit('/material-categories');
+        // Visit the table page and click edit
+        cy.visit('/react-ui/tables/material-category');
         cy.get('[data-test="edit-material-category"]').first().click();
         
-        cy.get('input[name="name"]').clear().type('Updated Category');
-        cy.get('button[type="submit"]').click();
+        // Update the form
+        cy.get('[data-test="material-category-name-input"]').clear().type('Updated Category');
+        cy.get('[data-test="material-category-submit"]').click();
 
-        cy.get('[data-test="material-category-list"]')
-            .should('contain', 'Updated Category');
+        // Should redirect to the table page and show the updated category
+        cy.url().should('include', '/react-ui/tables/material-category');
+        cy.get('[data-test="material-category-table"]').should('contain', 'Updated Category');
     });
 
     it('should delete a material category', () => {
         // First create a material category
         cy.seedDatabase('MaterialCategory', 1);
         
-        cy.visit('/material-categories');
+        // Visit the table page and delete
+        cy.visit('/react-ui/tables/material-category');
         cy.get('[data-test="delete-material-category"]').first().click();
         cy.get('[data-test="confirm-delete"]').click();
 
-        cy.get('[data-test="material-category-list"]')
-            .should('not.contain', 'Test Category');
+        // Should show the category is gone
+        cy.get('[data-test="material-category-table"]').should('not.contain', 'Test Category');
     });
 }); 
