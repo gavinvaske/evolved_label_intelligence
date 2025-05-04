@@ -5,7 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { getOneDeliveryMethod } from '../../_queries/deliveryMethod';
-import { DeliveryMethod } from '../../_types/databasemodels/deliveryMethod.ts';
+import { IDeliveryMethod } from '@shared/types/models';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { IDeliveryMethodForm } from '@ui/types/forms.ts';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
@@ -26,7 +26,7 @@ export const DeliveryMethodForm = () => {
     if (!isUpdateRequest) return;
 
     getOneDeliveryMethod(mongooseId)
-      .then((deliveryMethod: DeliveryMethod) => {
+      .then((deliveryMethod: IDeliveryMethod) => {
         const formValues: IDeliveryMethodForm = {
           name: deliveryMethod.name
         }
