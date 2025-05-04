@@ -1,4 +1,3 @@
-import React from 'react';
 import { AdhesiveCategory } from '../../../_types/databasemodels/adhesiveCategory.ts';
 import { Row } from '@tanstack/react-table';
 import { useNavigate } from 'react-router-dom';
