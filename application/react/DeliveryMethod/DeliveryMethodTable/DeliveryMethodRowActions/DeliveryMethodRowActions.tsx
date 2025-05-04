@@ -8,23 +8,32 @@ import { useQueryClient } from '@tanstack/react-query'
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 import { IDeliveryMethod } from '@shared/types/models.ts';
-
+import { ConfirmationResult } from '../../../_global/Modal/useConfirmation';
 type Props = {
-  row: Row<IDeliveryMethod>
+  row: Row<IDeliveryMethod>,
+  confirmation: ConfirmationResult
 }
 
 export const DeliveryMethodRowActions = (props: Props) => {
-  const { row }: { row: any } = props;
-  const { _id : mongooseObjectId } = row.original;
+  const { row, confirmation } = props;
+  const { _id: mongooseObjectId } = row.original;
+  const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
   const queryClient = useQueryClient()
 
-  const onDeleteClicked = (mongooseObjectId: MongooseId) => {
-    alert('@TODO Storm: Add a confirmation modal before deletion?')
+  const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
+    const confirmed = await showConfirmation({
+      title: 'Delete Delivery Method',
+      message: 'Are you sure you want to delete this delivery method? This action cannot be undone.',
+      confirmText: 'Delete',
+    });
+
+    if (!confirmed) return;
+
     axios.delete(`/delivery-methods/${mongooseObjectId}`)
-      .then((_ : AxiosResponse) => {
-        queryClient.invalidateQueries({ queryKey: ['get-delivery-methods']})
+      .then((_: AxiosResponse) => {
+        queryClient.invalidateQueries({ queryKey: ['get-delivery-methods'] })
         useSuccessMessage('Deletion was successful')
       })
       .catch((error: AxiosError) => useErrorMessage(error))
