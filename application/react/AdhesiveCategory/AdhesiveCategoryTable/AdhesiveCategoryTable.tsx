@@ -15,35 +15,37 @@ import { performTextSearch } from '../../_queries/_common';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
-
-const columnHelper = createColumnHelper<any>()
-
-const columns = [
-  columnHelper.accessor('name', {
-    header: 'Name'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <AdhesiveCategoryRowActions row={props.row} />
-  })
-];
-
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 
 export const AdhesiveCategoryTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
-  const [sorting, setSorting] = React.useState<SortingState>([])
+  const [sorting, setSorting] = React.useState<SortingState>([]);
   const [pagination, setPagination] = React.useState<PaginationState>({
     pageIndex: 0,
     pageSize: 50,
-  })
-  const defaultData = useMemo(() => [], [])
+  });
+  const defaultData = useMemo(() => [], []);
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+  const columnHelper = createColumnHelper<any>();
+
+  const columns = [
+    columnHelper.accessor('name', {
+      header: 'Name'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <AdhesiveCategoryRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { isError, data: adhesiveCategorySearchResults, error, isLoading } = useQuery({
     queryKey: ['get-adhesive-categories', pagination, sorting, globalSearch],
@@ -61,7 +63,7 @@ export const AdhesiveCategoryTable = () => {
       return results
     },
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
-    })
+  })
 
   if (isError) {
     useErrorMessage(error)
@@ -77,7 +79,6 @@ export const AdhesiveCategoryTable = () => {
       globalFilter: globalSearch,
       sorting: sorting,
       pagination: pagination
-
     },
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -102,7 +103,7 @@ export const AdhesiveCategoryTable = () => {
           <h1 className={sharedStyles.textBlue}>Adhesive Categories</h1>
           <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{adhesiveCategorySearchResults?.totalResults || 0}</p> results.</p>
         </div>
-         <SearchBar value={globalSearch} performSearch={(value: string) => {
+        <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
@@ -121,6 +122,7 @@ export const AdhesiveCategoryTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )
