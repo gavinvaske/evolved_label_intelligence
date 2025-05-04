@@ -4,7 +4,7 @@ import clsx from 'clsx';
 import * as styles from './Button.module.scss';
 
 type ButtonSize = 'small' | 'medium' | 'large';
-type ButtonColor = 'white' | 'blue' | 'purple';
+type ButtonColor = 'white' | 'blue' | 'purple' | 'red';
 
 type ButtonProps = {
   size?: ButtonSize;

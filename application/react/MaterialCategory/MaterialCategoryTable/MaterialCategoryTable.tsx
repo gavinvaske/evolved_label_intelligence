@@ -15,27 +15,7 @@ import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
-
-const columnHelper = createColumnHelper<IMaterialCategory>()
-
-const columns = [
-  columnHelper.accessor('name', {
-    header: 'Name'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <MaterialCategoryRowActions row={props.row} />
-  })
-];
-
-
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 export const MaterialCategoryTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -44,6 +24,26 @@ export const MaterialCategoryTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const columnHelper = createColumnHelper<IMaterialCategory>()
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+  const columns = [
+    columnHelper.accessor('name', {
+      header: 'Name'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <MaterialCategoryRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { isError, data: materialCategorySearchResults, error, isLoading } = useQuery({
     queryKey: ['get-material-categories', pagination, sorting, globalSearch],
@@ -121,6 +121,7 @@ export const MaterialCategoryTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )

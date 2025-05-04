@@ -17,41 +17,7 @@ import { isRefPopulated } from '@shared/types/_utility';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useLocation } from 'react-router-dom';
-
-const columnHelper = createColumnHelper<IMaterialLengthAdjustment>()
-
-const columns = [
-  columnHelper.accessor(row => isRefPopulated<IMaterial>(row.material) ? row.material.name : '', {
-    id: 'material.name',
-    header: 'Material Name',
-  }),
-  columnHelper.accessor(row => row.length, {
-    header: 'Length',
-    cell: ({ getValue }) => {
-      const length = getValue();
-      return (
-        <span style={{ color: length > 0 ? 'green' : 'red' }}>
-          {length > 0 ? `${length}` : `(${Math.abs(length)})`}
-        </span>
-      );
-    },
-  }),
-  columnHelper.accessor('notes', {
-    header: 'Notes',
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <MaterialLengthAdjustmentRowActions row={props.row} />
-  })
-];
-
+import { useConfirmation } from '../../../_global/Modal/useConfirmation';
 export const MaterialLengthAdjustmentTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -60,6 +26,42 @@ export const MaterialLengthAdjustmentTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const columnHelper = createColumnHelper<IMaterialLengthAdjustment>()
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+
+  const columns = [
+    columnHelper.accessor(row => isRefPopulated<IMaterial>(row.material) ? row.material.name : '', {
+      id: 'material.name',
+      header: 'Material Name',
+    }),
+    columnHelper.accessor(row => row.length, {
+      header: 'Length',
+      cell: ({ getValue }) => {
+        const length = getValue();
+        return (
+          <span style={{ color: length > 0 ? 'green' : 'red' }}>
+            {length > 0 ? `${length}` : `(${Math.abs(length)})`}
+          </span>
+        );
+      },
+    }),
+    columnHelper.accessor('notes', {
+      header: 'Notes',
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <MaterialLengthAdjustmentRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { state } = useLocation();
   const { query } = state || {};
@@ -92,7 +94,7 @@ export const MaterialLengthAdjustmentTable = () => {
     useErrorMessage(error)
   }
 
-  const table = useReactTable<any>({
+  const table = useReactTable<IMaterialLengthAdjustment>({
     data: materialLengthAdjustmentSearchResults?.results ?? defaultData,
     columns,
     rowCount: materialLengthAdjustmentSearchResults?.totalResults ?? 0,
@@ -146,6 +148,7 @@ export const MaterialLengthAdjustmentTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )

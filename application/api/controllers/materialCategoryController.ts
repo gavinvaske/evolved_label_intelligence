@@ -2,7 +2,7 @@ import { Router, Request, Response } from 'express';
 const router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { MaterialCategoryModel } from '../models/materialCategory.ts';
-import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR } from '../enums/httpStatusCodes.ts';
+import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { SearchQuery, SearchResult } from '@shared/types/http.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
@@ -132,14 +132,13 @@ router.post('/form', async (request, response) => {
   return response.redirect(SHOW_ALL_MATERIAL_CATEGORIES_ENDPOINT);
 });
 
-
-router.get('/delete/:id', async (request, response) => {
-  const { id } = request.params;
+router.delete('/:mongooseId', async (request, response) => {
+  const { mongooseId } = request.params;
 
   try {
-    await MaterialCategoryModel.deleteById(id);
+    await MaterialCategoryModel.findByIdAndDelete(mongooseId);
 
-    return response.redirect(SHOW_ALL_MATERIAL_CATEGORIES_ENDPOINT);
+    return response.sendStatus(SUCCESS);
   } catch (error) {
     console.log(error);
     return response.status(SERVER_ERROR).send(error.message);

@@ -2,27 +2,30 @@ import React from 'react';
 import * as styles from './Modal.module.scss'
 import { TfiClose } from 'react-icons/tfi';
 
+type ModalSize = 'standard' | 'fullscreen';
+
 type Props = {
   onClose: () => void,
-  children: React.ReactNode
+  children: React.ReactNode,
+  size?: ModalSize
 }
 
 export const Modal = (props: Props) => {
-  const { onClose, children } = props;
+  const { onClose, children, size = 'standard' } = props;
 
-  /* 
-    VERY IMPORTANT! Otherwise clicks on this modal bubble up to an unknown number of parents. 
-    If this is removed, bad stuff will happen when modals are clicked...
-  */
-    const handleBackgroundClick = (e) => {
-      e.stopPropagation(); // This prevents the click from reaching the parent component and triggering its own click event.
-      if (e.target === e.currentTarget) {
-        onClose();
-      }
-    };
+  const handleBackgroundClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    if (e.target === e.currentTarget) {
+      onClose();
+    }
+  };
+
+  const backgroundClass = size === 'fullscreen' 
+    ? styles.fullscreenModalBackground 
+    : styles.modalBackground;
 
   return (
-    <div className={styles.modalBackground} onClick={handleBackgroundClick}>
+    <div className={backgroundClass} onClick={handleBackgroundClick}>
       <div className={styles.modalBox}>
         <TfiClose className={styles.closeModal} onClick={() => onClose()}/>
         {children}

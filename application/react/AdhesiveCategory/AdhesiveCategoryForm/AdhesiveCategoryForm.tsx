@@ -11,6 +11,7 @@ import { IAdhesiveCategory } from '@shared/types/models.ts';
 import { IAdhesiveCategoryForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
+import { Modal } from '../../_global/Modal/Modal';
 
 const adhesiveCategoryTableUrl = '/react-ui/tables/adhesive-category'
 

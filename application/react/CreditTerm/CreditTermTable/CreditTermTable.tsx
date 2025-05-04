@@ -22,25 +22,7 @@ import { performTextSearch } from '../../_queries/_common';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
-
-const columnHelper = createColumnHelper<any>()
-
-const columns = [
-  columnHelper.accessor('description', {
-    header: 'Description'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <CreditTermRowActions row={props.row} />
-  })
-];
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 
 export const CreditTermTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -50,6 +32,27 @@ export const CreditTermTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+  const columnHelper = createColumnHelper<any>()
+
+  const columns = [
+    columnHelper.accessor('description', {
+      header: 'Description'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <CreditTermRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { isError, data: creditTermSearchResults, error, isLoading } = useQuery({
     queryKey: ['get-credit-terms', pagination, sorting, globalSearch],
@@ -67,7 +70,7 @@ export const CreditTermTable = () => {
       return results
     },
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
-    })
+  })
 
   if (isError) {
     useErrorMessage(error)
@@ -89,9 +92,9 @@ export const CreditTermTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -108,14 +111,14 @@ export const CreditTermTable = () => {
           <h1 className={sharedStyles.textBlue}>Credit Terms</h1>
           <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{creditTermSearchResults?.totalResults || 0}</p> results.</p>
         </div>
-         <SearchBar value={globalSearch} performSearch={(value: string) => {
+        <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
 
         <Table id='credit-term-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
@@ -127,6 +130,7 @@ export const CreditTermTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )

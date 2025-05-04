@@ -16,39 +16,7 @@ import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useLocation } from 'react-router-dom';
-
-const columnHelper = createColumnHelper<IMaterialOrder>()
-
-const columns = [
-  columnHelper.accessor('purchaseOrderNumber', {
-    header: 'P.O Number',
-  }),
-  columnHelper.accessor(row => (row.material as IMaterial | null)?.materialId, {
-    id: 'material.materialId',
-    header: 'Material ID',
-  }),
-  columnHelper.accessor(row => (row.vendor as IVendor).name, {
-    id: 'vendor.name',
-    header: 'Vendor',
-  }),
-  columnHelper.accessor(row => getDateFromIsoStr(row.orderDate), {
-    header: 'Order Date'
-  }),
-  columnHelper.accessor(row => getDateFromIsoStr(row.arrivalDate), {
-    header: 'Arrival Date'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <MaterialOrderRowActions row={props.row} />
-  })
-];
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 
 export const MaterialOrderTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -58,6 +26,40 @@ export const MaterialOrderTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const columnHelper = createColumnHelper<IMaterialOrder>()
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+  const columns = [
+    columnHelper.accessor('purchaseOrderNumber', {
+      header: 'P.O Number',
+    }),
+    columnHelper.accessor(row => (row.material as IMaterial | null)?.name, {
+      id: 'material.name',
+      header: 'Material',
+    }),
+    columnHelper.accessor(row => (row.vendor as IVendor).name, {
+      id: 'vendor.name',
+      header: 'Vendor',
+    }),
+    columnHelper.accessor(row => getDateFromIsoStr(row.orderDate), {
+      header: 'Order Date'
+    }),
+    columnHelper.accessor(row => getDateFromIsoStr(row.arrivalDate), {
+      header: 'Arrival Date'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <MaterialOrderRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { state } = useLocation();
   const { query } = state || {};
@@ -73,7 +75,7 @@ export const MaterialOrderTable = () => {
     queryFn: async () => {
       const sortDirection = sorting.length ? (sorting[0]?.desc ? '-1' : '1') : undefined;
       const sortField = sorting.length ? sorting[0]?.id : undefined;
-      const results: SearchResult<IMaterial> = await performTextSearch<IMaterial>('/material-orders/search', {
+      const results: SearchResult<IMaterialOrder> = await performTextSearch<IMaterialOrder>('/material-orders/search', {
         query: globalSearch,
         pageIndex: String(pagination.pageIndex),
         limit: String(pagination.pageSize),
@@ -90,7 +92,7 @@ export const MaterialOrderTable = () => {
     useErrorMessage(error)
   }
 
-  const table = useReactTable<any>({
+  const table = useReactTable<IMaterialOrder>({
     data: materialOrderResults?.results ?? defaultData,
     columns,
     rowCount: materialOrderResults?.totalResults ?? 0,
@@ -142,6 +144,7 @@ export const MaterialOrderTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )

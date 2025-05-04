@@ -85,6 +85,15 @@
     }
   }
 
+  &.red {
+    background-color: #ff0000;
+    color: white;
+
+    &:hover:not(.disabled) {
+      background-color: #d32f2f;
+    }
+  }
+
   &.link {
     background-color: #7367F0;
     color: white;

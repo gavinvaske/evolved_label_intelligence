@@ -16,41 +16,7 @@ import { performTextSearch } from '../../_queries/_common';
 import { isRefPopulated } from '@shared/types/_utility';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
-
-const columnHelper = createColumnHelper<IMaterial>()
-
-const columns = [
-  columnHelper.accessor('name', {
-    header: 'Name'
-  }),
-  columnHelper.accessor('materialId', {
-    header: 'Material ID'
-  }),
-  columnHelper.accessor('productNumber', {
-    header: 'Product Number'
-  }),
-  columnHelper.accessor(row => isRefPopulated(row.linerType) ? (row.linerType as ILinerType).name : '', {
-    header: 'Liner Type'
-  }),
-  columnHelper.accessor('description', {
-    header: 'Description'
-  }),
-  columnHelper.accessor(row => isRefPopulated(row.vendor) ? (row.vendor as IVendor).name : '', {
-    header: 'Vendor Name'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <MaterialRowActions row={props.row} />
-  })
-];
-
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 export const MaterialTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -59,6 +25,41 @@ export const MaterialTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const columnHelper = createColumnHelper<IMaterial>()
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+  const columns = [
+    columnHelper.accessor('name', {
+      header: 'Name'
+    }),
+    columnHelper.accessor('materialId', {
+      header: 'Material ID'
+    }),
+    columnHelper.accessor('productNumber', {
+      header: 'Product Number'
+    }),
+    columnHelper.accessor(row => isRefPopulated(row.linerType) ? (row.linerType as ILinerType).name : '', {
+      header: 'Liner Type'
+    }),
+    columnHelper.accessor('description', {
+      header: 'Description'
+    }),
+    columnHelper.accessor(row => isRefPopulated(row.vendor) ? (row.vendor as IVendor).name : '', {
+      header: 'Vendor Name'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <MaterialRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { isError, data: materialSearchResults, error, isLoading } = useQuery({
     queryKey: ['get-materials', pagination, sorting, globalSearch],
@@ -76,13 +77,13 @@ export const MaterialTable = () => {
       return results
     },
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
-    })
+  })
 
   if (isError) {
     useErrorMessage(error)
   }
 
-  const table = useReactTable<any>({
+  const table = useReactTable<IMaterial>({
     data: materialSearchResults?.results ?? defaultData,
     columns,
     rowCount: materialSearchResults?.totalResults ?? 0,
@@ -98,9 +99,9 @@ export const MaterialTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -117,14 +118,14 @@ export const MaterialTable = () => {
           <h1 className={sharedStyles.textBlue}>Materials</h1>
           <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{materialSearchResults?.totalResults || 0}</p> results.</p>
         </div>
-         <SearchBar value={globalSearch} performSearch={(value: string) => {
+        <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
 
         <Table id='material-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
@@ -136,6 +137,7 @@ export const MaterialTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )
