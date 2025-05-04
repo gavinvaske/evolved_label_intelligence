@@ -1,8 +1,11 @@
 describe('Material Category CRUD Operations', () => {
     beforeEach(() => {
         cy.clearDatabase();
-        cy.seedDatabase('User', 1); // Create a test user
-        cy.login('test@example.com', 'password123');
+        // Create a test user with admin permissions
+        cy.task('generateTestUser').then((testUser) => {
+            cy.task('seedDatabase', { model: 'User', data: [testUser] });
+            cy.login('test@example.com', 'password123');
+        });
     });
 
     it('should create a new material category', () => {
@@ -20,7 +23,12 @@ describe('Material Category CRUD Operations', () => {
 
     it('should update an existing material category', () => {
         // First create a material category
-        cy.seedDatabase('MaterialCategory', 1);
+        cy.task('generateTestMaterialCategory').then((testCategory) => {
+            cy.task('seedDatabase', { 
+                model: 'MaterialCategory', 
+                data: [testCategory] 
+            });
+        });
         
         // Visit the table page and click edit
         cy.visit('/react-ui/tables/material-category');
@@ -37,7 +45,12 @@ describe('Material Category CRUD Operations', () => {
 
     it('should delete a material category', () => {
         // First create a material category
-        cy.seedDatabase('MaterialCategory', 1);
+        cy.task('generateTestMaterialCategory').then((testCategory) => {
+            cy.task('seedDatabase', { 
+                model: 'MaterialCategory', 
+                data: [testCategory] 
+            });
+        });
         
         // Visit the table page and delete
         cy.visit('/react-ui/tables/material-category');

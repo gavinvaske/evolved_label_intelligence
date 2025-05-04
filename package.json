@@ -17,11 +17,13 @@
     "react": "npm run parcel:remove-cache && parcel watch",
     "test": "jest",
     "cypress:run": "cypress run",
-    "acceptance": "start-server-and-test start http://localhost:8080 cypress:run",
+    "acceptance": "start-server-and-test start:test http://localhost:8080 cypress:run",
     "lint": "eslint .",
     "fix-lint": "eslint . --fix",
     "verify": "npm run test && npm run lint",
-    "parcel:remove-cache": "rm -rf .parcel-cache"
+    "parcel:remove-cache": "rm -rf .parcel-cache",
+    "start:test": "cross-env NODE_ENV=test npx tsx application/api/index.ts",
+    "cypress:open": "cypress open"
   },
   "config": {
     "mongodbMemoryServer": {}
@@ -91,6 +93,7 @@
     "babel-jest": "29.7.0",
     "browserify-zlib": "0.2.0",
     "chance": "1.1.12",
+    "cross-env": "7.0.3",
     "crypto-browserify": "3.12.0",
     "cypress": "14.3.2",
     "eslint": "8.57.0",

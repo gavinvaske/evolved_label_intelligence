@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const { connectToTestMongoDatabase, closeDatabase, clearDatabase } = require('./databaseService.js');
 const { UserModel } = require('../../application/api/models/user.ts');
 const { MaterialCategoryModel } = require('../../application/api/models/materialCategory.ts');
+const { generateTestUser, generateTestMaterialCategory } = require('./testDataGenerator.js');
 
 // Register models with Mongoose
 mongoose.model('User', UserModel.schema);
@@ -29,6 +30,14 @@ const mongodbPlugin = async (on, config) => {
             const Model = mongoose.model(model);
             await Model.insertMany(data);
             return null;
+        },
+        // Task to generate test user data
+        async generateTestUser() {
+            return await generateTestUser();
+        },
+        // Task to generate test material category data
+        async generateTestMaterialCategory() {
+            return generateTestMaterialCategory();
         }
     });
 

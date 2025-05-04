@@ -8,7 +8,7 @@ declare global {
         interface Chainable {
             clearDatabase(): Chainable<void>;
             seedDatabase(model: string, count?: number): Chainable<void>;
-            login(email: string, password: string): Chainable<void>;
+            login(username: string, password: string): Chainable<void>;
             invalidLogin(): Chainable<void>;
             logout(): Chainable<void>;
         }
@@ -24,15 +24,12 @@ Cypress.Commands.add('seedDatabase', (model: string, count: number = 1) => {
     cy.task('seedDatabase', { model, data });
 });
 
-Cypress.Commands.add('login', () => {
+Cypress.Commands.add('login', (username: string, password: string) => {
   cy.visit('/react-ui/login')
 
-  if (!Cypress.env('loginUsername')) throw new Error('Missing a required cypress environment variable: "loginUsername"')
-  if (!Cypress.env('loginPassword')) throw new Error('Missing a required cypress environment variable: "loginPassword"')
-
   /* When username and password input fields are populated */
-  cy.get('[data-test=username-input]').type(Cypress.env('loginUsername'))
-  cy.get('[data-test=password-input]').type(Cypress.env('loginPassword'))
+  cy.get('[data-test=username-input]').type(username)
+  cy.get('[data-test=password-input]').type(password)
 
   /* And a User clicks login */
   cy.get('[data-test=login-btn]').click();

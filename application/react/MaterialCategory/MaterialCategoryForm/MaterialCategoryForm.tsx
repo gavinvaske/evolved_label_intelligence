@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { FormProvider, useForm } from 'react-hook-form';
 import { IMaterialCategory } from '@shared/types/models';
-import axios, { AxiosError, AxiosResponse } from 'axios';
+import { AxiosError, AxiosResponse } from 'axios';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { Input } from '../../_global/FormInputs/Input/Input';
@@ -11,6 +11,8 @@ import { IMaterialCategoryForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
 import { Button } from '../../_global/Button/Button';
+import apiClient from '../../_api/apiClient';
+
 const materialCategoryTableUrl = '/react-ui/tables/material-category'
 
 export const MaterialCategoryForm = () => {
@@ -39,14 +41,14 @@ export const MaterialCategoryForm = () => {
 
   const onSubmit = (formData: IMaterialCategoryForm) => {
     if (isUpdateRequest) {
-      axios.patch(`/material-categories/${mongooseId}`, formData)
+      apiClient.patch(`/material-categories/${mongooseId}`, formData)
         .then((_) => {
           navigate(materialCategoryTableUrl)
           useSuccessMessage('Update was successful')
         })
         .catch((error: AxiosError) => useErrorMessage(error));
     } else {
-      axios.post('/material-categories', formData)
+      apiClient.post('/material-categories', formData)
         .then((_: AxiosResponse) => {
           navigate(materialCategoryTableUrl);
           useSuccessMessage('Creation was successful')
@@ -75,10 +77,11 @@ export const MaterialCategoryForm = () => {
                   attribute='name'
                   label="Name"
                   isRequired={true}
+                  dataAttributes={{ 'data-test': 'material-category-name-input' }}
                 />
               </div>
 
-              <Button color="blue" size="large">
+              <Button color="blue" size="large" data-test="material-category-submit">
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>
