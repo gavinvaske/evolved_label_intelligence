@@ -75,7 +75,7 @@ export const MaterialOrderTable = () => {
     queryFn: async () => {
       const sortDirection = sorting.length ? (sorting[0]?.desc ? '-1' : '1') : undefined;
       const sortField = sorting.length ? sorting[0]?.id : undefined;
-      const results: SearchResult<IMaterial> = await performTextSearch<IMaterial>('/material-orders/search', {
+      const results: SearchResult<IMaterialOrder> = await performTextSearch<IMaterialOrder>('/material-orders/search', {
         query: globalSearch,
         pageIndex: String(pagination.pageIndex),
         limit: String(pagination.pageSize),
@@ -92,7 +92,7 @@ export const MaterialOrderTable = () => {
     useErrorMessage(error)
   }
 
-  const table = useReactTable<any>({
+  const table = useReactTable<IMaterialOrder>({
     data: materialOrderResults?.results ?? defaultData,
     columns,
     rowCount: materialOrderResults?.totalResults ?? 0,
