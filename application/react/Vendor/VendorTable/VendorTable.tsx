@@ -15,37 +15,8 @@ import { performTextSearch } from '../../_queries/_common';
 import { IVendor } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 
-const columnHelper = createColumnHelper<IVendor>()
-
-const columns = [
-  columnHelper.accessor('name', {
-    header: 'Name'
-  }),
-  columnHelper.accessor('email', {
-    header: 'Email'
-  }),
-  columnHelper.accessor('primaryContactName', {
-    header: 'P.C Name'
-  }),
-  columnHelper.accessor('primaryContactEmail', {
-    header: 'P.C Email'
-  }),
-  columnHelper.accessor('mfgSpecNumber', {
-    header: 'MFG Spec #'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <VendorRowActions row={props.row} />
-  })
-];
 export const VendorTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -54,6 +25,38 @@ export const VendorTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const columnHelper = createColumnHelper<IVendor>()
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+
+  const columns = [
+    columnHelper.accessor('name', {
+      header: 'Name'
+    }),
+    columnHelper.accessor('email', {
+      header: 'Email'
+    }),
+    columnHelper.accessor('primaryContactName', {
+      header: 'P.C Name'
+    }),
+    columnHelper.accessor('primaryContactEmail', {
+      header: 'P.C Email'
+    }),
+    columnHelper.accessor('mfgSpecNumber', {
+      header: 'MFG Spec #'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <VendorRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { isError, data: vendorSearchResults, error, isLoading } = useQuery({
     queryKey: ['get-vendors', pagination, sorting, globalSearch],
@@ -77,7 +80,7 @@ export const VendorTable = () => {
     useErrorMessage(error)
   }
 
-  const table = useReactTable<any>({
+  const table = useReactTable<IVendor>({
     data: vendorSearchResults?.results ?? defaultData,
     columns,
     rowCount: vendorSearchResults?.totalResults ?? 0,
@@ -131,6 +134,7 @@ export const VendorTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )
