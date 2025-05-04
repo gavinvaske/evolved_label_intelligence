@@ -8,20 +8,29 @@ import { RowActionItem, RowActions } from '../../../_global/Table/RowActions/Row
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
 import { MongooseIdStr } from '@shared/types/typeAliases';
 import { IMaterialCategory } from '@shared/types/models';
-
+import { ConfirmationResult } from '../../../_global/Modal/useConfirmation';
 type Props = {
   row: Row<IMaterialCategory>
+  confirmation: ConfirmationResult
 }
 
 export const MaterialCategoryRowActions = (props: Props) => {
-  const { row } = props;
+  const { row, confirmation } = props;
   const { _id: mongooseObjectId } = row.original;
+  const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const onDeleteClicked = (mongooseObjectId: MongooseIdStr) => {
-    alert('@TODO Storm: Add a confirmation modal before deletion?')
+  const onDeleteClicked = async (mongooseObjectId: MongooseIdStr) => {
+    const confirmed = await showConfirmation({
+      title: 'Delete Material Category',
+      message: 'Are you sure you want to delete this material category? This action cannot be undone.',
+      confirmText: 'Delete',
+    });
+
+    if (!confirmed) return;
+
     axios.delete(`/material-categories/${mongooseObjectId}`)
       .then((_: AxiosResponse) => {
         queryClient.invalidateQueries({ queryKey: ['get-material-categories'] })
