@@ -6,7 +6,8 @@ import { MongooseId } from "@shared/types/typeAliases.ts";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { sendPasswordResetEmail } from '../services/emailService.ts';
-import { User } from '../../react/_types/databasemodels/user.ts';
+import { IUser } from '@shared/types/models.ts';
+
 const router = Router();
 
 const REFRESH_TOKEN_COOKIE_NAME = 'refresh-token'
@@ -14,7 +15,7 @@ const MIN_PASSWORD_LENGTH = 8;
 const BCRYPT_SALT_ROUNDS = 10;
 const MONGODB_DUPLICATE_KEY_ERROR_CODE = 11000;
 
- router.get('/logout', (_: Request, response: Response) => {
+router.get('/logout', (_: Request, response: Response) => {
   response.clearCookie(REFRESH_TOKEN_COOKIE_NAME);
 
   return response.sendStatus(SUCCESS);
@@ -47,7 +48,7 @@ router.get('/access-token', (request: Request, response: Response) => {
   try {
     const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET;
     const payloadWithExtraStuff: any = jwt.verify(refreshTokenFromSecureCookie, refreshTokenSecret);
-    
+
     const tokenPayload: TokenPayload = {
       email: payloadWithExtraStuff.email,
       _id: payloadWithExtraStuff._id,
@@ -139,16 +140,16 @@ router.post('/forgot-password', async (request, response) => {
 
     const secret = process.env.JWT_SECRET + user.password;
     const payload = {
-        email: user.email,
-        id: user._id
+      email: user.email,
+      id: user._id
     };
     const minutesUntilExpiration = 30;
     const token = jwt.sign(payload, secret, { expiresIn: `${minutesUntilExpiration}m` });
     const link = `${process.env.BASE_URL}/react-ui/change-password/${user._id}/${token}`;
-    
+
     await sendPasswordResetEmail(email, link, minutesUntilExpiration);
 
-  } catch(error) {
+  } catch (error) {
     console.error(`Password reset request for '${email}' resulted in an error: `, JSON.stringify(error))
     /* Don't return error HTTP status for security purposes. Any/All requests should result in 200 HTTP status */
   }
@@ -171,19 +172,19 @@ export const validatePasswordsOrSendErrorResponse = (password: string, repeatPas
 router.post('/change-password/:mongooseId/:token', async (request: Request, response: Response) => {
   const { mongooseId, token } = request.params;
   const { password, repeatPassword } = request.body;
-  
+
   try {
     validatePasswordsOrSendErrorResponse(password, repeatPassword, response);
 
     /* For security purposes: The line below does nothing except add time complexity to making this request.  */
     await bcrypt.hash('foobar-foobar-foobar', BCRYPT_SALT_ROUNDS);
 
-    const user: User = await UserModel.findById(mongooseId).lean();
-    
+    const user: IUser | null = await UserModel.findById(mongooseId).lean();
+
     if (!user) {
       throw new Error('A user was not found with the email provided')
     }
-    
+
     const secret = process.env.JWT_SECRET + user.password;
 
     jwt.verify(token, secret);  /* Throws if not valid */
@@ -191,7 +192,7 @@ router.post('/change-password/:mongooseId/:token', async (request: Request, resp
     const encryptedPassword = await bcrypt.hash(password, BCRYPT_SALT_ROUNDS);
 
     await UserModel.findOneAndUpdate(
-      user._id, 
+      { _id: mongooseId },
       { password: encryptedPassword }
     );
   } catch (error) {
@@ -217,11 +218,11 @@ router.post('/register', async (request: Request, response: Response) => {
     const encryptedPassword = await bcrypt.hash(plainTextPassword, BCRYPT_SALT_ROUNDS);
 
     await UserModel.create({
-        firstName,
-        lastName,
-        birthDate,
-        email,
-        password: encryptedPassword
+      firstName,
+      lastName,
+      birthDate,
+      email,
+      password: encryptedPassword
     });
   } catch (error) {
     if (error.code === MONGODB_DUPLICATE_KEY_ERROR_CODE) {
@@ -240,7 +241,7 @@ router.get('/me', verifyBearerToken, async (request, response) => {
     const user = await UserModel.findById(request.user._id, 'email firstName lastName authRoles jobRole phoneNumber birthDate profilePicture').lean();
 
     return response.json(user);
-  } catch (error) { 
+  } catch (error) {
     console.error(error);
     return response.sendStatus(NOT_FOUND)
   }

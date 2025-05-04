@@ -5,7 +5,7 @@ import quoteStore from '../../../../stores/quoteStore.ts';
 import { observer } from 'mobx-react-lite';
 import { DropdownField } from '../InputFields/DropdownField/DropdownField.tsx';
 import TextField from '../InputFields/TextField/TextField.js';
-import { Material } from '../../../../_types/databasemodels/material.ts';
+import { IMaterial } from '@shared/types/models';
 import { useErrorMessage } from '../../../../_hooks/useErrorMessage.ts';
 
 type Props = {
@@ -14,7 +14,7 @@ type Props = {
 
 const MaterialInput = observer((props: Props) => {
   const { isPrimaryMaterial } = props;
-  const [materials, setMaterials] = useState<Material[]>([]);
+  const [materials, setMaterials] = useState<IMaterial[]>([]);
   const { quoteInputs } = quoteStore;
 
   const updateMaterial = (e, attributeName) => {

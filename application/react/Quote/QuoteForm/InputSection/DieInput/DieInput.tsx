@@ -4,7 +4,7 @@ import { DropdownField } from '../InputFields/DropdownField/DropdownField.tsx';
 import TextField from '../InputFields/TextField/TextField.js';
 import quoteStore from '../../../../stores/quoteStore.ts';
 import axios, { AxiosError } from 'axios';
-import { Die } from '../../../../_types/databasemodels/Die.ts';
+import { IDie } from '@shared/types/models';
 import { useErrorMessage } from '../../../../_hooks/useErrorMessage.ts';
 
 {
@@ -14,8 +14,8 @@ import { useErrorMessage } from '../../../../_hooks/useErrorMessage.ts';
   */
 }
 const Die = (props) => {
-  const dieOverride = quoteStore.quoteInputs.dieOverride as Die;
-  const [ dies, setDies ] = useState<Die[]>([]);
+  const dieOverride = quoteStore.quoteInputs.dieOverride as IDie;
+  const [ dies, setDies ] = useState<IDie[]>([]);
 
   useEffect(() => {
     axios.get(`/dies`)
