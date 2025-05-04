@@ -15,34 +15,7 @@ import { performTextSearch } from '../../_queries/_common';
 import { ICustomer } from '@shared/types/models';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
-
-const columnHelper = createColumnHelper<any>()
-
-const columns = [
-  columnHelper.accessor('customerId', {
-    header: 'Customer ID'
-  }),
-  columnHelper.accessor('name', {
-    header: 'Name'
-  }),
-  columnHelper.accessor('notes', {
-    header: 'Notes'
-  }),
-  columnHelper.accessor('overun', {
-    header: 'Overun'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
-    header: 'Updated'
-  }),
-  columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
-    header: 'Created'
-  }),
-  columnHelper.display({
-    id: 'actions',
-    header: 'Actions',
-    cell: props => <CustomerRowActions row={props.row}/>
-  })
-];
+import { useConfirmation } from '../../_global/Modal/useConfirmation';
 
 export const CustomerTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -52,6 +25,35 @@ export const CustomerTable = () => {
     pageSize: 50,
   })
   const defaultData = useMemo(() => [], [])
+  const confirmation = useConfirmation();
+  const { ConfirmationDialog } = confirmation;
+  const columnHelper = createColumnHelper<ICustomer>()
+
+  const columns = [
+    columnHelper.accessor('customerId', {
+      header: 'Customer ID'
+    }),
+    columnHelper.accessor('name', {
+      header: 'Name'
+    }),
+    columnHelper.accessor('notes', {
+      header: 'Notes'
+    }),
+    columnHelper.accessor('overun', {
+      header: 'Overun'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
+      header: 'Updated'
+    }),
+    columnHelper.accessor(row => getDateTimeFromIsoStr(row.createdAt), {
+      header: 'Created'
+    }),
+    columnHelper.display({
+      id: 'actions',
+      header: 'Actions',
+      cell: props => <CustomerRowActions row={props.row} confirmation={confirmation} />
+    })
+  ];
 
   const { isError, data: customerSearchResults, error, isLoading } = useQuery({
     queryKey: ['get-customers', pagination, sorting, globalSearch],
@@ -69,7 +71,7 @@ export const CustomerTable = () => {
       return results
     },
     meta: { keepPreviousData: true, initialData: { results: [], totalPages: 0 } }
-    })
+  })
 
   if (isError) {
     useErrorMessage(error)
@@ -91,9 +93,9 @@ export const CustomerTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -110,14 +112,14 @@ export const CustomerTable = () => {
           <h1 className={sharedStyles.textBlue}>Customers</h1>
           <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{customerSearchResults?.totalResults || 0}</p> results.</p>
         </div>
-         <SearchBar value={globalSearch} performSearch={(value: string) => {
+        <SearchBar value={globalSearch} performSearch={(value: string) => {
           setGlobalSearch(value)
           table.resetPageIndex();
         }} />
 
         <Table id='customer-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
@@ -129,6 +131,7 @@ export const CustomerTable = () => {
             isLoading={isLoading}
           />
         </Table>
+        <ConfirmationDialog />
       </div>
     </div>
   )
