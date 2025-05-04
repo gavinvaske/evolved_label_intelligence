@@ -1,6 +1,6 @@
-import React from 'react';
 import { Modal } from './Modal';
 import * as styles from './ConfirmationModal.module.scss';
+import { Button } from '../Button/Button';
 
 type Props = {
   isOpen: boolean;
@@ -34,12 +34,12 @@ export const ConfirmationModal = ({
         <h2 className={styles.title}>{title}</h2>
         <p className={styles.message}>{message}</p>
         <div className={styles.actions}>
-          <button className={styles.cancelButton} onClick={onClose}>
+          <Button color="white" onClick={onClose}>
             {cancelText}
-          </button>
-          <button className={styles.confirmButton} onClick={handleConfirm}>
+          </Button>
+          <Button color="red" onClick={handleConfirm}>
             {confirmText}
-          </button>
+          </Button>
         </div>
       </div>
     </Modal>
