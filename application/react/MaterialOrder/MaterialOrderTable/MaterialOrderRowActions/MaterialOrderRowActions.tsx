@@ -8,20 +8,29 @@ import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { IMaterialOrder } from '@shared/types/models';
 import { MongooseId } from '@shared/types/typeAliases';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
-
+import { ConfirmationResult } from '../../../_global/Modal/useConfirmation';
 type Props = {
   row: Row<IMaterialOrder>
+  confirmation: ConfirmationResult
 }
 
 export const MaterialOrderRowActions = (props: Props) => {
-  const { row } = props;
+  const { row, confirmation } = props;
   const { _id: mongooseObjectId } = row.original;
+  const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
   const queryClient = useQueryClient()
 
-  const onDeleteClicked = (mongooseObjectId: MongooseId) => {
-    alert('@TODO Storm: Add a confirmation modal before deletion?')
+  const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
+    const confirmed = await showConfirmation({
+      title: 'Delete Material Order',
+      message: 'Are you sure you want to delete this material order? This action cannot be undone.',
+      confirmText: 'Delete',
+    });
+
+    if (!confirmed) return;
+
     axios.delete(`/material-orders/${mongooseObjectId}`)
       .then((_: AxiosResponse) => {
         queryClient.invalidateQueries({ queryKey: ['get-material-orders'] })
