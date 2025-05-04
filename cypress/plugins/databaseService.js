@@ -1,34 +1,15 @@
 import mongoose from 'mongoose';
 import { MongoMemoryServer } from 'mongodb-memory-server';
-mongoose.set('strictQuery', true);
-/* 
-  [IMPORTANT]
-    Runs get methods when querying documents 
-    (hint: like converting pennies to dollars on queried docs): 
-  [EXAMPLE]
-    { type: foo, get: convertPenniesToDollars() } methods 
-*/
-mongoose.set('toJSON', { getters: true });
-mongoose.Schema.Types.String.set('trim', true);
 
-let mongod: MongoMemoryServer;
+let mongod;
 const TEST_ENVIRONMENT = 'test';
 
-export const connectToMongoDatabase = async (databaseUrl: string) => {
+export const connectToMongoDatabase = async (databaseUrl) => {
     if (!databaseUrl) {
         throw new Error('Database URL is not defined');
     }
 
     await mongoose.connect(databaseUrl, {});
-}
-
-export const connectToTestMongoDatabase = async () => {
-    if (process.env.NODE_ENV !== TEST_ENVIRONMENT) {
-        throw Error('the test database can only be connected too from test environments');
-    }
-
-    mongod = await MongoMemoryServer.create();
-    await mongoose.connect(mongod.getUri(), {});
 }
 
 export const closeDatabase = async () => {
@@ -48,4 +29,4 @@ export const clearDatabase = async () => {
         const collection = collections[key];
         collection && await collection.deleteMany({});
     }
-}
+} 
