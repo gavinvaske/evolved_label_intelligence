@@ -1,4 +1,4 @@
-import { FullScreenModal } from '../../_global/LargeModal/LargeModal.tsx';
+import { Modal } from '../../_global/Modal/Modal';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as styles from './MaterialDetailsModal.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
@@ -15,7 +15,7 @@ export const MaterialDetailsModal = (props: Props) => {
   const { material, onClose } = props;
 
   return (
-    <FullScreenModal onClose={() => onClose()}>
+    <Modal onClose={() => onClose()} size='fullscreen'>
 
         <div className={styles.modalHeader}>
           <h1>{material.materialId} <span>{material.name}</span></h1>
@@ -112,7 +112,7 @@ export const MaterialDetailsModal = (props: Props) => {
             </div>
           </div>
         </div>
-    </FullScreenModal>
+    </Modal>
   )
 }
 
