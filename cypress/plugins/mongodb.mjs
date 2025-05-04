@@ -1,21 +1,15 @@
-import { MongoMemoryServer } from 'mongodb-memory-server';
 import mongoose from 'mongoose';
-import { connectToMongoDatabase, closeDatabase, clearDatabase } from './databaseService.js';
-
-let mongod;
+import { connectToTestMongoDatabase, closeDatabase, clearDatabase } from './databaseService.js';
 
 const mongodbPlugin = async (on, config) => {
     on('before:run', async () => {
         // Start MongoDB memory server before all tests
-        mongod = await MongoMemoryServer.create();
-        const uri = mongod.getUri();
-        await connectToMongoDatabase(uri);
+        await connectToTestMongoDatabase();
     });
 
     on('after:run', async () => {
         // Clean up after all tests
         await closeDatabase();
-        await mongod.stop();
     });
 
     on('task', {
