@@ -8,7 +8,7 @@ declare global {
         interface Chainable {
             clearDatabase(): Chainable<void>;
             seedDatabase(model: string, count?: number): Chainable<void>;
-            login(username: string, password: string): Chainable<void>;
+            login(): Chainable<void>;
             invalidLogin(): Chainable<void>;
             logout(): Chainable<void>;
         }
@@ -16,7 +16,7 @@ declare global {
 }
 
 Cypress.Commands.add('clearDatabase', () => {
-    cy.task('clearDatabase');
+    return cy.task('clearDatabase');
 });
 
 Cypress.Commands.add('seedDatabase', (model: string, count: number = 1) => {
@@ -24,12 +24,12 @@ Cypress.Commands.add('seedDatabase', (model: string, count: number = 1) => {
     cy.task('seedDatabase', { model, data });
 });
 
-Cypress.Commands.add('login', (username: string, password: string) => {
+Cypress.Commands.add('login', () => {
   cy.visit('/react-ui/login')
 
   /* When username and password input fields are populated */
-  cy.get('[data-test=username-input]').type(username)
-  cy.get('[data-test=password-input]').type(password)
+  cy.get('[data-test=username-input]').type('test@example.com')
+  cy.get('[data-test=password-input]').type('password123')
 
   /* And a User clicks login */
   cy.get('[data-test=login-btn]').click();
@@ -45,6 +45,7 @@ Cypress.Commands.add('login', (username: string, password: string) => {
 })
 
 Cypress.Commands.add('invalidLogin', () => {
+    cy.logout();
     cy.visit('/react-ui/login');
     const invalidUsername = chance.string();
     const invalidPassword = chance.string();

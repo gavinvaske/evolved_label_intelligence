@@ -1,10 +1,19 @@
+interface ApiResponse {
+    status: number;
+    data: any;
+}
+
 describe('Material Category CRUD Operations', () => {
     beforeEach(() => {
-        cy.clearDatabase();
-        // Create a test user with admin permissions
-        cy.task('generateTestUser').then((testUser) => {
-            cy.task('seedDatabase', { model: 'User', data: [testUser] });
-            cy.login('test@example.com', 'password123');
+        // Clear the database and wait for it to complete
+        cy.clearDatabase().then(() => {
+            // Create a test user with admin permissions
+            cy.task('registerTestUser').then((response: ApiResponse) => {
+                if (response.status !== 201) {
+                    throw new Error(`Failed to create test user: ${response.data}`);
+                }
+                cy.login();
+            });
         });
     });
 

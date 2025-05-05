@@ -33,12 +33,15 @@ export const closeDatabase = async () => {
 };
 
 export const clearDatabase = async () => {
-    if (process.env.NODE_ENV !== TEST_ENVIRONMENT) {
-        throw Error('the database can ONLY be cleared manually in test environments');
-    }
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-        const collection = collections[key];
-        collection && await collection.deleteMany({});
+    if (process.env.NODE_ENV === 'test') {
+        const { collections } = mongoose.connection;
+
+        for (const collection of Object.values(collections)) {
+            try {
+                await collection.deleteMany({});
+            } catch (err) {
+                console.error(`Error clearing collection ${collection.name}:`, err);
+            }
+        }
     }
 };
