@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import { MongoMemoryReplSet } from 'mongodb-memory-server';
+import { connectToTestDatabase, closeTestDatabase, clearTestDatabase } from '../../../test/sharedTestDatabase';
 mongoose.set('strictQuery', true);
 /* 
   [IMPORTANT]
@@ -10,43 +12,51 @@ mongoose.set('strictQuery', true);
 mongoose.set('toJSON', { getters: true });
 mongoose.Schema.Types.String.set('trim', true);
 
-import { MongoMemoryServer } from 'mongodb-memory-server';
-
 let mongod;
 const TEST_ENVIRONMENT = 'test';
 
-export async function connectToMongoDatabase(databaseUrl) {
-    if (!databaseUrl) {
-        throw new Error('Database URL is not defined');
+export const connectToMongoDatabase = async () => {
+    if (process.env.NODE_ENV === TEST_ENVIRONMENT) {
+        console.log('Connecting to test database from the API...');
+        await connectToTestDatabase();
+    } else {
+        console.log('Connecting to production database from the API...');
+        const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/recipe_book';
+        await mongoose.connect(mongoUri);
     }
+};
 
-    await mongoose.connect(databaseUrl, {});
-}
-
-export async function connectToTestMongoDatabase() {
+export const connectToTestMongoDatabase = async () => {
     if (process.env.NODE_ENV !== TEST_ENVIRONMENT) {
         throw Error('the test database can only be connected too from test environments');
     }
 
-    mongod = await MongoMemoryServer.create();
-    await mongoose.connect(mongod.getUri(), {});
+    mongod = await MongoMemoryReplSet.create({
+        replSet: { count: 1 }, // Single-node replica set
+        instanceOpts: [{ storageEngine: 'wiredTiger' }]
+    });
+    await mongod.waitUntilRunning();
+    await mongoose.connect(mongod.getUri());
 }
 
-export async function closeDatabase() {
-    if (process.env.NODE_ENV !== TEST_ENVIRONMENT) {
-        throw Error('the database can ONLY be closed manually in test environments');
+export const closeDatabase = async () => {
+    if (process.env.NODE_ENV === TEST_ENVIRONMENT) {
+        await closeTestDatabase();
+    } else {
+        await mongoose.disconnect();
     }
-    await mongoose.disconnect();
-    await mongod.stop();
-}
+};
 
-export async function clearDatabase() {
-    if (process.env.NODE_ENV !== TEST_ENVIRONMENT) {
-        throw Error('the database can ONLY be cleared manually in test environments');
+export const clearDatabase = async () => {
+    if (process.env.NODE_ENV === TEST_ENVIRONMENT) {
+        await clearTestDatabase();
+    } else {
+        const collections = mongoose.connection.collections;
+        for (const key in collections) {
+            const collection = collections[key];
+            if (collection) {
+                await collection.deleteMany({});
+            }
+        }
     }
-    const collections = mongoose.connection.collections;
-    for (const key in collections) {
-        const collection = collections[key];
-        collection && await collection.deleteMany({});
-    }
-}
+};

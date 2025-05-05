@@ -7,6 +7,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { sendPasswordResetEmail } from '../services/emailService.ts';
 import { IUser } from '@shared/types/models.ts';
+import { DeliveryMethodModel } from '../models/deliveryMethod.ts';
 
 const router = Router();
 
@@ -69,17 +70,25 @@ router.get('/access-token', (request: Request, response: Response) => {
 });
 
 router.post('/login', async (request: Request, response: Response) => {
+  console.log('request.body', request.body);
   const { email, password } = request.body;
   const invalidLoginMessage = 'Invalid email and/or password'
 
   try {
+    const users = await UserModel.find({}).lean();
+    console.log('users', users);
+
     const user = await UserModel.findOne({ email }).lean();
+    const deliveryMethods = await DeliveryMethodModel.find({}).lean();
+    console.log('found user?', user);
+    console.log('delivery methods', deliveryMethods);
 
     if (!user) {
       return response.status(UNAUTHORIZED).send(invalidLoginMessage);
     }
 
     const isPasswordCorrectForUser = await bcrypt.compare(password, user.password);
+    console.log('isPasswordCorrectForUser', isPasswordCorrectForUser);
 
     if (!isPasswordCorrectForUser) {
       return response.status(UNAUTHORIZED).send(invalidLoginMessage);

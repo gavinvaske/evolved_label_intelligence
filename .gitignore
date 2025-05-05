@@ -14,3 +14,5 @@ application/public/images
 
 # Allowed
 !.env.example
+
+test-db-uri.txt
