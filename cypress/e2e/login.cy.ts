@@ -1,4 +1,15 @@
 describe('Login Cases', () => {
+  beforeEach(() => {
+    cy.clearDatabase().then(() => {
+      // Create a test user with admin permissions
+      cy.task('registerTestUser').then((response: ApiResponse) => {
+        if (response.status !== 201 && !response.data.includes('already exists')) {
+          throw new Error(`Failed to create test user: ${response.data}`);
+        }
+      });
+    });
+  });
+
   it('User should see a profile page upon login', () => {
     cy.login();
 
@@ -41,7 +52,6 @@ describe('Login Cases', () => {
   });
 
   it('User should see a home page upon login', () => {
-    cy.logout();
     cy.login();
 
     cy.location().should(loc => {
@@ -59,13 +69,8 @@ describe('Login Cases', () => {
       expect(loc.pathname).to.equal('/react-ui/login')
     })
 
-    /* Type in username and password */
-    cy.get('[data-test=username-input]').type(Cypress.env('loginUsername'))
-    cy.get('[data-test=password-input]').type(Cypress.env('loginPassword'))
+    cy.login();
 
-    /* Click login button */
-    cy.get('[data-test=login-btn]').click();
-    
     /* Exo */
     cy.location().should(loc => {
       expect(loc.pathname).to.equal(originallyRequestedUrl)

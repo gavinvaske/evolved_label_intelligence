@@ -107,7 +107,7 @@ export const MaterialCategoryTable = () => {
           table.resetPageIndex();
         }} />
 
-        <Table id='material-category-table'>
+        <Table id='material-category-table' data-test="material-category-table">
           <TableHead table={table} />
 
           <TableBody>

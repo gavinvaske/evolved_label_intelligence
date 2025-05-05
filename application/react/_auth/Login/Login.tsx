@@ -9,7 +9,6 @@ import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { FaEyeSlash, FaEye } from "react-icons/fa6";
 import { IconBaseProps } from "react-icons";
-import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as styles from './Login.module.scss'
 import { Button } from '../../_global/Button/Button';
 
