@@ -54,7 +54,10 @@ async function initializeServer() {
     process.exit(0);
   });
 
-  fs.unlinkSync('./test-db-uri.txt');
+  // Remove the test database URI file if it exists
+  if (fs.existsSync('./test-db-uri.txt')) {
+    fs.unlinkSync('./test-db-uri.txt');
+  }
 
   // Now connect to the database
   console.log(`Connecting to ${process.env.NODE_ENV === 'test' ? 'test' : 'production'} database...`);
