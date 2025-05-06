@@ -1,6 +1,8 @@
 import mongoose from 'mongoose';
 import { MongoMemoryReplSet } from 'mongodb-memory-server';
 import { connectToTestDatabase, closeTestDatabase, clearTestDatabase } from '../../../test/sharedTestDatabase';
+import fs from 'fs';
+
 mongoose.set('strictQuery', true);
 /* 
   [IMPORTANT]
@@ -60,3 +62,4 @@ export const clearDatabase = async () => {
         }
     }
 };
+
