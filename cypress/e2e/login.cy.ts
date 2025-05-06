@@ -10,13 +10,14 @@ describe('Login Cases', () => {
     cy.get('input[name="password"]').should('exist');
   })
 
-  // it('User should see a profile page upon login', () => {
-  //   cy.login();
+  it('User should see a profile page and welcome message upon login', () => {
+    cy.login();
 
-  //   cy.location().should(loc => {
-  //     expect(loc.pathname).to.equal('/react-ui/profile')
-  //   })
-  // })
+    cy.location().should(loc => {
+      expect(loc.pathname).to.equal('/react-ui/profile')
+    })
+    cy.contains('Welcome to E.L.I')
+  })
 
   // it('Unauthenticated user should be sent to login page when visiting base route', () => {
   //   cy.logout();

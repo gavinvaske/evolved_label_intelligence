@@ -167,6 +167,7 @@ export const validatePasswordsOrSendErrorResponse = (password: string, repeatPas
   if (password.length < MIN_PASSWORD_LENGTH) {
     return response.status(BAD_REQUEST).send(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`)
   }
+  return;
 }
 
 router.post('/change-password/:mongooseId/:token', async (request: Request, response: Response) => {
