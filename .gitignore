@@ -14,3 +14,6 @@ application/public/images
 
 # Allowed
 !.env.example
+
+# Temp file used to share the same in-memory db URI between the API and cypress
+test-db-uri.txt

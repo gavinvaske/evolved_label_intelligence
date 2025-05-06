@@ -1,26 +1,28 @@
-const { connectToTestMongoDatabase, closeDatabase } = require('../../application/api/services/databaseService');
-const { seedTestDatabase } = require('../../test/seedTestDatabase');
+const { connectToTestDatabase, clearTestDatabase, isTestDbRunning, closeTestDatabase } = require('../../test/sharedTestDatabase');
+const { seedTestDatabase } = require('../support/seedTestDatabase');
 
-const TEST_ENVIRONMENT = 'test';
-
-// Force test environment for Cypress
-process.env.NODE_ENV = TEST_ENVIRONMENT;
-
-const mongoDbPlugin = (on, config) => {
+module.exports = (on, config) => {
     on('before:run', async () => {
-        console.log('Connecting to test database...');
-        await connectToTestMongoDatabase();
+        // First, check if the API has already created a database
+        if (!isTestDbRunning()) {
+            throw new Error('No test database URI found. Make sure the API server is running first!');
+        }
+        // Connect to the existing database instance
+        await connectToTestDatabase();
+        // Seed the database
         await seedTestDatabase();
-        console.log('Test database connected and seeded');
     });
 
     on('after:run', async () => {
-        console.log('Closing test database...');
-        await closeDatabase();
-        console.log('Test database closed');
+        await closeTestDatabase();
+    });
+
+    on('task', {
+        clearDatabase: async () => {
+            await clearTestDatabase();
+            return null;
+        }
     });
 
     return config;
 };
-
-module.exports = mongoDbPlugin;
