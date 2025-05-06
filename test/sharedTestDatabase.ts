@@ -22,7 +22,7 @@ export const isTestDbRunning = () => {
   return getTestDbUri() !== null;
 }
 
-export async function connectToTestDatabase() {
+export async function connectToTestDatabase(retryCount = 0) {
   let dbUri = getTestDbUri();
 
   if (!dbUri) {
@@ -44,6 +44,14 @@ export async function connectToTestDatabase() {
     console.log('Test database connected:', dbUri);
   } catch (error) {
     removeTestDbUriFile();  // Remove the URI file if the connection fails
+    
+    // If this is the first attempt, try one more time with a fresh database
+    if (retryCount === 0) {
+      console.log('Connection failed, attempting to recreate database...');
+      return connectToTestDatabase(1);
+    }
+    
+    // If we've already retried once, throw the error
     throw error;
   }
 }

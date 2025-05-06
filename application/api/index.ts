@@ -12,8 +12,13 @@ import httpServ from 'http';
 import { Server } from 'socket.io';
 import customWebSockets from './services/websockets/init.ts';
 import { setupApiRoutes } from './routes.ts'
+import { connectToTestDatabase } from '../../test/sharedTestDatabase';
 
-connectToMongoDatabase(process.env.MONGO_DB_URL);
+if (process.env.NODE_ENV === 'test') {
+    connectToTestDatabase();
+} else {
+    connectToMongoDatabase(process.env.MONGO_DB_URL);
+}
 const databaseConnection = mongoose.connection;
 
 const defaultPort = 8080;
@@ -73,7 +78,13 @@ setupApiRoutes(app)
 app.use('/react-ui', (_, response) => response.render('app.ejs'));
 
 databaseConnection.on('error', (error) => {
-    throw new Error(`Error connecting to the database: ${error}`);
+    /* 
+      If we're running in a test environment, we expect the database connection to fail sometimes by design
+      so do nothing.
+    */
+    if (process.env.NODE_ENV !== 'test') {
+        throw new Error(`Error connecting to the database: ${error}`);
+    }
 });
 
 databaseConnection.on('open', () => {
