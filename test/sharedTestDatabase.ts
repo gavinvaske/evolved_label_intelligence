@@ -24,6 +24,7 @@ export const isTestDbRunning = () => {
 
 export async function connectToTestDatabase(retryCount = 0) {
   let dbUri = getTestDbUri();
+  if (!isTestMode()) throw new Error('Env must be set to test mode to connect to the test database.');
 
   if (!dbUri) {
     console.log('Creating new test database instance...');
@@ -58,6 +59,7 @@ export async function connectToTestDatabase(retryCount = 0) {
 
 export async function closeTestDatabase() {
   if (!mongod) return;
+  if (!isTestMode()) throw new Error('Env must be set to test mode to close the test database.');
 
   console.log('Closing test database...');
   await mongoose.disconnect();
@@ -69,6 +71,7 @@ export async function closeTestDatabase() {
 
 export async function clearTestDatabase() {
   if (!mongod) return;
+  if (!isTestMode()) throw new Error('Env must be set to test mode to clear the test database. This is to prevent accidental deletion of production data.');
 
   const collections = mongoose.connection.collections;
   console.log('Clearing test database...');
@@ -85,4 +88,8 @@ function removeTestDbUriFile() {
   if (fs.existsSync(TEST_DB_URI_FILE)) {
     fs.unlinkSync(TEST_DB_URI_FILE);
   }
+}
+
+const isTestMode = () => {
+  return process.env.NODE_ENV === 'test';
 }
