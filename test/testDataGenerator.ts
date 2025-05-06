@@ -2,15 +2,15 @@ import Chance from 'chance';
 const chance = Chance();
 import mongoose from 'mongoose';
 
-import { dieShapes } from '../application/api/enums/dieShapesEnum.ts';
-import { toolTypes } from '../application/api/enums/toolTypesEnum.ts';
-import { dieVendors } from '../application/api/enums/dieVendorsEnum.ts';
-import { dieMagCylinders } from '../application/api/enums/dieMagCylindersEnum.ts';
-import { dieStatuses } from '../application/api/enums/dieStatusesEnum.ts';
-import { unwindDirections } from '../application/api/enums/unwindDirectionsEnum.ts';
-import { finishTypes } from '../application/api/enums/finishTypesEnum.ts';
-import { AVAILABLE_AUTH_ROLES } from '../application/api/enums/authRolesEnum.ts';
-import { ovOrEpmOptions } from '../application/api/enums/ovOrEpmEnum.ts';
+import { dieShapes } from '../application/api/enums/dieShapesEnum';
+import { toolTypes } from '../application/api/enums/toolTypesEnum';
+import { dieVendors } from '../application/api/enums/dieVendorsEnum';
+import { dieMagCylinders } from '../application/api/enums/dieMagCylindersEnum';
+import { dieStatuses } from '../application/api/enums/dieStatusesEnum';
+import { unwindDirections } from '../application/api/enums/unwindDirectionsEnum';
+import { finishTypes } from '../application/api/enums/finishTypesEnum';
+import { AVAILABLE_AUTH_ROLES } from '../application/api/enums/authRolesEnum';
+import { ovOrEpmOptions } from '../application/api/enums/ovOrEpmEnum';
 
 export const mockData = {
     Die: getDie,
