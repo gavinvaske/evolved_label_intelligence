@@ -17,14 +17,14 @@ export const getTestDbUri = () => {
   return fs.existsSync(TEST_DB_URI_FILE) ? fs.readFileSync(TEST_DB_URI_FILE, 'utf8') : null;
 }
 
-/* TODO: Or check if mongod is running instead of checking if the file exists? Or maybe we have to check this since the processes are different? */
+/* The API populates this file with the test database URI when it starts up. So if it exists, the test database is running... probably */
 export const isTestDbRunning = () => {
-  return getTestDbUri() !== null;
+  return mongod?.getUri() !== null;
 }
 
 export async function connectToTestDatabase(retryCount = 0) {
   let dbUri = getTestDbUri();
-  if (!isTestMode()) throw new Error('Env must be set to test mode to connect to the test database.');
+  if (!isDbInTestMode()) throw new Error('You may be connected to the wrong database. This is to prevent accidental deletion of production data: ' + mongod?.getUri());
 
   if (!dbUri) {
     console.log('Creating new test database instance...');
@@ -42,7 +42,6 @@ export async function connectToTestDatabase(retryCount = 0) {
   console.log('Connecting to test database...');
   try {
     await mongoose.connect(dbUri, MONGOOSE_OPTIONS);
-    console.log('Test database connected:', dbUri);
   } catch (error) {
     removeTestDbUriFile();  // Remove the URI file if the connection fails
     
@@ -58,20 +57,20 @@ export async function connectToTestDatabase(retryCount = 0) {
 }
 
 export async function closeTestDatabase() {
-  if (!mongod) return;
-  if (!isTestMode()) throw new Error('Env must be set to test mode to close the test database.');
-
+  if (!isDbInTestMode()) throw new Error('You may be connected to the wrong database. This is to prevent accidental deletion of production data: ' + mongod?.getUri());
+  
   console.log('Closing test database...');
   await mongoose.disconnect();
-  await mongod.stop();
-  console.log('Test database closed');
 
+  if (mongod) await mongod.stop();
+  // Clean up the URI file
   removeTestDbUriFile();
+  
+  console.log('Test database closed');
 }
 
 export async function clearTestDatabase() {
-  if (!mongod) return;
-  if (!isTestMode()) throw new Error('Env must be set to test mode to clear the test database. This is to prevent accidental deletion of production data.');
+  if (!isDbInTestMode()) throw new Error('You may be connected to the wrong database. This is to prevent accidental deletion of production data: ' + mongod?.getUri());
 
   const collections = mongoose.connection.collections;
   console.log('Clearing test database...');
@@ -90,6 +89,7 @@ function removeTestDbUriFile() {
   }
 }
 
-const isTestMode = () => {
-  return process.env.NODE_ENV === 'test';
+const isDbInTestMode = () => {
+  const dbIsLocalOrNotConnected = mongod?.getUri() ? mongod.getUri().includes('127.0.0.1') : true;
+  return process.env.NODE_ENV === 'test' && dbIsLocalOrNotConnected;
 }

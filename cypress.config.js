@@ -12,7 +12,7 @@ module.exports = defineConfig({
     e2e: {
         setupNodeEvents(on, config) {
             on('before:run', async () => {
-                // Start the API server in test mode
+                // Start the API server
                 apiServer = exec('npm run start:test');
                 await new Promise(resolve => setTimeout(resolve, SERVER_STARTUP_DELAY)); // Wait for server to start
             });
@@ -26,13 +26,11 @@ module.exports = defineConfig({
 
             return mongodbPlugin(on, config);
         },
-        baseUrl: process.env.BASE_URL || 'http://localhost:8080',
+        baseUrl: 'http://localhost:8069',
         specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
         supportFile: 'cypress/support/commands.ts',
         testIsolation: true,
         env: {
-            // Override API URL to use the in-memory database during tests
-            API_URL: 'http://localhost:8080',
             NODE_ENV: 'test'
         }
     }

@@ -22,7 +22,10 @@ if (process.env.NODE_ENV === 'test') {
 const databaseConnection = mongoose.connection;
 
 const defaultPort = 8080;
-const PORT = process.env.PORT || defaultPort;
+const cypressPort = 8069;
+const PORT = process.env.NODE_ENV === 'test' ? cypressPort : (process.env.PORT || defaultPort);
+
+if (!PORT) throw new Error('PORT is not set');
 
 const app = express();
 
