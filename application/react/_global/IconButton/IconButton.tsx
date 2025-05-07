@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import clsx from 'clsx';
 import * as styles from './IconButton.module.scss';
 
-interface IconButtonProps {
+interface IconButtonProps extends React.HTMLAttributes<HTMLDivElement> {
   icon: React.ReactNode;
   onClick?: (e: React.MouseEvent) => void;
   to?: string;
@@ -23,6 +23,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
   tooltip,
   disabled = false,
   color,
+  ...rest
 }) => {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -41,6 +42,7 @@ export const IconButton: React.FC<IconButtonProps> = ({
         className
       )}
       onClick={handleClick}
+      {...rest}
     >
       {icon}
     </div>

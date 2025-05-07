@@ -15,8 +15,7 @@ type Props = {
   confirmation: ConfirmationResult;
 }
 
-export const AdhesiveCategoryRowActions = (props: Props) => {
-  const { row, confirmation } = props;
+export const AdhesiveCategoryRowActions = ({ row, confirmation }: Props) => {
   const { _id: mongooseObjectId } = row.original;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -45,8 +44,16 @@ export const AdhesiveCategoryRowActions = (props: Props) => {
 
   return (
     <RowActions>
-      <RowActionItem text='Edit' Icon={IoCreateOutline} onClick={() => onEditClicked(mongooseObjectId)} />
-      <RowActionItem text='Delete' Icon={IoTrashOutline} onClick={() => onDeleteClicked(mongooseObjectId)} />
+      <RowActionItem 
+        text='Edit' 
+        Icon={IoCreateOutline} 
+        onClick={() => onEditClicked(mongooseObjectId)} 
+      />
+      <RowActionItem 
+        text='Delete' 
+        Icon={IoTrashOutline} 
+        onClick={() => onDeleteClicked(mongooseObjectId)} 
+      />
     </RowActions>
   );
 };

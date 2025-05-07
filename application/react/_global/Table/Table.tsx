@@ -5,10 +5,10 @@ type Props = {
 }
 
 export const Table = (props: PropsWithChildren<Props>) => {
-  const { children, id } = props;
+  const { children, id, ...rest } = props;
 
   return (
-    <div id={id}>
+    <div id={id} {...rest}>
       {children}
     </div>
   )
