@@ -1,6 +1,7 @@
 import React from 'react';
 import { GoPlus } from "react-icons/go";
 import { IconButton } from '../../IconButton/IconButton';
+import SearchBar from '../../SearchBar/SearchBar';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as styles from './TablePageHeader.module.scss';
 
@@ -12,7 +13,8 @@ interface TablePageHeaderProps {
   };
   totalResults?: number;
   currentResults?: number;
-  searchBar?: React.ReactNode;
+  searchValue: string;
+  onSearch: (value: string) => void;
 }
 
 export const TablePageHeader: React.FC<TablePageHeaderProps> = ({ 
@@ -20,7 +22,8 @@ export const TablePageHeader: React.FC<TablePageHeaderProps> = ({
   createButton,
   totalResults = 0,
   currentResults = 0,
-  searchBar
+  searchValue,
+  onSearch
 }) => {
   return (
     <div className={styles.pageHeader}>
@@ -29,7 +32,10 @@ export const TablePageHeader: React.FC<TablePageHeaderProps> = ({
         <p>Viewing <span className={sharedStyles.textBlue}>{currentResults}</span> of <span className={sharedStyles.textBlue}>{totalResults}</span> results.</p>
       </div>
       <div className={styles.controlsRow}>
-        {searchBar}
+        <SearchBar 
+          value={searchValue} 
+          performSearch={onSearch} 
+        />
         {createButton && (
           <IconButton
             color="green"

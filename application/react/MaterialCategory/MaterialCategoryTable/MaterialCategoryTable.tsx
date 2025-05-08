@@ -7,15 +7,14 @@ import { performTextSearch } from '../../_queries/_common';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import { MaterialCategoryRowActions } from './MaterialCategoryRowActions/MaterialCategoryRowActions';
-import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 export const MaterialCategoryTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -98,14 +97,20 @@ export const MaterialCategoryTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Material Categories</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{materialCategorySearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Material Categories"
+          createButton={{
+            to: '/react-ui/forms/material-category',
+            tooltip: 'Create a new material category'
+          }}
+          totalResults={materialCategorySearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='material-category-table'>
           <TableHead table={table} />

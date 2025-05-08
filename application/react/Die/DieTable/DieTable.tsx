@@ -3,7 +3,6 @@ import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState
 import { DieRowActions } from './DieRowActions/DieRowActions';
 import { useQuery } from '@tanstack/react-query';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
-import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
@@ -13,9 +12,9 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { IDie } from '@shared/types/models';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 
 export const GET_DIES_QUERY_KEY = 'get-dies'
 
@@ -102,14 +101,20 @@ export const DieTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Dies</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{dieSearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Dies"
+          createButton={{
+            to: '/react-ui/forms/die',
+            tooltip: 'Create a new die'
+          }}
+          totalResults={dieSearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='die-table'>
           <TableHead table={table} />

@@ -3,7 +3,6 @@ import { createColumnHelper, getCoreRowModel, getSortedRowModel, SortingState, u
 import React, { useEffect, useMemo } from 'react';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { MaterialLengthAdjustmentRowActions } from '../MaterialLengthAdjustmentRowActions/MaterialLengthAdjustmentRowActions';
-import SearchBar from '../../../_global/SearchBar/SearchBar';
 import { Table } from '../../../_global/Table/Table';
 import { TableHead } from '../../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../../_global/Table/TableBody/TableBody';
@@ -14,10 +13,10 @@ import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import { performTextSearch } from '../../../_queries/_common';
 import { IMaterial, IMaterialLengthAdjustment } from '@shared/types/models.ts';
 import { isRefPopulated } from '@shared/types/_utility';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useLocation } from 'react-router-dom';
 import { useConfirmation } from '../../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../../_global/Table/TablePageHeader/TablePageHeader';
 export const MaterialLengthAdjustmentTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -125,14 +124,20 @@ export const MaterialLengthAdjustmentTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Material Length Adjustments</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{materialLengthAdjustmentSearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Material Length Adjustments"
+          createButton={{
+            to: '/react-ui/forms/material-length-adjustment',
+            tooltip: 'Create a new material length adjustment'
+          }}
+          totalResults={materialLengthAdjustmentSearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='material-length-adjustment-table'>
           <TableHead table={table} />

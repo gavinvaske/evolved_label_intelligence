@@ -15,12 +15,12 @@ import { getDeliveryMethods } from '../../_queries/deliveryMethod'
 import { useQuery } from '@tanstack/react-query'
 import { useErrorMessage } from '../../_hooks/useErrorMessage'
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime.ts'
-import * as tableStyles from '@ui/styles/table.module.scss'
 import Row from '../../_global/Table/Row/Row'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { IDeliveryMethod } from '@shared/types/models'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
 import { useMemo } from 'react'
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader'
 
 function DeliveryMethodTable() {
   const [globalFilter, setGlobalFilter] = React.useState("");
@@ -76,10 +76,20 @@ function DeliveryMethodTable() {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Delivery Methods</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{deliveryMethods?.length || 0}</p> results.</p>
-        </div>
+      <TablePageHeader
+          title="Delivery Methods"
+          createButton={{
+            to: '/react-ui/forms/delivery-method',
+            tooltip: 'Create a new delivery method'
+          }}
+          totalResults={deliveryMethods?.length || 0}
+          currentResults={rows.length}
+          searchValue={globalFilter}
+          onSearch={(value: string) => {
+            setGlobalFilter(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='delivery-method-table'>
           <TableHead table={table} />
