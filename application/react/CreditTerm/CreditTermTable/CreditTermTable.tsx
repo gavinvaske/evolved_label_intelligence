@@ -34,7 +34,7 @@ export const CreditTermTable = () => {
   const confirmation = useConfirmation();
   const { ConfirmationDialog } = confirmation;
 
-  const columnHelper = createColumnHelper<any>()
+  const columnHelper = createColumnHelper<ICreditTerm>()
 
   const columns = [
     columnHelper.accessor('description', {
@@ -75,7 +75,7 @@ export const CreditTermTable = () => {
     useErrorMessage(error)
   }
 
-  const table = useReactTable<any>({
+  const table = useReactTable<ICreditTerm>({
     data: creditTermSearchResults?.results ?? defaultData,
     columns,
     rowCount: creditTermSearchResults?.totalResults ?? 0,
@@ -85,7 +85,6 @@ export const CreditTermTable = () => {
       globalFilter: globalSearch,
       sorting: sorting,
       pagination: pagination
-
     },
     onPaginationChange: setPagination,
     getCoreRowModel: getCoreRowModel(),
@@ -121,7 +120,7 @@ export const CreditTermTable = () => {
           }}
         />
 
-        <Table id='credit-term-table'>
+        <Table data-test='credit-term-table'>
           <TableHead table={table} />
 
           <TableBody>
