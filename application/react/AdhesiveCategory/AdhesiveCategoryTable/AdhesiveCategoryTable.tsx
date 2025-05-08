@@ -84,9 +84,9 @@ export const AdhesiveCategoryTable = () => {
     getCoreRowModel: getCoreRowModel(),
     onSortingChange: (updaterOrValue) => {
       table.resetPageIndex(); // reset to first page when sorting
-      setSorting((oldSorting) => 
-        typeof updaterOrValue === 'function' 
-          ? updaterOrValue(oldSorting) 
+      setSorting((oldSorting) =>
+        typeof updaterOrValue === 'function'
+          ? updaterOrValue(oldSorting)
           : updaterOrValue
       );
     },
@@ -99,7 +99,7 @@ export const AdhesiveCategoryTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <TablePageHeader 
+        <TablePageHeader
           title="Adhesive Categories"
           createButton={{
             to: '/react-ui/forms/adhesive-category',
@@ -107,20 +107,16 @@ export const AdhesiveCategoryTable = () => {
           }}
           totalResults={adhesiveCategorySearchResults?.totalResults || 0}
           currentResults={rows.length}
-          searchBar={
-            <SearchBar 
-              value={globalSearch} 
-              performSearch={(value: string) => {
-                setGlobalSearch(value)
-                table.resetPageIndex();
-              }} 
-            />
-          }
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
         />
 
         <Table data-test='adhesive-category-table'>
           <TableHead table={table} />
-          
+
           <TableBody>
             {rows.map(row => (
               <Row row={row} key={row.id}></Row>
