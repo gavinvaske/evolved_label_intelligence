@@ -2,7 +2,7 @@ import Chance from 'chance';
 import { VendorModel } from '../../application/api/models/vendor.ts';
 import * as databaseService from '../../application/api/services/databaseService';
 import mongoose from 'mongoose';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 
 const chance = Chance();
 

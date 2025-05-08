@@ -1,7 +1,7 @@
 import { PackingSlipModel } from '../../application/api/models/packingSlip';
 import Chance from 'chance';
 import * as databaseService from '../../application/api/services/databaseService';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 import mongoose from 'mongoose';
 
 const chance = Chance();

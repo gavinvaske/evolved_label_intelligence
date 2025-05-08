@@ -6,7 +6,7 @@ import { dieVendors } from '../../application/api/enums/dieVendorsEnum';
 import { dieMagCylinders } from '../../application/api/enums/dieMagCylindersEnum';
 import { dieStatuses, IN_STOCK_DIE_STATUS, ORDERED_DIE_STATUS } from '../../application/api/enums/dieStatusesEnum';
 import * as databaseService from '../../application/api/services/databaseService';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 
 const chance = Chance();
 

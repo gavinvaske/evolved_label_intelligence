@@ -3,7 +3,7 @@ import * as databaseService from '../../application/api/services/databaseService
 import { UserModel } from '../../application/api/models/user.ts';
 import jwt from 'jsonwebtoken';
 import Chance from 'chance';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 
 const chance = Chance();
 

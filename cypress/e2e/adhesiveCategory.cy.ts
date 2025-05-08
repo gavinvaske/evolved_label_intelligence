@@ -1,7 +1,8 @@
+import { testDataGenerator } from "@/test-utils/cypress/testDataGenerator";
+
 describe('Adhesive Category Management', () => {
-  const testCategory = {
-    name: `Test Category ${Date.now()}`
-  };
+  const adhesiveCategory = testDataGenerator.AdhesiveCategory();
+  const uppercasedName = adhesiveCategory.name.toUpperCase();
 
   beforeEach(() => {
     cy.login();
@@ -18,7 +19,7 @@ describe('Adhesive Category Management', () => {
     
     // Fill out the form
     cy.get('[data-test=adhesive-category-form]').within(() => {
-      cy.get('[data-test=input-name]').type(testCategory.name);
+      cy.get('[data-test=input-name]').type(adhesiveCategory.name);
       cy.get('[data-test=submit-button]').click();
     });
 
@@ -27,35 +28,24 @@ describe('Adhesive Category Management', () => {
     
     // Verify the new category appears in the table
     cy.get('[data-test=adhesive-category-table]')
-      .should('contain', testCategory.name);
+      .should('contain', uppercasedName);
   });
 
   it('should allow searching for an adhesive category', () => {
-    // First create a category if it doesn't exist
-    cy.get('[data-test=adhesive-category-table]').then($table => {
-      if (!$table.text().includes(testCategory.name)) {
-        cy.get('[data-test=create-icon-button]').click();
-        cy.get('[data-test=adhesive-category-form]').within(() => {
-          cy.get('[data-test=input-name]').type(testCategory.name);
-          cy.get('[data-test=submit-button]').click();
-        });
-      }
-    });
-
     // Search for the category
-    cy.get('[data-test=searchbar]').type(testCategory.name);
+    cy.get('[data-test=searchbar]').type(adhesiveCategory.name);
     
     // Verify search results
     cy.get('[data-test=adhesive-category-table]')
-      .should('contain', testCategory.name);
+      .should('contain', uppercasedName);
   });
 
   it('should allow editing an existing adhesive category', () => {
-    const updatedName = `${testCategory.name} Updated`;
+    const updatedName = `${adhesiveCategory.name} Updated`;
     
     // Find the row with our test category and click the edit button
     cy.get('[data-test=adhesive-category-table]')
-      .contains(testCategory.name)
+      .contains(uppercasedName)
       .closest('[data-test=table-row]')  // Get the row containing our text
       .find('[data-test=row-actions]')  // Find the actions container
       .find('[data-test=row-actions-button]')  // Find the button within actions
@@ -75,7 +65,7 @@ describe('Adhesive Category Management', () => {
 
     // Verify the update in the table
     cy.get('[data-test=adhesive-category-table]')
-      .should('contain', updatedName);
+      .should('contain', uppercasedName);
   });
 });
 

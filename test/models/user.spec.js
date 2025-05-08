@@ -1,6 +1,6 @@
 import Chance from 'chance';
 import { UserModel } from '../../application/api/models/user.ts';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 import { AVAILABLE_AUTH_ROLES } from '../../application/api/enums/authRolesEnum.ts';
 import * as databaseService from '../../application/api/services/databaseService';
 import mongoose from 'mongoose';
