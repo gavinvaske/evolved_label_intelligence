@@ -3,7 +3,6 @@
   "browserslist": "> 0.5%, last 2 versions, not dead",
   "version": "1.0.0",
   "description": "An application used to get up and running with a new nodejs project with a linter, test library and basic configuration already setup",
-  "type": "module",
   "targets": {
     "main": false,
     "resources": {
@@ -17,12 +16,15 @@
     "start": "npm run build && npx tsx application/api/index.ts",
     "react": "npm run parcel:remove-cache && parcel watch",
     "test": "jest",
-    "cypress:run": "cypress run",
-    "acceptance": "start-server-and-test start http://localhost:8080 cypress:run",
+    "cypress:run": "cross-env NODE_ENV=test cypress run",
+    "acceptance": "npm run build && npm run acceptance:no-build",
     "lint": "eslint .",
     "fix-lint": "eslint . --fix",
     "verify": "npm run test && npm run lint",
-    "parcel:remove-cache": "rm -rf .parcel-cache"
+    "parcel:remove-cache": "rm -rf .parcel-cache",
+    "start:test": "cross-env NODE_ENV=test npx tsx application/api/index.ts",
+    "cypress:open": "cross-env NODE_ENV=test cypress open",
+    "acceptance:no-build": "start-server-and-test start:test http://localhost:8069 cypress:run"
   },
   "config": {
     "mongodbMemoryServer": {}
@@ -92,8 +94,9 @@
     "babel-jest": "29.7.0",
     "browserify-zlib": "0.2.0",
     "chance": "1.1.12",
+    "cross-env": "7.0.3",
     "crypto-browserify": "3.12.0",
-    "cypress": "13.17.0",
+    "cypress": "14.3.2",
     "eslint": "8.57.0",
     "events": "3.3.0",
     "jest": "29.7.0",

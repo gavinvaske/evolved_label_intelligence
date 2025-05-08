@@ -1,22 +1,25 @@
+import { TEST_USER } from "support/testData";
+
 describe('Login Cases', () => {
-  it('User should see a profile page upon login', () => {
-    cy.login();
-
-    cy.location().should(loc => {
-      expect(loc.pathname).to.equal('/react-ui/profile')
-    })
-  })
-
-  it('Unauthenticated user should see the login page with the email field in focus', () => {
-    cy.logout();
-    cy.visit('/react-ui/inventory');
-
+  it('should show the login page with a email and password field, with the email field in focus', () => {
+    cy.visit('/react-ui/login');
+  
     cy.contains('Login');
     cy.location().should(loc => {
       expect(loc.pathname).to.equal('/react-ui/login')
     })
     cy.get('input[name="email"]').should('be.focused');
-  });
+    cy.get('input[name="password"]').should('exist');
+  })
+
+  it('User should see a profile page and welcome message upon login', () => {
+    cy.login();
+
+    cy.location().should(loc => {
+      expect(loc.pathname).to.equal('/react-ui/profile')
+    })
+    cy.contains('Welcome to E.L.I')
+  })
 
   it('Unauthenticated user should be sent to login page when visiting base route', () => {
     cy.logout();
@@ -40,15 +43,6 @@ describe('Login Cases', () => {
     cy.contains(expectedInvalidLoginErrorMessage)
   });
 
-  it('User should see a home page upon login', () => {
-    cy.logout();
-    cy.login();
-
-    cy.location().should(loc => {
-      expect(loc.pathname).to.equal('/react-ui/profile')
-    })
-  })
-
   it('If an unauthenticated user attempts to visit a url, they should be redirected to that url after login', () => {
     cy.logout();
     const originallyRequestedUrl = '/react-ui/inventory';
@@ -60,8 +54,8 @@ describe('Login Cases', () => {
     })
 
     /* Type in username and password */
-    cy.get('[data-test=username-input]').type(Cypress.env('loginUsername'))
-    cy.get('[data-test=password-input]').type(Cypress.env('loginPassword'))
+    cy.get('[data-test=username-input]').type(TEST_USER.email)
+    cy.get('[data-test=password-input]').type(TEST_USER.password)
 
     /* Click login button */
     cy.get('[data-test=login-btn]').click();

@@ -7,13 +7,13 @@ import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 import Row from '../../_global/Table/Row/Row';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime.ts';
 import { SearchResult } from '@shared/types/http';
 import { IAdhesiveCategory } from '@shared/types/models';
 import { performTextSearch } from '../../_queries/_common';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
 
@@ -99,16 +99,26 @@ export const AdhesiveCategoryTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Adhesive Categories</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{adhesiveCategorySearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader 
+          title="Adhesive Categories"
+          createButton={{
+            to: '/react-ui/forms/adhesive-category',
+            tooltip: 'Create a new adhesive category'
+          }}
+          totalResults={adhesiveCategorySearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchBar={
+            <SearchBar 
+              value={globalSearch} 
+              performSearch={(value: string) => {
+                setGlobalSearch(value)
+                table.resetPageIndex();
+              }} 
+            />
+          }
+        />
 
-        <Table id='adhesive-category-table'>
+        <Table data-test='adhesive-category-table'>
           <TableHead table={table} />
           
           <TableBody>

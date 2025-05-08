@@ -1,16 +1,18 @@
 import { Chance } from 'chance';
+import { TEST_USER } from './testData';
 
 const chance = new Chance();
 
 Cypress.Commands.add('login', () => {
+  const testUser = TEST_USER;
+
+  if (!testUser?.email || !testUser?.password) throw new Error('Missing a required test user. Hint: did you forget to seed the test database?');
+
   cy.visit('/react-ui/login')
 
-  if (!Cypress.env('loginUsername')) throw new Error('Missing a required cypress environment variable: "loginUsername"')
-  if (!Cypress.env('loginPassword')) throw new Error('Missing a required cypress environment variable: "loginPassword"')
-
   /* When username and password input fields are populated */
-  cy.get('[data-test=username-input]').type(Cypress.env('loginUsername'))
-  cy.get('[data-test=password-input]').type(Cypress.env('loginPassword'))
+  cy.get('[data-test=username-input]').type(testUser.email)
+  cy.get('[data-test=password-input]').type(testUser.password)
 
   /* And a User clicks login */
   cy.get('[data-test=login-btn]').click();

@@ -38,6 +38,11 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
   };
   const { ref, ...rest } = register(attribute, registerOptions);
 
+  // Generate data-test attribute, used by cypress tests
+  const testAttribute = {
+    'data-test': `input-${attribute}`
+  };
+
   useEffect(() => {
     // Check if the field has a value from react-hook-form
     const formValue = getValues(attribute);
@@ -73,6 +78,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
                 customRef.current = e;
               }
             }}
+            {...testAttribute}
             {...dataAttributes}
           />
         </div>
@@ -99,6 +105,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
                 customRef.current = e;
               }
             }}
+            {...testAttribute}
             {...dataAttributes}
           />
 

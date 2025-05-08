@@ -12,12 +12,20 @@ import httpServ from 'http';
 import { Server } from 'socket.io';
 import customWebSockets from './services/websockets/init.ts';
 import { setupApiRoutes } from './routes.ts'
+import { connectToTestDatabase } from '../../test/sharedTestDatabase';
 
-connectToMongoDatabase(process.env.MONGO_DB_URL);
+if (process.env.NODE_ENV === 'test') {
+    connectToTestDatabase();
+} else {
+    connectToMongoDatabase(process.env.MONGO_DB_URL);
+}
 const databaseConnection = mongoose.connection;
 
 const defaultPort = 8080;
-const PORT = process.env.PORT || defaultPort;
+const cypressPort = 8069;
+const PORT = process.env.NODE_ENV === 'test' ? cypressPort : defaultPort;
+
+if (!PORT) throw new Error('PORT is not set');
 
 const app = express();
 
