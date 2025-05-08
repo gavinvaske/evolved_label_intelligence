@@ -42,8 +42,18 @@ describe('validation', () => {
             adhesiveCategoryAttributes.name = '   ' + expectedName + '  ';
             const downtimeReason = new AdhesiveCategoryModel(adhesiveCategoryAttributes);
 
-            expect(downtimeReason.name).toEqual(expectedName);
+            expect(downtimeReason.name).toEqual(expectedName.toUpperCase());
         });
+
+        it('should upper case attribute', () => {
+            const lowerCaseName = chance.string().toLowerCase();
+            adhesiveCategoryAttributes.name = lowerCaseName;
+
+            const adhesiveCategory = new AdhesiveCategoryModel(adhesiveCategoryAttributes);
+
+            expect(adhesiveCategory.name).toEqual(lowerCaseName.toUpperCase());
+        });
+
     });
 
     describe('verify timestamps on created object', () => {
