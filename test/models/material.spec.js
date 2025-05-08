@@ -2,7 +2,7 @@ import Chance from 'chance';
 import { MaterialModel } from '../../application/api/models/material.ts';
 import mongoose from 'mongoose';
 import * as databaseService from '../../application/api/services/databaseService';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 import { populateMaterialInventories as populateMaterialInventoriesMock } from '../../application/api/services/materialInventoryService.ts';
 import { when } from 'jest-when';
 

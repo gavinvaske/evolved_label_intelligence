@@ -3,7 +3,7 @@ import { QuoteModel } from '../../application/api/models/quote.ts';
 import * as databaseService from '../../application/api/services/databaseService';
 import mongoose from 'mongoose';
 import * as constants from '../../application/api/enums/constantsEnum.ts';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 import { unwindDirections } from '../../application/api/enums/unwindDirectionsEnum';
 import Chance from 'chance';
 

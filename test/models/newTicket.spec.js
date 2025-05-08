@@ -6,7 +6,7 @@ import * as departmentsEnum from '../../application/api/enums/departmentsEnum.ts
 import * as databaseService from '../../application/api/services/databaseService';
 import mongoose from 'mongoose';
 
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 
 const chance = Chance();
 

@@ -5,4 +5,4 @@ export const TEST_USER = {
     email: 'test@example.com',
     password: 'password123',
     authRoles: ['ADMIN']
-}; 
+};

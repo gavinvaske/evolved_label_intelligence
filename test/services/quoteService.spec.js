@@ -5,7 +5,7 @@ import Chance from 'chance';
 import mongoose from 'mongoose';
 import { when } from 'jest-when';
 import { convertMinutesToSeconds, convertSecondsToMinutes } from '../../application/api/services/dateTimeService.ts';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 import * as databaseService from '../../application/api/services/databaseService';
 
 const chance = Chance();

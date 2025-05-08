@@ -7,7 +7,7 @@ import { MaterialModel } from '../../application/api/models/material.ts';
 import { unwindDirections } from '../../application/api/enums/unwindDirectionsEnum';
 import { finishTypes } from '../../application/api/enums/finishTypesEnum';
 import { DieModel } from '../../application/api/models/die.ts';
-import * as testDataGenerator from '../testDataGenerator';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 
 jest.mock('../../application/api/services/materialInventoryService.ts');
 
