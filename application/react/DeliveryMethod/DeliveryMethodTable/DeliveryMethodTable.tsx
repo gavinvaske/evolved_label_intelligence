@@ -76,7 +76,7 @@ function DeliveryMethodTable() {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-      <TablePageHeader
+        <TablePageHeader
           title="Delivery Methods"
           createButton={{
             to: '/react-ui/forms/delivery-method',

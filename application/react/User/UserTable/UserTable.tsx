@@ -8,15 +8,14 @@ import { performTextSearch } from '../../_queries/_common';
 import { SearchResult } from '@shared/types/http';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { LoadingIndicator } from '../../_global/LoadingIndicator/LoadingIndicator';
-import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
 import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { UserRowActions } from './UserRowActions/UserRowActions';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 
 const columnHelper = createColumnHelper<IUser>()
 
@@ -112,14 +111,16 @@ export const UserTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Users</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{userResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+      <TablePageHeader
+          title="Users"
+          totalResults={userResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='user-table'>
           <TableHead table={table} />
