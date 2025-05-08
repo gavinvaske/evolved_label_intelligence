@@ -26,7 +26,7 @@ module.exports = defineConfig({
 
             return mongodbPlugin(on, config);
         },
-        baseUrl: 'http://localhost:8069',
+        baseUrl: 'http://localhost:8069', // nice
         specPattern: 'cypress/e2e/**/*.cy.{js,jsx,ts,tsx}',
         supportFile: 'cypress/support/commands.ts',
         testIsolation: true,

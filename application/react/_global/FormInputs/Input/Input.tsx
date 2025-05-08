@@ -38,7 +38,7 @@ export const Input: WithForwardRefType = forwardRef((props, customRef) => {
   };
   const { ref, ...rest } = register(attribute, registerOptions);
 
-  // Generate data-test attribute based on the field's attribute
+  // Generate data-test attribute, used by cypress tests
   const testAttribute = {
     'data-test': `input-${attribute}`
   };
