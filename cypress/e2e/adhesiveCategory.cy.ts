@@ -1,9 +1,8 @@
-describe('Adhesive Category Management', () => {
-  const testCategory = {
-    name: `Sample Name ${Date.now()}`
-  };
+import { testDataGenerator } from "@/test-utils/cypress/testDataGenerator";
 
-  const uppercasedName = testCategory.name.toUpperCase();
+describe('Adhesive Category Management', () => {
+  const adhesiveCategory = testDataGenerator.AdhesiveCategory();
+  const uppercasedName = adhesiveCategory.name.toUpperCase();
 
   beforeEach(() => {
     cy.login();
@@ -20,7 +19,7 @@ describe('Adhesive Category Management', () => {
     
     // Fill out the form
     cy.get('[data-test=adhesive-category-form]').within(() => {
-      cy.get('[data-test=input-name]').type(testCategory.name);
+      cy.get('[data-test=input-name]').type(adhesiveCategory.name);
       cy.get('[data-test=submit-button]').click();
     });
 
@@ -34,7 +33,7 @@ describe('Adhesive Category Management', () => {
 
   it('should allow searching for an adhesive category', () => {
     // Search for the category
-    cy.get('[data-test=searchbar]').type(testCategory.name);
+    cy.get('[data-test=searchbar]').type(adhesiveCategory.name);
     
     // Verify search results
     cy.get('[data-test=adhesive-category-table]')
@@ -42,7 +41,7 @@ describe('Adhesive Category Management', () => {
   });
 
   it('should allow editing an existing adhesive category', () => {
-    const updatedName = `${testCategory.name} Updated`;
+    const updatedName = `${adhesiveCategory.name} Updated`;
     
     // Find the row with our test category and click the edit button
     cy.get('[data-test=adhesive-category-table]')

@@ -1,9 +1,8 @@
-describe('Credit Term Management', () => {
-  const testCreditTerm = {
-    description: `Sample Description ${Date.now()}`
-  };
+import { testDataGenerator } from '@test-utils/cypress/testDataGenerator';
 
-  const uppercasedDescription = testCreditTerm.description.toUpperCase();
+describe('Credit Term Management', () => {
+  const creditTerm = testDataGenerator.CreditTerm();
+  const uppercasedDescription = creditTerm.description.toUpperCase();
 
   beforeEach(() => {
     cy.login();
@@ -20,7 +19,7 @@ describe('Credit Term Management', () => {
     
     // Fill out the form
     cy.get('[data-test=credit-term-form]').within(() => {
-      cy.get('[data-test=input-description]').type(testCreditTerm.description);
+      cy.get('[data-test=input-description]').type(creditTerm.description);
       cy.get('[data-test=submit-button]').click();
     });
 
@@ -36,7 +35,7 @@ describe('Credit Term Management', () => {
 
   it('should allow searching for a credit term', () => {
     // Search for the credit term
-    cy.get('[data-test=searchbar]').type(testCreditTerm.description);
+    cy.get('[data-test=searchbar]').type(creditTerm.description);
     
     // Wait for the table to be ready and verify search results
     cy.get('[data-test=credit-term-table]').should('exist');
@@ -46,7 +45,7 @@ describe('Credit Term Management', () => {
   });
 
   it('should allow editing an existing credit term', () => {
-    const updatedDescription = `${testCreditTerm.description} Updated`;
+    const updatedDescription = `${creditTerm.description} Updated`;
     
     // Find the row with our test credit term and click the edit button
     cy.get('[data-test=credit-term-table]')
