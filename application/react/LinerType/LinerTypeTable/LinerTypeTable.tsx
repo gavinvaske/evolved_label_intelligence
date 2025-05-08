@@ -7,7 +7,6 @@ import {
   SortingState,
   PaginationState,
 } from '@tanstack/react-table'
-import SearchBar from '../../_global/SearchBar/SearchBar'
 import { TableHead } from '../../_global/Table/TableHead/TableHead'
 import { TableBody } from '../../_global/Table/TableBody/TableBody'
 import { Table } from '../../_global/Table/Table'
@@ -20,9 +19,9 @@ import { performTextSearch } from '../../_queries/_common';
 import Row from '../../_global/Table/Row/Row';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { ILinerType } from '@shared/types/models';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 
 export const LinerTypeTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -106,14 +105,20 @@ export const LinerTypeTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Liner Types</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{linerTypeSearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Liner Types"
+          createButton={{
+            to: '/react-ui/forms/liner-type',
+            tooltip: 'Create a new liner type'
+          }}
+          totalResults={linerTypeSearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='liner-type-table'>
           <TableHead table={table} />

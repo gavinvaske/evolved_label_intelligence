@@ -2,7 +2,6 @@ import React, { useMemo } from 'react';
 import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState, SortingState, useReactTable } from '@tanstack/react-table';
 import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import { VendorRowActions } from './VendorRowActions/VendorRowActions';
-import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
@@ -13,9 +12,9 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { IVendor } from '@shared/types/models';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 
 export const VendorTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -111,14 +110,20 @@ export const VendorTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Vendors</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{vendorSearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Vendors"
+          createButton={{
+            to: '/react-ui/forms/vendor',
+            tooltip: 'Create a new vendor'
+          }}
+          totalResults={vendorSearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='vendor-table'>
           <TableHead table={table} />

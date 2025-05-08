@@ -3,7 +3,6 @@ import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState
 import { MaterialOrderRowActions } from './MaterialOrderRowActions/MaterialOrderRowActions';
 import { useQuery } from '@tanstack/react-query';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
-import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
@@ -13,10 +12,10 @@ import { SearchResult } from '@shared/types/http';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { performTextSearch } from '../../_queries/_common';
 import { IMaterial, IMaterialOrder, IVendor } from '@shared/types/models';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useLocation } from 'react-router-dom';
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 
 export const MaterialOrderTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -122,14 +121,20 @@ export const MaterialOrderTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Material Orders</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{materialOrderResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Material Orders"
+          createButton={{
+            to: '/react-ui/forms/material-order',
+            tooltip: 'Create a new material order'
+          }}
+          totalResults={materialOrderResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='material-order-table'>
           <TableHead table={table} />
