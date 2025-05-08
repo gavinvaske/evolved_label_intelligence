@@ -81,13 +81,7 @@ setupApiRoutes(app)
 app.use('/react-ui', (_, response) => response.render('app.ejs'));
 
 databaseConnection.on('error', (error) => {
-    /* 
-      If we're running in a test environment, we expect the database connection to fail sometimes by design
-      so do nothing.
-    */
-    if (process.env.NODE_ENV !== 'test') {
-        throw new Error(`Error connecting to the database: ${error}`);
-    }
+    throw new Error(`Error connecting to the database: ${error}`);
 });
 
 databaseConnection.on('open', () => {

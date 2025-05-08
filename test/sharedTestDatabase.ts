@@ -22,9 +22,9 @@ export const isTestDbRunning = () => {
   return mongod?.getUri() !== null;
 }
 
-export async function connectToTestDatabase(retryCount = 0) {
+export async function connectToTestDatabase() {
   let dbUri = getTestDbUri();
-  if (!isDbInTestMode()) throw new Error('You may be connected to the wrong database. This is to prevent accidental deletion of production data: ' + mongod?.getUri());
+  throwErrorIfDbIsNotInTestMode();  // Short circuit if we're not in test mode
 
   if (!dbUri) {
     console.log('Creating new test database instance...');
@@ -42,22 +42,15 @@ export async function connectToTestDatabase(retryCount = 0) {
   console.log('Connecting to test database...');
   try {
     await mongoose.connect(dbUri, MONGOOSE_OPTIONS);
+    console.log('Connected to test database');
   } catch (error) {
     removeTestDbUriFile();  // Remove the URI file if the connection fails
-    
-    // If this is the first attempt, try one more time with a fresh database
-    if (retryCount === 0) {
-      console.log('Connection failed, attempting to recreate database...');
-      return connectToTestDatabase(1);
-    }
-    
-    // If we've already retried once, throw the error
     throw error;
   }
 }
 
 export async function closeTestDatabase() {
-  if (!isDbInTestMode()) throw new Error('You may be connected to the wrong database. This is to prevent accidental deletion of production data: ' + mongod?.getUri());
+  throwErrorIfDbIsNotInTestMode();  // Short circuit if we're not in test mode
   
   console.log('Closing test database...');
   await mongoose.disconnect();
@@ -70,7 +63,7 @@ export async function closeTestDatabase() {
 }
 
 export async function clearTestDatabase() {
-  if (!isDbInTestMode()) throw new Error('You may be connected to the wrong database. This is to prevent accidental deletion of production data: ' + mongod?.getUri());
+  throwErrorIfDbIsNotInTestMode();  // Short circuit if we're not in test mode
 
   const collections = mongoose.connection.collections;
   console.log('Clearing test database...');
@@ -89,7 +82,15 @@ function removeTestDbUriFile() {
   }
 }
 
-const isDbInTestMode = () => {
-  const dbIsLocalOrNotConnected = mongod?.getUri() ? mongod.getUri().includes('127.0.0.1') : true;
-  return process.env.NODE_ENV === 'test' && dbIsLocalOrNotConnected;
+/* 
+  If for any reason, the database is not in test mode, throw an error. 
+  This is to prevent accidental deletion of production data or issues around that.
+*/
+const throwErrorIfDbIsNotInTestMode = () => {
+  const isDbConnected = mongoose.connection.readyState === 1;
+  const dbIsLocal = mongoose.connection.host == '127.0.0.1';
+  const isInTestMode = process.env.NODE_ENV === 'test' && (isDbConnected ? dbIsLocal : true);
+  if (!isInTestMode) {
+    throw new Error('You may be connected to the wrong database. This is to prevent accidental deletion of production data: ' + mongoose.connection);
+  }
 }
