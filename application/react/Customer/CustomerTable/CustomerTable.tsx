@@ -3,7 +3,6 @@ import { createColumnHelper, getCoreRowModel, getSortedRowModel, PaginationState
 import { CustomerRowActions } from './CustomerRowActions/CustomerRowActions'
 import { useQuery } from '@tanstack/react-query';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
-import SearchBar from '../../_global/SearchBar/SearchBar';
 import { Table } from '../../_global/Table/Table';
 import { TableHead } from '../../_global/Table/TableHead/TableHead';
 import { TableBody } from '../../_global/Table/TableBody/TableBody';
@@ -13,9 +12,9 @@ import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { ICustomer } from '@shared/types/models';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 
 export const CustomerTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -108,14 +107,20 @@ export const CustomerTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Customers</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{customerSearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Customers"
+          createButton={{
+            to: '/react-ui/forms/customer',
+            tooltip: 'Create a new customer'
+          }}
+          totalResults={customerSearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='customer-table'>
           <TableHead table={table} />

@@ -8,7 +8,6 @@ import {
   PaginationState,
 } from '@tanstack/react-table'
 import Row from '../../_global/Table/Row/Row'
-import SearchBar from '../../_global/SearchBar/SearchBar'
 import { TableHead } from '../../_global/Table/TableHead/TableHead'
 import { TableBody } from '../../_global/Table/TableBody/TableBody'
 import { Table } from '../../_global/Table/Table'
@@ -20,9 +19,9 @@ import { ICreditTerm } from '@shared/types/models';
 import { SearchResult } from '@shared/types/http';
 import { performTextSearch } from '../../_queries/_common';
 import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
-import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { useConfirmation } from '../../_global/Modal/useConfirmation';
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
 
 export const CreditTermTable = () => {
   const [globalSearch, setGlobalSearch] = React.useState('');
@@ -107,14 +106,20 @@ export const CreditTermTable = () => {
   return (
     <div className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Credit Terms</h1>
-          <p>Viewing <p className={sharedStyles.textBlue}>{rows.length}</p> of <p className={sharedStyles.textBlue}>{creditTermSearchResults?.totalResults || 0}</p> results.</p>
-        </div>
-        <SearchBar value={globalSearch} performSearch={(value: string) => {
-          setGlobalSearch(value)
-          table.resetPageIndex();
-        }} />
+        <TablePageHeader
+          title="Credit Terms"
+          createButton={{
+            to: '/react-ui/forms/credit-term',
+            tooltip: 'Create a new credit term'
+          }}
+          totalResults={creditTermSearchResults?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalSearch}
+          onSearch={(value: string) => {
+            setGlobalSearch(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='credit-term-table'>
           <TableHead table={table} />
