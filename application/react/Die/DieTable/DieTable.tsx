@@ -116,7 +116,7 @@ export const DieTable = () => {
           }}
         />
 
-        <Table id='die-table'>
+        <Table id='die-table' data-test='die-table'>
           <TableHead table={table} />
 
           <TableBody>

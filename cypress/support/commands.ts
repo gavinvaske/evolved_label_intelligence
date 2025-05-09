@@ -53,3 +53,20 @@ Cypress.Commands.add('logout', () => {
   cy.request('/auth/logout'); /* TODO: Initiate logout via a UI button instead of direct HTTP request*/
 })
 
+// Custom command for selecting an option from CustomSelect
+Cypress.Commands.add('selectFromCustomSelect', (selector: string, optionText: string) => {
+  cy.get(selector).click(); // Opens the dropdown
+  cy.get('[data-test=select-items-dropdown]').should('be.visible');
+  cy.get('[data-test=select-search-input]').type(optionText); // Type to search
+  cy.get('[data-test=select-dropdown-item]').contains(optionText).click();
+});
+
+// Add the command to the Cypress namespace
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      selectFromCustomSelect(selector: string, optionText: string): Chainable<void>
+    }
+  }
+}
+
