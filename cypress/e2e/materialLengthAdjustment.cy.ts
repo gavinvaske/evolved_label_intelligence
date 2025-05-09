@@ -34,7 +34,7 @@ describe('Material Length Adjustment Management', () => {
 
   it('should allow searching for an material length adjustment', () => {
     // Search for the material length adjustment
-    cy.get('[data-test=searchbar]').type(materialLengthAdjustment.length.toString());
+    cy.get('[data-test=searchbar]').type(Math.abs(materialLengthAdjustment.length).toString());
     
     // Verify search results
     cy.get('[data-test=material-length-adjustment-table]')
@@ -46,7 +46,7 @@ describe('Material Length Adjustment Management', () => {
     
     // Find the row with our test material length adjustment and click the edit button
     cy.get('[data-test=material-length-adjustment-table]')
-      .contains(materialLengthAdjustment.length)
+      .contains(getExpectedLengthFormat(materialLengthAdjustment.length))
       .closest('[data-test=table-row]')  // Get the row containing our text
       .find('[data-test=row-actions]')  // Find the actions container
       .find('[data-test=row-actions-button]')  // Find the button within actions

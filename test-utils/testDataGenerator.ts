@@ -28,7 +28,8 @@ export const mockData = {
     LinerType: getLinerType,
     Vendor: getVendor,
     MaterialCategory: getMaterialCategory,
-    MaterialLengthAdjustment: getMaterialLengthAdjustment
+    MaterialLengthAdjustment: getMaterialLengthAdjustment,
+    MaterialOrder: getMaterialOrder
 };
 
 function getDie() {
@@ -58,6 +59,24 @@ function getDie() {
         quantity: chance.d100(),
         isLamination: chance.pickone([chance.bool(), undefined])
     };
+}
+
+function getMaterialOrder() {
+  return {
+    material: new mongoose.Types.ObjectId(),
+    purchaseOrderNumber: `${chance.integer({min: 0})}`,
+    orderDate: chance.date({string: true}),
+    arrivalDate: chance.date({string: true}),
+    feetPerRoll: chance.integer({min: 0}),
+    totalRolls: chance.integer({min: 1, max: 100}),
+    totalCost: chance.floating({min: 1, max: 500000}),
+    vendor: new mongoose.Types.ObjectId(),
+    hasArrived: chance.bool(),
+    notes: chance.string(),
+    author: new mongoose.Types.ObjectId(),
+    freightCharge: chance.floating({ min: 0, fixed: 2 }),
+    fuelCharge: chance.floating({ min: 0, fixed: 2 })
+  }
 }
 
 function getVendor() {
