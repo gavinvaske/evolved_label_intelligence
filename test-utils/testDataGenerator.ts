@@ -24,7 +24,8 @@ export const mockData = {
     Address: getAddress,
     CreditTerm: getCreditTerm,
     AdhesiveCategory: getAdhesiveCategory,
-    DeliveryMethod: getDeliveryMethod
+    DeliveryMethod: getDeliveryMethod,
+    LinerType: getLinerType
 };
 
 function getDie() {
@@ -53,6 +54,12 @@ function getDie() {
         status: chance.pickone(dieStatuses),
         quantity: chance.d100(),
         isLamination: chance.pickone([chance.bool(), undefined])
+    };
+}
+
+function getLinerType() {
+    return {
+        name: chance.string()
     };
 }
 

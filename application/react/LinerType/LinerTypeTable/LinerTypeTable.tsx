@@ -120,7 +120,7 @@ export const LinerTypeTable = () => {
           }}
         />
 
-        <Table id='liner-type-table'>
+        <Table id='liner-type-table' data-test='liner-type-table'>
           <TableHead table={table} />
 
           <TableBody>
