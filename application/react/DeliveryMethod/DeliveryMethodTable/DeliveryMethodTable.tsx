@@ -91,7 +91,7 @@ function DeliveryMethodTable() {
           }}
         />
 
-        <Table id='delivery-method-table'>
+        <Table id='delivery-method-table' data-test='delivery-method-table'>
           <TableHead table={table} />
 
           <TableBody>

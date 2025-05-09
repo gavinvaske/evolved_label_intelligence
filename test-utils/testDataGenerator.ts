@@ -22,7 +22,8 @@ export const mockData = {
     BaseProduct: getBaseProduct,
     Address: getAddress,
     CreditTerm: getCreditTerm,
-    AdhesiveCategory: getAdhesiveCategory
+    AdhesiveCategory: getAdhesiveCategory,
+    DeliveryMethod: getDeliveryMethod
 };
 
 function getDie() {
@@ -172,5 +173,11 @@ function getAddress() {
         city: chance.city(),
         state: chance.state(),
         zipCode: chance.zip()
+    };
+}
+
+function getDeliveryMethod() {
+    return {
+        name: chance.string()
     };
 }
