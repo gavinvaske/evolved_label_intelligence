@@ -1,11 +1,11 @@
 import { UserModel } from '../../application/api/models/user';
-import { TEST_USER, VENDORS, ADHESIVE_CATEGORIES, MATERIAL_CATEGORIES, LINER_TYPES } from './testData';
+import { TEST_USER, VENDORS, ADHESIVE_CATEGORIES, MATERIAL_CATEGORIES, LINER_TYPES, MATERIALS } from './testData';
 import { USER } from '../../application/api/enums/authRolesEnum';
 import { VendorModel } from '../../application/api/models/vendor';
 import { AdhesiveCategoryModel } from '../../application/api/models/adhesiveCategory';
 import { MaterialCategoryModel } from '../../application/api/models/materialCategory';
 import { LinerTypeModel } from '../../application/api/models/linerType';
-
+import { MaterialModel } from '../../application/api/models/material';
 const TEST_API_URL = 'http://localhost:8069';
 
 export async function seedTestDatabase() {
@@ -19,6 +19,7 @@ export async function seedTestDatabase() {
     await AdhesiveCategoryModel.insertMany(ADHESIVE_CATEGORIES);
     await MaterialCategoryModel.insertMany(MATERIAL_CATEGORIES);
     await LinerTypeModel.insertMany(LINER_TYPES);
+    await MaterialModel.insertMany(MATERIALS);
     /* [END] SEED TEST DATA */
 
     console.log('Test database seeded');

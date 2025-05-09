@@ -27,7 +27,8 @@ export const mockData = {
     DeliveryMethod: getDeliveryMethod,
     LinerType: getLinerType,
     Vendor: getVendor,
-    MaterialCategory: getMaterialCategory
+    MaterialCategory: getMaterialCategory,
+    MaterialLengthAdjustment: getMaterialLengthAdjustment
 };
 
 function getDie() {
@@ -72,6 +73,14 @@ function getVendor() {
       primaryAddress: getAddress(),
       remittanceAddress: chance.pickone([getAddress(), undefined])
     };
+}
+
+function getMaterialLengthAdjustment() {
+  return {
+    material: new mongoose.Types.ObjectId(),
+    length: chance.integer({ min: -100000, max: 100000 }),
+    notes: chance.string()
+  }
 }
 
 function getLinerType() {
