@@ -11,6 +11,7 @@ import { unwindDirections } from '../application/api/enums/unwindDirectionsEnum'
 import { finishTypes } from '../application/api/enums/finishTypesEnum';
 import { AVAILABLE_AUTH_ROLES } from '../application/api/enums/authRolesEnum';
 import { ovOrEpmOptions } from '../application/api/enums/ovOrEpmEnum';
+import { DIE_NUMBER_PREFIXES } from '../application/api/enums/dieNumberPrefixEnum';
 
 export const mockData = {
     Die: getDie,
@@ -31,7 +32,7 @@ function getDie() {
         shape: chance.pickone(dieShapes),
         sizeAcross: chance.floating({ min: 0.01, max: 10, fixed: 2 }),
         sizeAround: chance.floating({ min: 0.01, max: 10, fixed: 2 }),
-        dieNumber: 'DC-1234',
+        dieNumber: `${chance.pickone(DIE_NUMBER_PREFIXES)}-${chance.integer({ min: 1000, max: 9999 })}`,
         numberAcross: chance.d10(),
         numberAround: chance.d10(),
         gear: chance.d100(),
