@@ -25,7 +25,9 @@ export const mockData = {
     CreditTerm: getCreditTerm,
     AdhesiveCategory: getAdhesiveCategory,
     DeliveryMethod: getDeliveryMethod,
-    LinerType: getLinerType
+    LinerType: getLinerType,
+    Vendor: getVendor,
+    MaterialCategory: getMaterialCategory
 };
 
 function getDie() {
@@ -57,6 +59,21 @@ function getDie() {
     };
 }
 
+function getVendor() {
+    return {
+      name: chance.string(),
+      phoneNumber: chance.phone(),
+      email: chance.email(),
+      notes: chance.paragraph(),
+      website: chance.url(),
+      primaryContactName: chance.string(),
+      primaryContactPhoneNumber: chance.phone(),
+      primaryContactEmail: chance.email(),
+      primaryAddress: getAddress(),
+      remittanceAddress: chance.pickone([getAddress(), undefined])
+    };
+}
+
 function getLinerType() {
     return {
         name: chance.string()
@@ -70,6 +87,12 @@ function getCreditTerm() {
 }
 
 function getAdhesiveCategory() {
+    return {
+        name: chance.string()
+    };
+}
+
+function getMaterialCategory() {
     return {
         name: chance.string()
     };

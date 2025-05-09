@@ -1,7 +1,10 @@
 import { UserModel } from '../../application/api/models/user';
-import { TEST_USER } from './testData';
-import { clearTestDatabase } from '../../test/sharedTestDatabase';
+import { TEST_USER, VENDORS, ADHESIVE_CATEGORIES, MATERIAL_CATEGORIES, LINER_TYPES } from './testData';
 import { USER } from '../../application/api/enums/authRolesEnum';
+import { VendorModel } from '../../application/api/models/vendor';
+import { AdhesiveCategoryModel } from '../../application/api/models/adhesiveCategory';
+import { MaterialCategoryModel } from '../../application/api/models/materialCategory';
+import { LinerTypeModel } from '../../application/api/models/linerType';
 
 const TEST_API_URL = 'http://localhost:8069';
 
@@ -12,12 +15,16 @@ export async function seedTestDatabase() {
     await registerUserAndAssignAuthRole(TEST_USER, [USER]);
 
     /* [START] SEED TEST DATA */
-    /*    TODO: Seed test data here */
+    await VendorModel.insertMany(VENDORS);
+    await AdhesiveCategoryModel.insertMany(ADHESIVE_CATEGORIES);
+    await MaterialCategoryModel.insertMany(MATERIAL_CATEGORIES);
+    await LinerTypeModel.insertMany(LINER_TYPES);
     /* [END] SEED TEST DATA */
 
     console.log('Test database seeded');
 
-    const users = await UserModel.find({}).lean();  
+    const users = await UserModel.find({}).lean();
+
 
     console.log('users in cypress test database:', users);
 }

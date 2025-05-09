@@ -12,18 +12,7 @@ describe('validation', () => {
     beforeEach(() => {
         jest.resetAllMocks();
 
-        vendorAttributes = {
-            name: chance.string(),
-            phoneNumber: chance.phone(),
-            email: chance.email(),
-            notes: chance.paragraph(),
-            website: chance.url(),
-            primaryContactName: chance.string(),
-            primaryContactPhoneNumber: chance.phone(),
-            primaryContactEmail: chance.email(),
-            primaryAddress: testDataGenerator.mockData.Address(),
-            remittanceAddress: chance.pickone([testDataGenerator.mockData.Address(), undefined])
-        };
+        vendorAttributes = testDataGenerator.mockData.Vendor();
     });
 
     it('should validate when required attributes are defined', () => {

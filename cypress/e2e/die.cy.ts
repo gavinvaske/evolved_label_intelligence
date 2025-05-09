@@ -1,6 +1,6 @@
 import { testDataGenerator } from '@test-utils/cypress/testDataGenerator';
 
-describe.only('Die Management', () => {
+describe('Die Management', () => {
   const die = testDataGenerator.Die();
   const uppercasedName = die.dieNumber.toUpperCase();
 
@@ -21,9 +21,9 @@ describe.only('Die Management', () => {
     cy.get('[data-test=die-form]').within(() => {
       // Basic Information
       cy.get('[data-test=input-dieNumber]').type(die.dieNumber);
-      cy.selectFromCustomSelect('[data-test=input-shape]', die.shape);
+      cy.selectFromDropdown('[data-test=input-shape]', die.shape);
       cy.get('[data-test=input-quantity]').type(die.quantity.toString());
-      cy.selectFromCustomSelect('[data-test=input-status]', die.status);
+      cy.selectFromDropdown('[data-test=input-status]', die.status);
 
       // Size Information
       cy.get('[data-test=input-sizeAcross]').type(die.sizeAcross.toString());
@@ -36,18 +36,18 @@ describe.only('Die Management', () => {
 
       // Tool Information
       cy.get('[data-test=input-gear]').type(die.gear);
-      cy.selectFromCustomSelect('[data-test=input-toolType]', die.toolType);
-      cy.selectFromCustomSelect('[data-test=input-magCylinder]', die.magCylinder.toString());
+      cy.selectFromDropdown('[data-test=input-toolType]', die.toolType);
+      cy.selectFromDropdown('[data-test=input-magCylinder]', die.magCylinder.toString());
       cy.get('[data-test=input-facestock]').type(die.facestock);
       cy.get('[data-test=input-liner]').type(die.liner);
       cy.get('[data-test=input-specialType]').type(die.specialType || '');
 
       // Additional Information
       cy.get('[data-test=input-cost]').type(die.cost.toString());
-      cy.selectFromCustomSelect('[data-test=input-vendor]', die.vendor);
+      cy.selectFromDropdown('[data-test=input-vendor]', die.vendor);
       cy.get('[data-test=input-serialNumber]').type(die.serialNumber);
       if (die.isLamination) {
-        cy.get('[data-test=input-isLamination]').check();
+        cy.get('[data-test=input-isLamination]').check(); // TODO: Make this a command
       }
 
       // Notes

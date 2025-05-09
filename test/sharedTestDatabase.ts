@@ -76,7 +76,7 @@ export async function clearTestDatabase() {
   console.log('Test database cleared');
 }
 
-function removeTestDbUriFile() {
+export function removeTestDbUriFile() {
   if (fs.existsSync(TEST_DB_URI_FILE)) {
     fs.unlinkSync(TEST_DB_URI_FILE);
   }
