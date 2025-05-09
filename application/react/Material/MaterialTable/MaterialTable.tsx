@@ -129,7 +129,7 @@ export const MaterialTable = () => {
           }}
         />
 
-        <Table id='material-table'>
+        <Table data-test='material-table'>
           <TableHead table={table} />
 
           <TableBody>

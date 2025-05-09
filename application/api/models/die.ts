@@ -8,11 +8,11 @@ import { dieMagCylinders } from '../enums/dieMagCylindersEnum.ts';
 import { dieStatuses, ORDERED_DIE_STATUS, IN_STOCK_DIE_STATUS } from '../enums/dieStatusesEnum.ts';
 import { convertDollarsToPennies, convertPenniesToDollars } from '../services/currencyService.ts';
 import { IDie } from '@shared/types/models.ts';
+import { DIE_NUMBER_PREFIXES } from '../enums/dieNumberPrefixEnum.ts';
 
 import mongooseDelete from 'mongoose-delete';
 mongoose.plugin(mongooseDelete, { overrideMethods: true });
 
-const DIE_NUMBER_PREFIXES = ['DC', 'DR', 'DRC' , 'DO', 'DS', 'XLDR', 'DSS', 'DB'];
 const DIE_NUMBER_REGEX = /^(\d{4})$/;
 
 function validateDieNumberFormat(dieNumber) {

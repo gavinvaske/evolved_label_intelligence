@@ -12,9 +12,10 @@ import httpServ from 'http';
 import { Server } from 'socket.io';
 import customWebSockets from './services/websockets/init.ts';
 import { setupApiRoutes } from './routes.ts'
-import { connectToTestDatabase } from '../../test/sharedTestDatabase';
+import { connectToTestDatabase, removeTestDbUriFile } from '../../test/sharedTestDatabase';
 
 if (process.env.NODE_ENV === 'test') {
+    removeTestDbUriFile();  // Remove the test database file if it exists
     connectToTestDatabase();
 } else {
     connectToMongoDatabase(process.env.MONGO_DB_URL);

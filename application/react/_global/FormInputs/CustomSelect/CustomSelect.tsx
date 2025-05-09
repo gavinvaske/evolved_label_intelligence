@@ -59,6 +59,11 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
   const doesValueExist: boolean = isMulti ? value && value.length > 0 : value;
   const requiredFieldIsEmpty = isRequired && (!value || (isMulti && value.length === 0));
 
+  // Generate data-test attribute, used by cypress tests
+  const testAttribute = {
+    'data-test': `input-${attribute}`
+  };
+
   return (
     <div className={clsx(formStyles.customSelectContainer)} ref={dropdownRef}>
       <label className={styles.customSelectLabel}>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span></label>
@@ -66,7 +71,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
         control={control}
         name={attribute}
         render={({ field: { onChange, value } }) => (
-          <div>
+          <div {...testAttribute}>
             {/* Selected Option */}
             <div 
               className={clsx(
@@ -86,7 +91,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
 
             {/* Dropdown Options */}
             {isOpen && (
-              <div className={styles.selectItemsDropdown}>
+              <div className={styles.selectItemsDropdown} data-test='select-items-dropdown'>
                 {/* Search Input */}
                 <input
                   type="text"
@@ -95,6 +100,7 @@ export const CustomSelect = <T extends FieldValues>(props: Props<T>) => {
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   autoFocus
+                  data-test="select-search-input"
                 />
 
                 {/* "Nothing Selected" Option */}
@@ -155,13 +161,12 @@ type DropdownOptionProps = {
 }
 
 const DropdownOption = ({ option, key, onClick, isSelected, className = '' }: DropdownOptionProps) => {
-
   return (
     <div
       key={key}
       className={clsx(styles.dropdownItem, className, isSelected && styles.sameAsSelected)}
       onClick={onClick}
-
+      data-test="select-dropdown-item"
     >
       {option.displayName}
     </div>

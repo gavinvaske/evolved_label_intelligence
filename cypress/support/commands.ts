@@ -53,3 +53,38 @@ Cypress.Commands.add('logout', () => {
   cy.request('/auth/logout'); /* TODO: Initiate logout via a UI button instead of direct HTTP request*/
 })
 
+// Custom command for selecting an option from CustomSelect
+Cypress.Commands.add('selectFromDropdown', (selector: string, optionText: string) => {
+  cy.get(selector).click(); // Opens the dropdown
+  cy.get('[data-test=select-items-dropdown]').should('be.visible');
+  cy.get('[data-test=select-search-input]').type(optionText); // Type to search
+  cy.get('[data-test=select-dropdown-item]').contains(optionText).click();
+});
+
+Cypress.Commands.add('selectRandomOptionFromDropdown', (selector) => {
+  // Open the dropdown
+  cy.get(selector).click();
+
+  // Get all dropdown items, excluding the first one
+  cy.get('[data-test=select-dropdown-item]').not(':first').then($items => {
+    // Get the count of the remaining items
+    const count = $items.length;
+
+    // Generate a random index
+    const randomIndex = Math.floor(Math.random() * count);
+
+    // Click on the randomly selected item
+    cy.wrap($items).eq(randomIndex).click();
+  });
+});
+
+// Add the command to the Cypress namespace
+declare global {
+  namespace Cypress {
+    interface Chainable {
+      selectFromDropdown(selector: string, optionText: string): Chainable<void>,
+      selectRandomOptionFromDropdown(selector: string)
+    }
+  }
+}
+

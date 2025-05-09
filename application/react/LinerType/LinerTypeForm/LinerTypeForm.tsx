@@ -79,7 +79,7 @@ export const LinerTypeForm = () => {
                 />
               </div>
 
-              <Button color="blue" size="large">
+              <Button color="blue" size="large" data-test='submit-button'>
                 {isUpdateRequest ? 'Update' : 'Create'}
               </Button>
             </div>

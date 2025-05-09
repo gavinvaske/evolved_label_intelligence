@@ -11,6 +11,7 @@ import { unwindDirections } from '../application/api/enums/unwindDirectionsEnum'
 import { finishTypes } from '../application/api/enums/finishTypesEnum';
 import { AVAILABLE_AUTH_ROLES } from '../application/api/enums/authRolesEnum';
 import { ovOrEpmOptions } from '../application/api/enums/ovOrEpmEnum';
+import { DIE_NUMBER_PREFIXES } from '../application/api/enums/dieNumberPrefixEnum';
 
 export const mockData = {
     Die: getDie,
@@ -22,7 +23,11 @@ export const mockData = {
     BaseProduct: getBaseProduct,
     Address: getAddress,
     CreditTerm: getCreditTerm,
-    AdhesiveCategory: getAdhesiveCategory
+    AdhesiveCategory: getAdhesiveCategory,
+    DeliveryMethod: getDeliveryMethod,
+    LinerType: getLinerType,
+    Vendor: getVendor,
+    MaterialCategory: getMaterialCategory
 };
 
 function getDie() {
@@ -30,7 +35,7 @@ function getDie() {
         shape: chance.pickone(dieShapes),
         sizeAcross: chance.floating({ min: 0.01, max: 10, fixed: 2 }),
         sizeAround: chance.floating({ min: 0.01, max: 10, fixed: 2 }),
-        dieNumber: 'DC-1234',
+        dieNumber: `${chance.pickone(DIE_NUMBER_PREFIXES)}-${chance.integer({ min: 1000, max: 9999 })}`,
         numberAcross: chance.d10(),
         numberAround: chance.d10(),
         gear: chance.d100(),
@@ -54,6 +59,27 @@ function getDie() {
     };
 }
 
+function getVendor() {
+    return {
+      name: chance.string(),
+      phoneNumber: chance.phone(),
+      email: chance.email(),
+      notes: chance.paragraph(),
+      website: chance.url(),
+      primaryContactName: chance.string(),
+      primaryContactPhoneNumber: chance.phone(),
+      primaryContactEmail: chance.email(),
+      primaryAddress: getAddress(),
+      remittanceAddress: chance.pickone([getAddress(), undefined])
+    };
+}
+
+function getLinerType() {
+    return {
+        name: chance.string()
+    };
+}
+
 function getCreditTerm() {
     return {
         description: chance.string()
@@ -61,6 +87,12 @@ function getCreditTerm() {
 }
 
 function getAdhesiveCategory() {
+    return {
+        name: chance.string()
+    };
+}
+
+function getMaterialCategory() {
     return {
         name: chance.string()
     };
@@ -172,5 +204,11 @@ function getAddress() {
         city: chance.city(),
         state: chance.state(),
         zipCode: chance.zip()
+    };
+}
+
+function getDeliveryMethod() {
+    return {
+        name: chance.string()
     };
 }
