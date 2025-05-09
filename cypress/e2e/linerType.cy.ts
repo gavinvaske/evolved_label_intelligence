@@ -26,13 +26,13 @@ describe('Liner Type Management', () => {
     // Verify we're redirected back to the table
     cy.url().should('include', '/react-ui/tables/liner-type');
     
-    // Verify the new category appears in the table
+    // Verify the new liner type appears in the table
     cy.get('[data-test=liner-type-table]')
       .should('contain', uppercasedName);
   });
 
   it('should allow searching for a liner type', () => {
-    // Search for the category
+    // Search for the liner type
     cy.get('[data-test=searchbar]').type(linerType.name);
     
     // Verify search results
@@ -43,7 +43,7 @@ describe('Liner Type Management', () => {
   it('should allow editing an existing liner type', () => {
     const updatedName = `${linerType.name} Updated`;
     
-    // Find the row with our test category and click the edit button
+    // Find the row with our test liner type and click the edit button
     cy.get('[data-test=liner-type-table]')
       .contains(uppercasedName)
       .closest('[data-test=table-row]')  // Get the row containing our text

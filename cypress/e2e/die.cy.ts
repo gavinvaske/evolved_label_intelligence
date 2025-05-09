@@ -47,7 +47,7 @@ describe('Die Management', () => {
       cy.selectFromDropdown('[data-test=input-vendor]', die.vendor);
       cy.get('[data-test=input-serialNumber]').type(die.serialNumber);
       if (die.isLamination) {
-        cy.get('[data-test=input-isLamination]').check(); // TODO: Make this a command
+        cy.get('[data-test=input-isLamination]').check();
       }
 
       // Notes
@@ -59,15 +59,15 @@ describe('Die Management', () => {
     // Verify we're redirected back to the table
     cy.url().should('include', '/react-ui/tables/die');
     
-    // Verify the new delivery method appears in the table
+    // Verify the new die appears in the table
     cy.get('[data-test=die-table]')
       .should('exist') // waits for the table
       .and('be.visible')
       .should('contain', uppercasedName);
   });
 
-  it('should allow searching for a delivery method', () => {
-    // Search for the delivery method
+  it('should allow searching for a die', () => {
+    // Search for the die
     cy.get('[data-test=searchbar]').type(die.dieNumber);
     
     // Wait for the table to be ready and verify search results
@@ -80,7 +80,7 @@ describe('Die Management', () => {
   it('should allow editing an existing die', () => {
     const updatedSerialNumber = die.serialNumber + ' Updated';
     
-    // Find the row with our test delivery method and click the edit button
+    // Find the row with our test die and click the edit button
     cy.get('[data-test=die-table]')
       .contains(uppercasedName)
       .closest('[data-test=table-row]')  // Get the row containing our text
