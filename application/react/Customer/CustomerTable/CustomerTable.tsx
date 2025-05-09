@@ -122,7 +122,7 @@ export const CustomerTable = () => {
           }}
         />
 
-        <Table id='customer-table'>
+        <Table id='customer-table' data-test='customer-table'>
           <TableHead table={table} />
 
           <TableBody>
