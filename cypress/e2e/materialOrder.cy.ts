@@ -4,12 +4,6 @@ describe('Material Order Management', () => {
   const materialOrder = testDataGenerator.MaterialOrder();
   const uppercasedPoNumber = materialOrder.purchaseOrderNumber.toUpperCase();
 
-  // Helper function to convert date to YYYY-MM-DD format
-  const formatDateForInput = (dateStr: string) => {
-    const [month, day, year] = dateStr.split('/');
-    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
-  };
-
   beforeEach(() => {
     cy.login();
     // Visit the table page first
@@ -32,7 +26,7 @@ describe('Material Order Management', () => {
       
       // Order Details
       cy.get('[data-test=input-purchaseOrderNumber]').type(materialOrder.purchaseOrderNumber);
-      cy.get('[data-test=input-orderDate]').type(formatDateForInput(materialOrder.orderDate));
+      cy.typeDate('[data-test=input-orderDate]', materialOrder.orderDate);
       cy.get('[data-test=input-feetPerRoll]').type(materialOrder.feetPerRoll.toString());
       cy.get('[data-test=input-totalRolls]').type(materialOrder.totalRolls.toString());
       cy.get('[data-test=input-totalCost]').type(materialOrder.totalCost.toString());
@@ -41,7 +35,7 @@ describe('Material Order Management', () => {
       if (materialOrder.hasArrived) {
         cy.get('[data-test=input-hasArrived]').check();
       }
-      cy.get('[data-test=input-arrivalDate]').type(formatDateForInput(materialOrder.arrivalDate));
+      cy.typeDate('[data-test=input-arrivalDate]', materialOrder.arrivalDate);
       cy.get('[data-test=input-freightCharge]').type(materialOrder.freightCharge.toString());
       cy.get('[data-test=input-fuelCharge]').type(materialOrder.fuelCharge.toString());
       
