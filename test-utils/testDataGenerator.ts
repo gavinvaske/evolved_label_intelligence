@@ -90,7 +90,8 @@ function getVendor() {
       primaryContactPhoneNumber: chance.phone(),
       primaryContactEmail: chance.email(),
       primaryAddress: getAddress(),
-      remittanceAddress: chance.pickone([getAddress(), undefined])
+      remittanceAddress: chance.pickone([getAddress(), undefined]),
+      mfgSpecNumber: chance.word()
     };
 }
 
