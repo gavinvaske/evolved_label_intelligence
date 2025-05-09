@@ -49,6 +49,15 @@ describe('validation', () => {
 
             expect(vendor.name).toBe(name);
         });
+
+        it('should be uppercase', () => {
+            const lowerCaseName = chance.string().toLowerCase();
+            vendorAttributes.name = lowerCaseName;
+            const vendor = new VendorModel(vendorAttributes);
+
+            expect(vendor.name).toBe(lowerCaseName.toUpperCase());
+        });
+        
     });
 
     describe('attribute: phoneNumber', () => {
