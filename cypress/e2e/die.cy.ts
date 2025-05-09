@@ -19,10 +19,39 @@ describe.only('Die Management', () => {
     
     // Fill out the form
     cy.get('[data-test=die-form]').within(() => {
+      // Basic Information
       cy.get('[data-test=input-dieNumber]').type(die.dieNumber);
-      
-      // Select shape from CustomSelect using the custom command
       cy.selectFromCustomSelect('[data-test=input-shape]', die.shape);
+      cy.get('[data-test=input-quantity]').type(die.quantity.toString());
+      cy.selectFromCustomSelect('[data-test=input-status]', die.status);
+
+      // Size Information
+      cy.get('[data-test=input-sizeAcross]').type(die.sizeAcross.toString());
+      cy.get('[data-test=input-sizeAround]').type(die.sizeAround.toString());
+      cy.get('[data-test=input-numberAcross]').type(die.numberAcross.toString());
+      cy.get('[data-test=input-numberAround]').type(die.numberAround.toString());
+      cy.get('[data-test=input-cornerRadius]').type(die.cornerRadius.toString());
+      cy.get('[data-test=input-topAndBottom]').type(die.topAndBottom.toString());
+      cy.get('[data-test=input-leftAndRight]').type(die.leftAndRight.toString());
+
+      // Tool Information
+      cy.get('[data-test=input-gear]').type(die.gear);
+      cy.selectFromCustomSelect('[data-test=input-toolType]', die.toolType);
+      cy.selectFromCustomSelect('[data-test=input-magCylinder]', die.magCylinder.toString());
+      cy.get('[data-test=input-facestock]').type(die.facestock);
+      cy.get('[data-test=input-liner]').type(die.liner);
+      cy.get('[data-test=input-specialType]').type(die.specialType || '');
+
+      // Additional Information
+      cy.get('[data-test=input-cost]').type(die.cost.toString());
+      cy.selectFromCustomSelect('[data-test=input-vendor]', die.vendor);
+      cy.get('[data-test=input-serialNumber]').type(die.serialNumber);
+      if (die.isLamination) {
+        cy.get('[data-test=input-isLamination]').check();
+      }
+
+      // Notes
+      cy.get('[data-test=input-notes]').type(die.notes);
       
       cy.get('[data-test=submit-button]').click();
     });
@@ -49,7 +78,7 @@ describe.only('Die Management', () => {
   });
 
   it('should allow editing an existing die', () => {
-    const updatedName = `${die.dieNumber} Updated`;
+    const updatedSerialNumber = die.serialNumber + ' Updated';
     
     // Find the row with our test delivery method and click the edit button
     cy.get('[data-test=die-table]')
@@ -67,7 +96,7 @@ describe.only('Die Management', () => {
 
     // Update the form
     cy.get('[data-test=die-form]').within(() => {
-      cy.get('[data-test=input-dieNumber]').clear().type(updatedName);
+      cy.get('[data-test=input-serialNumber]').clear().type(updatedSerialNumber);
       cy.get('[data-test=submit-button]').click();
     });
 
@@ -75,6 +104,6 @@ describe.only('Die Management', () => {
     cy.get('[data-test=die-table]').should('exist');
     cy.get('[data-test=table-row]').should('exist');
     cy.get('[data-test=die-table]')
-      .should('contain', updatedName.toUpperCase());
+      .should('contain', updatedSerialNumber);
   });
 });

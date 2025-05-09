@@ -19,6 +19,10 @@ export const TextArea = <T extends FieldValues>(props: Props<T>) => {
   const formContext = useFormContext();
   const { register, formState: { errors } } = formContext;
 
+  const testAttribute = {
+    'data-test': `input-${attribute}`
+  };
+
   return (
     <div className={styles.textAreaContainer}>
       <label>{label}<span className={clsx(textStyles.textRed, styles.requiredIndicator)}>{isRequired ? '*' : ''}</span></label>
@@ -28,6 +32,7 @@ export const TextArea = <T extends FieldValues>(props: Props<T>) => {
         )}
         placeholder={placeholder}
         name={attribute}
+        {...testAttribute}
         {...dataAttributes}
         {...(rows ? { rows: rows } : {})}
         {...(cols ? { cols: cols } : {})}

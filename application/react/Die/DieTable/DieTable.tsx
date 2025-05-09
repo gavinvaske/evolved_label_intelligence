@@ -35,6 +35,12 @@ export const DieTable = () => {
     columnHelper.accessor('dieNumber', {
       header: 'Die Number',
     }),
+    columnHelper.accessor('serialNumber', {
+      header: 'Serial Number',
+    }),
+    columnHelper.accessor('status', {
+      header: 'Status',
+    }),
     columnHelper.accessor(row => getDateTimeFromIsoStr(row.updatedAt), {
       header: 'Updated'
     }),
