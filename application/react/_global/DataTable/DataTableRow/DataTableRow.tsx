@@ -20,9 +20,9 @@ const DataTableRow = (props: Props) => {
 
   return (
     <div className={styles.dataTableRow}>
-      {columns.map((column, index) => {
+      {columns.map((column) => {
         // Skip the last two columns if they are Edit/Delete
-        if (index >= columns.length - 2 && (columns[columns.length - 2].displayName === 'Edit' || columns[columns.length - 1].displayName === 'Delete')) {
+        if (column.displayName === 'Edit' || column.displayName === 'Delete') {
           return null;
         }
         return (

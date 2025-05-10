@@ -12,14 +12,24 @@
 .columnTd {
   flex: 1;
   padding: 0 8px;
-  min-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: green;
+  border: 1px solid yellow;
 }
 
 .actionIcons {
   display: flex;
   gap: 8px;
   justify-content: flex-end;
-  min-width: 80px;
+  flex: 0 0 120px;
+  padding: 0 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  background-color: green;
+  border: 1px solid yellow;
 
   svg {
     cursor: pointer;

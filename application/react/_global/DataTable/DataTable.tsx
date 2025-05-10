@@ -1,9 +1,5 @@
 import React from 'react';
-import { FaPlus } from 'react-icons/fa';
-import clsx from 'clsx';
-import * as tableStyles from '@ui/styles/table.module.scss';
 import * as styles from './DataTable.module.scss';
-import { Button } from '../Button/Button';
 
 type Column = {
   displayName: string;
@@ -29,11 +25,18 @@ export const DataTable = (props: Props) => {
       </div>
       <div className={styles.dataTableContent}>
         <div className={styles.dataTableRow}>
-          {columns.map(column => (
-            <div key={column.accessor} className={styles.columnTh}>
-              {column.displayName}
-            </div>
-          ))}
+          {columns.map(column => {
+            // Skip Edit/Delete columns in header too
+            if (column.displayName === 'Edit' || column.displayName === 'Delete') {
+              return null;
+            }
+            return (
+              <div key={column.accessor} className={styles.columnTh}>
+                {column.displayName}
+              </div>
+            );
+          })}
+          <div className={styles.actionColumn}>Actions</div>
         </div>
         {data.map((row, index) => renderRow(row, index))}
       </div>
