@@ -105,9 +105,10 @@ export const CustomerForm = () => {
     ])
   }, [billingLocations, shippingLocations, businessLocations]);
 
-  const handleLocationDelete = (id: number, locations: (IAddressForm | IShippingLocationForm)[], setLocations: (locations: (IAddressForm | IShippingLocationForm)[]) => void) => {
-    const isLocationInUse = contacts.some(contact => 
-      JSON.stringify(locations[id]) === JSON.stringify(contact.location)
+  const handleLocationDelete = (id: string, locations: (IAddressForm | IShippingLocationForm)[], setLocations: (locations: (IAddressForm | IShippingLocationForm)[]) => void) => {
+    const location = locations.find(({id}) => id === id)
+    const isLocationInUse = location && contacts.some(contact => 
+      contact.location?.id === location.id
     );
 
     if (isLocationInUse) {
@@ -140,6 +141,8 @@ export const CustomerForm = () => {
       notes: customer.notes || '',
       creditTerms: (customer.creditTerms as ICreditTerm[])?.map((creditTerm: ICreditTerm) => creditTerm._id) || []
     }
+
+    console.log('customer ', customer)
 
     reset(formValues) // Populates the form with loaded values
 
@@ -434,7 +437,7 @@ export const CustomerForm = () => {
   );
 }
 
-const removeItemFromArrayById = (id: number, array: any[], setArray: (array: any[]) => void) => {
+const removeItemFromArrayById = (id: string, array: any[], setArray: (array: any[]) => void) => {
   const updatedArray = array.filter(item => item.id !== id);
   setArray(updatedArray);
 }
