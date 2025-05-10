@@ -1,6 +1,5 @@
 import { UserModel } from '../application/api/models/user';
-import { clearDatabase } from '../application/api/services/databaseService';
-import { mockData } from './testDataGenerator';
+import { mockData } from '../test-utils/testDataGenerator';
 
 export const TEST_USER = mockData.User();
 

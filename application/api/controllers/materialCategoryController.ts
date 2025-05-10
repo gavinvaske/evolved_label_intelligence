@@ -159,4 +159,22 @@ router.get('/:mongooseId', async (request, response) => {
   }
 });
 
+router.patch('/:mongooseId', async (request, response) => {
+  try {
+      const updatedMaterialCategory = await MaterialCategoryModel.findOneAndUpdate(
+          { _id: request.params.mongooseId }, 
+          { $set: request.body }, 
+          { runValidators: true, new: true }
+      ).exec();
+
+      return response.json(updatedMaterialCategory);
+  } catch (error) {
+      console.error('Failed to update materialCategory: ', error);
+
+      response
+          .status(SERVER_ERROR)
+          .send(error.message);
+  }
+});
+
 export default router;

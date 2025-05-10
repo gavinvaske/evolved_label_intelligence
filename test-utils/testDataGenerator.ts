@@ -27,7 +27,9 @@ export const mockData = {
     DeliveryMethod: getDeliveryMethod,
     LinerType: getLinerType,
     Vendor: getVendor,
-    MaterialCategory: getMaterialCategory
+    MaterialCategory: getMaterialCategory,
+    MaterialLengthAdjustment: getMaterialLengthAdjustment,
+    MaterialOrder: getMaterialOrder
 };
 
 function getDie() {
@@ -59,6 +61,24 @@ function getDie() {
     };
 }
 
+function getMaterialOrder() {
+  return {
+    material: new mongoose.Types.ObjectId(),
+    purchaseOrderNumber: `${chance.integer({min: 0})}`,
+    orderDate: chance.date({string: true}),
+    arrivalDate: chance.date({string: true}),
+    feetPerRoll: chance.integer({min: 0}),
+    totalRolls: chance.integer({min: 1, max: 100}),
+    totalCost: chance.floating({min: 1, max: 500000}),
+    vendor: new mongoose.Types.ObjectId(),
+    hasArrived: chance.bool(),
+    notes: chance.string(),
+    author: new mongoose.Types.ObjectId(),
+    freightCharge: chance.floating({ min: 0, fixed: 2 }),
+    fuelCharge: chance.floating({ min: 0, fixed: 2 })
+  }
+}
+
 function getVendor() {
     return {
       name: chance.string(),
@@ -70,8 +90,17 @@ function getVendor() {
       primaryContactPhoneNumber: chance.phone(),
       primaryContactEmail: chance.email(),
       primaryAddress: getAddress(),
-      remittanceAddress: chance.pickone([getAddress(), undefined])
+      remittanceAddress: chance.pickone([getAddress(), undefined]),
+      mfgSpecNumber: chance.word()
     };
+}
+
+function getMaterialLengthAdjustment() {
+  return {
+    material: new mongoose.Types.ObjectId(),
+    length: chance.integer({ min: -100000, max: 100000 }),
+    notes: chance.string()
+  }
 }
 
 function getLinerType() {

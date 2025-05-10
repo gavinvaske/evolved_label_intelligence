@@ -11,7 +11,9 @@ mongoose.plugin(mongooseDelete, { overrideMethods: true });
 const schema = new Schema<IVendor>({
     name: {
         type: String,
-        required: true
+        required: true,
+        uppercase: true,
+        unique: true
     },
     phoneNumber: {
         type: String,

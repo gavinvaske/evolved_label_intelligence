@@ -1,8 +1,8 @@
 import Chance from 'chance';
 import { MaterialOrderModel } from '../../application/api/models/materialOrder.ts';
-import mongoose from 'mongoose';
 import { populateMaterialInventories as populateMaterialInventoriesMock } from '../../application/api/services/materialInventoryService.ts';
 import * as databaseService from '../../application/api/services/databaseService';
+import * as testDataGenerator from '../../test-utils/testDataGenerator.ts';
 
 const chance = Chance();
 
@@ -22,21 +22,7 @@ describe('materialOrder validation', () => {
     let materialOrderAttributes;
 
     beforeEach(() => {
-        materialOrderAttributes = {
-            material: new mongoose.Types.ObjectId(),
-            purchaseOrderNumber: `${chance.integer({min: 0})}`,
-            orderDate: chance.date({string: true}),
-            arrivalDate: chance.date({string: true}),
-            feetPerRoll: chance.integer({min: 0}),
-            totalRolls: chance.integer({min: TOTAL_ROLLS_MIN, max: TOTAL_ROLLS_MAX}),
-            totalCost: chance.floating({min: TOTAL_COST_MIN, max: TOTAL_COST_MAX}),
-            vendor: new mongoose.Types.ObjectId(),
-            hasArrived: chance.bool(),
-            notes: chance.string(),
-            author: new mongoose.Types.ObjectId(),
-            freightCharge: chance.floating({ min: 0, fixed: 2 }),
-            fuelCharge: chance.floating({ min: 0, fixed: 2 })
-        };
+        materialOrderAttributes = testDataGenerator.mockData.MaterialOrder();
     });
 
     afterEach(() => {

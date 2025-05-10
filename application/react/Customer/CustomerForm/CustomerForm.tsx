@@ -26,7 +26,6 @@ import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import AddressListItem from './AddressListItem/AddressListItem';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as formStyles from '@ui/styles/form.module.scss';
-import { MongooseId } from '@shared/types/typeAliases';
 import { Button } from '../../_global/Button/Button';
 import { DataTable } from '../../_global/DataTable/DataTable';
 
@@ -256,7 +255,7 @@ export const CustomerForm = () => {
 
                 <div className={formStyles.spacer}></div>
 
-                <Button color="blue" size="large">
+                <Button color="blue" size="large" data-test='submit-button'>
                   {isUpdateRequest ? 'Update' : 'Create'}
                 </Button>
               </div>

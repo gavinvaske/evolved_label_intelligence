@@ -112,7 +112,7 @@ export const MaterialCategoryTable = () => {
           }}
         />
 
-        <Table id='material-category-table'>
+        <Table id='material-category-table' data-test='material-category-table'>
           <TableHead table={table} />
 
           <TableBody>
