@@ -4,6 +4,7 @@
   margin-bottom: 24px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
+  box-shadow: 0 2px 8px 0 rgb(34 41 47 / 10%);
 }
 
 .dataTableHeader {
@@ -39,7 +40,7 @@
   padding: 8px;
 }
 
-.dataTableRow {
+.dataTableHeaderRow {
   display: flex;
   align-items: center;
   padding: 8px 0;
@@ -108,10 +109,6 @@
 
     &:last-child {
       border-bottom: none;
-    }
-
-    &:hover {
-      background-color: rgba(var(--primary-dark-background), var(--opacity-1));
     }
   }
 

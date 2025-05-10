@@ -22,10 +22,10 @@ export const DataTable = (props: Props) => {
     <div className={styles.dataTable}>
       <div className={styles.dataTableHeader}>
         <h3>{title}</h3>
-        <Button onClick={onAdd} type="button">Addd</Button>
+        <Button onClick={onAdd} type="button">Add</Button>
       </div>
       <div className={styles.dataTableContent}>
-        <div className={styles.dataTableRow}>
+        <div className={styles.dataTableHeaderRow}>
           {columns.map(column => {
             // Skip Edit/Delete columns in header too
             if (column.displayName === 'Edit' || column.displayName === 'Delete') {
