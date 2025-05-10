@@ -265,7 +265,8 @@ export const CustomerForm = () => {
                   renderRow={(data, index) => (
                     <DataTableRow
                       data={data}
-                      columns={businessLocationColumns}
+                      columns={businessLocationColumns} 
+                      onEdit={() => alert("TODO")}
                       onDelete={() => handleLocationDelete(index, businessLocations, setBusinessLocations)}
                     />
                   )}
@@ -280,6 +281,7 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={data}
                       columns={shippingLocationColumns}
+                      onEdit={() => alert("TODO")}
                       onDelete={() => handleLocationDelete(index, shippingLocations, setShippingLocations)}
                     />
                   )}
@@ -294,6 +296,7 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={data}
                       columns={billingLocationColumns}
+                      onEdit={() => alert("TODO")}
                       onDelete={() => handleLocationDelete(index, billingLocations, setBillingLocations)}
                     />
                   )}

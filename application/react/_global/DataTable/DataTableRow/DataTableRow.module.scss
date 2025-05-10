@@ -15,21 +15,18 @@
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background-color: green;
-  border: 1px solid yellow;
 }
 
 .actionIcons {
   display: flex;
-  gap: 8px;
-  justify-content: flex-end;
+  gap: 12px;
+  justify-content: flex-start;
+  align-items: center;
   flex: 0 0 120px;
   padding: 0 8px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  background-color: green;
-  border: 1px solid yellow;
 
   svg {
     cursor: pointer;
