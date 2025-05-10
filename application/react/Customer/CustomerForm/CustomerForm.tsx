@@ -9,16 +9,13 @@ import { ContactForm } from '../Contact/ContactForm/ContactForm';
 import ShippingLocationCard from '../../ShippingLocation/ShippingLocationCard/ShippingLocationCard';
 import { removeElementFromArray } from '../../utils/state-service';
 import ContactCard from '../Contact/ContactCard/ContactCard';
-
 import { ICustomerForm, IAddressForm } from '@ui/types/forms';
 import { IContactForm } from '@ui/types/forms';
-
 import { useNavigate, useParams } from 'react-router-dom';
 import { Input } from '../../_global/FormInputs/Input/Input';
 import { useErrorMessage } from '../../_hooks/useErrorMessage';
 import { useSuccessMessage } from '../../_hooks/useSuccessMessage';
 import { getOneCustomer } from '../../_queries/customer';
-
 import { performTextSearch } from '../../_queries/_common';
 import { ICreditTerm } from '@shared/types/models';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect';
@@ -26,7 +23,6 @@ import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
 import AddressListItem from './AddressListItem/AddressListItem';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as formStyles from '@ui/styles/form.module.scss';
-import { MongooseId } from '@shared/types/typeAliases';
 import { Button } from '../../_global/Button/Button';
 import { DataTable } from '../../_global/DataTable/DataTable';
 
@@ -59,6 +55,19 @@ export const CustomerForm = () => {
       ...businessLocations,
     ])
   }, [billingLocations, shippingLocations, businessLocations]);
+
+  const handleLocationDelete = (index: number, locations: any[], setLocations: (locations: any[]) => void) => {
+    const isLocationInUse = contacts.some(contact => 
+      JSON.stringify(locations[index]) === JSON.stringify(contact.location)
+    );
+
+    if (isLocationInUse) {
+      useErrorMessage(new Error('Cannot delete a location that is being used by a contact. You must remove the location from the contact(s) first.'));
+      return;
+    }
+
+    removeElementFromArray(index, locations, setLocations);
+  };
 
   const preloadFormData = async () => {
     const creditTermSearchResults = await performTextSearch<ICreditTerm>('/credit-terms/search', { query: '', limit: '100' })
@@ -210,7 +219,7 @@ export const CustomerForm = () => {
                   renderRow={(data, index) => (
                     <AddressListItem
                       data={data}
-                      onDelete={() => removeElementFromArray(index, businessLocations, setBusinessLocations)}
+                      onDelete={() => handleLocationDelete(index, businessLocations, setBusinessLocations)}
                     />
                   )}
                 />
@@ -223,7 +232,7 @@ export const CustomerForm = () => {
                   renderRow={(data, index) => (
                     <ShippingLocationCard
                       data={data}
-                      onDelete={() => removeElementFromArray(index, shippingLocations, setShippingLocations)}
+                      onDelete={() => handleLocationDelete(index, shippingLocations, setShippingLocations)}
                     />
                   )}
                 />
@@ -236,7 +245,7 @@ export const CustomerForm = () => {
                   renderRow={(data, index) => (
                     <AddressListItem
                       data={data}
-                      onDelete={() => removeElementFromArray(index, billingLocations, setBillingLocations)}
+                      onDelete={() => handleLocationDelete(index, billingLocations, setBillingLocations)}
                     />
                   )}
                 />

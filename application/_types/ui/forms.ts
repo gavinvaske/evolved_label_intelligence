@@ -67,13 +67,13 @@ export type IShippingLocationForm = IAddressForm & {
 
 export type IContactForm = {
   fullName: string;
-  phoneNumber: string;
-  phoneExtension: string;
-  email: string;
+  phoneNumber?: string;
+  phoneExtension?: string;
+  email?: string;
   contactStatus: string;
-  notes: string;
-  position: string;
-  location: IAddressForm;
+  notes?: string;
+  position?: string;
+  location?: IAddressForm;
 };
 
 export type IMaterialLengthAdjustmentForm = {
