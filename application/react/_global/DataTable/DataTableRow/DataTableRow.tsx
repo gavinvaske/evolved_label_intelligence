@@ -1,6 +1,7 @@
 import { IoTrashOutline, IoCreateOutline } from 'react-icons/io5';
 import clsx from 'clsx';
 import * as styles from './DataTableRow.module.scss';
+import { IconButton } from '../../IconButton/IconButton';
 
 type Column = {
   displayName: string;
@@ -31,8 +32,9 @@ const DataTableRow = (props: Props) => {
         );
       })}
       <div className={clsx(styles.columnTd, styles.actionIcons)}>
-        {onEdit && <IoCreateOutline onClick={onEdit} />}
-        {onDelete && <IoTrashOutline onClick={onDelete} />}
+        {/* {onEdit && <IoCreateOutline onClick={onEdit} />} */}
+        {onEdit && <IconButton icon={<IoCreateOutline />} onClick={onEdit} color="blue" />}
+        {onDelete && <IconButton icon={<IoTrashOutline />} onClick={onDelete} color="red" />}
       </div>
     </div>
   );
