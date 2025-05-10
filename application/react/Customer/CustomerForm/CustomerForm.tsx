@@ -188,10 +188,22 @@ export const CustomerForm = () => {
   }, [errors])
 
 
-  const hideBillingLocationForm = () => setShowBillingLocationForm(false);
-  const hideShippingLocationForm = () => setShowShippingLocationForm(false);
-  const hideBusinessLocationForm = () => setShowBusinessLocationForm(false);
-  const hideContactForm = () => setShowContactForm(false);
+  const hideBillingLocationForm = () => {
+    setShowBillingLocationForm(false);
+    setEditingBillingLocation(null);
+  };
+  const hideShippingLocationForm = () => {
+    setShowShippingLocationForm(false);
+    setEditingShippingLocation(null);
+  };
+  const hideBusinessLocationForm = () => {
+    setShowBusinessLocationForm(false);
+    setEditingBusinessLocation(null);
+  };
+  const hideContactForm = () => {
+    setShowContactForm(false);
+    setEditingContact(null);
+  };
 
   const onBillingLocationFormSubmit = (formData: IAddressForm) => {
     if (editingBillingLocation) {

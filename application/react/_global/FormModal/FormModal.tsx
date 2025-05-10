@@ -31,6 +31,11 @@ export const FormModal = (props: FormModalProps) => {
     }
   };
 
+  const handleSubmit = (data: any) => {
+    onSubmit(data);
+    onCancel(); // Close modal after successful submit
+  };
+
   if (!isOpen) return null;
 
   return (
@@ -52,7 +57,7 @@ export const FormModal = (props: FormModalProps) => {
         </div>
         <div className={styles.modalContent}>
           <Form
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
             onCancel={onCancel}
             initialData={initialData}
             {...rest}
