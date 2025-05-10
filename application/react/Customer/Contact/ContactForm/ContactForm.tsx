@@ -8,18 +8,22 @@ import * as formStyles from '@ui/styles/form.module.scss'
 import { Button } from '../../../_global/Button/Button';
 
 interface Props {
-  onSubmit: (contact: any) => void,
-  onCancel: () => void,
-  locations: (IAddressForm | IShippingLocationForm)[]
+  onSubmit: (contact: any) => void;
+  onCancel: () => void;
+  locations: (IAddressForm | IShippingLocationForm)[];
+  initialData?: IContactForm;
 }
 
 export const ContactForm = (props: Props) => {
   const {
     onSubmit,
-    locations
+    locations,
+    initialData
   } = props;
 
-  const methods = useForm<IContactForm>();
+  const methods = useForm<IContactForm>({
+    defaultValues: initialData || {}
+  });
   const { handleSubmit } = methods;
 
   const selectableLocations: SelectOption[] = locations.map((address: IAddressForm | IShippingLocationForm, index: number) => {
@@ -63,10 +67,9 @@ export const ContactForm = (props: Props) => {
                 isRequired={true}
               />
             </div>
-            <div className={formStyles.inputGroupWrapper}>
-              <TextArea
-                attribute='notes'
-                label="Notes"
+            <TextArea
+              attribute='notes'
+              label="Notes"
               isRequired={false}
               placeholder='Enter notes here...'
             />
@@ -81,8 +84,9 @@ export const ContactForm = (props: Props) => {
               options={selectableLocations}
               isRequired={false}
             />
-            </div>
-            <Button color='blue' size='large' type="submit">Add Contact</Button>
+            <Button color='blue' size='large' type="submit">
+              {initialData ? 'Update' : 'Create'}
+            </Button>
           </div>
         </form>
       </FormProvider>

@@ -88,6 +88,11 @@ export const CustomerForm = () => {
   const [showContactForm, setShowContactForm] = useState(false);
   const [creditTerms, setCreditTerms] = useState<SelectOption[]>([])
 
+  const [editingBillingLocation, setEditingBillingLocation] = useState<IAddressForm | null>(null);
+  const [editingShippingLocation, setEditingShippingLocation] = useState<IShippingLocationForm | null>(null);
+  const [editingBusinessLocation, setEditingBusinessLocation] = useState<IAddressForm | null>(null);
+  const [editingContact, setEditingContact] = useState<IContactForm | null>(null);
+
   const [shippingLocations, setShippingLocations] = useState<IShippingLocationForm[]>([])
   const [billingLocations, setBillingLocations] = useState<IAddressForm[]>([])
   const [businessLocations, setBusinessLocations] = useState<IAddressForm[]>([])
@@ -189,29 +194,77 @@ export const CustomerForm = () => {
   const hideBusinessLocationForm = () => setShowBusinessLocationForm(false);
   const hideContactForm = () => setShowContactForm(false);
 
-  const onBillingLocationFormSubmit = (billingLocation: IAddressForm) => {
-    hideBillingLocationForm();
-    setBillingLocations([...billingLocations, billingLocation]);
-  };
-
-  const onShippingLocationFormSubmit = (shippingLocation: IShippingLocationForm) => {
-    hideShippingLocationForm();
-    setShippingLocations([...shippingLocations, shippingLocation]);
-  };
-
-  const onBusinessLocationFormSubmit = (businessLocation: IAddressForm) => {
-    hideBusinessLocationForm();
-    setBusinessLocations([...businessLocations, businessLocation]);
-  };
-
-  const onContactFormSubmit = (contact: any) => {
-    hideContactForm();
-    const contactForm: IContactForm = {
-      ...contact,
-      location: locations[contact.location]
+  const onBillingLocationFormSubmit = (formData: IAddressForm) => {
+    if (editingBillingLocation) {
+      const updatedLocations = billingLocations.map(loc => 
+        loc.id === editingBillingLocation.id ? { ...formData, id: loc.id } : loc
+      );
+      setBillingLocations(updatedLocations);
+      setEditingBillingLocation(null);
+    } else {
+      setBillingLocations([...billingLocations, { ...formData, id: Date.now().toString() }]);
     }
-    setContacts([...contacts, contactForm]);
-  }
+    hideBillingLocationForm();
+  };
+
+  const onShippingLocationFormSubmit = (formData: IShippingLocationForm) => {
+    if (editingShippingLocation) {
+      const updatedLocations = shippingLocations.map(loc => 
+        loc.id === editingShippingLocation.id ? { ...formData, id: loc.id } : loc
+      );
+      setShippingLocations(updatedLocations);
+      setEditingShippingLocation(null);
+    } else {
+      setShippingLocations([...shippingLocations, { ...formData, id: Date.now().toString() }]);
+    }
+    hideShippingLocationForm();
+  };
+
+  const onBusinessLocationFormSubmit = (formData: IAddressForm) => {
+    if (editingBusinessLocation) {
+      const updatedLocations = businessLocations.map(loc => 
+        loc.id === editingBusinessLocation.id ? { ...formData, id: loc.id } : loc
+      );
+      setBusinessLocations(updatedLocations);
+      setEditingBusinessLocation(null);
+    } else {
+      setBusinessLocations([...businessLocations, { ...formData, id: Date.now().toString() }]);
+    }
+    hideBusinessLocationForm();
+  };
+
+  const onContactFormSubmit = (formData: IContactForm) => {
+    if (editingContact) {
+      const updatedContacts = contacts.map(contact => 
+        contact.id === editingContact.id ? { ...formData, id: contact.id } : contact
+      );
+      setContacts(updatedContacts);
+      setEditingContact(null);
+    } else {
+      setContacts([...contacts, { ...formData, id: Date.now().toString() }]);
+    }
+    hideContactForm();
+  };
+
+  const handleEditBillingLocation = (location: IAddressForm) => {
+    setEditingBillingLocation(location);
+    setShowBillingLocationForm(true);
+  };
+
+  const handleEditShippingLocation = (location: IShippingLocationForm) => {
+    setEditingShippingLocation(location);
+    setShowShippingLocationForm(true);
+  };
+
+  const handleEditBusinessLocation = (location: IAddressForm) => {
+    setEditingBusinessLocation(location);
+    setShowBusinessLocationForm(true);
+  };
+
+  const handleEditContact = (contact: IContactForm) => {
+    setEditingContact(contact);
+    setShowContactForm(true);
+  };
 
   return (
     <div className={sharedStyles.pageWrapper}>
@@ -262,12 +315,12 @@ export const CustomerForm = () => {
                   columns={businessLocationColumns}
                   data={businessLocations}
                   onAdd={() => setShowBusinessLocationForm(true)}
-                  renderRow={(data, index) => (
+                  renderRow={(row) => (
                     <DataTableRow
-                      data={data}
-                      columns={businessLocationColumns} 
-                      onEdit={() => alert("TODO")}
-                      onDelete={() => handleLocationDelete(index, businessLocations, setBusinessLocations)}
+                      data={row}
+                      columns={businessLocationColumns}
+                      onEdit={() => handleEditBusinessLocation(row)}
+                      onDelete={() => handleLocationDelete(row.id, businessLocations, setBusinessLocations)}
                     />
                   )}
                 />
@@ -277,12 +330,12 @@ export const CustomerForm = () => {
                   columns={shippingLocationColumns}
                   data={shippingLocations}
                   onAdd={() => setShowShippingLocationForm(true)}
-                  renderRow={(data, index) => (
+                  renderRow={(row) => (
                     <DataTableRow
-                      data={data}
+                      data={row}
                       columns={shippingLocationColumns}
-                      onEdit={() => alert("TODO")}
-                      onDelete={() => handleLocationDelete(index, shippingLocations, setShippingLocations)}
+                      onEdit={() => handleEditShippingLocation(row)}
+                      onDelete={() => handleLocationDelete(row.id, shippingLocations, setShippingLocations)}
                     />
                   )}
                 />
@@ -292,12 +345,12 @@ export const CustomerForm = () => {
                   columns={billingLocationColumns}
                   data={billingLocations}
                   onAdd={() => setShowBillingLocationForm(true)}
-                  renderRow={(data, index) => (
+                  renderRow={(row) => (
                     <DataTableRow
-                      data={data}
+                      data={row}
                       columns={billingLocationColumns}
-                      onEdit={() => alert("TODO")}
-                      onDelete={() => handleLocationDelete(index, billingLocations, setBillingLocations)}
+                      onEdit={() => handleEditBillingLocation(row)}
+                      onDelete={() => handleLocationDelete(row.id, billingLocations, setBillingLocations)}
                     />
                   )}
                 />
@@ -307,11 +360,12 @@ export const CustomerForm = () => {
                   columns={contactColumns}
                   data={contacts}
                   onAdd={() => setShowContactForm(true)}
-                  renderRow={(data, index) => (
+                  renderRow={(row) => (
                     <DataTableRow
-                      data={data}
+                      data={row}
                       columns={contactColumns}
-                      onDelete={() => removeElementFromArray(index, contacts, setContacts)}
+                      onEdit={() => handleEditContact(row)}
+                      onDelete={() => removeElementFromArray(row.id, contacts, setContacts)}
                     />
                   )}
                 />
@@ -325,34 +379,37 @@ export const CustomerForm = () => {
             </form>
           </FormProvider>
         </div>
-        {/* Code Below Renders a modal IFF user initiated one to open */}
         <FormModal
           Form={AddressForm}
           isOpen={showBillingLocationForm}
           onSubmit={onBillingLocationFormSubmit}
           onCancel={hideBillingLocationForm}
-          title="Add Billing Location"
+          title={editingBillingLocation ? "Edit Billing Location" : "Add Billing Location"}
+          initialData={editingBillingLocation}
         />
         <FormModal
           Form={ShippingLocationForm}
           isOpen={showShippingLocationForm}
           onSubmit={onShippingLocationFormSubmit}
           onCancel={hideShippingLocationForm}
-          title="Add Shipping Location"
+          title={editingShippingLocation ? "Edit Shipping Location" : "Add Shipping Location"}
+          initialData={editingShippingLocation}
         />
         <FormModal
           Form={AddressForm}
           isOpen={showBusinessLocationForm}
           onSubmit={onBusinessLocationFormSubmit}
           onCancel={hideBusinessLocationForm}
-          title="Add Business Location"
+          title={editingBusinessLocation ? "Edit Business Location" : "Add Business Location"}
+          initialData={editingBusinessLocation}
         />
         <FormModal
           Form={ContactForm}
           isOpen={showContactForm}
           onSubmit={onContactFormSubmit}
           onCancel={hideContactForm}
-          title="Add Contact"
+          title={editingContact ? "Edit Contact" : "Add Contact"}
+          initialData={editingContact}
           locations={locations}
         />
       </div>

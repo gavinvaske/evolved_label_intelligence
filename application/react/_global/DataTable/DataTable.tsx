@@ -1,5 +1,6 @@
 import React from 'react';
 import * as styles from './DataTable.module.scss';
+import { Button } from '../Button/Button';
 
 type Column = {
   displayName: string;
@@ -21,7 +22,7 @@ export const DataTable = (props: Props) => {
     <div className={styles.dataTable}>
       <div className={styles.dataTableHeader}>
         <h3>{title}</h3>
-        <button onClick={onAdd}>Add</button>
+        <Button onClick={onAdd} type="button">Addd</Button>
       </div>
       <div className={styles.dataTableContent}>
         <div className={styles.dataTableRow}>

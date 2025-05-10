@@ -33,8 +33,8 @@ const DataTableRow = (props: Props) => {
       })}
       <div className={clsx(styles.columnTd, styles.actionIcons)}>
         {/* {onEdit && <IoCreateOutline onClick={onEdit} />} */}
-        {onEdit && <IconButton icon={<IoCreateOutline />} onClick={onEdit} color="blue" />}
-        {onDelete && <IconButton icon={<IoTrashOutline />} onClick={onDelete} color="red" />}
+        {onEdit && <IconButton icon={<IoCreateOutline />} onClick={onEdit} color="blue" tooltip="Edit" />}
+        {onDelete && <IconButton icon={<IoTrashOutline />} onClick={onDelete} color="red" tooltip="Delete" />}
       </div>
     </div>
   );

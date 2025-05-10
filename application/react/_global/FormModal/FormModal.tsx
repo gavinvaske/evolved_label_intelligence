@@ -10,17 +10,21 @@ interface FormModalProps {
   onCancel: () => void;
   onSubmit: (data: any) => void;
   title?: string;
+  initialData?: any;
   [key: string]: any;
 }
 
-export const FormModal: React.FC<FormModalProps> = ({
-  Form,
-  isOpen,
-  onCancel,
-  onSubmit,
-  title,
-  ...additionalProps
-}) => {
+export const FormModal = (props: FormModalProps) => {
+  const {
+    Form,
+    isOpen,
+    onCancel,
+    onSubmit,
+    title,
+    initialData,
+    ...rest
+  } = props;
+
   const handleBackdropClick = (e: React.MouseEvent) => {
     if (e.target === e.currentTarget) {
       onCancel();
@@ -50,7 +54,8 @@ export const FormModal: React.FC<FormModalProps> = ({
           <Form
             onSubmit={onSubmit}
             onCancel={onCancel}
-            {...additionalProps}
+            initialData={initialData}
+            {...rest}
           />
         </div>
       </div>
