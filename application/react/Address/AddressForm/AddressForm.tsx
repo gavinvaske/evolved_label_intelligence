@@ -11,7 +11,7 @@ interface Props {
 
 export const AddressForm = ({ onSubmit, initialData }: Props) => {
   const methods = useForm<IAddressForm>({
-    defaultValues: initialData
+    defaultValues: initialData || {}
   });
   const { handleSubmit } = methods;
 

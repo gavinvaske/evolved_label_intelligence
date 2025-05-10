@@ -381,11 +381,11 @@ export const CustomerForm = () => {
         </div>
         <FormModal
           Form={AddressForm}
-          isOpen={showBillingLocationForm}
-          onSubmit={onBillingLocationFormSubmit}
-          onCancel={hideBillingLocationForm}
-          title={editingBillingLocation ? "Edit Billing Location" : "Add Billing Location"}
-          initialData={editingBillingLocation}
+          isOpen={showBusinessLocationForm}
+          onSubmit={onBusinessLocationFormSubmit}
+          onCancel={hideBusinessLocationForm}
+          title={editingBusinessLocation ? "Edit Business Location" : "Add Business Location"}
+          initialData={editingBusinessLocation}
         />
         <FormModal
           Form={ShippingLocationForm}
@@ -397,11 +397,11 @@ export const CustomerForm = () => {
         />
         <FormModal
           Form={AddressForm}
-          isOpen={showBusinessLocationForm}
-          onSubmit={onBusinessLocationFormSubmit}
-          onCancel={hideBusinessLocationForm}
-          title={editingBusinessLocation ? "Edit Business Location" : "Add Business Location"}
-          initialData={editingBusinessLocation}
+          isOpen={showBillingLocationForm}
+          onSubmit={onBillingLocationFormSubmit}
+          onCancel={hideBillingLocationForm}
+          title={editingBillingLocation ? "Edit Billing Location" : "Add Billing Location"}
+          initialData={editingBillingLocation}
         />
         <FormModal
           Form={ContactForm}
