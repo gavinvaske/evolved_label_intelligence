@@ -26,10 +26,10 @@ export const ContactForm = (props: Props) => {
   });
   const { handleSubmit } = methods;
 
-  const selectableLocations: SelectOption[] = locations.map((address: IAddressForm | IShippingLocationForm, index: number) => {
+  const selectableLocations: SelectOption[] = locations.map((address: IAddressForm | IShippingLocationForm) => {
     return {
       displayName: `${address.name}: ${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`,
-      value: `${index}`
+      value: `${address.id}`
     }
   });
 

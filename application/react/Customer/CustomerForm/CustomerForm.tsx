@@ -68,7 +68,6 @@ const contactColumns = [
   { displayName: 'Contact Status', accessor: 'contactStatus' },
   { displayName: 'Notes', accessor: 'notes' },
   { displayName: 'Position', accessor: 'position' },
-  { displayName: 'Location', accessor: 'location' },
   { displayName: 'Edit', accessor: 'edit' },
   { displayName: 'Delete', accessor: 'delete' }
 ];
@@ -163,6 +162,13 @@ export const CustomerForm = () => {
     customer.shippingLocations = shippingLocations;
     customer.contacts = contacts;
     customer.billingLocations = billingLocations;
+
+    customer.contacts = customer.contacts.map((contact) => {
+      return {
+        ...contact,
+        location: contact.location ? locations.find(loc => loc.id === contact.location) : undefined
+      }
+    }) as IContactForm[]
 
     if (isUpdateRequest) {
       axios.patch(`/customers/${mongooseId}`, customer)
