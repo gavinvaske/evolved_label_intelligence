@@ -6,10 +6,13 @@ import { Button } from '../../_global/Button/Button';
 
 interface Props {
   onSubmit: (data: any) => void;
+  initialData?: IAddressForm;
 }
 
-export const AddressForm = ({ onSubmit }: Props) => {
-  const methods = useForm<IAddressForm>();
+export const AddressForm = ({ onSubmit, initialData }: Props) => {
+  const methods = useForm<IAddressForm>({
+    defaultValues: initialData || {}
+  });
   const { handleSubmit } = methods;
 
   return (
@@ -50,7 +53,7 @@ export const AddressForm = ({ onSubmit }: Props) => {
               />
             </div>
             <Button color="blue" size="large">
-              Create
+              {initialData ? 'Update' : 'Create'}
             </Button>
           </div>
         </form>

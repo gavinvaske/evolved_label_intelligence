@@ -1,4 +1,4 @@
-import { MongooseId } from "./typeAliases";
+import { MongooseId } from "../shared/typeAliases";
 
 export type IAddressForm = {
   name: string;
@@ -7,6 +7,7 @@ export type IAddressForm = {
   state: string;
   zipCode: string;
   unitOrSuite?: string;
+  id?: string;
 };
 
 export type IVendorForm = {
@@ -67,13 +68,14 @@ export type IShippingLocationForm = IAddressForm & {
 
 export type IContactForm = {
   fullName: string;
-  phoneNumber: string;
-  phoneExtension: string;
-  email: string;
+  phoneNumber?: string;
+  phoneExtension?: string;
+  email?: string;
   contactStatus: string;
-  notes: string;
-  position: string;
-  location: IAddressForm;
+  notes?: string;
+  position?: string;
+  location?: IAddressForm;
+  id?: string;
 };
 
 export type IMaterialLengthAdjustmentForm = {

@@ -7,7 +7,7 @@ import { SearchQuery, SearchResult } from '@shared/types/http.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
-import { ICustomer } from '@shared/types/models.ts';
+import { ICreditTerm, ICustomer } from '@shared/types/models.ts';
 
 router.use(verifyBearerToken);
 
