@@ -6,7 +6,6 @@ import { IShippingLocationForm } from '@ui/types/forms';
 import { FormModal } from '../../_global/FormModal/FormModal';
 import { AddressForm } from '../../Address/AddressForm/AddressForm';
 import { ContactForm } from '../Contact/ContactForm/ContactForm';
-import { removeElementFromArray } from '../../utils/state-service';
 import { ICustomerForm, IAddressForm } from '@ui/types/forms';
 import { IContactForm } from '@ui/types/forms';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -96,7 +95,7 @@ export const CustomerForm = () => {
   const [shippingLocations, setShippingLocations] = useState<IShippingLocationForm[]>([])
   const [billingLocations, setBillingLocations] = useState<IAddressForm[]>([])
   const [businessLocations, setBusinessLocations] = useState<IAddressForm[]>([])
-  const [locations, setLocations] = useState<(IAddressForm)[]>([])
+  const [locations, setLocations] = useState<(IAddressForm | IShippingLocationForm)[]>([])
   const [contacts, setContacts] = useState<IContactForm[]>([])
 
   useEffect(() => {
@@ -107,9 +106,9 @@ export const CustomerForm = () => {
     ])
   }, [billingLocations, shippingLocations, businessLocations]);
 
-  const handleLocationDelete = (index: number, locations: any[], setLocations: (locations: any[]) => void) => {
+  const handleLocationDelete = (id: number, locations: (IAddressForm | IShippingLocationForm)[], setLocations: (locations: (IAddressForm | IShippingLocationForm)[]) => void) => {
     const isLocationInUse = contacts.some(contact => 
-      JSON.stringify(locations[index]) === JSON.stringify(contact.location)
+      JSON.stringify(locations[id]) === JSON.stringify(contact.location)
     );
 
     if (isLocationInUse) {
@@ -117,7 +116,7 @@ export const CustomerForm = () => {
       return;
     }
 
-    removeElementFromArray(index, locations, setLocations);
+    removeItemFromArrayById(id, locations, setLocations)
   };
 
   const preloadFormData = async () => {
@@ -199,7 +198,7 @@ export const CustomerForm = () => {
       const updatedLocations = billingLocations.map(loc => 
         loc.id === editingBillingLocation.id ? { ...formData, id: loc.id } : loc
       );
-      setBillingLocations(updatedLocations);
+      setBillingLocations(updatedLocations as IAddressForm[]);
       setEditingBillingLocation(null);
     } else {
       setBillingLocations([...billingLocations, { ...formData, id: Date.now().toString() }]);
@@ -212,7 +211,7 @@ export const CustomerForm = () => {
       const updatedLocations = shippingLocations.map(loc => 
         loc.id === editingShippingLocation.id ? { ...formData, id: loc.id } : loc
       );
-      setShippingLocations(updatedLocations);
+      setShippingLocations(updatedLocations as IShippingLocationForm[]);
       setEditingShippingLocation(null);
     } else {
       setShippingLocations([...shippingLocations, { ...formData, id: Date.now().toString() }]);
@@ -225,7 +224,7 @@ export const CustomerForm = () => {
       const updatedLocations = businessLocations.map(loc => 
         loc.id === editingBusinessLocation.id ? { ...formData, id: loc.id } : loc
       );
-      setBusinessLocations(updatedLocations);
+      setBusinessLocations(updatedLocations as IAddressForm[]);
       setEditingBusinessLocation(null);
     } else {
       setBusinessLocations([...businessLocations, { ...formData, id: Date.now().toString() }]);
@@ -238,7 +237,7 @@ export const CustomerForm = () => {
       const updatedContacts = contacts.map(contact => 
         contact.id === editingContact.id ? { ...formData, id: contact.id } : contact
       );
-      setContacts(updatedContacts);
+      setContacts(updatedContacts as IContactForm[]);
       setEditingContact(null);
     } else {
       setContacts([...contacts, { ...formData, id: Date.now().toString() }]);
@@ -365,7 +364,7 @@ export const CustomerForm = () => {
                       data={row}
                       columns={contactColumns}
                       onEdit={() => handleEditContact(row)}
-                      onDelete={() => removeElementFromArray(row.id, contacts, setContacts)}
+                      onDelete={() => removeItemFromArrayById(row.id, contacts, setContacts)}
                     />
                   )}
                 />
@@ -417,4 +416,10 @@ export const CustomerForm = () => {
   );
 }
 
+const removeItemFromArrayById = (id: number, array: any[], setArray: (array: any[]) => void) => {
+  const updatedArray = array.filter(item => item.id !== id);
+  setArray(updatedArray);
+}
+
 export default CustomerForm;
+
