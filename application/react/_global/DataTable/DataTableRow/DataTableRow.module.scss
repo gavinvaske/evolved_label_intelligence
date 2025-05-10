@@ -1,0 +1,33 @@
+.dataTableRow {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #e0e0e0;
+
+  &:last-child {
+    border-bottom: none;
+  }
+}
+
+.columnTd {
+  flex: 1;
+  padding: 0 8px;
+  min-width: 100px;
+}
+
+.actionIcons {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+  min-width: 80px;
+
+  svg {
+    cursor: pointer;
+    font-size: 1.2em;
+    color: #666;
+
+    &:hover {
+      color: #333;
+    }
+  }
+} 

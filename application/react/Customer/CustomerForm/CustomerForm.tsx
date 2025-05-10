@@ -6,9 +6,7 @@ import { IShippingLocationForm } from '@ui/types/forms';
 import { FormModal } from '../../_global/FormModal/FormModal';
 import { AddressForm } from '../../Address/AddressForm/AddressForm';
 import { ContactForm } from '../Contact/ContactForm/ContactForm';
-import ShippingLocationCard from '../../ShippingLocation/ShippingLocationCard/ShippingLocationCard';
 import { removeElementFromArray } from '../../utils/state-service';
-import ContactCard from '../Contact/ContactCard/ContactCard';
 import { ICustomerForm, IAddressForm } from '@ui/types/forms';
 import { IContactForm } from '@ui/types/forms';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -20,13 +18,61 @@ import { performTextSearch } from '../../_queries/_common';
 import { ICreditTerm } from '@shared/types/models';
 import { CustomSelect, SelectOption } from '../../_global/FormInputs/CustomSelect/CustomSelect';
 import { TextArea } from '../../_global/FormInputs/TextArea/TextArea';
-import AddressListItem from './AddressListItem/AddressListItem';
 import * as sharedStyles from '@ui/styles/shared.module.scss';
 import * as formStyles from '@ui/styles/form.module.scss';
 import { Button } from '../../_global/Button/Button';
 import { DataTable } from '../../_global/DataTable/DataTable';
+import DataTableRow from '../../_global/DataTable/DataTableRow/DataTableRow';
 
 const customerTableUrl = '/react-ui/tables/customer'
+
+const businessLocationColumns = [
+  { displayName: 'Name', accessor: 'name' },
+  { displayName: 'Address', accessor: 'street' },
+  { displayName: 'Unit #', accessor: 'unitOrSuite' },
+  { displayName: 'City', accessor: 'city' },
+  { displayName: 'State', accessor: 'state' },
+  { displayName: 'Zip', accessor: 'zipCode' },
+  { displayName: 'Edit', accessor: 'edit' },
+  { displayName: 'Delete', accessor: 'delete' }
+];
+
+const shippingLocationColumns = [
+  { displayName: 'Freight Acct #', accessor: 'freightAccountNumber' },
+  { displayName: 'Delivery Method', accessor: 'deliveryMethod' },
+  { displayName: 'Name', accessor: 'name' },
+  { displayName: 'Street', accessor: 'street' },
+  { displayName: 'Unit', accessor: 'unitOrSuite' },
+  { displayName: 'City', accessor: 'city' },
+  { displayName: 'State', accessor: 'state' },
+  { displayName: 'Zip', accessor: 'zipCode' },
+  { displayName: 'Edit', accessor: 'edit' },
+  { displayName: 'Delete', accessor: 'delete' }
+];
+
+const billingLocationColumns = [
+  { displayName: 'Name', accessor: 'name' },
+  { displayName: 'Street', accessor: 'street' },
+  { displayName: 'Unit', accessor: 'unitOrSuite' },
+  { displayName: 'City', accessor: 'city' },
+  { displayName: 'State', accessor: 'state' },
+  { displayName: 'Zip', accessor: 'zipCode' },
+  { displayName: 'Edit', accessor: 'edit' },
+  { displayName: 'Delete', accessor: 'delete' }
+];
+
+const contactColumns = [
+  { displayName: 'Name', accessor: 'fullName' },
+  { displayName: 'Phone Number', accessor: 'phoneNumber' },
+  { displayName: 'Ext.', accessor: 'phoneExtension' },
+  { displayName: 'Email', accessor: 'email' },
+  { displayName: 'Contact Status', accessor: 'contactStatus' },
+  { displayName: 'Notes', accessor: 'notes' },
+  { displayName: 'Position', accessor: 'position' },
+  { displayName: 'Location', accessor: 'location' },
+  { displayName: 'Edit', accessor: 'edit' },
+  { displayName: 'Delete', accessor: 'delete' }
+];
 
 export const CustomerForm = () => {
   const { mongooseId } = useParams();
@@ -213,12 +259,13 @@ export const CustomerForm = () => {
                 
                 <DataTable
                   title="Business Locations"
-                  columns={['Name', 'Address', 'Unit #', 'City', 'State', 'Zip', 'Delete']}
+                  columns={businessLocationColumns}
                   data={businessLocations}
                   onAdd={() => setShowBusinessLocationForm(true)}
                   renderRow={(data, index) => (
-                    <AddressListItem
+                    <DataTableRow
                       data={data}
+                      columns={businessLocationColumns}
                       onDelete={() => handleLocationDelete(index, businessLocations, setBusinessLocations)}
                     />
                   )}
@@ -226,12 +273,13 @@ export const CustomerForm = () => {
 
                 <DataTable
                   title="Shipping Locations"
-                  columns={['Freight Acct #', 'Delivery Method', 'Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
+                  columns={shippingLocationColumns}
                   data={shippingLocations}
                   onAdd={() => setShowShippingLocationForm(true)}
                   renderRow={(data, index) => (
-                    <ShippingLocationCard
+                    <DataTableRow
                       data={data}
+                      columns={shippingLocationColumns}
                       onDelete={() => handleLocationDelete(index, shippingLocations, setShippingLocations)}
                     />
                   )}
@@ -239,12 +287,13 @@ export const CustomerForm = () => {
 
                 <DataTable
                   title="Billing Locations"
-                  columns={['Name', 'Street', 'Unit', 'City', 'State', 'Zip', 'Delete']}
+                  columns={billingLocationColumns}
                   data={billingLocations}
                   onAdd={() => setShowBillingLocationForm(true)}
                   renderRow={(data, index) => (
-                    <AddressListItem
+                    <DataTableRow
                       data={data}
+                      columns={billingLocationColumns}
                       onDelete={() => handleLocationDelete(index, billingLocations, setBillingLocations)}
                     />
                   )}
@@ -252,12 +301,13 @@ export const CustomerForm = () => {
 
                 <DataTable
                   title="Contacts"
-                  columns={['Name', 'Phone Number', 'Ext.', 'Email', 'Contact Status', 'Notes', 'Position', 'Location', 'Delete']}
+                  columns={contactColumns}
                   data={contacts}
                   onAdd={() => setShowContactForm(true)}
                   renderRow={(data, index) => (
-                    <ContactCard
+                    <DataTableRow
                       data={data}
+                      columns={contactColumns}
                       onDelete={() => removeElementFromArray(index, contacts, setContacts)}
                     />
                   )}

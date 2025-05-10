@@ -5,45 +5,38 @@ import * as tableStyles from '@ui/styles/table.module.scss';
 import * as styles from './DataTable.module.scss';
 import { Button } from '../Button/Button';
 
-interface DataTableProps {
+type Column = {
+  displayName: string;
+  accessor: string;
+}
+
+type Props = {
   title: string;
-  columns: string[];
+  columns: Column[];
   data: any[];
   onAdd: () => void;
   renderRow: (data: any, index: number) => React.ReactNode;
 }
 
-export const DataTable: React.FC<DataTableProps> = ({
-  title,
-  columns,
-  data,
-  onAdd,
-  renderRow
-}) => {
+export const DataTable = (props: Props) => {
+  const { title, columns, data, onAdd, renderRow } = props;
+
   return (
-    <div className={styles.dataTableContainer}>
-      <div className={styles.titleHeader}>
+    <div className={styles.dataTable}>
+      <div className={styles.dataTableHeader}>
         <h3>{title}</h3>
+        <button onClick={onAdd}>Add</button>
       </div>
-      <div className={clsx(styles.tableContainer, tableStyles.tblPri)}>
-        <div className={tableStyles.tblHdr}>
-          {columns.map((column, index) => (
-            <div key={index} className={tableStyles.tblCell}>
-              {column}
+      <div className={styles.dataTableContent}>
+        <div className={styles.dataTableRow}>
+          {columns.map(column => (
+            <div key={column.accessor} className={styles.columnTh}>
+              {column.displayName}
             </div>
           ))}
         </div>
-        <div className={styles.tableBody}>
-          {data.map((item, index) => (
-            <div key={index} className={styles.tableRow}>
-              {renderRow(item, index)}
-            </div>
-          ))}
-        </div>
+        {data.map((row, index) => renderRow(row, index))}
       </div>
-      <Button color='purple' size='small' onClick={onAdd} icon={<FaPlus />} type='button'>
-        Add {title}
-      </Button>
     </div>
   );
 }; 
