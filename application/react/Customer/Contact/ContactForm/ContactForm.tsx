@@ -21,15 +21,21 @@ export const ContactForm = (props: Props) => {
     initialData
   } = props;
 
+  // Populates the form with the initial data
+  const formInitialData = initialData ? {
+    ...initialData,
+    location: typeof initialData.location === 'object' ? initialData.location.id : initialData.location
+  } : {};
+
   const methods = useForm<IContactForm>({
-    defaultValues: initialData || {}
+    defaultValues: formInitialData
   });
   const { handleSubmit } = methods;
 
-  const selectableLocations: SelectOption[] = locations.map((address: IAddressForm | IShippingLocationForm) => {
+  const selectableLocations: SelectOption[] = locations.map((address: IAddressForm | IShippingLocationForm, index: number) => {
     return {
       displayName: `${address.name}: ${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`,
-      value: `${address.id}`
+      value: address.id || ''
     }
   });
 
