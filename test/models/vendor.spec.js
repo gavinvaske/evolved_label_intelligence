@@ -34,7 +34,7 @@ describe('validation', () => {
         });
 
         it('should be a string', () => {
-            vendorAttributes.name = chance.string();
+            vendorAttributes.name = chance.string().toUpperCase();
             
             const vendor = new VendorModel(vendorAttributes);
         
@@ -42,7 +42,7 @@ describe('validation', () => {
         });
 
         it('should trim whitespace around "name"', () => {
-            const name = chance.string();
+            const name = chance.string().toUpperCase();
             vendorAttributes.name = ' ' + name + ' ';
 
             const vendor = new VendorModel(vendorAttributes);
