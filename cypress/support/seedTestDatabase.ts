@@ -6,6 +6,7 @@ import { AdhesiveCategoryModel } from '../../application/api/models/adhesiveCate
 import { MaterialCategoryModel } from '../../application/api/models/materialCategory';
 import { LinerTypeModel } from '../../application/api/models/linerType';
 import { MaterialModel } from '../../application/api/models/material';
+import { connectToTestDatabase, isTestDbRunning } from '../../test/sharedTestDatabase';
 const TEST_API_URL = 'http://localhost:8069';
 
 export async function seedTestDatabase() {
@@ -25,8 +26,6 @@ export async function seedTestDatabase() {
     console.log('Test database seeded');
 
     const users = await UserModel.find({}).lean();
-
-
     console.log('users in cypress test database:', users);
 }
 
@@ -53,4 +52,20 @@ const registerUserAndAssignAuthRole = async (user: any, authRole: string[]) => {
 
   /* Assign the registered user the USER auth role so they can access pages that require auth roles */
   await UserModel.findOneAndUpdate({ email: user.email }, { $set: { authRoles: authRole } }, { runValidators: true}).lean();
+}
+
+// This runs when is executed directly (i.e. via the cypress:dev command)
+if (require.main === module) {
+  if (!isTestDbRunning()) throw new Error('No test database URI found. Make sure the API server is running first!');
+  // Connect to the existing database instance
+  connectToTestDatabase()
+    .then(() => seedTestDatabase())
+    .then(() => {
+      console.log('Test database seeded successfully');
+      process.exit(0);
+    })
+    .catch((error) => {
+      console.error('Failed to seed test database:', error);
+      process.exit(1);
+    });
 }
