@@ -32,6 +32,9 @@ module.exports = defineConfig({
         testIsolation: true,
         env: {
             NODE_ENV: 'test'
-        }
+        },
+        viewportWidth: 1920,
+        viewportHeight: 1080,
+        screenshotOnRunFailure: true,
     }
 }); 
