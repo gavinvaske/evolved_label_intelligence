@@ -78,12 +78,25 @@ Cypress.Commands.add('selectRandomOptionFromDropdown', (selector) => {
   });
 });
 
+// Custom command for populating a date input field
+Cypress.Commands.add('typeDate', (selector: string, dateStr: string | undefined) => {
+  if (!dateStr) return;
+
+  const formatDateForInput = (dateStr: string) => {
+    const [month, day, year] = dateStr.split('/');
+    return `${year}-${month.padStart(2, '0')}-${day.padStart(2, '0')}`;
+  };
+
+  cy.get(selector).type(formatDateForInput(dateStr));
+});
+
 // Add the command to the Cypress namespace
 declare global {
   namespace Cypress {
     interface Chainable {
       selectFromDropdown(selector: string, optionText: string): Chainable<void>,
-      selectRandomOptionFromDropdown(selector: string)
+      selectRandomOptionFromDropdown(selector: string),
+      typeDate(selector: string, dateStr: string | undefined): Chainable<void>
     }
   }
 }
