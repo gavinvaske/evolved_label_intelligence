@@ -180,6 +180,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
               store.resetAllFilters();
               clearSearchBar(e);
             }}
+            data-test='clear-filters-button'
           >
             Reset Filters
           </Button>

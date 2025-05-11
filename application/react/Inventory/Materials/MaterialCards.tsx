@@ -43,7 +43,7 @@ const MaterialCards = observer(() => {
   if (isPending || isFetching) return <LoadingIndicator />;
 
   return (
-    <div className={clsx(styles.materialCardSection, sharedStyles.fullWidth)}>
+    <div className={clsx(styles.materialCardSection, sharedStyles.fullWidth)} data-test='material-cards'>
       {materials.map((material) => (
         <MaterialCard
           material={material}

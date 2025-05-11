@@ -131,7 +131,7 @@ function getMaterialCategory() {
 function getMaterial() {
     return {
         name: chance.word(),
-        materialId: chance.string({ symbols: false, alpha: true, numeric: true }),
+        materialId: chance.n(() => chance.character({alpha: true, numeric: true, symbols: false}), chance.integer({ min: 6, max: 10 })).join(''), // Generate 6-10 random characters
         vendor: new mongoose.Types.ObjectId(),
         materialCategory: new mongoose.Types.ObjectId(),
         thickness: chance.integer({ min: 1, max: 3 }),
