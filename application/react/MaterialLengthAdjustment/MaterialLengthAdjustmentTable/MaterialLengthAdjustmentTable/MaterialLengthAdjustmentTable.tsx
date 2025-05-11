@@ -139,7 +139,7 @@ export const MaterialLengthAdjustmentTable = () => {
           }}
         />
 
-        <Table id='material-length-adjustment-table'>
+        <Table id='material-length-adjustment-table' data-test='material-length-adjustment-table'>
           <TableHead table={table} />
 
           <TableBody>

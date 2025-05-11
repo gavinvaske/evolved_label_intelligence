@@ -18,7 +18,7 @@ export const AddressForm = ({ onSubmit, initialData }: Props) => {
   return (
     <div>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
+        <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form} data-test='address-form'>
           <div className={formStyles.formElementsWrapper}>
             <div className={formStyles.inputGroupWrapper}>
               <Input

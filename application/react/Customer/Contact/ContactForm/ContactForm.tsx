@@ -44,7 +44,7 @@ export const ContactForm = (props: Props) => {
   return (
     <div>
       <FormProvider {...methods}>
-        <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form}>
+        <form onSubmit={handleSubmit(onSubmit)} className={formStyles.form} data-test='contact-form'>
           <div className={formStyles.formElementsWrapper}>
             <div className={formStyles.inputGroupWrapper}>
               <Input

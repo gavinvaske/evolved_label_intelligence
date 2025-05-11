@@ -136,7 +136,7 @@ export const MaterialOrderTable = () => {
           }}
         />
 
-        <Table id='material-order-table'>
+        <Table id='material-order-table' data-test='material-order-table'>
           <TableHead table={table} />
 
           <TableBody>
