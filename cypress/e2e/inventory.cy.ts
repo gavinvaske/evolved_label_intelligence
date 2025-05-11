@@ -119,4 +119,30 @@ describe('Inventory Management', () => {
       .and('contain', material.description)
       .and('contain', material.whenToUse)
   });
+
+  // should hover over one of the material cards, and see a create actions button (data-test='create-actions-button')
+  it('should hover over one of the material cards, and see a create actions button', () => {
+    // Find the text and get its parent material card
+    cy.contains(material.materialId.toUpperCase())
+      .closest('[data-test=material-inventory-card]')
+      .within(() => {
+        cy.get('[data-test=create-actions-button]').click();
+      });
+
+
+    // click on "Create Order" in the dropdown that appears
+    cy.get('[data-test=create-actions-dropdown]')
+      .contains('Create Order')
+      .click();
+
+    // verify we're on the material order form
+    cy.url().should('include', '/react-ui/forms/material-order');
+
+    // const materialOrder = testDataGenerator.MaterialOrder()
+
+    // // fill out the form
+    // cy.get('[data-test=material-order-form]').within(() => {
+
+    // });
+  });
 });

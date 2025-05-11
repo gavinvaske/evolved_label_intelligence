@@ -108,6 +108,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
           tooltip="Create Actions"
           onClick={handleCreateClick}
           color="green"
+          data-test='create-actions-button'
         />
         <Dropdown
           isOpen={isCreateOpen}
@@ -115,6 +116,7 @@ export const MaterialActions: React.FC<MaterialActionsProps> = ({
           align="right"
           triggerRef={createButtonRef}
           className="actionDropdown"
+          data-test='create-actions-dropdown'
         >
           {createActions.map((action, index) => (
             <div
