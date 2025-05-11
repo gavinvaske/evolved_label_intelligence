@@ -38,7 +38,7 @@ export const TablePageHeader: React.FC<TablePageHeaderProps> = ({
         />
         {createButton && (
           <IconButton
-            color="green"
+            color="purple"
             to={createButton.to}
             tooltip={createButton.tooltip || `Create new ${title.toLowerCase()}`}
             icon={<GoPlus />}

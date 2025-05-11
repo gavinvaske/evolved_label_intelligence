@@ -38,9 +38,8 @@ const businessLocationColumns = [
 ];
 
 const shippingLocationColumns = [
-  { displayName: 'Freight Acct #', accessor: 'freightAccountNumber' },
-  { displayName: 'Delivery Method', accessor: 'deliveryMethod' },
   { displayName: 'Name', accessor: 'name' },
+  { displayName: 'Freight Acct #', accessor: 'freightAccountNumber' },
   { displayName: 'Street', accessor: 'street' },
   { displayName: 'Unit', accessor: 'unitOrSuite' },
   { displayName: 'City', accessor: 'city' },
