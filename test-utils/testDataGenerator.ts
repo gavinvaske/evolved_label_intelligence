@@ -180,7 +180,13 @@ function getFinish() {
 function getContact() {
     return {
         fullName: chance.string(),
-        contactStatus: chance.string()
+        phoneNumber: chance.phone(),
+        phoneExtension: chance.integer({ min: 0, max: 999 }),
+        email: chance.email(),
+        contactStatus: chance.string(),
+        notes: chance.string(),
+        position: chance.string(),
+        location: null
     };
 }
 

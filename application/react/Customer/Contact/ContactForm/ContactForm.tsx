@@ -31,7 +31,7 @@ export const ContactForm = (props: Props) => {
   const selectableLocations: SelectOption[] = locations.map((address: SelectableLocation) => {
     return {
       displayName: `${address.name}: ${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`,
-      value: address._id
+      value: address._id || ''
     }
   });
 

@@ -386,6 +386,7 @@ export const CustomerForm = () => {
                       onDelete={() => removeItemFromArrayById(row._id, contacts, setContacts)}
                     />
                   )}
+                  data-test='contacts-table'
                 />
 
                 <div className={formStyles.spacer}></div>

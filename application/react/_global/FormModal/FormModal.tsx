@@ -34,9 +34,9 @@ export const FormModal = (props: FormModalProps) => {
 
   return (
     <div 
-      className={clsx(styles.modalWrapper, isOpen && styles.open)} 
+      className={clsx(styles.modalWrapper, isOpen && styles.open)}
     >
-      <div className={clsx(styles.modal, sharedStyles.card)}>
+      <div className={clsx(styles.modal, sharedStyles.card)} data-test='modal'>
         <div className={styles.modalHeader}>
           {title && <h3>{title}</h3>}
           <button 

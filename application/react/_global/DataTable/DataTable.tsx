@@ -13,16 +13,17 @@ type Props = {
   data: any[];
   onAdd: () => void;
   renderRow: (data: any, index: number) => React.ReactNode;
+  
 }
 
 export const DataTable = (props: Props) => {
-  const { title, columns, data, onAdd, renderRow } = props;
+  const { title, columns, data, onAdd, renderRow, ...rest } = props;
 
   return (
-    <div className={styles.dataTable}>
+    <div className={styles.dataTable} {...rest}>
       <div className={styles.dataTableHeader}>
         <h3>{title}</h3>
-        <Button onClick={onAdd} type="button">Add</Button>
+        <Button onClick={onAdd} type="button" data-test='add-button'>Add</Button>
       </div>
       <div className={styles.dataTableContent}>
         <div className={styles.dataTableHeaderRow}>
