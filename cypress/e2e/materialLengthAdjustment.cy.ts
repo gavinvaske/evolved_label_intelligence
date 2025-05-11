@@ -34,7 +34,9 @@ describe('Material Length Adjustment Management', () => {
 
   it('should allow searching for an material length adjustment', () => {
     // Search for the material length adjustment
-    cy.get('[data-test=searchbar]').type(Math.abs(materialLengthAdjustment.length).toString());
+    cy.get('[data-test=searchbar]')
+      .type(materialLengthAdjustment.notes.slice(0, 4))
+      .type('{enter}');
     
     // Verify search results
     cy.get('[data-test=material-length-adjustment-table]')

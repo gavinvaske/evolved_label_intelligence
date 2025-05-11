@@ -57,7 +57,9 @@ describe('Material Order Management', () => {
 
   it('should allow searching for a material order', () => {
     // Search for the material order
-    cy.get('[data-test=searchbar]').type(materialOrder.purchaseOrderNumber);
+    cy.get('[data-test=searchbar]')
+      .type(materialOrder.purchaseOrderNumber)
+      .type('{enter}');
     
     // Wait for the table to be ready and verify search results
     cy.get('[data-test=material-order-table]').should('exist');

@@ -35,7 +35,9 @@ describe('Delivery Method Management', () => {
 
   it('should allow searching for a delivery method', () => {
     // Search for the delivery method
-    cy.get('[data-test=searchbar]').type(deliveryMethod.name);
+    cy.get('[data-test=searchbar]')
+      .type(deliveryMethod.name)
+      .type('{enter}');
     
     // Wait for the table to be ready and verify search results
     cy.get('[data-test=delivery-method-table]').should('exist');

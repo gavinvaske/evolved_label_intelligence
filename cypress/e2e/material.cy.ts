@@ -69,7 +69,9 @@ describe('Material Management', () => {
 
   it('should allow searching for a material', () => {
     // Search for the material
-    cy.get('[data-test=searchbar]').type(uppercasedMaterialId);
+    cy.get('[data-test=searchbar]')
+      .type(uppercasedMaterialId)
+      .type('{enter}');
 
     // Wait for the table to be ready and verify search results
     cy.get('[data-test=material-table]').should('exist');

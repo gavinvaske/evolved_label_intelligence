@@ -68,7 +68,9 @@ describe('Die Management', () => {
 
   it('should allow searching for a die', () => {
     // Search for the die
-    cy.get('[data-test=searchbar]').type(die.dieNumber);
+    cy.get('[data-test=searchbar]')
+      .type(die.dieNumber)
+      .type('{enter}');
     
     // Wait for the table to be ready and verify search results
     cy.get('[data-test=die-table]').should('exist');

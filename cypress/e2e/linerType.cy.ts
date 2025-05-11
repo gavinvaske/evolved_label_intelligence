@@ -33,7 +33,9 @@ describe('Liner Type Management', () => {
 
   it('should allow searching for a liner type', () => {
     // Search for the liner type
-    cy.get('[data-test=searchbar]').type(linerType.name);
+    cy.get('[data-test=searchbar]')
+      .type(linerType.name)
+      .type('{enter}');
     
     // Verify search results
     cy.get('[data-test=liner-type-table]')

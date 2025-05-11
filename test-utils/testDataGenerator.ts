@@ -43,7 +43,7 @@ function getDie() {
         numberAround: chance.d10(),
         gear: chance.d100(),
         toolType: chance.pickone(toolTypes),
-        notes: chance.string(),
+        notes: chance.sentence(),
         cost: chance.floating({ min: 0, fixed: 2 }),
         vendor: chance.pickone(dieVendors),
         magCylinder: chance.pickone(dieMagCylinders),
@@ -73,7 +73,7 @@ function getMaterialOrder() {
     totalCost: chance.floating({min: 1, max: 500000}),
     vendor: new mongoose.Types.ObjectId(),
     hasArrived: chance.bool(),
-    notes: chance.string(),
+    notes: chance.sentence(),
     author: new mongoose.Types.ObjectId(),
     freightCharge: chance.floating({ min: 0, fixed: 2 }),
     fuelCharge: chance.floating({ min: 0, fixed: 2 })
@@ -85,7 +85,7 @@ function getVendor() {
       name: chance.word(),
       phoneNumber: chance.phone(),
       email: chance.email(),
-      notes: chance.paragraph(),
+      notes: chance.sentence(),
       website: chance.url(),
       primaryContactName: `${chance.word()} ${chance.word()}`,
       primaryContactPhoneNumber: chance.phone(),
@@ -100,7 +100,7 @@ function getMaterialLengthAdjustment() {
   return {
     material: new mongoose.Types.ObjectId(),
     length: chance.integer({ min: -100000, max: 100000 }),
-    notes: chance.string()
+    notes: chance.sentence()
   }
 }
 
@@ -112,7 +112,7 @@ function getLinerType() {
 
 function getCreditTerm() {
     return {
-        description: chance.string()
+        description: chance.string({ symbols: false, alpha: true, numeric: true })
     };
 }
 
@@ -185,7 +185,7 @@ function getContact() {
         phoneExtension: chance.integer({ min: 0, max: 999 }),
         email: chance.email(),
         contactStatus: chance.string(),
-        notes: chance.string(),
+        notes: chance.sentence(),
         position: chance.string(),
         location: null
     };
@@ -194,7 +194,7 @@ function getContact() {
 function getCustomer() {
     return {
         name: `${chance.word()} ${chance.word()}`,
-        notes: chance.string(),
+        notes: chance.sentence(),
         overun: chance.d100(),
         customerId: chance.string({ symbols: false, alpha: true, numeric: true }),
         contacts: chance.n(getContact, chance.d10()),

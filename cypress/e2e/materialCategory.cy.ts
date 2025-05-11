@@ -33,7 +33,9 @@ describe('Material Category Management', () => {
 
   it('should allow searching for an material category', () => {
     // Search for the category
-    cy.get('[data-test=searchbar]').type(materialCategory.name);
+    cy.get('[data-test=searchbar]')
+      .type(materialCategory.name)
+      .type('{enter}');
     
     // Verify search results
     cy.get('[data-test=material-category-table]')
