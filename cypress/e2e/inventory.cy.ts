@@ -20,14 +20,6 @@ describe('Inventory Management', () => {
     cy.get('[data-test=create-material-length-adjustment-button]').should('exist');
   });
 
-  // Should be able to create a material using the create material button, see one more material on the page, then search for it and see it and nothing else, then when clearing the filters, all the material show up again
-  it('should be able to create a material', () => {
-    cy.get('[data-test=create-material-button]').click();
-    cy.get('[data-test=material-form]').should('exist');
-
-    // fill out the material form
-  });
-
   it('should allow creating a new material and viewing it in inventory', () => {
     // Click the create new button
     cy.get('[data-test=create-material-button]').click();
@@ -111,5 +103,20 @@ describe('Inventory Management', () => {
         .should('have.length', total)
         .and('contain', uppercasedMaterialId);
     });
+  });
+
+  it('should open a material details modal when clicking on a material card', () => {
+    // click on the material card containing our material ID
+    cy.get('[data-test=material-inventory-card]')
+      .contains(material.materialId.toUpperCase())
+      .click();
+
+    // verify the material details modal is shown
+    cy.get('[data-test=material-details-modal]')
+      .should('exist')
+      .and('contain', material.materialId.toUpperCase())
+      .and('contain', material.name.toUpperCase())
+      .and('contain', material.description)
+      .and('contain', material.whenToUse)
   });
 });
