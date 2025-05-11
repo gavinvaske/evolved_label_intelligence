@@ -134,7 +134,7 @@ describe('Customer Management', () => {
   it('should allow searching for a customer', () => {
     // Search for the customer
     cy.get('[data-test=searchbar]')
-      .type(uppercasedCustomerId)
+      .type(uppercasedCustomerId.toUpperCase())
       .type('{enter}');
 
     // Wait for the table to be ready and verify search results

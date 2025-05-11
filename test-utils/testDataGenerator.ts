@@ -82,12 +82,12 @@ function getMaterialOrder() {
 
 function getVendor() {
     return {
-      name: chance.string(),
+      name: chance.word(),
       phoneNumber: chance.phone(),
       email: chance.email(),
       notes: chance.paragraph(),
       website: chance.url(),
-      primaryContactName: chance.string(),
+      primaryContactName: `${chance.word()} ${chance.word()}`,
       primaryContactPhoneNumber: chance.phone(),
       primaryContactEmail: chance.email(),
       primaryAddress: getAddress(),
@@ -106,7 +106,7 @@ function getMaterialLengthAdjustment() {
 
 function getLinerType() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }
 
@@ -118,20 +118,20 @@ function getCreditTerm() {
 
 function getAdhesiveCategory() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }
 
 function getMaterialCategory() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }
 
 function getMaterial() {
     return {
-        name: chance.string(),
-        materialId: chance.string(),
+        name: chance.word(),
+        materialId: chance.string({ symbols: false, alpha: true, numeric: true }),
         vendor: new mongoose.Types.ObjectId(),
         materialCategory: new mongoose.Types.ObjectId(),
         thickness: chance.integer({ min: 1, max: 3 }),
@@ -162,8 +162,8 @@ function getMaterial() {
 
 function getFinish() {
     return {
-        name: chance.string(),
-        finishId: chance.string(),
+        name: chance.word(),
+        finishId: chance.string({ symbols: false, alpha: true, numeric: true }),
         vendor: new mongoose.Types.ObjectId(),
         category: new mongoose.Types.ObjectId(),
         thickness: chance.integer({ min: 1, max: 3 }),
@@ -180,7 +180,7 @@ function getFinish() {
 
 function getContact() {
     return {
-        fullName: chance.string(),
+        fullName: `${chance.word()} ${chance.word()}`,
         phoneNumber: chance.phone(),
         phoneExtension: chance.integer({ min: 0, max: 999 }),
         email: chance.email(),
@@ -193,10 +193,10 @@ function getContact() {
 
 function getCustomer() {
     return {
-        name: chance.string(),
+        name: `${chance.word()} ${chance.word()}`,
         notes: chance.string(),
         overun: chance.d100(),
-        customerId: chance.string(),
+        customerId: chance.string({ symbols: false, alpha: true, numeric: true }),
         contacts: chance.n(getContact, chance.d10()),
     };
 }
@@ -234,7 +234,7 @@ function getBaseProduct() {
 
 function getAddress() {
     return {
-        name: chance.string(),
+        name: chance.word(),
         street: chance.street(),
         unitOrSuite: chance.word(),
         city: chance.city(),
@@ -253,6 +253,6 @@ function getShippingLocation() {
 
 function getDeliveryMethod() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }
