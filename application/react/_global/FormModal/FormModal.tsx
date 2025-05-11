@@ -25,15 +25,9 @@ export const FormModal = (props: FormModalProps) => {
     ...rest
   } = props;
 
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onCancel();
-    }
-  };
-
   const handleSubmit = (data: any) => {
     onSubmit(data);
-    onCancel(); // Close modal after successful submit
+    onCancel();
   };
 
   if (!isOpen) return null;
@@ -41,7 +35,6 @@ export const FormModal = (props: FormModalProps) => {
   return (
     <div 
       className={clsx(styles.modalWrapper, isOpen && styles.open)} 
-      onClick={handleBackdropClick}
     >
       <div className={clsx(styles.modal, sharedStyles.card)}>
         <div className={styles.modalHeader}>
