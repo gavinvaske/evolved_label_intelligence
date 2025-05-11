@@ -19,7 +19,7 @@ const DataTableRow = (props: Props) => {
   const { data, columns, onDelete, onEdit } = props;
 
   return (
-    <div className={styles.dataTableRow}>
+    <div className={styles.dataTableRow} data-test='table-row'>
       {columns.map((column) => {
         // Skip the last two columns if they are Edit/Delete
         if (column.displayName === 'Edit' || column.displayName === 'Delete') {
@@ -32,8 +32,8 @@ const DataTableRow = (props: Props) => {
         );
       })}
       <div className={clsx(styles.columnTd, styles.actionIcons)}>
-        {onEdit && <IconButton icon={<IoCreateOutline />} onClick={onEdit} color="blue" tooltip="Edit" />}
-        {onDelete && <IconButton icon={<IoTrashOutline />} onClick={onDelete} color="red" tooltip="Delete" />}
+        {onEdit && <IconButton icon={<IoCreateOutline />} onClick={onEdit} color="blue" tooltip="Edit" data-test='edit-button' />}
+        {onDelete && <IconButton icon={<IoTrashOutline />} onClick={onDelete} color="red" tooltip="Delete" data-test='delete-button' />}
       </div>
     </div>
   );

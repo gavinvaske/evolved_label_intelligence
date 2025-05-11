@@ -21,7 +21,7 @@ describe('Customer Management', () => {
     // Verify we're on the form page
     cy.url().should('include', '/react-ui/forms/customer');
 
-    // Fill out the form
+    // Fill out the customer form
     cy.get('[data-test=customer-form]').within(() => {
       // Basic Information
       cy.get('[data-test=input-customerId]').type(customer.customerId);
@@ -51,6 +51,35 @@ describe('Customer Management', () => {
         cy.get('button[type="submit"]').should('be.visible').click();
       });
 
+    // verify the business location was added
+    cy.get('[data-test=business-locations-table]')
+      .should('contain', businessLocation.name);
+
+    // update the business location name
+    const updatedBusinessLocationName = businessLocation.name + ' Updated';
+    cy.get('[data-test=business-locations-table]')
+      .contains(businessLocation.name)
+      .closest('[data-test=table-row]')
+      .find('[data-test=edit-button]')
+      .click();
+
+    // Fill the business location form with updated name
+    cy.get('[data-test=modal]')
+      .within(() => {
+        // Update the name
+        cy.get('[data-test=input-name]')
+          .should('be.visible')
+          .clear()
+          .type(updatedBusinessLocationName);
+
+        // Click update button
+        cy.get('button[type="submit"]').should('be.visible').click();
+      });
+
+    // Verify the updated name appears in the table
+    cy.get('[data-test=business-locations-table]')
+      .should('contain', updatedBusinessLocationName);
+
     // Add a shipping location
     cy.get('[data-test=shipping-locations-table]').within(() => {
       cy.get('[data-test=add-button]').click();
@@ -73,6 +102,10 @@ describe('Customer Management', () => {
         cy.get('button[type="submit"]').should('be.visible').click();
       });
 
+    // verify the shipping location was added
+    cy.get('[data-test=shipping-locations-table]')
+      .should('contain', shippingLocation.name);
+
     // Add a billing location
     cy.get('[data-test=billing-locations-table]').within(() => {
       cy.get('[data-test=add-button]').click();
@@ -93,11 +126,26 @@ describe('Customer Management', () => {
         cy.get('button[type="submit"]').should('be.visible').click();
       });
 
+    // verify the billing location was added
+    cy.get('[data-test=billing-locations-table]')
+      .should('contain', billingLocation.name);
+
+    // remove the billing location via the delete button
+    cy.get('[data-test=billing-locations-table]')
+      .contains(billingLocation.name)
+      .closest('[data-test=table-row]')
+      .find('[data-test=delete-button]')
+      .click();
+
+    // verify the billing location was removed
+    cy.get('[data-test=billing-locations-table]')
+      .should('not.contain', billingLocation.name);
 
     // Add a contact
     cy.get('[data-test=contacts-table]').within(() => {
       cy.get('[data-test=add-button]').click();
     });
+
     // Fill the contact form
     cy.get('[data-test=modal]')
       .within(() => {
