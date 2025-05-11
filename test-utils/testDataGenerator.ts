@@ -29,7 +29,8 @@ export const mockData = {
     Vendor: getVendor,
     MaterialCategory: getMaterialCategory,
     MaterialLengthAdjustment: getMaterialLengthAdjustment,
-    MaterialOrder: getMaterialOrder
+    MaterialOrder: getMaterialOrder,
+    ShippingLocation: getShippingLocation
 };
 
 function getDie() {
@@ -240,6 +241,14 @@ function getAddress() {
         state: chance.state(),
         zipCode: chance.zip()
     };
+}
+
+function getShippingLocation() {
+  return {
+    ...getAddress(),
+    freightAccountNumber: chance.string(),
+    deliveryMethod: new mongoose.Types.ObjectId()
+  }
 }
 
 function getDeliveryMethod() {

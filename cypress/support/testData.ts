@@ -45,4 +45,12 @@ export const CREDIT_TERMS = [
   testDataGenerator.CreditTerm(),
 ]
 
+export const DELIVERY_METHODS = [
+  testDataGenerator.DeliveryMethod(),
+  testDataGenerator.DeliveryMethod(),
+  testDataGenerator.DeliveryMethod(),
+]
+
+
+
 

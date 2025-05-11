@@ -1,5 +1,5 @@
 import { UserModel } from '../../application/api/models/user';
-import { TEST_USER, VENDORS, ADHESIVE_CATEGORIES, MATERIAL_CATEGORIES, LINER_TYPES, MATERIALS, CREDIT_TERMS } from './testData';
+import { TEST_USER, VENDORS, ADHESIVE_CATEGORIES, MATERIAL_CATEGORIES, LINER_TYPES, MATERIALS, CREDIT_TERMS, DELIVERY_METHODS } from './testData';
 import { USER } from '../../application/api/enums/authRolesEnum';
 import { VendorModel } from '../../application/api/models/vendor';
 import { AdhesiveCategoryModel } from '../../application/api/models/adhesiveCategory';
@@ -8,6 +8,7 @@ import { LinerTypeModel } from '../../application/api/models/linerType';
 import { MaterialModel } from '../../application/api/models/material';
 import { connectToTestDatabase, isTestDbRunning } from '../../test/sharedTestDatabase';
 import { CreditTermModel } from '../../application/api/models/creditTerm';
+import { DeliveryMethodModel } from '../../application/api/models/deliveryMethod';
 
 const TEST_API_URL = 'http://localhost:8069';
 
@@ -24,6 +25,7 @@ export async function seedTestDatabase() {
     await LinerTypeModel.insertMany(LINER_TYPES);
     await MaterialModel.insertMany(MATERIALS);
     await CreditTermModel.insertMany(CREDIT_TERMS);
+    await DeliveryMethodModel.insertMany(DELIVERY_METHODS);
     /* [END] SEED TEST DATA */
 
     console.log('Test database seeded');
