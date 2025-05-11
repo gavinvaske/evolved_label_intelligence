@@ -10,21 +10,24 @@ interface FormModalProps {
   onCancel: () => void;
   onSubmit: (data: any) => void;
   title?: string;
+  initialData?: any;
   [key: string]: any;
 }
 
-export const FormModal: React.FC<FormModalProps> = ({
-  Form,
-  isOpen,
-  onCancel,
-  onSubmit,
-  title,
-  ...additionalProps
-}) => {
-  const handleBackdropClick = (e: React.MouseEvent) => {
-    if (e.target === e.currentTarget) {
-      onCancel();
-    }
+export const FormModal = (props: FormModalProps) => {
+  const {
+    Form,
+    isOpen,
+    onCancel,
+    onSubmit,
+    title,
+    initialData,
+    ...rest
+  } = props;
+
+  const handleSubmit = (data: any) => {
+    onSubmit(data);
+    onCancel();
   };
 
   if (!isOpen) return null;
@@ -32,7 +35,6 @@ export const FormModal: React.FC<FormModalProps> = ({
   return (
     <div 
       className={clsx(styles.modalWrapper, isOpen && styles.open)} 
-      onClick={handleBackdropClick}
     >
       <div className={clsx(styles.modal, sharedStyles.card)}>
         <div className={styles.modalHeader}>
@@ -48,9 +50,10 @@ export const FormModal: React.FC<FormModalProps> = ({
         </div>
         <div className={styles.modalContent}>
           <Form
-            onSubmit={onSubmit}
+            onSubmit={handleSubmit}
             onCancel={onCancel}
-            {...additionalProps}
+            initialData={initialData}
+            {...rest}
           />
         </div>
       </div>

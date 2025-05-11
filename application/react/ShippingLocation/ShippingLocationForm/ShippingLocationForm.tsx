@@ -10,15 +10,19 @@ import * as formStyles from '@ui/styles/form.module.scss'
 import { Button } from '../../_global/Button/Button.tsx';
 
 interface Props {
-  onSubmit: (data: IShippingLocationForm) => void
+  onSubmit: (data: IShippingLocationForm) => void;
+  initialData?: IShippingLocationForm;
 }
 
 export const ShippingLocationForm = (props: Props) => {
   const {
     onSubmit,
+    initialData
   } = props;
 
-  const methods = useForm<IShippingLocationForm>();
+  const methods = useForm<IShippingLocationForm>({
+    defaultValues: initialData || {}
+  });
   const { handleSubmit } = methods;
 
   const [deliveryMethods, setDeliveryMethods] = useState<SelectOption[]>([]);
@@ -87,7 +91,7 @@ export const ShippingLocationForm = (props: Props) => {
               />
             </div>
             <Button color="blue" size="large">
-              Create
+              {initialData ? 'Update' : 'Create'}
             </Button>
           </div>
         </form>

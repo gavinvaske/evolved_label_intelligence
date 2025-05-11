@@ -1,31 +1,37 @@
 import { FormProvider, useForm } from 'react-hook-form';
-import { IContactForm, IAddressForm } from '@ui/types/forms';
+import { IContactForm } from '@ui/types/forms';
 import { Input } from '../../../_global/FormInputs/Input/Input';
-import { IShippingLocationForm } from '@ui/types/forms';
 import { CustomSelect, SelectOption } from '../../../_global/FormInputs/CustomSelect/CustomSelect';
 import { TextArea } from '../../../_global/FormInputs/TextArea/TextArea';
 import * as formStyles from '@ui/styles/form.module.scss'
 import { Button } from '../../../_global/Button/Button';
+import { BillingLocationForm, BusinessLocationForm, ShippingLocationForm } from '../../CustomerForm/CustomerForm';
 
 interface Props {
-  onSubmit: (contact: any) => void,
-  onCancel: () => void,
-  locations: (IAddressForm | IShippingLocationForm)[]
+  onSubmit: (contact: any) => void;
+  onCancel: () => void;
+  locations: (ShippingLocationForm | BusinessLocationForm | BillingLocationForm)[];
+  initialData?: IContactForm;
 }
+
+type SelectableLocation = ShippingLocationForm | BusinessLocationForm | BillingLocationForm;
 
 export const ContactForm = (props: Props) => {
   const {
     onSubmit,
-    locations
+    locations,
+    initialData
   } = props;
 
-  const methods = useForm<IContactForm>();
+  const methods = useForm<IContactForm>({
+    defaultValues: initialData || {}
+  });
   const { handleSubmit } = methods;
 
-  const selectableLocations: SelectOption[] = locations.map((address: IAddressForm | IShippingLocationForm, index: number) => {
+  const selectableLocations: SelectOption[] = locations.map((address: SelectableLocation) => {
     return {
       displayName: `${address.name}: ${address.street}, ${address.city}, ${address.state}, ${address.zipCode}`,
-      value: `${index}`
+      value: address._id
     }
   });
 
@@ -63,10 +69,9 @@ export const ContactForm = (props: Props) => {
                 isRequired={true}
               />
             </div>
-            <div className={formStyles.inputGroupWrapper}>
-              <TextArea
-                attribute='notes'
-                label="Notes"
+            <TextArea
+              attribute='notes'
+              label="Notes"
               isRequired={false}
               placeholder='Enter notes here...'
             />
@@ -81,8 +86,9 @@ export const ContactForm = (props: Props) => {
               options={selectableLocations}
               isRequired={false}
             />
-            </div>
-            <Button color='blue' size='large' type="submit">Add Contact</Button>
+            <Button color='blue' size='large' type="submit">
+              {initialData ? 'Update' : 'Create'}
+            </Button>
           </div>
         </form>
       </FormProvider>

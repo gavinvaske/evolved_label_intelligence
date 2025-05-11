@@ -9,7 +9,7 @@ export interface IContact extends SchemaTimestampsConfig, Document {
   contactStatus: string;
   notes?: string;
   position?: string;
-  location?: IAddress;
+  location?: Types.ObjectId;
 }
 
 export interface IShippingLocation extends IAddress {

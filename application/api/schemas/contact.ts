@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import { addressSchema } from './address.ts';
 import { IContact } from '@shared/types/schemas.ts';
 mongoose.Schema.Types.String.set('trim', true);
 const Schema = mongoose.Schema;
@@ -34,7 +33,7 @@ export const contactSchema = new Schema<IContact>({
     position: {
         type: String
     },
-    location: {
-        type: addressSchema
-    }
+    location: { // One of businessLocations, shippingLocations, or billingLocations
+        type: mongoose.Schema.Types.ObjectId
+    },
 }, { timestamps: true });
