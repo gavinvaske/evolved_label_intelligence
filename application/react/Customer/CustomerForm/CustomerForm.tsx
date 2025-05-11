@@ -78,6 +78,8 @@ export type ShippingLocationFormWithId = {_id: string} & IShippingLocationForm;
 export type BillingLocationFormWithId = {_id: string} & IAddressForm;
 type ContactFormWithId = {_id: string} & IContactForm;
 
+type LocationFormWithId = BusinessLocationFormWithId | ShippingLocationFormWithId | BillingLocationFormWithId;
+
 export const CustomerForm = () => {
   const { mongooseId } = useParams();
   const methods = useForm<ICustomerForm>();
@@ -113,10 +115,10 @@ export const CustomerForm = () => {
 
   console.log('locations:', locations)
 
-  const handleLocationDelete = (id: string, locations: (IAddressForm | IShippingLocationForm)[], setLocations: (locations: (IAddressForm | ShippingLocationFormWithId)[]) => void) => {
-    const location = locations.find(({id}) => id === id)
+  const handleLocationDelete = (_id: string, locations: LocationFormWithId[], setLocations: (locations: LocationFormWithId[]) => void) => {
+    const location = locations.find(({_id}) => _id === _id)
     const isLocationInUse = location && contacts.some(contact => {
-      return String(contact.location?.id) == String(location.id)
+      return String(contact.location) == String(location._id)
     });
 
     if (isLocationInUse) {
@@ -124,7 +126,7 @@ export const CustomerForm = () => {
       return;
     }
 
-    removeItemFromArrayById(id, locations, setLocations)
+    removeItemFromArrayById(_id, locations, setLocations)
   };
 
   const preloadFormData = async () => {
