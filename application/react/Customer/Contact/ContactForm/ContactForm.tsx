@@ -5,16 +5,16 @@ import { CustomSelect, SelectOption } from '../../../_global/FormInputs/CustomSe
 import { TextArea } from '../../../_global/FormInputs/TextArea/TextArea';
 import * as formStyles from '@ui/styles/form.module.scss'
 import { Button } from '../../../_global/Button/Button';
-import { BillingLocationFormWithId, BusinessLocationFormWithId, ShippingLocationFormWithId } from '../../CustomerForm/CustomerForm';
+import { BillingLocationForm, BusinessLocationForm, ShippingLocationForm } from '../../CustomerForm/CustomerForm';
 
 interface Props {
   onSubmit: (contact: any) => void;
   onCancel: () => void;
-  locations: (ShippingLocationFormWithId | BusinessLocationFormWithId | BillingLocationFormWithId)[];
+  locations: (ShippingLocationForm | BusinessLocationForm | BillingLocationForm)[];
   initialData?: IContactForm;
 }
 
-type SelectableLocation = ShippingLocationFormWithId | BusinessLocationFormWithId | BillingLocationFormWithId;
+type SelectableLocation = ShippingLocationForm | BusinessLocationForm | BillingLocationForm;
 
 export const ContactForm = (props: Props) => {
   const {
@@ -23,14 +23,8 @@ export const ContactForm = (props: Props) => {
     initialData
   } = props;
 
-  // Populates the form with the initial data
-  const formInitialData = initialData ? {
-    ...initialData,
-    location: typeof initialData.location === 'object' ? initialData.location.id : initialData.location
-  } : {};
-
   const methods = useForm<IContactForm>({
-    defaultValues: formInitialData
+    defaultValues: initialData || {}
   });
   const { handleSubmit } = methods;
 

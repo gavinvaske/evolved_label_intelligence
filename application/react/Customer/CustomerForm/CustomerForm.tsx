@@ -72,12 +72,12 @@ const contactColumns = [
   { displayName: 'Delete', accessor: 'delete' }
 ];
 
-export type BusinessLocationFormWithId = {_id: string} & IAddressForm;
-export type ShippingLocationFormWithId = {_id: string} & IShippingLocationForm;
-export type BillingLocationFormWithId = {_id: string} & IAddressForm;
+export type BusinessLocationForm = IAddressForm;
+export type ShippingLocationForm = IShippingLocationForm;
+export type BillingLocationForm = IAddressForm;
 type ContactFormWithId = {_id: string} & IContactForm;
 
-type LocationFormWithId = BusinessLocationFormWithId | ShippingLocationFormWithId | BillingLocationFormWithId;
+type LocationForm = BusinessLocationForm | ShippingLocationForm | BillingLocationForm;
 
 export const CustomerForm = () => {
   const { mongooseId } = useParams();
@@ -93,15 +93,15 @@ export const CustomerForm = () => {
   const [showContactForm, setShowContactForm] = useState(false);
   const [creditTerms, setCreditTerms] = useState<SelectOption[]>([])
 
-  const [editingBillingLocation, setEditingBillingLocation] = useState<BillingLocationFormWithId | null>(null);
-  const [editingShippingLocation, setEditingShippingLocation] = useState<ShippingLocationFormWithId | null>(null);
-  const [editingBusinessLocation, setEditingBusinessLocation] = useState<BusinessLocationFormWithId | null>(null);
+  const [editingBillingLocation, setEditingBillingLocation] = useState<BillingLocationForm | null>(null);
+  const [editingShippingLocation, setEditingShippingLocation] = useState<ShippingLocationForm | null>(null);
+  const [editingBusinessLocation, setEditingBusinessLocation] = useState<BusinessLocationForm | null>(null);
   const [editingContact, setEditingContact] = useState<ContactFormWithId | null>(null);
 
-  const [shippingLocations, setShippingLocations] = useState<ShippingLocationFormWithId[]>([])
-  const [billingLocations, setBillingLocations] = useState<BillingLocationFormWithId[]>([])
-  const [businessLocations, setBusinessLocations] = useState<BusinessLocationFormWithId[]>([])
-  const [locations, setLocations] = useState<(IAddressForm | ShippingLocationFormWithId)[]>([])
+  const [shippingLocations, setShippingLocations] = useState<ShippingLocationForm[]>([])
+  const [billingLocations, setBillingLocations] = useState<BillingLocationForm[]>([])
+  const [businessLocations, setBusinessLocations] = useState<BusinessLocationForm[]>([])
+  const [locations, setLocations] = useState<(IAddressForm | ShippingLocationForm)[]>([])
   const [contacts, setContacts] = useState<ContactFormWithId[]>([])
 
   useEffect(() => {
@@ -112,9 +112,7 @@ export const CustomerForm = () => {
     ])
   }, [billingLocations, shippingLocations, businessLocations]);
 
-  console.log('locations:', locations)
-
-  const handleLocationDelete = (_id: string, locations: LocationFormWithId[], setLocations: (locations: LocationFormWithId[]) => void) => {
+  const handleLocationDelete = (_id: string, locations: LocationForm[], setLocations: (locations: LocationForm[]) => void) => {
     const location = locations.find(({_id}) => _id === _id)
     const isLocationInUse = location && contacts.some(contact => {
       return String(contact.location) == String(location._id)
@@ -151,13 +149,11 @@ export const CustomerForm = () => {
       creditTerms: (customer.creditTerms as ICreditTerm[])?.map((creditTerm: ICreditTerm) => creditTerm._id) || []
     }
 
-    console.log('customer on form load:', customer)
-
     reset(formValues) // Populates the form with loaded values
 
-    setBusinessLocations(customer.businessLocations as BusinessLocationFormWithId[])
-    setBillingLocations(customer.billingLocations as BillingLocationFormWithId[])
-    setShippingLocations(customer.shippingLocations as ShippingLocationFormWithId[])
+    setBusinessLocations(customer.businessLocations as BusinessLocationForm[])
+    setBillingLocations(customer.billingLocations as BillingLocationForm[])
+    setShippingLocations(customer.shippingLocations as ShippingLocationForm[])
     setContacts(customer.contacts as unknown as ContactFormWithId[])
   }
 
@@ -174,8 +170,6 @@ export const CustomerForm = () => {
     customer.shippingLocations = shippingLocations;
     customer.contacts = contacts;
     customer.billingLocations = billingLocations;
-
-    console.log('customer on Form Submit:', customer)
 
     if (isUpdateRequest) {
       axios.patch(`/customers/${mongooseId}`, customer)
@@ -223,7 +217,7 @@ export const CustomerForm = () => {
       const updatedLocations = billingLocations.map(loc => 
         loc._id === editingBillingLocation._id ? { ...formData, _id: loc._id } : loc
       );
-      setBillingLocations(updatedLocations as BillingLocationFormWithId[]);
+      setBillingLocations(updatedLocations as BillingLocationForm[]);
       setEditingBillingLocation(null);
     } else {
       setBillingLocations([...billingLocations, { ...formData, _id: generateMongooseId() }]);
@@ -236,7 +230,7 @@ export const CustomerForm = () => {
       const updatedLocations = shippingLocations.map(loc => 
         loc._id === editingShippingLocation._id ? { ...formData, _id: loc._id } : loc
       );
-      setShippingLocations(updatedLocations as ShippingLocationFormWithId[]);
+      setShippingLocations(updatedLocations as ShippingLocationForm[]);
       setEditingShippingLocation(null);
     } else {
       setShippingLocations([...shippingLocations, { ...formData, _id: generateMongooseId() }]);
@@ -244,12 +238,12 @@ export const CustomerForm = () => {
     hideShippingLocationForm();
   };
 
-  const onBusinessLocationFormSubmit = (formData: BusinessLocationFormWithId) => {
+  const onBusinessLocationFormSubmit = (formData: BusinessLocationForm) => {
     if (editingBusinessLocation) {
       const updatedLocations = businessLocations.map(loc => 
         loc._id === editingBusinessLocation._id ? { ...formData, _id: loc._id } : loc
       );
-      setBusinessLocations(updatedLocations as BusinessLocationFormWithId[]);
+      setBusinessLocations(updatedLocations as BusinessLocationForm[]);
       setEditingBusinessLocation(null);
     } else {
       setBusinessLocations([...businessLocations, { ...formData, _id: generateMongooseId() }]);
@@ -270,17 +264,17 @@ export const CustomerForm = () => {
     hideContactForm();
   };
 
-  const handleEditBillingLocation = (location: BillingLocationFormWithId) => {
+  const handleEditBillingLocation = (location: BillingLocationForm) => {
     setEditingBillingLocation(location);
     setShowBillingLocationForm(true);
   };
 
-  const handleEditShippingLocation = (location: ShippingLocationFormWithId) => {
+  const handleEditShippingLocation = (location: ShippingLocationForm) => {
     setEditingShippingLocation(location);
     setShowShippingLocationForm(true);
   };
 
-  const handleEditBusinessLocation = (location: BusinessLocationFormWithId) => {
+  const handleEditBusinessLocation = (location: BusinessLocationForm) => {
     setEditingBusinessLocation(location);
     setShowBusinessLocationForm(true);
   };
@@ -315,7 +309,7 @@ export const CustomerForm = () => {
                     attribute='overun'
                     label="Overun"
                     isRequired={true}
-                    leftUnit='@storm'
+                    leftUnit='ft'
                   />
                 </div>
                 <div className={formStyles.inputGroupWrapper}>
@@ -343,7 +337,7 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={row}
                       columns={businessLocationColumns}
-                      onEdit={() => handleEditBusinessLocation(row as BusinessLocationFormWithId)}
+                      onEdit={() => handleEditBusinessLocation(row as BusinessLocationForm)}
                       onDelete={() => handleLocationDelete(row._id, businessLocations, setBusinessLocations)}
                     />
                   )}
@@ -358,7 +352,7 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={row}
                       columns={shippingLocationColumns}
-                      onEdit={() => handleEditShippingLocation(row as ShippingLocationFormWithId)}
+                      onEdit={() => handleEditShippingLocation(row as ShippingLocationForm)}
                       onDelete={() => handleLocationDelete(row._id, shippingLocations, setShippingLocations)}
                     />
                   )}
@@ -373,7 +367,7 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={row}
                       columns={billingLocationColumns}
-                      onEdit={() => handleEditBillingLocation(row as BillingLocationFormWithId)}
+                      onEdit={() => handleEditBillingLocation(row as BillingLocationForm)}
                       onDelete={() => handleLocationDelete(row._id, billingLocations, setBillingLocations)}
                     />
                   )}

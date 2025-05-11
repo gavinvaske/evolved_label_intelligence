@@ -1,5 +1,10 @@
 import { MongooseId } from "../shared/typeAliases";
 
+/* An _id can be passed in to override the default/generated mongoose id (hint: see generateMongooseId()) */
+type OptionalMongooseId = {
+  _id?: string;
+}
+
 export type IAddressForm = {
   name: string;
   street: string;
@@ -7,8 +12,7 @@ export type IAddressForm = {
   state: string;
   zipCode: string;
   unitOrSuite?: string;
-  id?: string;
-};
+} & OptionalMongooseId;
 
 export type IVendorForm = {
   name: string;
@@ -22,7 +26,7 @@ export type IVendorForm = {
   primaryContactPhoneNumber: string;
   primaryContactEmail: string;
   mfgSpecNumber?: string | undefined;
-};
+} & OptionalMongooseId;
 
 export type IDieForm = {
   dieNumber: string;
@@ -47,7 +51,7 @@ export type IDieForm = {
   status: string;
   quantity: number;
   isLamination: boolean | undefined;
-};
+} & OptionalMongooseId;
 
 export type ICustomerForm = {
   customerId: string;
@@ -59,12 +63,12 @@ export type ICustomerForm = {
   overun: string;
   notes?: string;
   creditTerms?: MongooseId[];
-};
+} & OptionalMongooseId;
 
 export type IShippingLocationForm = IAddressForm & {
   freightAccountNumber?: string;
   deliveryMethod?: MongooseId;
-};
+} & OptionalMongooseId;
 
 export type IContactForm = {
   fullName: string;
@@ -75,16 +79,15 @@ export type IContactForm = {
   notes?: string;
   position?: string;
   location?: IAddressForm;
-  id?: string;
-};
+} & OptionalMongooseId;
 
 export type IMaterialLengthAdjustmentForm = {
   material: MongooseId;
   length: number;
   notes?: string;
-};
+} & OptionalMongooseId;
 
-export interface IMaterialForm {
+export type IMaterialForm = {
   name: string;
   materialId: string;
   vendor: MongooseId;
@@ -113,7 +116,7 @@ export interface IMaterialForm {
   image: string;
   lowStockThreshold: number;
   lowStockBuffer: number;
-}
+} & OptionalMongooseId;
 
 export type IMaterialOrderForm = {
   author: MongooseId;
@@ -129,23 +132,23 @@ export type IMaterialOrderForm = {
   arrivalDate: string;
   freightCharge: number;
   fuelCharge: number;
-};
+} & OptionalMongooseId;
 
 export type ICreditTermForm = {
   description: string;
-};
+} & OptionalMongooseId;
 
 export type ILinerTypeForm = {
   name: string;
-};
+} & OptionalMongooseId;
 
 export type IAdhesiveCategoryForm = {
   name: string;
-};
+} & OptionalMongooseId;
 
 export type IMaterialCategoryForm = {
   name: string;
-};
+} & OptionalMongooseId;
 
 export type IProductForm = {
   productDescription: string;
@@ -165,11 +168,11 @@ export type IProductForm = {
   secondaryMaterial: MongooseId;
   finish: MongooseId;
   customer: MongooseId;
-};
+} & OptionalMongooseId;
 
 export type IDeliveryMethodForm = {
   name: string;
-};
+} & OptionalMongooseId;
 
 export type IUserForm = {
   email: string;
@@ -178,5 +181,5 @@ export type IUserForm = {
   jobRole?: string;
   birthDate: string;
   phoneNumber?: string;
-}
+} & OptionalMongooseId;
 
