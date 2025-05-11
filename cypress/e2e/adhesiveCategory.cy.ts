@@ -33,7 +33,9 @@ describe('Adhesive Category Management', () => {
 
   it('should allow searching for an adhesive category', () => {
     // Search for the category
-    cy.get('[data-test=searchbar]').type(adhesiveCategory.name);
+    cy.get('[data-test=searchbar]')
+      .type(adhesiveCategory.name)
+      .type('{enter}');
     
     // Verify search results
     cy.get('[data-test=adhesive-category-table]')

@@ -35,7 +35,9 @@ describe('Credit Term Management', () => {
 
   it('should allow searching for a credit term', () => {
     // Search for the credit term
-    cy.get('[data-test=searchbar]').type(creditTerm.description);
+    cy.get('[data-test=searchbar]')
+      .type(creditTerm.description)
+      .type('{enter}');
     
     // Wait for the table to be ready and verify search results
     cy.get('[data-test=credit-term-table]').should('exist');

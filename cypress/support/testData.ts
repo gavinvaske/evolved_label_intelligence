@@ -38,3 +38,19 @@ export const MATERIALS = [
   testDataGenerator.Material(),
   testDataGenerator.Material(),
 ]
+
+export const CREDIT_TERMS = [
+  testDataGenerator.CreditTerm(),
+  testDataGenerator.CreditTerm(),
+  testDataGenerator.CreditTerm(),
+]
+
+export const DELIVERY_METHODS = [
+  testDataGenerator.DeliveryMethod(),
+  testDataGenerator.DeliveryMethod(),
+  testDataGenerator.DeliveryMethod(),
+]
+
+
+
+

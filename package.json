@@ -24,7 +24,8 @@
     "parcel:remove-cache": "rm -rf .parcel-cache",
     "start:test": "cross-env NODE_ENV=test npx tsx application/api/index.ts",
     "cypress:open": "cross-env NODE_ENV=test cypress open",
-    "acceptance:no-build": "start-server-and-test start:test http://localhost:8069 cypress:run"
+    "acceptance:no-build": "start-server-and-test start:test http://localhost:8069 cypress:run",
+    "cypress:dev": "start-server-and-test start:test http://localhost:8069 \"cross-env NODE_ENV=test tsx cypress/support/seedTestDatabase.ts && npm run cypress:open\""
   },
   "config": {
     "mongodbMemoryServer": {}

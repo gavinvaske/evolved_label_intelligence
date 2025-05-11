@@ -68,7 +68,9 @@ describe('Vendor Management', () => {
 
   it('should allow searching for a vendor', () => {
     // Search for the vendor
-    cy.get('[data-test=searchbar]').type(vendor.name);
+    cy.get('[data-test=searchbar]')
+      .type(vendor.name)
+      .type('{enter}');
     
     // Wait for the table to be ready and verify search results
     cy.get('[data-test=vendor-table]').should('exist');

@@ -29,7 +29,8 @@ export const mockData = {
     Vendor: getVendor,
     MaterialCategory: getMaterialCategory,
     MaterialLengthAdjustment: getMaterialLengthAdjustment,
-    MaterialOrder: getMaterialOrder
+    MaterialOrder: getMaterialOrder,
+    ShippingLocation: getShippingLocation
 };
 
 function getDie() {
@@ -42,7 +43,7 @@ function getDie() {
         numberAround: chance.d10(),
         gear: chance.d100(),
         toolType: chance.pickone(toolTypes),
-        notes: chance.string(),
+        notes: chance.sentence(),
         cost: chance.floating({ min: 0, fixed: 2 }),
         vendor: chance.pickone(dieVendors),
         magCylinder: chance.pickone(dieMagCylinders),
@@ -72,7 +73,7 @@ function getMaterialOrder() {
     totalCost: chance.floating({min: 1, max: 500000}),
     vendor: new mongoose.Types.ObjectId(),
     hasArrived: chance.bool(),
-    notes: chance.string(),
+    notes: chance.sentence(),
     author: new mongoose.Types.ObjectId(),
     freightCharge: chance.floating({ min: 0, fixed: 2 }),
     fuelCharge: chance.floating({ min: 0, fixed: 2 })
@@ -81,12 +82,12 @@ function getMaterialOrder() {
 
 function getVendor() {
     return {
-      name: chance.string(),
+      name: chance.word(),
       phoneNumber: chance.phone(),
       email: chance.email(),
-      notes: chance.paragraph(),
+      notes: chance.sentence(),
       website: chance.url(),
-      primaryContactName: chance.string(),
+      primaryContactName: `${chance.word()} ${chance.word()}`,
       primaryContactPhoneNumber: chance.phone(),
       primaryContactEmail: chance.email(),
       primaryAddress: getAddress(),
@@ -99,38 +100,38 @@ function getMaterialLengthAdjustment() {
   return {
     material: new mongoose.Types.ObjectId(),
     length: chance.integer({ min: -100000, max: 100000 }),
-    notes: chance.string()
+    notes: chance.sentence()
   }
 }
 
 function getLinerType() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }
 
 function getCreditTerm() {
     return {
-        description: chance.string()
+        description: chance.string({ symbols: false, alpha: true, numeric: true })
     };
 }
 
 function getAdhesiveCategory() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }
 
 function getMaterialCategory() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }
 
 function getMaterial() {
     return {
-        name: chance.string(),
-        materialId: chance.string(),
+        name: chance.word(),
+        materialId: chance.string({ symbols: false, alpha: true, numeric: true }),
         vendor: new mongoose.Types.ObjectId(),
         materialCategory: new mongoose.Types.ObjectId(),
         thickness: chance.integer({ min: 1, max: 3 }),
@@ -161,8 +162,8 @@ function getMaterial() {
 
 function getFinish() {
     return {
-        name: chance.string(),
-        finishId: chance.string(),
+        name: chance.word(),
+        finishId: chance.string({ symbols: false, alpha: true, numeric: true }),
         vendor: new mongoose.Types.ObjectId(),
         category: new mongoose.Types.ObjectId(),
         thickness: chance.integer({ min: 1, max: 3 }),
@@ -179,17 +180,23 @@ function getFinish() {
 
 function getContact() {
     return {
-        fullName: chance.string(),
-        contactStatus: chance.string()
+        fullName: `${chance.word()} ${chance.word()}`,
+        phoneNumber: chance.phone(),
+        phoneExtension: chance.integer({ min: 0, max: 999 }),
+        email: chance.email(),
+        contactStatus: chance.string(),
+        notes: chance.sentence(),
+        position: chance.string(),
+        location: null
     };
 }
 
 function getCustomer() {
     return {
-        name: chance.string(),
-        notes: chance.string(),
+        name: `${chance.word()} ${chance.word()}`,
+        notes: chance.sentence(),
         overun: chance.d100(),
-        customerId: chance.string(),
+        customerId: chance.string({ symbols: false, alpha: true, numeric: true }),
         contacts: chance.n(getContact, chance.d10()),
     };
 }
@@ -227,7 +234,7 @@ function getBaseProduct() {
 
 function getAddress() {
     return {
-        name: chance.string(),
+        name: chance.word(),
         street: chance.street(),
         unitOrSuite: chance.word(),
         city: chance.city(),
@@ -236,8 +243,16 @@ function getAddress() {
     };
 }
 
+function getShippingLocation() {
+  return {
+    ...getAddress(),
+    freightAccountNumber: chance.string(),
+    deliveryMethod: new mongoose.Types.ObjectId()
+  }
+}
+
 function getDeliveryMethod() {
     return {
-        name: chance.string()
+        name: chance.word()
     };
 }

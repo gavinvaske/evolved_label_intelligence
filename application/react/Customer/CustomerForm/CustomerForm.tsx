@@ -341,6 +341,7 @@ export const CustomerForm = () => {
                       onDelete={() => handleLocationDelete(row._id, businessLocations, setBusinessLocations)}
                     />
                   )}
+                  data-test='business-locations-table'
                 />
 
                 <DataTable
@@ -356,6 +357,7 @@ export const CustomerForm = () => {
                       onDelete={() => handleLocationDelete(row._id, shippingLocations, setShippingLocations)}
                     />
                   )}
+                  data-test='shipping-locations-table'
                 />
 
                 <DataTable
@@ -371,6 +373,7 @@ export const CustomerForm = () => {
                       onDelete={() => handleLocationDelete(row._id, billingLocations, setBillingLocations)}
                     />
                   )}
+                  data-test='billing-locations-table'
                 />
 
                 <DataTable
@@ -386,6 +389,7 @@ export const CustomerForm = () => {
                       onDelete={() => removeItemFromArrayById(row._id, contacts, setContacts)}
                     />
                   )}
+                  data-test='contacts-table'
                 />
 
                 <div className={formStyles.spacer}></div>
