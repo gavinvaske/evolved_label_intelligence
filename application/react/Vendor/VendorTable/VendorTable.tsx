@@ -125,7 +125,7 @@ export const VendorTable = () => {
           }}
         />
 
-        <Table id='vendor-table'>
+        <Table id='vendor-table' data-test='vendor-table'>
           <TableHead table={table} />
 
           <TableBody>

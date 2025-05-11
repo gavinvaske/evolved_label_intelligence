@@ -32,3 +32,9 @@ export const MATERIAL_CATEGORIES = [
   testDataGenerator.MaterialCategory(),
   testDataGenerator.MaterialCategory(),
 ]
+
+export const MATERIALS = [
+  testDataGenerator.Material(),
+  testDataGenerator.Material(),
+  testDataGenerator.Material(),
+]
