@@ -22,6 +22,7 @@ import * as formStyles from '@ui/styles/form.module.scss';
 import { Button } from '../../_global/Button/Button';
 import { DataTable } from '../../_global/DataTable/DataTable';
 import DataTableRow from '../../_global/DataTable/DataTableRow/DataTableRow';
+import { generateMongooseId } from '@ui/utils/mongoose.ts';
 
 const customerTableUrl = '/react-ui/tables/customer'
 
@@ -72,6 +73,11 @@ const contactColumns = [
   { displayName: 'Delete', accessor: 'delete' }
 ];
 
+export type BusinessLocationFormWithId = {_id: string} & IAddressForm;
+export type ShippingLocationFormWithId = {_id: string} & IShippingLocationForm;
+export type BillingLocationFormWithId = {_id: string} & IAddressForm;
+type ContactFormWithId = {_id: string} & IContactForm;
+
 export const CustomerForm = () => {
   const { mongooseId } = useParams();
   const methods = useForm<ICustomerForm>();
@@ -86,16 +92,16 @@ export const CustomerForm = () => {
   const [showContactForm, setShowContactForm] = useState(false);
   const [creditTerms, setCreditTerms] = useState<SelectOption[]>([])
 
-  const [editingBillingLocation, setEditingBillingLocation] = useState<IAddressForm | null>(null);
-  const [editingShippingLocation, setEditingShippingLocation] = useState<IShippingLocationForm | null>(null);
-  const [editingBusinessLocation, setEditingBusinessLocation] = useState<IAddressForm | null>(null);
-  const [editingContact, setEditingContact] = useState<IContactForm | null>(null);
+  const [editingBillingLocation, setEditingBillingLocation] = useState<BillingLocationFormWithId | null>(null);
+  const [editingShippingLocation, setEditingShippingLocation] = useState<ShippingLocationFormWithId | null>(null);
+  const [editingBusinessLocation, setEditingBusinessLocation] = useState<BusinessLocationFormWithId | null>(null);
+  const [editingContact, setEditingContact] = useState<ContactFormWithId | null>(null);
 
-  const [shippingLocations, setShippingLocations] = useState<IShippingLocationForm[]>([])
-  const [billingLocations, setBillingLocations] = useState<IAddressForm[]>([])
-  const [businessLocations, setBusinessLocations] = useState<IAddressForm[]>([])
-  const [locations, setLocations] = useState<(IAddressForm | IShippingLocationForm)[]>([])
-  const [contacts, setContacts] = useState<IContactForm[]>([])
+  const [shippingLocations, setShippingLocations] = useState<ShippingLocationFormWithId[]>([])
+  const [billingLocations, setBillingLocations] = useState<BillingLocationFormWithId[]>([])
+  const [businessLocations, setBusinessLocations] = useState<BusinessLocationFormWithId[]>([])
+  const [locations, setLocations] = useState<(IAddressForm | ShippingLocationFormWithId)[]>([])
+  const [contacts, setContacts] = useState<ContactFormWithId[]>([])
 
   useEffect(() => {
     setLocations([
@@ -105,11 +111,13 @@ export const CustomerForm = () => {
     ])
   }, [billingLocations, shippingLocations, businessLocations]);
 
-  const handleLocationDelete = (id: string, locations: (IAddressForm | IShippingLocationForm)[], setLocations: (locations: (IAddressForm | IShippingLocationForm)[]) => void) => {
+  console.log('locations:', locations)
+
+  const handleLocationDelete = (id: string, locations: (IAddressForm | IShippingLocationForm)[], setLocations: (locations: (IAddressForm | ShippingLocationFormWithId)[]) => void) => {
     const location = locations.find(({id}) => id === id)
-    const isLocationInUse = location && contacts.some(contact => 
-      contact.location?.id === location.id
-    );
+    const isLocationInUse = location && contacts.some(contact => {
+      return String(contact.location?.id) == String(location.id)
+    });
 
     if (isLocationInUse) {
       useErrorMessage(new Error('Cannot delete a location that is being used by a contact. You must remove the location from the contact(s) first.'));
@@ -142,14 +150,14 @@ export const CustomerForm = () => {
       creditTerms: (customer.creditTerms as ICreditTerm[])?.map((creditTerm: ICreditTerm) => creditTerm._id) || []
     }
 
-    console.log('customer ', customer)
+    console.log('customer on form load:', customer)
 
     reset(formValues) // Populates the form with loaded values
 
-    setBusinessLocations(customer.businessLocations as IAddressForm[])
-    setBillingLocations(customer.billingLocations as IAddressForm[])
-    setShippingLocations(customer.shippingLocations as IShippingLocationForm[])
-    setContacts(customer.contacts as unknown as IContactForm[])
+    setBusinessLocations(customer.businessLocations as BusinessLocationFormWithId[])
+    setBillingLocations(customer.billingLocations as BillingLocationFormWithId[])
+    setShippingLocations(customer.shippingLocations as ShippingLocationFormWithId[])
+    setContacts(customer.contacts as unknown as ContactFormWithId[])
   }
 
   useEffect(() => {
@@ -166,12 +174,7 @@ export const CustomerForm = () => {
     customer.contacts = contacts;
     customer.billingLocations = billingLocations;
 
-    customer.contacts = customer.contacts.map((contact) => {
-      return {
-        ...contact,
-        location: contact.location ? locations.find(loc => loc.id === contact.location) : undefined
-      }
-    }) as IContactForm[]
+    console.log('customer on Form Submit:', customer)
 
     if (isUpdateRequest) {
       axios.patch(`/customers/${mongooseId}`, customer)
@@ -217,12 +220,12 @@ export const CustomerForm = () => {
   const onBillingLocationFormSubmit = (formData: IAddressForm) => {
     if (editingBillingLocation) {
       const updatedLocations = billingLocations.map(loc => 
-        loc.id === editingBillingLocation.id ? { ...formData, id: loc.id } : loc
+        loc._id === editingBillingLocation._id ? { ...formData, _id: loc._id } : loc
       );
-      setBillingLocations(updatedLocations as IAddressForm[]);
+      setBillingLocations(updatedLocations as BillingLocationFormWithId[]);
       setEditingBillingLocation(null);
     } else {
-      setBillingLocations([...billingLocations, { ...formData, id: Date.now().toString() }]);
+      setBillingLocations([...billingLocations, { ...formData, _id: generateMongooseId() }]);
     }
     hideBillingLocationForm();
   };
@@ -230,58 +233,58 @@ export const CustomerForm = () => {
   const onShippingLocationFormSubmit = (formData: IShippingLocationForm) => {
     if (editingShippingLocation) {
       const updatedLocations = shippingLocations.map(loc => 
-        loc.id === editingShippingLocation.id ? { ...formData, id: loc.id } : loc
+        loc._id === editingShippingLocation._id ? { ...formData, _id: loc._id } : loc
       );
-      setShippingLocations(updatedLocations as IShippingLocationForm[]);
+      setShippingLocations(updatedLocations as ShippingLocationFormWithId[]);
       setEditingShippingLocation(null);
     } else {
-      setShippingLocations([...shippingLocations, { ...formData, id: Date.now().toString() }]);
+      setShippingLocations([...shippingLocations, { ...formData, _id: generateMongooseId() }]);
     }
     hideShippingLocationForm();
   };
 
-  const onBusinessLocationFormSubmit = (formData: IAddressForm) => {
+  const onBusinessLocationFormSubmit = (formData: BusinessLocationFormWithId) => {
     if (editingBusinessLocation) {
       const updatedLocations = businessLocations.map(loc => 
-        loc.id === editingBusinessLocation.id ? { ...formData, id: loc.id } : loc
+        loc._id === editingBusinessLocation._id ? { ...formData, _id: loc._id } : loc
       );
-      setBusinessLocations(updatedLocations as IAddressForm[]);
+      setBusinessLocations(updatedLocations as BusinessLocationFormWithId[]);
       setEditingBusinessLocation(null);
     } else {
-      setBusinessLocations([...businessLocations, { ...formData, id: Date.now().toString() }]);
+      setBusinessLocations([...businessLocations, { ...formData, _id: generateMongooseId() }]);
     }
     hideBusinessLocationForm();
   };
 
-  const onContactFormSubmit = (formData: IContactForm) => {
+  const onContactFormSubmit = (formData: ContactFormWithId) => {
     if (editingContact) {
       const updatedContacts = contacts.map(contact => 
-        contact.id === editingContact.id ? { ...formData, id: contact.id } : contact
+        contact._id === editingContact._id ? { ...formData, _id: contact._id } : contact
       );
-      setContacts(updatedContacts as IContactForm[]);
+      setContacts(updatedContacts as ContactFormWithId[]);
       setEditingContact(null);
     } else {
-      setContacts([...contacts, { ...formData, id: Date.now().toString() }]);
+      setContacts([...contacts, { ...formData, _id: generateMongooseId() } as ContactFormWithId]);
     }
     hideContactForm();
   };
 
-  const handleEditBillingLocation = (location: IAddressForm) => {
+  const handleEditBillingLocation = (location: BillingLocationFormWithId) => {
     setEditingBillingLocation(location);
     setShowBillingLocationForm(true);
   };
 
-  const handleEditShippingLocation = (location: IShippingLocationForm) => {
+  const handleEditShippingLocation = (location: ShippingLocationFormWithId) => {
     setEditingShippingLocation(location);
     setShowShippingLocationForm(true);
   };
 
-  const handleEditBusinessLocation = (location: IAddressForm) => {
+  const handleEditBusinessLocation = (location: BusinessLocationFormWithId) => {
     setEditingBusinessLocation(location);
     setShowBusinessLocationForm(true);
   };
 
-  const handleEditContact = (contact: IContactForm) => {
+  const handleEditContact = (contact: ContactFormWithId) => {
     setEditingContact(contact);
     setShowContactForm(true);
   };
@@ -339,8 +342,8 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={row}
                       columns={businessLocationColumns}
-                      onEdit={() => handleEditBusinessLocation(row)}
-                      onDelete={() => handleLocationDelete(row.id, businessLocations, setBusinessLocations)}
+                      onEdit={() => handleEditBusinessLocation(row as BusinessLocationFormWithId)}
+                      onDelete={() => handleLocationDelete(row._id, businessLocations, setBusinessLocations)}
                     />
                   )}
                 />
@@ -354,8 +357,8 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={row}
                       columns={shippingLocationColumns}
-                      onEdit={() => handleEditShippingLocation(row)}
-                      onDelete={() => handleLocationDelete(row.id, shippingLocations, setShippingLocations)}
+                      onEdit={() => handleEditShippingLocation(row as ShippingLocationFormWithId)}
+                      onDelete={() => handleLocationDelete(row._id, shippingLocations, setShippingLocations)}
                     />
                   )}
                 />
@@ -369,8 +372,8 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={row}
                       columns={billingLocationColumns}
-                      onEdit={() => handleEditBillingLocation(row)}
-                      onDelete={() => handleLocationDelete(row.id, billingLocations, setBillingLocations)}
+                      onEdit={() => handleEditBillingLocation(row as BillingLocationFormWithId)}
+                      onDelete={() => handleLocationDelete(row._id, billingLocations, setBillingLocations)}
                     />
                   )}
                 />
@@ -384,8 +387,8 @@ export const CustomerForm = () => {
                     <DataTableRow
                       data={row}
                       columns={contactColumns}
-                      onEdit={() => handleEditContact(row)}
-                      onDelete={() => removeItemFromArrayById(row.id, contacts, setContacts)}
+                      onEdit={() => handleEditContact(row as ContactFormWithId)}
+                      onDelete={() => removeItemFromArrayById(row._id, contacts, setContacts)}
                     />
                   )}
                 />
@@ -437,10 +440,9 @@ export const CustomerForm = () => {
   );
 }
 
-const removeItemFromArrayById = (id: string, array: any[], setArray: (array: any[]) => void) => {
-  const updatedArray = array.filter(item => item.id !== id);
+const removeItemFromArrayById = (_id: string, array: any[], setArray: (array: any[]) => void) => {
+  const updatedArray = array.filter(item => item._id !== _id);
   setArray(updatedArray);
 }
 
 export default CustomerForm;
-
