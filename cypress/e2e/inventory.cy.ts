@@ -178,6 +178,11 @@ describe('Inventory Management', () => {
       .and('be.visible')
       .should('contain', uppercasedMaterialId);
 
+    /* Lengths should default to 0 for a new material */
+    verifyMaterialLength('length-arrived', 0);
+    verifyMaterialLength('length-not-arrived', 0);
+    verifyMaterialLength('net-length-available', 0);
+
     // verify the material can be searched for
     cy.get('[data-test=searchbar]').type(uppercasedMaterialId).type('{enter}');
 
@@ -212,39 +217,43 @@ describe('Inventory Management', () => {
 
   /* If this test breaks, it means your inventory length calculations are wrong. Tread carefully. (I hope future me isnt reading this...) */
   it('should calculated the correct inventory lengths for a material with multiple orders and length adjustments, allowing for editing of orders and length adjustments', () => {
-    // Create an arrived order
+    // Create two arrived orders
     const { length: lengthArrived1, materialOrder: order1 } = createMaterialOrder(true);
     const { length: lengthArrived2 } = createMaterialOrder(true);
-    verifyMaterialLength('length-arrived', lengthArrived1 + lengthArrived2);
+    const totalArrivedLength = lengthArrived1 + lengthArrived2;
+    verifyMaterialLength('length-arrived', totalArrivedLength);
 
-    // Create a not arrived order
+    // Create two not arrived orders
     const { length: lengthNotArrived1 } = createMaterialOrder(false);
     const { length: lengthNotArrived2 } = createMaterialOrder(false);
-    verifyMaterialLength('length-not-arrived', lengthNotArrived1 + lengthNotArrived2);
-    verifyMaterialLength('net-length-available', lengthArrived1 + lengthArrived2);
+    const totalNotArrivedLength = lengthNotArrived1 + lengthNotArrived2;
+    verifyMaterialLength('length-not-arrived', totalNotArrivedLength);
+    verifyMaterialLength('net-length-available', totalArrivedLength);
 
-    // Create a length adjustment
+    // Create two length adjustments
     const materialLengthAdjustment1 = createMaterialLengthAdjustment();
     const materialLengthAdjustment2 = createMaterialLengthAdjustment();
-    verifyMaterialLength('net-length-available', (lengthArrived1 + lengthArrived2) + (materialLengthAdjustment1.length + materialLengthAdjustment2.length));
+    const totalAdjustmentLength = materialLengthAdjustment1.length + materialLengthAdjustment2.length;
+    verifyMaterialLength('net-length-available', totalArrivedLength + totalAdjustmentLength);
 
     // Update one of the arrived orders
     const newFeetPerRoll = 500;
     const newTotalRolls = 100;
-    const newTotalLength = newFeetPerRoll * newTotalRolls;
+    const newOrderLength = newFeetPerRoll * newTotalRolls;
     editMaterialOrder(order1.purchaseOrderNumber, newFeetPerRoll, newTotalRolls);
     
     // Verify the updated length in inventory
-    verifyMaterialLength('length-arrived', newTotalLength + lengthArrived2);
-    verifyMaterialLength('net-length-available', (newTotalLength + lengthArrived2) + (materialLengthAdjustment1.length + materialLengthAdjustment2.length));
+    const updatedArrivedLength = newOrderLength + lengthArrived2;
+    verifyMaterialLength('length-arrived', updatedArrivedLength);
+    verifyMaterialLength('net-length-available', updatedArrivedLength + totalAdjustmentLength);
 
     // Update one of the length adjustments
     const newAdjustmentLength = Math.random() < 0.5 ? 2312 : -4232;
     editMaterialLengthAdjustment(materialLengthAdjustment1.length, newAdjustmentLength);
 
     // Verify the final lengths in inventory
-    verifyMaterialLength('length-arrived', newTotalLength + lengthArrived2);
-    verifyMaterialLength('length-not-arrived', lengthNotArrived1 + lengthNotArrived2);
-    verifyMaterialLength('net-length-available', (newTotalLength + lengthArrived2) + (newAdjustmentLength + materialLengthAdjustment2.length));
+    verifyMaterialLength('length-arrived', updatedArrivedLength);
+    verifyMaterialLength('length-not-arrived', totalNotArrivedLength);
+    verifyMaterialLength('net-length-available', updatedArrivedLength + newAdjustmentLength + materialLengthAdjustment2.length);
   });
 });
