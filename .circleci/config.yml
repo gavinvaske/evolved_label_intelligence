@@ -66,10 +66,8 @@ workflows:
           filters:
             branches:
               only: /.*/
-            # Don't run on main branch
-            ignore:
-              branches:
-                only: main
+            tags:
+              ignore: /.*/
 
       # Run acceptance tests only after merging to main
       - run_acceptance_tests:
