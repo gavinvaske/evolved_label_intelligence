@@ -71,6 +71,68 @@ describe('Inventory Management', () => {
     return materialLengthAdjustment;
   };
 
+  // Helper function to format length for display
+  const getExpectedLengthFormat = (length: number) => {
+    return length < 0 ? `(${Math.abs(length)})` : `${length}`;
+  };
+
+  // Helper function to edit a material order
+  const editMaterialOrder = (poNumber: string, newFeetPerRoll: number, newTotalRolls: number) => {
+    // Navigate to material orders table
+    cy.visit('/react-ui/tables/material-order');
+
+    // Find and edit the order
+    cy.get('[data-test=material-order-table]')
+      .contains(poNumber)
+      .closest('[data-test=table-row]')
+      .find('[data-test=row-actions]')
+      .find('[data-test=row-actions-button]')
+      .click();
+
+    cy.get('[data-test=row-actions-menu]')
+      .find('[data-test=row-action-item]')
+      .contains('Edit')
+      .click();
+
+    // Update the form with new values
+    cy.get('[data-test=material-order-form]').within(() => {
+      cy.get('[data-test=input-feetPerRoll]').clear().type(newFeetPerRoll.toString());
+      cy.get('[data-test=input-totalRolls]').clear().type(newTotalRolls.toString());
+      cy.get('[data-test=submit-button]').click();
+    });
+
+    // Navigate back to inventory
+    cy.visit('/react-ui/inventory');
+  };
+
+  // Helper function to edit a material length adjustment
+  const editMaterialLengthAdjustment = (originalLength: number, newLength: number) => {
+    // Navigate to length adjustments table
+    cy.visit('/react-ui/tables/material-length-adjustment');
+
+    // Find and edit the adjustment
+    cy.get('[data-test=material-length-adjustment-table]')
+      .contains(getExpectedLengthFormat(originalLength))
+      .closest('[data-test=table-row]')
+      .find('[data-test=row-actions]')
+      .find('[data-test=row-actions-button]')
+      .click();
+
+    cy.get('[data-test=row-actions-menu]')
+      .find('[data-test=row-action-item]')
+      .contains('Edit')
+      .click();
+
+    // Update the form with new length
+    cy.get('[data-test=material-length-adjustment-form]').within(() => {
+      cy.get('[data-test=input-length]').clear().type(newLength.toString());
+      cy.get('[data-test=submit-button]').click();
+    });
+
+    // Navigate back to inventory
+    cy.visit('/react-ui/inventory');
+  };
+
   beforeEach(() => {
     cy.login();
     cy.visit('/react-ui/inventory');
@@ -150,7 +212,7 @@ describe('Inventory Management', () => {
 
   it('should allow creating orders and length adjustments for a material', () => {
     // Create an arrived order
-    const { length: lengthArrived1 } = createMaterialOrder(true);
+    const { length: lengthArrived1, materialOrder: order1 } = createMaterialOrder(true);
     const { length: lengthArrived2 } = createMaterialOrder(true);
     verifyMaterialLength('length-arrived', lengthArrived1 + lengthArrived2);
 
@@ -164,5 +226,24 @@ describe('Inventory Management', () => {
     const materialLengthAdjustment1 = createMaterialLengthAdjustment();
     const materialLengthAdjustment2 = createMaterialLengthAdjustment();
     verifyMaterialLength('net-length-available', (lengthArrived1 + lengthArrived2) + (materialLengthAdjustment1.length + materialLengthAdjustment2.length));
+
+    // Update one of the arrived orders
+    const newFeetPerRoll = 500;
+    const newTotalRolls = 100;
+    const newTotalLength = newFeetPerRoll * newTotalRolls;
+    editMaterialOrder(order1.purchaseOrderNumber, newFeetPerRoll, newTotalRolls);
+    
+    // Verify the updated length in inventory
+    verifyMaterialLength('length-arrived', newTotalLength + lengthArrived2);
+    verifyMaterialLength('net-length-available', (newTotalLength + lengthArrived2) + (materialLengthAdjustment1.length + materialLengthAdjustment2.length));
+
+    // Update one of the length adjustments
+    const newAdjustmentLength = Math.random() < 0.5 ? 2312 : -4232;
+    editMaterialLengthAdjustment(materialLengthAdjustment1.length, newAdjustmentLength);
+
+    // Verify the final lengths in inventory
+    verifyMaterialLength('length-arrived', newTotalLength + lengthArrived2);
+    verifyMaterialLength('length-not-arrived', lengthNotArrived1 + lengthNotArrived2);
+    verifyMaterialLength('net-length-available', (newTotalLength + lengthArrived2) + (newAdjustmentLength + materialLengthAdjustment2.length));
   });
 });
