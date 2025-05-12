@@ -28,7 +28,7 @@ jobs:
             - ~/.npm
       - run:
           command: npm run verify
-          name: Run unit tests
+          name: Run lint and unit tests
 
   run_acceptance_tests:
     executor: node/default
