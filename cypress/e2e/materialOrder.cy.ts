@@ -18,32 +18,7 @@ describe('Material Order Management', () => {
     cy.url().should('include', '/react-ui/forms/material-order');
     
     // Fill out the form
-    cy.get('[data-test=material-order-form]').within(() => {
-      // Basic Information
-      cy.selectRandomOptionFromDropdown('[data-test=input-author]');
-      cy.selectRandomOptionFromDropdown('[data-test=input-material]');
-      cy.selectRandomOptionFromDropdown('[data-test=input-vendor]');
-      
-      // Order Details
-      cy.get('[data-test=input-purchaseOrderNumber]').type(materialOrder.purchaseOrderNumber);
-      cy.typeDate('[data-test=input-orderDate]', materialOrder.orderDate);
-      cy.get('[data-test=input-feetPerRoll]').type(materialOrder.feetPerRoll.toString());
-      cy.get('[data-test=input-totalRolls]').type(materialOrder.totalRolls.toString());
-      cy.get('[data-test=input-totalCost]').type(materialOrder.totalCost.toString());
-      
-      // Arrival Information
-      if (materialOrder.hasArrived) {
-        cy.get('[data-test=input-hasArrived]').check();
-      }
-      cy.typeDate('[data-test=input-arrivalDate]', materialOrder.arrivalDate);
-      cy.get('[data-test=input-freightCharge]').type(materialOrder.freightCharge.toString());
-      cy.get('[data-test=input-fuelCharge]').type(materialOrder.fuelCharge.toString());
-      
-      // Notes
-      cy.get('[data-test=input-notes]').type(materialOrder.notes || '');
-      
-      cy.get('[data-test=submit-button]').click();
-    });
+    cy.fillMaterialOrderForm(materialOrder);
 
     // Verify we're redirected back to the table
     cy.url().should('include', '/react-ui/tables/material-order');
