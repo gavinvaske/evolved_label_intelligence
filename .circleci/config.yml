@@ -3,7 +3,7 @@ orbs:
   node: circleci/node@5.0.2
 
 jobs:
-  run_unit_and_ui_tests:
+  run_unit_tests:
     executor: node/default
     steps:
       - checkout
@@ -27,13 +27,51 @@ jobs:
           paths: 
             - ~/.npm
       - run:
-          command: |
-            npm run verify
-            npm run acceptance
-          name: Run tests
+          command: npm run verify
+          name: Run lint and unit tests
+
+  run_acceptance_tests:
+    executor: node/default
+    steps:
+      - checkout
+      - run:
+          command: |  # https://stackoverflow.com/a/72633324/9273261
+            wget http://nz2.archive.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+            sudo apt-get update -y
+            sudo apt-get install -y libgtk2.0-0 libgtk-3-0 libgbm-dev libnotify-dev libgconf-2-4 libnss3 libxss1 libasound2 libxtst6 xauth xvfb
+            sudo dpkg -i libssl1.1_1.1.1f-1ubuntu2_amd64.deb
+          name: setup linux environment
+      # look for existing cache and restore if found
+      - restore_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+      # install dependencies    
+      - run:
+          name: install dependencies
+          command: npm ci
+      # save any changes to a cache
+      - save_cache:
+          key: v1-deps-{{ checksum "package-lock.json" }}
+          paths: 
+            - ~/.npm
+      - run:
+          command: npm run acceptance
+          name: Run acceptance tests
 
 workflows:
-  run_tests:
+  version: 2
+  test_and_deploy:
     jobs:
-      - run_unit_and_ui_tests
+      # Run unit tests on all PRs (including drafts)
+      - run_unit_tests:
+          filters:
+            branches:
+              only: /.*/
+            tags:
+              ignore: /.*/
+
+      # Run acceptance tests only after merging to main
+      - run_acceptance_tests:
+          filters:
+            branches:
+              only: main
 
