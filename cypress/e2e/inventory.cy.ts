@@ -146,6 +146,10 @@ describe('Inventory Management', () => {
     cy.get('[data-test=create-material-order-button]').should('exist');
     cy.get('[data-test=create-material-button]').should('exist');
     cy.get('[data-test=create-material-length-adjustment-button]').should('exist');
+
+    cy.get('[data-test=total-length-of-arrived-material]').should('exist').and('contain', '0');
+    cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', '0');
+    cy.get('[data-test=net-length-of-material]').should('exist').and('contain', '0');
   });
 
   it('should allow creating a new material and viewing it in inventory', () => {
@@ -255,5 +259,9 @@ describe('Inventory Management', () => {
     verifyMaterialLength('length-arrived', updatedArrivedLength);
     verifyMaterialLength('length-not-arrived', totalNotArrivedLength);
     verifyMaterialLength('net-length-available', updatedArrivedLength + newAdjustmentLength + materialLengthAdjustment2.length);
+
+    cy.get('[data-test=total-length-of-arrived-material]').should('exist').and('contain', updatedArrivedLength);
+    cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', totalNotArrivedLength);
+    cy.get('[data-test=net-length-of-material]').should('exist').and('contain', updatedArrivedLength + newAdjustmentLength + materialLengthAdjustment2.length);
   });
 });

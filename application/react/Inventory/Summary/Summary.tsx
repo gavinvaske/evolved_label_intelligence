@@ -11,16 +11,16 @@ const Summary = observer(() => {
         <h1>Inventory</h1>
       </div>
       <div className={clsx(styles.card)}>
-        <span>Feet On Hand</span>
-        <h2 className='total-length-of-material-in-inventory'>{inventoryStore.getArrivedMaterialsLength()}</h2>
+        <span>Length Arrived</span>
+        <h2 className='total-length-of-material-in-inventory' data-test='total-length-of-arrived-material'>{inventoryStore.getArrivedMaterialsLength()}</h2>
       </div>
       <div className={clsx(styles.card)}>
-        <span>Net Feet</span>
-        <h2 className='net-length-of-material-in-inventory'>{inventoryStore.getNetLengthOfMaterialsInInventory()}</h2>
+        <span>Length Not Arrived</span>
+        <h2 className='total-length-of-material-ordered' data-test='total-length-of-not-arrived-material'>{inventoryStore.getNotArrivedMaterialsLength()}</h2>
       </div>
       <div className={clsx(styles.card)}>
-        <span>Feet On Order</span>
-        <h2 className='total-length-of-material-ordered'>{inventoryStore.getNotArrivedMaterialsLength()}</h2>
+        <span>Net Length</span>
+        <h2 className='net-length-of-material-in-inventory' data-test='net-length-of-material'>{inventoryStore.getNetLengthOfMaterialsInInventory()}</h2>
       </div>
     </div>
   )
