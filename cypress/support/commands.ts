@@ -90,7 +90,6 @@ Cypress.Commands.add('typeDate', (selector: string, dateStr: string | undefined)
   cy.get(selector).type(formatDateForInput(dateStr));
 });
 
-// Define the type for fields that can be ignored
 type MaterialOrderFormFields = {
   material?: boolean;
   author?: boolean;
@@ -120,8 +119,6 @@ Cypress.Commands.add('fillMaterialOrderForm', (materialOrder: any, fieldsToIgnor
     !fieldsToIgnore.author && cy.selectRandomOptionFromDropdown('[data-test=input-author]');
     !fieldsToIgnore.material && cy.selectRandomOptionFromDropdown('[data-test=input-material]');
     !fieldsToIgnore.vendor && cy.selectRandomOptionFromDropdown('[data-test=input-vendor]');
-    
-    // Order Details
     !fieldsToIgnore.purchaseOrderNumber && cy.get('[data-test=input-purchaseOrderNumber]').type(materialOrder.purchaseOrderNumber);
     !fieldsToIgnore.orderDate && cy.typeDate('[data-test=input-orderDate]', materialOrder.orderDate);
     !fieldsToIgnore.feetPerRoll && cy.get('[data-test=input-feetPerRoll]').type(materialOrder.feetPerRoll.toString());
@@ -133,6 +130,8 @@ Cypress.Commands.add('fillMaterialOrderForm', (materialOrder: any, fieldsToIgnor
       cy.get('[data-test=input-hasArrived]').check();
     }
     !fieldsToIgnore.arrivalDate && cy.typeDate('[data-test=input-arrivalDate]', materialOrder.arrivalDate);
+    
+    // charges
     !fieldsToIgnore.freightCharge && cy.get('[data-test=input-freightCharge]').clear().type(materialOrder.freightCharge.toString());
     !fieldsToIgnore.fuelCharge && cy.get('[data-test=input-fuelCharge]').clear().type(materialOrder.fuelCharge.toString());
     
@@ -146,7 +145,6 @@ Cypress.Commands.add('fillMaterialOrderForm', (materialOrder: any, fieldsToIgnor
 // Add this to your existing commands
 Cypress.Commands.add('fillMaterialForm', (material: any) => {
   cy.get('[data-test=material-form]').within(() => {
-    // Basic Information
     cy.get('[data-test=input-name]').type(material.name);
     cy.get('[data-test=input-materialId]').type(material.materialId);
     cy.get('[data-test=input-width]').type(material.width.toString());
@@ -184,7 +182,6 @@ Cypress.Commands.add('fillMaterialForm', (material: any) => {
   });
 });
 
-// Add this to your existing commands
 Cypress.Commands.add('fillMaterialLengthAdjustmentForm', (materialLengthAdjustment: any, fieldsToIgnore: MaterialLengthAdjustmentFormFields = {}) => {
   cy.get('[data-test=material-length-adjustment-form]').within(() => {
     !fieldsToIgnore.material && cy.selectRandomOptionFromDropdown('[data-test=input-material]');
@@ -194,14 +191,12 @@ Cypress.Commands.add('fillMaterialLengthAdjustmentForm', (materialLengthAdjustme
   });
 });
 
-// Add to the Cypress namespace
 declare global {
   namespace Cypress {
     interface Chainable {
       selectFromDropdown(selector: string, optionText: string): Chainable<void>,
       selectRandomOptionFromDropdown(selector: string),
       typeDate(selector: string, dateStr: string | undefined): Chainable<void>,
-      realHover(): Chainable<JQuery<HTMLElement>>,
       fillMaterialOrderForm(materialOrder: any, fieldsToIgnore?: MaterialOrderFormFields): Chainable<void>,
       fillMaterialForm(material: any): Chainable<void>,
       fillMaterialLengthAdjustmentForm(materialLengthAdjustment: any, fieldsToIgnore?: MaterialLengthAdjustmentFormFields): Chainable<void>
