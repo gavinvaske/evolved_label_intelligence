@@ -90,31 +90,54 @@ Cypress.Commands.add('typeDate', (selector: string, dateStr: string | undefined)
   cy.get(selector).type(formatDateForInput(dateStr));
 });
 
+// Define the type for fields that can be ignored
+type MaterialOrderFormFields = {
+  material?: boolean;
+  author?: boolean;
+  vendor?: boolean;
+  purchaseOrderNumber?: boolean;
+  orderDate?: boolean;
+  feetPerRoll?: boolean;
+  totalRolls?: boolean;
+  totalCost?: boolean;
+  hasArrived?: boolean;
+  arrivalDate?: boolean;
+  freightCharge?: boolean;
+  fuelCharge?: boolean;
+  notes?: boolean;
+};
+
+type MaterialLengthAdjustmentFormFields = {
+  material?: boolean;
+  length?: boolean;
+  notes?: boolean;
+};
+
 // Add this to your existing commands
-Cypress.Commands.add('fillMaterialOrderForm', (materialOrder: any) => {
+Cypress.Commands.add('fillMaterialOrderForm', (materialOrder: any, fieldsToIgnore: MaterialOrderFormFields = {}) => {
   cy.get('[data-test=material-order-form]').within(() => {
     // Basic Information
-    cy.selectRandomOptionFromDropdown('[data-test=input-author]');
-    cy.selectRandomOptionFromDropdown('[data-test=input-material]');
-    cy.selectRandomOptionFromDropdown('[data-test=input-vendor]');
+    !fieldsToIgnore.author && cy.selectRandomOptionFromDropdown('[data-test=input-author]');
+    !fieldsToIgnore.material && cy.selectRandomOptionFromDropdown('[data-test=input-material]');
+    !fieldsToIgnore.vendor && cy.selectRandomOptionFromDropdown('[data-test=input-vendor]');
     
     // Order Details
-    cy.get('[data-test=input-purchaseOrderNumber]').type(materialOrder.purchaseOrderNumber);
-    cy.typeDate('[data-test=input-orderDate]', materialOrder.orderDate);
-    cy.get('[data-test=input-feetPerRoll]').type(materialOrder.feetPerRoll.toString());
-    cy.get('[data-test=input-totalRolls]').type(materialOrder.totalRolls.toString());
-    cy.get('[data-test=input-totalCost]').type(materialOrder.totalCost.toString());
+    !fieldsToIgnore.purchaseOrderNumber && cy.get('[data-test=input-purchaseOrderNumber]').type(materialOrder.purchaseOrderNumber);
+    !fieldsToIgnore.orderDate && cy.typeDate('[data-test=input-orderDate]', materialOrder.orderDate);
+    !fieldsToIgnore.feetPerRoll && cy.get('[data-test=input-feetPerRoll]').type(materialOrder.feetPerRoll.toString());
+    !fieldsToIgnore.totalRolls && cy.get('[data-test=input-totalRolls]').type(materialOrder.totalRolls.toString());
+    !fieldsToIgnore.totalCost && cy.get('[data-test=input-totalCost]').type(materialOrder.totalCost.toString());
     
     // Arrival Information
-    if (materialOrder.hasArrived) {
+    if (materialOrder.hasArrived && !fieldsToIgnore.hasArrived) {
       cy.get('[data-test=input-hasArrived]').check();
     }
-    cy.typeDate('[data-test=input-arrivalDate]', materialOrder.arrivalDate);
-    cy.get('[data-test=input-freightCharge]').clear().type(materialOrder.freightCharge.toString());
-    cy.get('[data-test=input-fuelCharge]').clear().type(materialOrder.fuelCharge.toString());
+    !fieldsToIgnore.arrivalDate && cy.typeDate('[data-test=input-arrivalDate]', materialOrder.arrivalDate);
+    !fieldsToIgnore.freightCharge && cy.get('[data-test=input-freightCharge]').clear().type(materialOrder.freightCharge.toString());
+    !fieldsToIgnore.fuelCharge && cy.get('[data-test=input-fuelCharge]').clear().type(materialOrder.fuelCharge.toString());
     
     // Notes
-    cy.get('[data-test=input-notes]').type(materialOrder.notes || '');
+    !fieldsToIgnore.notes && cy.get('[data-test=input-notes]').type(materialOrder.notes || '');
     
     cy.get('[data-test=submit-button]').click();
   });
@@ -161,6 +184,16 @@ Cypress.Commands.add('fillMaterialForm', (material: any) => {
   });
 });
 
+// Add this to your existing commands
+Cypress.Commands.add('fillMaterialLengthAdjustmentForm', (materialLengthAdjustment: any, fieldsToIgnore: MaterialLengthAdjustmentFormFields = {}) => {
+  cy.get('[data-test=material-length-adjustment-form]').within(() => {
+    !fieldsToIgnore.material && cy.selectRandomOptionFromDropdown('[data-test=input-material]');
+    !fieldsToIgnore.length && cy.get('[data-test=input-length]').type(materialLengthAdjustment.length.toString());
+    !fieldsToIgnore.notes && cy.get('[data-test=input-notes]').type(materialLengthAdjustment.notes || '');
+    cy.get('[data-test=submit-button]').click();
+  });
+});
+
 // Add to the Cypress namespace
 declare global {
   namespace Cypress {
@@ -169,8 +202,9 @@ declare global {
       selectRandomOptionFromDropdown(selector: string),
       typeDate(selector: string, dateStr: string | undefined): Chainable<void>,
       realHover(): Chainable<JQuery<HTMLElement>>,
-      fillMaterialOrderForm(materialOrder: any): Chainable<void>,
-      fillMaterialForm(material: any): Chainable<void>
+      fillMaterialOrderForm(materialOrder: any, fieldsToIgnore?: MaterialOrderFormFields): Chainable<void>,
+      fillMaterialForm(material: any): Chainable<void>,
+      fillMaterialLengthAdjustmentForm(materialLengthAdjustment: any, fieldsToIgnore?: MaterialLengthAdjustmentFormFields): Chainable<void>
     }
   }
 }

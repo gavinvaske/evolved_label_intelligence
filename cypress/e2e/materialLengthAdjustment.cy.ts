@@ -17,12 +17,7 @@ describe('Material Length Adjustment Management', () => {
     cy.url().should('include', '/react-ui/forms/material-length-adjustment');
     
     // Fill out the form
-    cy.get('[data-test=material-length-adjustment-form]').within(() => {
-      cy.selectRandomOptionFromDropdown('[data-test=input-material]')
-      cy.get('[data-test=input-length]').type(materialLengthAdjustment.length.toString());
-      cy.get('[data-test=input-notes]').type(materialLengthAdjustment.notes);
-      cy.get('[data-test=submit-button]').click();
-    });
+    cy.fillMaterialLengthAdjustmentForm(materialLengthAdjustment);
 
     // Verify we're redirected back to the table
     cy.url().should('include', '/react-ui/tables/material-length-adjustment');
