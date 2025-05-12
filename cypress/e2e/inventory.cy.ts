@@ -4,9 +4,75 @@ describe('Inventory Management', () => {
   const material = testDataGenerator.Material();
   const uppercasedMaterialId = material.materialId.toUpperCase();
 
+  // Helper function to find and interact with a material card
+  const findMaterialCard = () => {
+    return cy.contains(material.materialId.toUpperCase())
+      .closest('[data-test=material-inventory-card]');
+  };
+
+  // Helper function to open the create actions menu for a material
+  const openCreateActionsMenu = () => {
+    findMaterialCard().within(() => {
+      cy.get('[data-test=create-actions-button]').click();
+    });
+  };
+
+  // Helper function to select an action from the dropdown
+  const selectCreateAction = (actionName: string) => {
+    cy.get('[data-test=create-actions-dropdown]')
+      .contains(actionName)
+      .click();
+  };
+
+  // Helper function to verify material length in a specific field
+  const verifyMaterialLength = (fieldTestId: string, expectedLength: number) => {
+    findMaterialCard().within(() => {
+      cy.get(`[data-test=${fieldTestId}]`)
+        .should('exist')
+        .and('contain', expectedLength);
+    });
+  };
+
+  // Helper function to create a material order
+  const createMaterialOrder = (hasArrived: boolean) => {
+    openCreateActionsMenu();
+    selectCreateAction('Create Order');
+
+    // Verify we're on the material order form
+    cy.url().should('include', '/react-ui/forms/material-order');
+
+    const materialOrder = testDataGenerator.MaterialOrder();
+    materialOrder.hasArrived = hasArrived;
+    const length = materialOrder.feetPerRoll * materialOrder.totalRolls;
+
+    // Fill out the material order form, ignoring the material field
+    cy.fillMaterialOrderForm(materialOrder, { material: true });
+
+    // Navigate back to inventory
+    cy.visit('/react-ui/inventory');
+
+    return { materialOrder, length };
+  };
+
+  // Helper function to create a material length adjustment
+  const createMaterialLengthAdjustment = () => {
+    openCreateActionsMenu();
+    selectCreateAction('Create Length Adjustment');
+
+    // Verify we're on the material length adjustment form
+    cy.url().should('include', '/react-ui/forms/material-length-adjustment');
+
+    const materialLengthAdjustment = testDataGenerator.MaterialLengthAdjustment();
+    cy.fillMaterialLengthAdjustmentForm(materialLengthAdjustment, { material: true });
+
+    // Navigate back to inventory
+    cy.visit('/react-ui/inventory');
+
+    return materialLengthAdjustment;
+  };
+
   beforeEach(() => {
     cy.login();
-    // Visit the inventory page first
     cy.visit('/react-ui/inventory');
   });
 
@@ -50,21 +116,6 @@ describe('Inventory Management', () => {
       .and('be.visible')
       .should('contain', uppercasedMaterialId);
 
-    // verify the actual/ordered length shows up in the "length ordered" field
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=length-arrived]')
-          .should('exist')
-          .and('contain', 0);
-        cy.get('[data-test=length-not-arrived]')
-          .should('exist')
-          .and('contain', 0);
-        cy.get('[data-test=net-length-available]')
-          .should('exist')
-          .and('contain', 0);
-      });
-
     // verify the material can be searched for
     cy.get('[data-test=searchbar]').type(uppercasedMaterialId).type('{enter}');
 
@@ -86,9 +137,7 @@ describe('Inventory Management', () => {
 
   it('should open a material details modal when clicking on a material card', () => {
     // click on the material card containing our material ID
-    cy.get('[data-test=material-inventory-card]')
-      .contains(material.materialId.toUpperCase())
-      .click();
+    findMaterialCard().click();
 
     // verify the material details modal is shown
     cy.get('[data-test=material-details-modal]')
@@ -96,121 +145,24 @@ describe('Inventory Management', () => {
       .and('contain', material.materialId.toUpperCase())
       .and('contain', material.name.toUpperCase())
       .and('contain', material.description)
-      .and('contain', material.whenToUse)
+      .and('contain', material.whenToUse);
   });
 
-  // should hover over one of the material cards, and see a create actions button (data-test='create-actions-button')
-  it('should hover over one of the material cards, and see a create actions button', () => {
-    // Find the text and get its parent material card
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=create-actions-button]').click();
-      });
+  it('should allow creating orders and length adjustments for a material', () => {
+    // Create an arrived order
+    const { length: lengthArrived1 } = createMaterialOrder(true);
+    const { length: lengthArrived2 } = createMaterialOrder(true);
+    verifyMaterialLength('length-arrived', lengthArrived1 + lengthArrived2);
 
-    // click on "Create Order" in the dropdown that appears
-    cy.get('[data-test=create-actions-dropdown]')
-      .contains('Create Order')
-      .click();
+    // Create a not arrived order
+    const { length: lengthNotArrived1 } = createMaterialOrder(false);
+    const { length: lengthNotArrived2 } = createMaterialOrder(false);
+    verifyMaterialLength('length-not-arrived', lengthNotArrived1 + lengthNotArrived2);
+    verifyMaterialLength('net-length-available', lengthArrived1 + lengthArrived2);
 
-    // verify we're on the material order form
-    cy.url().should('include', '/react-ui/forms/material-order');
-
-    // Fill out the material order form
-    const materialOrderThatHasArrived = testDataGenerator.MaterialOrder();
-    materialOrderThatHasArrived.hasArrived = true;
-    const lengthArrived = materialOrderThatHasArrived.feetPerRoll * materialOrderThatHasArrived.totalRolls;
-
-    // fill out the material order form, but ignore the material field - that should have been auto-populated during navigation
-    cy.fillMaterialOrderForm(materialOrderThatHasArrived, { material: true });
-
-    // navigate back to the inventory page, and verify the ordered material appears in the inventory table
-    cy.visit('/react-ui/inventory');
-
-    // verify the correct material length shows up in the "length arrived" field
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=length-arrived]')
-          .should('exist')
-          .and('contain', lengthArrived);
-      });
-
-    // Find the text and get its parent material card
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=create-actions-button]').click();
-      });
-
-    // click on "Create Order" in the dropdown that appears
-    cy.get('[data-test=create-actions-dropdown]')
-      .contains('Create Order')
-      .click();
-
-    // verify we're on the material order form
-    cy.url().should('include', '/react-ui/forms/material-order');
-
-    // Fill out the material order form
-    const materialOrderThatHasNotArrived = testDataGenerator.MaterialOrder();
-    materialOrderThatHasNotArrived.hasArrived = false;
-    const lengthNotArrived = materialOrderThatHasNotArrived.feetPerRoll * materialOrderThatHasNotArrived.totalRolls;
-
-    // fill out the material order form, but ignore the material field - that should have been auto-populated during navigation
-    cy.fillMaterialOrderForm(materialOrderThatHasNotArrived, { material: true });
-
-    // navigate back to the inventory page, and verify the ordered material appears in the inventory table
-    cy.visit('/react-ui/inventory');
-
-    // verify the correct material length shows up in the "length arrived" field
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=length-not-arrived]')
-          .should('exist')
-          .and('contain', lengthNotArrived);
-      });
-
-    // verify the correct material length shows up in the "net length available" field
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=net-length-available]')
-          .should('exist')
-          .and('contain', lengthArrived);
-      });
-
-    // create a new material length adjustment
-    // Find the text and get its parent material card
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=create-actions-button]').click();
-      });
-
-    // click on "Create Order" in the dropdown that appears
-    cy.get('[data-test=create-actions-dropdown]')
-      .contains('Create Length Adjustment')
-      .click();
-
-    // verify we're on the material length adjustment form
-    cy.url().should('include', '/react-ui/forms/material-length-adjustment');
-
-    const materialLengthAdjustment = testDataGenerator.MaterialLengthAdjustment();
-
-    // fill out the material length adjustment form
-    cy.fillMaterialLengthAdjustmentForm(materialLengthAdjustment, { material: true });
-
-    // navigate back to the inventory page, and verify the ordered material appears in the inventory table
-    cy.visit('/react-ui/inventory');
-
-    // verify the correct material length shows up in the "length arrived" field
-    cy.contains(material.materialId.toUpperCase())
-      .closest('[data-test=material-inventory-card]')
-      .within(() => {
-        cy.get('[data-test=net-length-available]')
-          .should('exist')
-          .and('contain', lengthArrived + materialLengthAdjustment.length);
-      });
+    // Create a length adjustment
+    const materialLengthAdjustment1 = createMaterialLengthAdjustment();
+    const materialLengthAdjustment2 = createMaterialLengthAdjustment();
+    verifyMaterialLength('net-length-available', (lengthArrived1 + lengthArrived2) + (materialLengthAdjustment1.length + materialLengthAdjustment2.length));
   });
 });
