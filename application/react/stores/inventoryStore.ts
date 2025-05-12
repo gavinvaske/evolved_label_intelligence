@@ -67,10 +67,9 @@ class InventoryStore implements Filter<any> {
 
   getNetLengthOfMaterialsInInventory() {
     const lengthOfArrivedMaterials = this.getArrivedMaterialsLength()
-    const lengthOfNotArrivedMaterials = this.getNotArrivedMaterialsLength()
     const netLengthAdjustments = this.getNetLengthAdjustments()
 
-    return lengthOfArrivedMaterials + netLengthAdjustments - lengthOfNotArrivedMaterials
+    return lengthOfArrivedMaterials + netLengthAdjustments
   }
 
   generateSearchQuery(searchBarInput: string, textQuickFilters: UuidToTextFilter): string {

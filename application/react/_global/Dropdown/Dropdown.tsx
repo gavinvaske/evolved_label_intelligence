@@ -11,7 +11,7 @@ type DropdownProps = {
   triggerRef?: React.RefObject<HTMLElement>;
 };
 
-export const Dropdown = ({ isOpen, onClose, children, className, align = 'left', triggerRef }: DropdownProps) => {
+export const Dropdown = ({ isOpen, onClose, children, className, align = 'left', triggerRef, ...rest }: DropdownProps) => {
   const dropdownRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -45,6 +45,7 @@ export const Dropdown = ({ isOpen, onClose, children, className, align = 'left',
         align === 'right' && styles.alignRight,
         className
       )}
+      {...rest}
     >
       {children}
     </div>

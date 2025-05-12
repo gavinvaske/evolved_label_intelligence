@@ -18,44 +18,7 @@ describe('Material Management', () => {
     cy.url().should('include', '/react-ui/forms/material');
 
     // Fill out the form
-    cy.get('[data-test=material-form]').within(() => {
-      // Basic Information
-      cy.get('[data-test=input-name]').type(material.name);
-      cy.get('[data-test=input-materialId]').type(material.materialId);
-      cy.get('[data-test=input-width]').type(material.width.toString());
-      cy.selectRandomOptionFromDropdown('[data-test=input-vendor]');
-      cy.get('[data-test=input-locationsAsStr]').type(material.locations.join(', '));
-
-      cy.get('[data-test=input-thickness]').type(material.thickness.toString());
-      cy.get('[data-test=input-weight]').type(material.weight.toString());
-      cy.get('[data-test=input-faceColor]').type(material.faceColor);
-      cy.get('[data-test=input-adhesive]').type(material.adhesive);
-
-      cy.get('[data-test=input-freightCostPerMsi]').type(material.freightCostPerMsi);
-      cy.get('[data-test=input-costPerMsi]').type(material.costPerMsi);
-      cy.get('[data-test=input-quotePricePerMsi]').type(material.quotePricePerMsi.toString());
-
-
-      cy.get('[data-test=input-lowStockThreshold]').type(material.lowStockThreshold.toString());
-      cy.get('[data-test=input-lowStockBuffer]').type(material.lowStockBuffer.toString());
-
-      cy.get('[data-test=input-description]').type(material.description);
-      cy.get('[data-test=input-whenToUse]').type(material.whenToUse);
-      cy.get('[data-test=input-alternativeStock]').type(material.alternativeStock);
-
-      cy.get('[data-test=input-length]').type(material.length.toString());
-      cy.get('[data-test=input-facesheetWeightPerMsi]').type(material.facesheetWeightPerMsi.toString());
-      cy.get('[data-test=input-adhesiveWeightPerMsi]').type(material.adhesiveWeightPerMsi.toString());
-      cy.get('[data-test=input-linerWeightPerMsi]').type(material.linerWeightPerMsi.toString());
-      cy.get('[data-test=input-productNumber]').type(material.productNumber);
-      cy.get('[data-test=input-masterRollSize]').type(material.masterRollSize.toString());
-      cy.get('[data-test=input-image]').type(material.image);
-      cy.selectRandomOptionFromDropdown('[data-test=input-linerType]');
-      cy.selectRandomOptionFromDropdown('[data-test=input-adhesiveCategory]');
-      cy.selectRandomOptionFromDropdown('[data-test=input-materialCategory]');
-
-      cy.get('[data-test=submit-button]').click();
-    });
+    cy.fillMaterialForm(material);
 
     // Verify we're redirected back to the table
     cy.url().should('include', '/react-ui/tables/material');

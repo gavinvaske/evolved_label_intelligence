@@ -19,6 +19,7 @@ const InventoryFilterBar = observer((_) => {
           to="/react-ui/forms/material-order"
           tooltip="Order a material"
           icon={<GoPlus />}
+          data-test='create-material-order-button'
       >
         Order
       </Button>
@@ -27,6 +28,7 @@ const InventoryFilterBar = observer((_) => {
         to="/react-ui/forms/material"
         tooltip="Create a material"
         icon={<GoPlus />}
+        data-test='create-material-button'
       >
         Material
       </Button>
@@ -35,6 +37,7 @@ const InventoryFilterBar = observer((_) => {
         to="/react-ui/forms/material-length-adjustment"
         tooltip="Adjust material footage"
         icon={<GoPlus />}
+        data-test='create-material-length-adjustment-button'
       >
           Adjustment
         </Button>

@@ -15,7 +15,7 @@ export const MaterialDetailsModal = (props: Props) => {
   const { material, onClose } = props;
 
   return (
-    <Modal onClose={() => onClose()} size='fullscreen'>
+    <Modal onClose={() => onClose()} size='fullscreen' data-test='material-details-modal'>
 
         <div className={styles.modalHeader}>
           <h1>{material.materialId} <span>{material.name}</span></h1>

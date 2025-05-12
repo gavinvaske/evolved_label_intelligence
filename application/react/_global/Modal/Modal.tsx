@@ -11,7 +11,7 @@ type Props = {
 }
 
 export const Modal = (props: Props) => {
-  const { onClose, children, size = 'standard' } = props;
+  const { onClose, children, size = 'standard', ...rest } = props;
 
   const handleBackgroundClick = (e: React.MouseEvent<HTMLDivElement>) => {
     e.stopPropagation();
@@ -25,7 +25,7 @@ export const Modal = (props: Props) => {
     : styles.modalBackground;
 
   return (
-    <div className={backgroundClass} onClick={handleBackgroundClick}>
+    <div className={backgroundClass} onClick={handleBackgroundClick} {...rest}>
       <div className={styles.modalBox}>
         <TfiClose className={styles.closeModal} onClick={() => onClose()}/>
         {children}
