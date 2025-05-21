@@ -17,7 +17,7 @@ type Props<T> = {
 export const ConditionalFilterDropdownOption = observer(<T extends any>(props: Props<T>) => {
   const { uuid, conditionalFilterFunction, textToDisplay, onEnabled, onDisabled, filtersStore } = props;
 
-  const enabledConditionalFilters = filtersStore.getConditionalQuickFilters();
+  const enabledConditionalFilters = filtersStore.getConditionalFilters();
 
   function isEnabled(): boolean {
     return Boolean(enabledConditionalFilters[uuid])

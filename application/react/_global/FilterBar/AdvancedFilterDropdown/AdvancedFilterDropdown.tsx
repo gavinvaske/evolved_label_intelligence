@@ -44,7 +44,7 @@ const renderConditionalQuickFilters = <T extends any>(conditionalFilters: Condit
                 conditionalFilterFunction={option.conditionalFilter}
                 textToDisplay={option.textToDisplay}
                 onDisabled={(uuid) => store.removeConditionalFilter(uuid)}
-                onEnabled={(uuid, conditionalFilterFunction) => store.setConditionalQuickFilter(uuid, conditionalFilterFunction)}
+                onEnabled={(uuid, conditionalFilterFunction) => store.setConditionalFilter(uuid, conditionalFilterFunction)}
                 key={option.uuid}
                 filtersStore={store}
               />

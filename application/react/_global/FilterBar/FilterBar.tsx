@@ -90,9 +90,9 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             >
               Quick Search <span 
                 className={styles.filterBadge} 
-                data-has-filters={Object.keys(store.getTextQuickFilters() || {}).length > 0}
+                data-has-filters={Object.keys(store.getTextFilters() || {}).length > 0}
               >
-                {Object.keys(store.getTextQuickFilters() || {}).length}
+                {Object.keys(store.getTextFilters() || {}).length}
               </span>
             </Button>
             <Button
@@ -103,9 +103,9 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
             >
               Advanced Filters <span 
                 className={styles.filterBadge}
-                data-has-filters={Object.keys(store.getConditionalQuickFilters() || {}).length > 0}
+                data-has-filters={Object.keys(store.getConditionalFilters() || {}).length > 0}
               >
-                {Object.keys(store.getConditionalQuickFilters() || {}).length}
+                {Object.keys(store.getConditionalFilters() || {}).length}
               </span>
             </Button>
           </div>

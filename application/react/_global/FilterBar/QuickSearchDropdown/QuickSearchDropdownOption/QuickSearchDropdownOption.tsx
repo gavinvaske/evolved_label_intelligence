@@ -12,7 +12,7 @@ type Props = {
 export const QuickSearchDropdownOption = observer((props: Props) => {
   const { uuid, filterValue, onEnabled, onDisabled, filtersStore } = props;
 
-  const enabledQuickFilters = filtersStore.getTextQuickFilters();
+  const enabledQuickFilters = filtersStore.getTextFilters();
 
   function isEnabled(): boolean {
     return Boolean(enabledQuickFilters[uuid])

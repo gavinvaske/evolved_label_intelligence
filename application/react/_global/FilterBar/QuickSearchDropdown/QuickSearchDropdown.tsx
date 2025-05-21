@@ -39,8 +39,8 @@ const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], s
               <QuickSearchDropdownOption
                 uuid={option.uuid}
                 filterValue={option.value}
-                onDisabled={(uuid) => store.removeTextQuickFilter(uuid)}
-                onEnabled={(uuid, filterValue) => store.setTextQuickFilter(uuid, filterValue)}
+                onDisabled={(uuid) => store.removeTextFilter(uuid)}
+                onEnabled={(uuid, filterValue) => store.setTextFilter(uuid, filterValue)}
                 key={option.uuid}
                 filtersStore={store}
               />
