@@ -1,38 +1,23 @@
-import { TextFilter, ConditionalFilter } from "@ui/types/filters";
+import { ConditionalFilter } from "@ui/types/filters";
 import { v4 as uuidv4 } from 'uuid';
+import { IMaterial } from '@shared/types/models';
 
-export const textQuickFilters: TextFilter[] = [
-  {
-    description: 'materials',
-    options: [
-      {
-        uuid: uuidv4(),
-        value: 'semi-gloss'
-      },
-      {
-        uuid: uuidv4(),
-        value: 'matte'
-      },
-    ]
-  },
-  {
-    description: 'Foo',
-    options: [
-      {
-        uuid: uuidv4(),
-        value: 'bar'
-      },
-    ]
-  }
-]
-
-export const conditionalQuickFilters: ConditionalFilter<any>[] = [
+export const conditionalQuickFilters: ConditionalFilter<IMaterial>[] = [
   {
     uuid: uuidv4(),
-    textToDisplay: 'This text is rendered',
-    conditionalFilter: (objects: Partial<any>[]) => {
-      return objects.filter((object) => {
-        return object?.material?.name?.toLowerCase() === 'foo'
+    textToDisplay: 'Available to Use',
+    conditionalFilter: (materials: Partial<IMaterial>[]) => {
+      return materials.filter((material) => {
+        return material?.inventory?.netLengthAvailable && material?.inventory?.netLengthAvailable > 0
+      })
+    }
+  },
+  {
+    uuid: uuidv4(),
+    textToDisplay: 'Negative Net Inventory',
+    conditionalFilter: (materials: Partial<IMaterial>[]) => {
+      return materials.filter((material) => {
+        return material?.inventory?.netLengthAvailable && material?.inventory?.netLengthAvailable < 0
       })
     }
   }

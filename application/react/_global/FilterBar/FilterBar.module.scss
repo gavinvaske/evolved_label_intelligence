@@ -1,5 +1,7 @@
 @import '../../_styles/shared.module.scss';
 
+// TODO @Gavin: Remove unused styles from this file once the filter logic is extracted to separate components
+
 .filterOptions {
   display: flex;
   flex-wrap: wrap;
