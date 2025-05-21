@@ -88,7 +88,12 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
               icon={<VscFilter />}
               ref={quickSearchButtonRef}
             >
-              Quick Search <span className={styles.filterBadge}>{Object.keys(store.getTextQuickFilters() || {}).length}</span>
+              Quick Search <span 
+                className={styles.filterBadge} 
+                data-has-filters={Object.keys(store.getTextQuickFilters() || {}).length > 0}
+              >
+                {Object.keys(store.getTextQuickFilters() || {}).length}
+              </span>
             </Button>
             <Button
               color="white"
@@ -96,7 +101,12 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
               icon={<FaChevronDown />}
               ref={advancedFilterButtonRef}
             >
-              Advanced Filters <span className={styles.filterBadge}>{Object.keys(store.getConditionalQuickFilters() || {}).length}</span>
+              Advanced Filters <span 
+                className={styles.filterBadge}
+                data-has-filters={Object.keys(store.getConditionalQuickFilters() || {}).length > 0}
+              >
+                {Object.keys(store.getConditionalQuickFilters() || {}).length}
+              </span>
             </Button>
           </div>
           {/* Display the quick search dropdown */}

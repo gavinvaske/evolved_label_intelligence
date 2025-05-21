@@ -99,9 +99,18 @@
   height: 20px;
   padding: 0 6px;
   border-radius: 10px;
-  background-color: #7367F0;
-  color: white;
+  background-color: #f0f0f0;
+  color: #6c757d;
   font-size: 12px;
-  font-weight: 600;
+  font-weight: 500;
   margin-left: 6px;
+  transition: all 0.2s ease-in-out;
+  opacity: 0.5;
+
+  &[data-has-filters="true"] {
+    background-color: #e8e6ff;
+    color: #7367F0;
+    font-weight: 600;
+    opacity: 1;
+  }
 }
