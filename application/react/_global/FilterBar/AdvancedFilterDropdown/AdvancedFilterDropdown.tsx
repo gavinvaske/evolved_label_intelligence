@@ -1,7 +1,7 @@
 import { Dropdown } from "../../Dropdown/Dropdown"
 import * as styles from './AdvancedFilterDropdown.module.scss'
 import { ConditionalFilter, ConditionalFilterOption, Filter } from "@ui/types/filters"
-import { ConditionalQuickFilter } from "../../QuickFilterModal/ConditionalQuickFilter/ConditionalQuickFilter"
+import { ConditionalFilterDropdownOption } from "./ConditionalFilterDropdownOption/ConditionalFilterDropdownOption"
 import inventoryStore from "../../../stores/inventoryStore"
 import { v4 as uuidv4 } from 'uuid';
 import { IMaterial } from "@shared/types/models"
@@ -39,7 +39,7 @@ const renderConditionalQuickFilters = <T extends any>(conditionalFilters: Condit
           <span className={styles.filterDescription}>{description}</span>
           <div className={styles.filterOptions}>
             {options.map((option: ConditionalFilterOption<T>) => (
-              <ConditionalQuickFilter
+              <ConditionalFilterDropdownOption
                 uuid={option.uuid}
                 conditionalFilterFunction={option.conditionalFilter}
                 textToDisplay={option.textToDisplay}

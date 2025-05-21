@@ -1,7 +1,7 @@
 import { Dropdown } from "../../Dropdown/Dropdown"
 import * as styles from './QuickSearchDropdown.module.scss'
 import inventoryStore from '../../../stores/inventoryStore';
-import { TextQuickFilter } from '../../QuickFilterModal/TextQuickFilter/QuickFilterButton';
+import { QuickSearchDropdownOption } from '../QuickSearchDropdown/QuickSearchDropdownOption/QuickSearchDropdownOption';
 import { Filter, TextFilter, TextFilterOption } from "@ui/types/filters";
 import { v4 as uuidv4 } from 'uuid';
 
@@ -12,18 +12,18 @@ interface Props {
 }
 
 export const QuickSearchDropdown = (props: Props) => {
-  const {isOpen,  setIsOpen, triggerRef} = props
+  const { isOpen, setIsOpen, triggerRef } = props
   return (
     <Dropdown
-    isOpen={isOpen}
-    onClose={() => setIsOpen(false)}
-    triggerRef={triggerRef}
-  >
-    <div className={styles.dropdownContent}>
-      <h5 className={styles.dropdownTitle}>Quick Search</h5>
-      {renderTextQuickFilters(textQuickFilters, inventoryStore)}
-    </div>
-  </Dropdown>
+      isOpen={isOpen}
+      onClose={() => setIsOpen(false)}
+      triggerRef={triggerRef}
+    >
+      <div className={styles.dropdownContent}>
+        <h5 className={styles.dropdownTitle}>Quick Search</h5>
+        {renderTextQuickFilters(textQuickFilters, inventoryStore)}
+      </div>
+    </Dropdown>
   )
 }
 
@@ -36,13 +36,13 @@ const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], s
           <span className={styles.filterDescription}>{description}</span>
           <div className={styles.filterOptions}>
             {options.map((option: TextFilterOption) => (
-              <TextQuickFilter
+              <QuickSearchDropdownOption
                 uuid={option.uuid}
-              filterValue={option.value}
-              onDisabled={(uuid) => store.removeTextQuickFilter(uuid)}
-              onEnabled={(uuid, filterValue) => store.setTextQuickFilter(uuid, filterValue)}
-              key={option.uuid}
-              filtersStore={store}
+                filterValue={option.value}
+                onDisabled={(uuid) => store.removeTextQuickFilter(uuid)}
+                onEnabled={(uuid, filterValue) => store.setTextQuickFilter(uuid, filterValue)}
+                key={option.uuid}
+                filtersStore={store}
               />
             ))}
           </div>
