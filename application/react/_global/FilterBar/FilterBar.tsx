@@ -1,7 +1,6 @@
 import { useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ConditionalFilter, ConditionalFilterFunction, Filter } from "@ui/types/filters";
-import { ConditionalQuickFilter } from '../QuickFilterModal/ConditionalQuickFilter/ConditionalQuickFilter';
+import { Filter } from "@ui/types/filters";
 import SearchBar from '../SearchBar/SearchBar';
 import clsx from 'clsx';
 import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
@@ -14,37 +13,16 @@ import { TfiClose } from "react-icons/tfi";
 import { SlMagnifier } from "react-icons/sl";
 import inventoryStore from '../../stores/inventoryStore';
 import { Button } from '../Button/Button';
-import { Dropdown } from '../Dropdown/Dropdown';
 import { QuickSearchDropdown } from './QuickSearchDropdown/QuickSearchDropdown';
-
-const renderConditionalQuickFilters = <T extends any>(conditionalFilterFunctions: ConditionalFilter<T>[], store: Filter<T>) => {
-  return (
-    conditionalFilterFunctions.map((filterFunction: ConditionalFilter<T>) => {
-      const { uuid, textToDisplay, conditionalFilter } = filterFunction;
-      return (
-        <div className={styles.filterOptions}>
-          <ConditionalQuickFilter
-            uuid={uuid}
-            conditionalFilterFunction={conditionalFilter}
-            textToDisplay={textToDisplay}
-            onDisabled={(uuid: string) => store.removeConditionalFilter(uuid)}
-            onEnabled={(uuid: string, conditionalFilterFunction: ConditionalFilterFunction<T>) => store.setConditionalQuickFilter(uuid, conditionalFilterFunction)}
-            key={uuid}
-            filtersStore={store}
-          />
-        </div>)
-    })
-  )
-}
+import { AdvancedFilterDropdown } from './AdvancedFilterDropdown/AdvancedFilterDropdown';
 
 type Props<T> = {
-  conditionalQuickFilters: ConditionalFilter<T>[];
   store: Filter<T>
   filterableItemsCount: number
 }
 
 export const FilterBar = observer(<T extends any>(props: Props<T>) => {
-  const { conditionalQuickFilters, store, filterableItemsCount } = props
+  const { store, filterableItemsCount } = props
   const [isDropdownDisplayed, setIsDropdownDisplayed] = useState(false)
   const [isAdvancedDropdownDisplayed, setIsAdvancedDropdownDisplayed] = useState(false)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
@@ -121,23 +99,18 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
               Advanced Filters
             </Button>
           </div>
+          {/* Display the quick search dropdown */}
           <QuickSearchDropdown
             isOpen={isDropdownDisplayed}
             setIsOpen={setIsDropdownDisplayed}
             triggerRef={quickSearchButtonRef}
           />
-
-          <Dropdown
+          {/* Display the advanced filter dropdown */}
+          <AdvancedFilterDropdown
             isOpen={isAdvancedDropdownDisplayed}
-            onClose={() => setIsAdvancedDropdownDisplayed(false)}
-            align="right"
+            setIsOpen={setIsAdvancedDropdownDisplayed}
             triggerRef={advancedFilterButtonRef}
-          >
-            <div className={styles.dropdownContent}>
-              <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
-              {renderConditionalQuickFilters(conditionalQuickFilters, store)}
-            </div>
-          </Dropdown>
+          />
         </div>
 
         <div className={clsx(sharedStyles.tooltipTop)}>

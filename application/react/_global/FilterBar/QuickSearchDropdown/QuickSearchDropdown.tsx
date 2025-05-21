@@ -20,7 +20,7 @@ export const QuickSearchDropdown = (props: Props) => {
     triggerRef={triggerRef}
   >
     <div className={styles.dropdownContent}>
-      <h5 className={styles.dropdownTitle}>Quick filters</h5>
+      <h5 className={styles.dropdownTitle}>Quick Search</h5>
       {renderTextQuickFilters(textQuickFilters, inventoryStore)}
     </div>
   </Dropdown>
@@ -51,26 +51,55 @@ const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], s
   )
 }
 
-export const textQuickFilters: TextFilter[] = [
+const textQuickFilters: TextFilter[] = [
   {
-    description: 'materials',
+    description: 'Vendors',
     options: [
       {
         uuid: uuidv4(),
-        value: 'semi-gloss'
+        value: 'hy-vee'
       },
       {
         uuid: uuidv4(),
-        value: 'matte'
+        value: 'walmart'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'cpg'
       },
     ]
   },
   {
-    description: 'Foo',
+    description: 'Material Category',
     options: [
       {
         uuid: uuidv4(),
-        value: 'bar'
+        value: 'test'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'cardboard'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'plastic'
+      },
+    ]
+  },
+  {
+    description: 'Liner Type',
+    options: [
+      {
+        uuid: uuidv4(),
+        value: 'test'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'AAA'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'FFF'
       },
     ]
   }

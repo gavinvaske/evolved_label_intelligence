@@ -37,8 +37,13 @@ export type TextFilter = {
   options: TextFilterOption[];
 };
 
-export type ConditionalFilter<T> = {
+export type ConditionalFilterOption<T> = {
   readonly uuid: string;
   textToDisplay: string;
   conditionalFilter: ConditionalFilterFunction<T>;
+}
+
+export type ConditionalFilter<T> = {
+  description: string;
+  options: ConditionalFilterOption<T>[];
 };
