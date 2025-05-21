@@ -7,8 +7,8 @@ import { MongooseIdStr } from "@shared/types/typeAliases";
 /* Mobx Store */
 class InventoryStore implements Filter<any> {
   searchBarInput: string = ''
-  textQuickFilters: UuidToTextFilter = {}
-  conditionalQuickFilters: UuidToConditionalFilter<any> = {}
+  textFilters: UuidToTextFilter = {}
+  conditionalFilters: UuidToConditionalFilter<any> = {}
   materials: Record<MongooseIdStr, IMaterial> = {};
 
   constructor() {
@@ -19,38 +19,38 @@ class InventoryStore implements Filter<any> {
     return this.searchBarInput;
   }
 
-  getTextQuickFilters(): UuidToTextFilter {
-    return this.textQuickFilters;
+  getTextFilters(): UuidToTextFilter {
+    return this.textFilters;
   }
 
-  getConditionalQuickFilters(): UuidToConditionalFilter<any> {
-    return this.conditionalQuickFilters;
+  getConditionalFilters(): UuidToConditionalFilter<any> {
+    return this.conditionalFilters;
   }
 
   setSearchBarInput(value: string): void {
     this.searchBarInput = value
   }
 
-  setConditionalQuickFilter(uuid: string, conditionalFilter: ConditionalFilterFunction<any>): void {
-    this.conditionalQuickFilters[uuid] = conditionalFilter
+  setConditionalFilter(uuid: string, conditionalFilter: ConditionalFilterFunction<any>): void {
+    this.conditionalFilters[uuid] = conditionalFilter
   }
 
   removeConditionalFilter(uuid: string): void {
-    delete this.conditionalQuickFilters[uuid]
+    delete this.conditionalFilters[uuid]
   }
 
-  setTextQuickFilter(uuid: string, value: string): void {
-    this.textQuickFilters[uuid] = value
+  setTextFilter(uuid: string, value: string): void {
+    this.textFilters[uuid] = value
   }
 
-  removeTextQuickFilter(uuid: string): void {
-    delete this.textQuickFilters[uuid];
+  removeTextFilter(uuid: string): void {
+    delete this.textFilters[uuid];
   }
 
   resetAllFilters(): void {
     this.searchBarInput = ''
-    this.textQuickFilters = {};
-    this.conditionalQuickFilters = {};
+    this.textFilters = {};
+    this.conditionalFilters = {};
   }
 
   getArrivedMaterialsLength() {
@@ -72,19 +72,19 @@ class InventoryStore implements Filter<any> {
     return lengthOfArrivedMaterials + netLengthAdjustments
   }
 
-  generateSearchQuery(searchBarInput: string, textQuickFilters: UuidToTextFilter): string {
-    const quickFiltersQuery = Object.values(textQuickFilters).join(' ')
+  generateSearchQuery(searchBarInput: string, textFilters: UuidToTextFilter): string {
+    const textFilterQuery = Object.values(textFilters).join(' ')
     const trimmedSearchBarInput = searchBarInput.trim();
 
-    if (trimmedSearchBarInput || quickFiltersQuery) {
-      return `${trimmedSearchBarInput} ${quickFiltersQuery}`
+    if (trimmedSearchBarInput || textFilterQuery) {
+      return `${trimmedSearchBarInput} ${textFilterQuery}`
     }
 
     return '';
   }
 
   applyFilters(materials: IMaterial[] | undefined): IMaterial[] {
-    const noFiltersAreApplied = !this.searchBarInput && Object.keys(this.textQuickFilters).length === 0 && Object.keys(this.conditionalQuickFilters).length === 0
+    const noFiltersAreApplied = !this.searchBarInput && Object.keys(this.textFilters).length === 0 && Object.keys(this.conditionalFilters).length === 0
 
     if (noFiltersAreApplied) return materials || [];
     if (!materials) return [];
@@ -101,11 +101,11 @@ class InventoryStore implements Filter<any> {
     search.addIndex(['thickness']);
     search.addDocuments(materials)
 
-    const searchQuery: string = this.generateSearchQuery(this.searchBarInput, this.textQuickFilters)
+    const searchQuery: string = this.generateSearchQuery(this.searchBarInput, this.textFilters)
 
     const textSearchResults = searchQuery ? search.search(searchQuery) as IMaterial[] : materials
 
-    const conditionalFilterFunctions = Object.values(this.conditionalQuickFilters)
+    const conditionalFilterFunctions = Object.values(this.conditionalFilters)
     
     return conditionalFilterFunctions.reduce((acc, conditionalFilterFunction: any) => {
       return conditionalFilterFunction(acc)

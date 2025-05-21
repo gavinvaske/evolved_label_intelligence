@@ -1,6 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import { ConditionalFilterFunction } from "@ui/types/filters";
-import { Button } from '../../Button/Button';
+import { Button } from '../../../Button/Button';
 
 type Props<T> = {
   uuid: string,
@@ -14,10 +14,10 @@ type Props<T> = {
   filtersStore: any
 }
 
-export const ConditionalQuickFilter = observer(<T extends any>(props: Props<T>) => {
+export const ConditionalFilterDropdownOption = observer(<T extends any>(props: Props<T>) => {
   const { uuid, conditionalFilterFunction, textToDisplay, onEnabled, onDisabled, filtersStore } = props;
 
-  const enabledConditionalFilters = filtersStore.getConditionalQuickFilters();
+  const enabledConditionalFilters = filtersStore.getConditionalFilters();
 
   function isEnabled(): boolean {
     return Boolean(enabledConditionalFilters[uuid])

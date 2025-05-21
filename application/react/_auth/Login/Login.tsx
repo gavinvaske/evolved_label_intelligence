@@ -144,6 +144,7 @@ export const Login = () => {
                         attribute='email'
                         label="Email"
                         isRequired={true}
+                        placeholder='example@gmail.com'
                         ref={userRef}
                         dataAttributes={
                           {'data-test': 'username-input'}

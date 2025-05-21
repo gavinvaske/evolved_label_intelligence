@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite';
-import { Button } from '../../Button/Button';
+import { Button } from '../../../Button/Button';
 
 type Props = {
   uuid: string,
@@ -9,10 +9,10 @@ type Props = {
   filtersStore: any
 }
 
-export const TextQuickFilter = observer((props: Props) => {
+export const QuickSearchDropdownOption = observer((props: Props) => {
   const { uuid, filterValue, onEnabled, onDisabled, filtersStore } = props;
 
-  const enabledQuickFilters = filtersStore.getTextQuickFilters();
+  const enabledQuickFilters = filtersStore.getTextFilters();
 
   function isEnabled(): boolean {
     return Boolean(enabledQuickFilters[uuid])

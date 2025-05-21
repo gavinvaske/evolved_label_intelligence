@@ -1,8 +1,6 @@
 import { useRef, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { ConditionalFilter, ConditionalFilterFunction, Filter, TextFilter, TextFilterOption } from "@ui/types/filters";
-import { ConditionalQuickFilter } from '../QuickFilterModal/ConditionalQuickFilter/ConditionalQuickFilter';
-import { TextQuickFilter } from '../QuickFilterModal/TextQuickFilter/QuickFilterButton';
+import { Filter } from "@ui/types/filters";
 import SearchBar from '../SearchBar/SearchBar';
 import clsx from 'clsx';
 import * as flexboxStyles from '@ui/styles/flexbox.module.scss'
@@ -11,71 +9,25 @@ import * as styles from './FilterBar.module.scss';
 import { FaChevronDown } from "react-icons/fa6";
 import { VscFilter } from "react-icons/vsc";
 import { TbZoomReset } from "react-icons/tb";
-
 import { TfiClose } from "react-icons/tfi";
 import { SlMagnifier } from "react-icons/sl";
 import inventoryStore from '../../stores/inventoryStore';
 import { Button } from '../Button/Button';
-import { Dropdown } from '../Dropdown/Dropdown';
-
-const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], store: Filter<T>) => {
-  return (
-    textQuickFilters.map((quickFilter: TextFilter) => {
-      const { description, options } = quickFilter;
-      return (
-        <div className={styles.filterSection}>
-          <span className={styles.filterDescription}>{description}</span>
-          <div className={styles.filterOptions}>
-            {options.map((option: TextFilterOption) => (
-              <TextQuickFilter
-                uuid={option.uuid}
-              filterValue={option.value}
-              onDisabled={(uuid) => store.removeTextQuickFilter(uuid)}
-              onEnabled={(uuid, filterValue) => store.setTextQuickFilter(uuid, filterValue)}
-              key={option.uuid}
-              filtersStore={store}
-              />
-            ))}
-          </div>
-        </div>)
-    })
-  )
-}
-
-const renderConditionalQuickFilters = <T extends any>(conditionalFilterFunctions: ConditionalFilter<T>[], store: Filter<T>) => {
-  return (
-    conditionalFilterFunctions.map((filterFunction: ConditionalFilter<T>) => {
-      const { uuid, textToDisplay, conditionalFilter } = filterFunction;
-      return (
-        <div className={styles.filterOptions}>
-          <ConditionalQuickFilter
-            uuid={uuid}
-            conditionalFilterFunction={conditionalFilter}
-            textToDisplay={textToDisplay}
-            onDisabled={(uuid: string) => store.removeConditionalFilter(uuid)}
-            onEnabled={(uuid: string, conditionalFilterFunction: ConditionalFilterFunction<T>) => store.setConditionalQuickFilter(uuid, conditionalFilterFunction)}
-            key={uuid}
-            filtersStore={store}
-          />
-        </div>)
-    })
-  )
-}
+import { QuickSearchDropdown } from './QuickSearchDropdown/QuickSearchDropdown';
+import { AdvancedFilterDropdown } from './AdvancedFilterDropdown/AdvancedFilterDropdown';
 
 type Props<T> = {
-  conditionalQuickFilters: ConditionalFilter<T>[];
-  textQuickFilters: TextFilter[];
   store: Filter<T>
   filterableItemsCount: number
 }
 
 export const FilterBar = observer(<T extends any>(props: Props<T>) => {
-  const { conditionalQuickFilters, textQuickFilters, store, filterableItemsCount } = props
+  const { store, filterableItemsCount } = props
   const [isDropdownDisplayed, setIsDropdownDisplayed] = useState(false)
   const [isAdvancedDropdownDisplayed, setIsAdvancedDropdownDisplayed] = useState(false)
   const [isSearchFocused, setIsSearchFocused] = useState(false)
   const ref = useRef<HTMLInputElement>(null)
-  const quickFilterButtonRef = useRef<HTMLButtonElement>(null);
+  const quickSearchButtonRef = useRef<HTMLButtonElement>(null);
   const advancedFilterButtonRef = useRef<HTMLButtonElement>(null);
 
   function toggleQuickFilterMenu() {
@@ -134,9 +86,14 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
               color="white"
               onClick={() => toggleQuickFilterMenu()}
               icon={<VscFilter />}
-              ref={quickFilterButtonRef}
+              ref={quickSearchButtonRef}
             >
-              Quick Filters
+              Quick Search <span 
+                className={styles.filterBadge} 
+                data-has-filters={Object.keys(store.getTextFilters() || {}).length > 0}
+              >
+                {Object.keys(store.getTextFilters() || {}).length}
+              </span>
             </Button>
             <Button
               color="white"
@@ -144,31 +101,26 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
               icon={<FaChevronDown />}
               ref={advancedFilterButtonRef}
             >
-              Advanced Filters
+              Advanced Filters <span 
+                className={styles.filterBadge}
+                data-has-filters={Object.keys(store.getConditionalFilters() || {}).length > 0}
+              >
+                {Object.keys(store.getConditionalFilters() || {}).length}
+              </span>
             </Button>
           </div>
-          <Dropdown
+          {/* Display the quick search dropdown */}
+          <QuickSearchDropdown
             isOpen={isDropdownDisplayed}
-            onClose={() => setIsDropdownDisplayed(false)}
-            triggerRef={quickFilterButtonRef}
-          >
-            <div className={styles.dropdownContent}>
-              <h5 className={styles.dropdownTitle}>Quick filters</h5>
-              {renderTextQuickFilters(textQuickFilters, store)}
-            </div>
-          </Dropdown>
-
-          <Dropdown
+            setIsOpen={setIsDropdownDisplayed}
+            triggerRef={quickSearchButtonRef}
+          />
+          {/* Display the advanced filter dropdown */}
+          <AdvancedFilterDropdown
             isOpen={isAdvancedDropdownDisplayed}
-            onClose={() => setIsAdvancedDropdownDisplayed(false)}
-            align="right"
+            setIsOpen={setIsAdvancedDropdownDisplayed}
             triggerRef={advancedFilterButtonRef}
-          >
-            <div className={styles.dropdownContent}>
-              <h5 className={styles.dropdownTitle}>Advanced Filter</h5>
-              {renderConditionalQuickFilters(conditionalQuickFilters, store)}
-            </div>
-          </Dropdown>
+          />
         </div>
 
         <div className={clsx(sharedStyles.tooltipTop)}>

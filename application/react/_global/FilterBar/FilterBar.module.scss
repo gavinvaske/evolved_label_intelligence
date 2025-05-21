@@ -1,11 +1,5 @@
 @import '../../_styles/shared.module.scss';
 
-.filterOptions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
 .searchWrapper {
   height: 34px;
   min-width: 80px;
@@ -97,64 +91,27 @@
   color: #6c757d;
 }
 
-.dropdownContent {
-  min-width: 250px;
-  max-width: 350px;
-  padding: 8px;
-}
-
-.dropdownTitle {
-  font-size: 1.1rem;
-  font-weight: 600;
-  margin: 0 0 20px 0;
-  color: #323338;
-  padding-bottom: 12px;
-  border-bottom: 1px solid #e9ecef;
-}
-
-.filterSection {
-  margin-bottom: 20px;
-
-  &:last-child {
-    margin-bottom: 0;
-  }
-}
-
-.filterDescription {
-  display: block;
-  color: #676879;
-  font-size: 0.875rem;
-  font-weight: 500;
-  margin-bottom: 12px;
-  text-transform: capitalize;
-}
-
-.filterActive {
-  background-color: #cce5ff;
-
-  &:hover {
-    background-color: #aed4fc;
-  }
-}
-
-.filterDescription {
-  color: #676879;
-}
-
-.filterText {
-  padding-left: 5px;
-}
-
-.filterDescription {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-size: 0.875rem;
+.filterBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: #f0f0f0;
   color: #6c757d;
-}
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 6px;
+  transition: 0.3s ease-in-out;
+  opacity: 0.5;
 
-.quickFilterDropdown.active,
-.advancedFilterDropdown.active {
-  visibility: visible;
-  opacity: 1;
-  z-index: 99;
+  &[data-has-filters="true"] {
+    background-color: #e8e6ff;
+    color: #7367F0;
+    font-weight: 600;
+    opacity: 1;
+    transition: 0.3s ease-in-out;
+  }
 }

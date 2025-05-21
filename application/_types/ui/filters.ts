@@ -6,18 +6,18 @@ export type UuidToConditionalFilter<T> = { [key: string]: ConditionalFilterFunct
 
 export interface Filter<T> {
   searchBarInput: string;
-  textQuickFilters: UuidToTextFilter;
-  conditionalQuickFilters: { [key: string]: ConditionalFilterFunction<T>; };
+  textFilters: UuidToTextFilter;
+  conditionalFilters: { [key: string]: ConditionalFilterFunction<T>; };
 
   getSearchBarInput(): string;
   setSearchBarInput(value: string): void;
 
-  getTextQuickFilters(): UuidToTextFilter;
-  setTextQuickFilter(uuid: string, value: string): void;
-  removeTextQuickFilter(uuid: string): void;
+  getTextFilters(): UuidToTextFilter;
+  setTextFilter(uuid: string, value: string): void;
+  removeTextFilter(uuid: string): void;
 
-  getConditionalQuickFilters(): UuidToConditionalFilter<T>;
-  setConditionalQuickFilter(uuid: string, conditionalFilter: ConditionalFilterFunction<T>): void;
+  getConditionalFilters(): UuidToConditionalFilter<T>;
+  setConditionalFilter(uuid: string, conditionalFilter: ConditionalFilterFunction<T>): void;
   removeConditionalFilter(uuid: string): void;
 
   resetAllFilters(): void;
@@ -37,8 +37,13 @@ export type TextFilter = {
   options: TextFilterOption[];
 };
 
-export type ConditionalFilter<T> = {
+export type ConditionalFilterOption<T> = {
   readonly uuid: string;
   textToDisplay: string;
   conditionalFilter: ConditionalFilterFunction<T>;
+}
+
+export type ConditionalFilter<T> = {
+  description: string;
+  options: ConditionalFilterOption<T>[];
 };
