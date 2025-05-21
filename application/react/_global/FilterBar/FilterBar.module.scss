@@ -104,7 +104,7 @@
   font-size: 12px;
   font-weight: 500;
   margin-left: 6px;
-  transition: all 0.2s ease-in-out;
+  transition: 0.3s ease-in-out;
   opacity: 0.5;
 
   &[data-has-filters="true"] {
@@ -112,5 +112,6 @@
     color: #7367F0;
     font-weight: 600;
     opacity: 1;
+    transition: 0.3s ease-in-out;
   }
 }
