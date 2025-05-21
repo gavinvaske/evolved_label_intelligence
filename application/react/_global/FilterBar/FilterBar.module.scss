@@ -90,3 +90,18 @@
   font-size: 0.875rem;
   color: #6c757d;
 }
+
+.filterBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: 10px;
+  background-color: #7367F0;
+  color: white;
+  font-size: 12px;
+  font-weight: 600;
+  margin-left: 6px;
+}
