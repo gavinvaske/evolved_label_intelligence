@@ -21,7 +21,7 @@ export interface ILinerType extends SchemaTimestampsConfig, Document<MongooseId>
   name: string;
 }
 
-export interface ICreditTerm extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface ICreditTerm extends SchemaTimestampsConfig, SoftDeleteDocument {
   description: string;
 }
 

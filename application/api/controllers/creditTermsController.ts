@@ -87,7 +87,7 @@ router.post('/', async (request, response) => {
 
 router.delete('/:mongooseId', async (request, response) => {
     try { 
-        const deletedCreditTerm = await CreditTermModel.findByIdAndDelete(request.params.mongooseId).exec();
+        const deletedCreditTerm = await CreditTermModel.deleteById(request.params.mongooseId, request.user._id)
 
         return response.status(SUCCESS).json(deletedCreditTerm);
     } catch (error) {
