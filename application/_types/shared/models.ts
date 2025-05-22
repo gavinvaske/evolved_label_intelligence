@@ -3,6 +3,7 @@ import { SchemaTimestampsConfig } from "mongoose";
 import { IAddress, IContact, IShippingLocation } from "./schemas.ts";
 import { MongooseId, MongooseIdStr } from "./typeAliases.ts";
 import { AuthRoles } from "@shared/enums/auth.ts";
+import { SoftDeleteDocument } from 'mongoose-delete';
 
 export interface IDeliveryMethod extends SchemaTimestampsConfig, Document<MongooseId> {
   name: string;
@@ -12,7 +13,7 @@ export interface IMaterialCategory extends SchemaTimestampsConfig, Document<Mong
   name: string;
 }
 
-export interface IAdhesiveCategory extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface IAdhesiveCategory extends SchemaTimestampsConfig, SoftDeleteDocument {
   name: string;
 }
 
