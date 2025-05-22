@@ -32,11 +32,10 @@ const schema = new Schema<IMaterialLengthAdjustment>({
 
 /* Hooks */
 schema.post([...createAndUpdateOneHooks, ...updateManyHooks], (result: IMaterialLengthAdjustment | IMaterialLengthAdjustment[]) => {
-  if (result instanceof Array) {
-    const materialIds = result.map(({material}) => material && material.toString());
-    populateMaterialInventories(materialIds);
-  } else {
+  if ('material' in result) {
     populateMaterialInventories([result.material && result.material.toString()]);
+  } else {
+    populateMaterialInventories();
   }
 })
 

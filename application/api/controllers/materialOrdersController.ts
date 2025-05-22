@@ -114,7 +114,8 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
 
 router.delete('/:mongooseId', async (request, response) => {
     try {
-        const deletedMaterialOrder = await MaterialOrderModel.findByIdAndDelete(request.params.mongooseId).exec();
+        const deletedMaterialOrder = await MaterialOrderModel.deleteById(request.params.mongooseId, request.user._id);
+
         return response.status(SUCCESS).json(deletedMaterialOrder);
     } catch (error) {
         console.error('Failed to delete materialOrder: ', error);

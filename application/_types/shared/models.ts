@@ -125,7 +125,7 @@ export interface IDie extends SchemaTimestampsConfig, SoftDeleteDocument {
   isLamination?: boolean
 }
 
-export interface IMaterialOrder extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface IMaterialOrder extends SchemaTimestampsConfig, SoftDeleteDocument {
   author: MongooseId | IUser;
   material: MongooseId | IMaterial;
   purchaseOrderNumber: string;
