@@ -5,27 +5,27 @@ import { MongooseId, MongooseIdStr } from "./typeAliases.ts";
 import { AuthRoles } from "@shared/enums/auth.ts";
 import { SoftDeleteDocument } from 'mongoose-delete';
 
-export interface IDeliveryMethod extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type IDeliveryMethod = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   name: string;
 }
 
-export interface IMaterialCategory extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type IMaterialCategory = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   name: string;
 }
 
-export interface IAdhesiveCategory extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type IAdhesiveCategory = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   name: string;
 }
 
-export interface ILinerType extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type ILinerType = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   name: string;
 }
 
-export interface ICreditTerm extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type ICreditTerm = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   description: string;
 }
 
-export interface ICustomer extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type ICustomer = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   customerId: string;
   name: string;
   notes?: string;
@@ -51,13 +51,13 @@ export type IVendor = SchemaTimestampsConfig & Document<MongooseId> & SoftDelete
   mfgSpecNumber?: string;
 }
 
-export interface IMaterialLengthAdjustment extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type IMaterialLengthAdjustment = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   material: MongooseId | IMaterial;
   length: number;
   notes?: string;
 }
 
-export interface IMaterial extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type IMaterial = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   name: string;
   materialId: string;
   vendor: MongooseId | IVendor;
@@ -96,7 +96,7 @@ export interface IMaterial extends SchemaTimestampsConfig, SoftDeleteDocument {
   netLength: number;
 }
 
-export interface IDie extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type IDie = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   dieNumber: string,
   shape: string,
   sizeAcross: number,
@@ -125,7 +125,7 @@ export interface IDie extends SchemaTimestampsConfig, SoftDeleteDocument {
   isLamination?: boolean
 }
 
-export interface IMaterialOrder extends SchemaTimestampsConfig, SoftDeleteDocument {
+export type IMaterialOrder = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   author: MongooseId | IUser;
   material: MongooseId | IMaterial;
   purchaseOrderNumber: string;
