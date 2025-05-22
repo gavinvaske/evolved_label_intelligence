@@ -9,7 +9,7 @@ export interface IDeliveryMethod extends SchemaTimestampsConfig, SoftDeleteDocum
   name: string;
 }
 
-export interface IMaterialCategory extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface IMaterialCategory extends SchemaTimestampsConfig, SoftDeleteDocument {
   name: string;
 }
 
