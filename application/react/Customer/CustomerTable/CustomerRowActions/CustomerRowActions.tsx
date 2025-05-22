@@ -15,7 +15,7 @@ type Props = {
 }
 
 export const CustomerRowActions = ({ row, confirmation }: Props) => {
-  const { _id : mongooseObjectId } = row.original;
+  const { _id : mongooseObjectId, customerId } = row.original;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -23,8 +23,8 @@ export const CustomerRowActions = ({ row, confirmation }: Props) => {
 
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
-      title: 'Delete Customer',
-      message: 'Are you sure you want to delete this customer? This action cannot be undone.',
+      title: 'Delete Customer?',
+      message: `Are you sure you want to delete this customer? This action cannot be undone. (Customer ID: "${customerId}")`,
       confirmText: 'Delete',
     });
 

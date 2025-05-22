@@ -25,7 +25,7 @@ export interface ICreditTerm extends SchemaTimestampsConfig, SoftDeleteDocument 
   description: string;
 }
 
-export interface ICustomer extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface ICustomer extends SchemaTimestampsConfig, SoftDeleteDocument {
   customerId: string;
   name: string;
   notes?: string;
