@@ -16,7 +16,7 @@ type Props = {
 
 export const DeliveryMethodRowActions = (props: Props) => {
   const { row, confirmation } = props;
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, name: deliveryMethodName } = row.original as IDeliveryMethod;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ export const DeliveryMethodRowActions = (props: Props) => {
 
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
-      title: 'Delete Delivery Method',
-      message: 'Are you sure you want to delete this delivery method? This action cannot be undone.',
+      title: 'Delete Delivery Method?',
+      message: `Are you sure you want to delete this delivery method? This action cannot be undone. (Delivery Method Name: "${deliveryMethodName}")`,
       confirmText: 'Delete',
     });
 

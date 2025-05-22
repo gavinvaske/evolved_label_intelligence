@@ -1,19 +1,27 @@
-import mongoose from 'mongoose';
+import { IDeliveryMethod } from '@shared/types/models';
+import mongoose, { Schema } from 'mongoose';
+import MongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
+
+/* Trim all strings and enable soft deletes */
 mongoose.Schema.Types.String.set('trim', true);
-const Schema = mongoose.Schema;
+mongoose.plugin(MongooseDelete, { overrideMethods: true, deletedBy: true, deletedAt: true });
 
-import mongooseDelete from 'mongoose-delete';
-mongoose.plugin(mongooseDelete, { overrideMethods: true });
-
-const deliveryMethodSchema = new Schema({
+const schema = new Schema<IDeliveryMethod>({
     name: {
         type: String,
         required: true,
-        uppercase: true,
-        unique: true,
-        index: true
+        uppercase: true
     }
-}, { timestamps: true });
+}, { timestamps: true, strict: 'throw' });
 
-export const DeliveryMethodModel = mongoose.model('DeliveryMethod', deliveryMethodSchema);
+/* Unique index */
+schema.index(
+  { name: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { deleted: { $eq: false } }
+  }
+);
+
+export const DeliveryMethodModel = mongoose.model<IDeliveryMethod, SoftDeleteModel<IDeliveryMethod>>('DeliveryMethod', schema);
 

@@ -5,7 +5,7 @@ import { MongooseId, MongooseIdStr } from "./typeAliases.ts";
 import { AuthRoles } from "@shared/enums/auth.ts";
 import { SoftDeleteDocument } from 'mongoose-delete';
 
-export interface IDeliveryMethod extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface IDeliveryMethod extends SchemaTimestampsConfig, SoftDeleteDocument {
   name: string;
 }
 
