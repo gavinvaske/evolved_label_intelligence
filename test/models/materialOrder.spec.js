@@ -405,16 +405,16 @@ describe('materialOrder validation', () => {
         });
 
         it('should update material.inventory each time insertMany is called', async () => {
-            await MaterialOrderModel.insertMany([materialOrderAttributes]);
-            await MaterialOrderModel.insertMany([materialOrderAttributes]);
+            await MaterialOrderModel.insertMany([testDataGenerator.mockData.MaterialOrder()]);
+            await MaterialOrderModel.insertMany([testDataGenerator.mockData.MaterialOrder()]);
         
             expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(2);
         });
 
         it('should update material.inventory each time bulkWrite is called', async () => {
-            await MaterialOrderModel.bulkWrite([{ insertOne: { document: materialOrderAttributes }}]);
-            await MaterialOrderModel.bulkWrite([{ insertOne: { document: materialOrderAttributes }}]);
-            await MaterialOrderModel.bulkWrite([{ insertOne: { document: materialOrderAttributes }}]);
+            await MaterialOrderModel.bulkWrite([{ insertOne: { document: testDataGenerator.mockData.MaterialOrder() }}]);
+            await MaterialOrderModel.bulkWrite([{ insertOne: { document: testDataGenerator.mockData.MaterialOrder() }}]);
+            await MaterialOrderModel.bulkWrite([{ insertOne: { document: testDataGenerator.mockData.MaterialOrder() }}]);
 
             // eslint-disable-next-line no-magic-numbers
             expect(populateMaterialInventoriesMock).toHaveBeenCalledTimes(3);

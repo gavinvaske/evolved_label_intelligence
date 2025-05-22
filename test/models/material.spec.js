@@ -59,7 +59,7 @@ describe('File: material.js', () => {
 
     it('should have the correct indexes', async () => {
         const indexMetaData = MaterialModel.schema.indexes();
-        const expectedIndexes = ['materialId', 'productNumber'];
+        const expectedIndexes = ['materialId'];
 
         console.log('indexMetaData: ', indexMetaData);
 
@@ -924,38 +924,8 @@ describe('File: material.js', () => {
             expect(savedMaterial.updatedAt).toBeDefined();
         });
 
-
-        it('should throw error if two materials with the same productNumber are saved to the DB', async () => {
-            const duplicateProductNumber = chance.string();
-            const material = new MaterialModel({
-                ...testDataGenerator.mockData.Material(),
-                productNumber: duplicateProductNumber
-            });
-            const materialWithDuplicateProductNumber = new MaterialModel({
-                ...testDataGenerator.mockData.Material(),
-                productNumber: duplicateProductNumber
-            });
-            const anothaMaterialWithDuplicateProductNumber = new MaterialModel({
-                ...testDataGenerator.mockData.Material(),
-                productNumber: duplicateProductNumber
-            });
-            let errorMessage;
-
-            await material.save();
-
-            try {
-                await materialWithDuplicateProductNumber.save();
-                await anothaMaterialWithDuplicateProductNumber.save();
-            } catch (error) {
-                errorMessage = error.message;
-            }
-
-            expect(errorMessage).toBeDefined();
-        });
-
-
         describe('attribute: materialId', () => {
-            it('should throw error if two materials with the same productNumber are saved to the DB', async () => {
+            it('should throw error if two materials with the same materialId are saved to the DB', async () => {
                 const duplicateMaterialId = chance.string();
                 const material = new MaterialModel({
                     ...testDataGenerator.mockData.Material(),
