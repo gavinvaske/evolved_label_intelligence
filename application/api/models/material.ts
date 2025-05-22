@@ -237,8 +237,8 @@ schema.index(
   }
 );
 
-export const MaterialModel = mongoose.model<IMaterial, SoftDeleteModel<IMaterial>>('Material', schema);
-
-
 /* Hooks */
 schema.post(MongooseHooks.Save, (doc: IMaterial) => populateMaterialInventories([doc._id.toString()]))
+
+/* Model */
+export const MaterialModel = mongoose.model<IMaterial, SoftDeleteModel<IMaterial>>('Material', schema);
