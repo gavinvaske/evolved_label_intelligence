@@ -51,7 +51,7 @@ export interface IVendor extends SchemaTimestampsConfig, Document<MongooseId>  {
   mfgSpecNumber?: string;
 }
 
-export interface IMaterialLengthAdjustment extends SchemaTimestampsConfig, Document<MongooseId>  {
+export interface IMaterialLengthAdjustment extends SchemaTimestampsConfig, SoftDeleteDocument {
   material: MongooseId | IMaterial;
   length: number;
   notes?: string;
