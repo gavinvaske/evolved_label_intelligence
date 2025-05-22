@@ -1,21 +1,29 @@
 import { ILinerType } from '@shared/types/models.ts';
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import MongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
+
+/* Trim all strings and enable soft deletes */
 mongoose.Schema.Types.String.set('trim', true);
-const Schema = mongoose.Schema;
-import mongoose_delete from 'mongoose-delete';
+mongoose.plugin(MongooseDelete, { overrideMethods: true, deletedBy: true, deletedAt: true });
 
 const schema = new Schema<ILinerType>({
     name: {
         type: String,
         required: true,
-        uppercase: true,
-        unique: true
+        uppercase: true
     }
 }, { 
     timestamps: true,
     strict: 'throw'
 });
 
-schema.plugin(mongoose_delete, { overrideMethods: true });
+/* Unique index */
+schema.index(
+  { name: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { deleted: { $eq: false } }
+  }
+);
 
-export const LinerTypeModel = mongoose.model<ILinerType>('LinerType', schema);
+export const LinerTypeModel = mongoose.model<ILinerType, SoftDeleteModel<ILinerType>>('LinerType', schema);

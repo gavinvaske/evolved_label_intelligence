@@ -17,7 +17,7 @@ export interface IAdhesiveCategory extends SchemaTimestampsConfig, SoftDeleteDoc
   name: string;
 }
 
-export interface ILinerType extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface ILinerType extends SchemaTimestampsConfig, SoftDeleteDocument {
   name: string;
 }
 

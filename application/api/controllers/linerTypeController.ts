@@ -74,7 +74,7 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
 
 router.delete('/:mongooseId', async (request, response) => {
     try {
-        const deletedLinerType = await LinerTypeModel.findByIdAndDelete(request.params.mongooseId).exec();
+        const deletedLinerType = await LinerTypeModel.deleteById(request.params.mongooseId, request.user._id)
 
         return response.status(SUCCESS).json(deletedLinerType);
     } catch (error) {

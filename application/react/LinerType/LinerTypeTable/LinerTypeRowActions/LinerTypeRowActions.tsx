@@ -16,7 +16,7 @@ type Props = {
 
 export const LinerTypeRowActions = (props: Props) => {
   const { row, confirmation } = props
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, name: linerTypeName } = row.original as ILinerType;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -24,8 +24,8 @@ export const LinerTypeRowActions = (props: Props) => {
 
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
-      title: 'Delete Liner Type',
-      message: 'Are you sure you want to delete this liner type? This action cannot be undone.',
+      title: 'Delete Liner Type?',
+      message: `Are you sure you want to delete this liner type? This action cannot be undone. (Liner Type Name: "${linerTypeName}")`,
       confirmText: 'Delete',
     });
 
