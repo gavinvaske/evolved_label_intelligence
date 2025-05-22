@@ -40,9 +40,7 @@ router.patch('/:mongooseId', async (request: Request, response: Response) => {
 
 router.delete('/:mongooseId', async (request: Request, response: Response) => {
   try {
-    const deletedDie = await DieModel.findByIdAndDelete(request.params.mongooseId)
-      .orFail(new Error(`Die not found using ID '${request.params.mongooseId}'`))
-      .exec();
+    const deletedDie = await DieModel.deleteById(request.params.mongooseId, request.user._id)
 
     return response.status(SUCCESS).json(deletedDie);
   } catch (error) {

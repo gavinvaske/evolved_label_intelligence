@@ -96,7 +96,7 @@ export interface IMaterial extends SchemaTimestampsConfig, Document<MongooseId> 
   netLength: number;
 }
 
-export interface IDie extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface IDie extends SchemaTimestampsConfig, SoftDeleteDocument {
   dieNumber: string,
   shape: string,
   sizeAcross: number,
