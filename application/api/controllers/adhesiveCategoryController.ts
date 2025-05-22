@@ -74,7 +74,7 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
 
 router.delete('/:mongooseId', async (request, response) => {
     try {
-        const deletedAdhesiveCategory = await AdhesiveCategoryModel.deleteById(request.params.mongooseId)
+        const deletedAdhesiveCategory = await AdhesiveCategoryModel.deleteById(request.params.mongooseId, request.user._id)
     
         return response.status(SUCCESS).json(deletedAdhesiveCategory);
     } catch (error) {
