@@ -104,7 +104,7 @@ router.get('/', async (_, response) => {
 
 router.delete('/:mongooseId', async (request, response) => {
   try {
-    const customer = await CustomerModel.findByIdAndDelete(request.params.mongooseId).exec();
+    const customer = await CustomerModel.deleteById(request.params.mongooseId, request.user._id)
 
     return response.status(SUCCESS).json(customer);
   } catch (error) {

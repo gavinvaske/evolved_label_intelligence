@@ -19,7 +19,7 @@ type Props = {
 
 export const DieRowActions = (props: Props) => {
   const { row, confirmation } = props;
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, dieNumber } = row.original as IDie;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -31,8 +31,8 @@ export const DieRowActions = (props: Props) => {
 
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
-      title: 'Delete Die',
-      message: 'Are you sure you want to delete this die? This action cannot be undone.',
+      title: 'Delete Die?',
+      message: `Are you sure you want to delete this die? This action cannot be undone. (Die Number: "${dieNumber}")`,
       confirmText: 'Delete',
     });
 

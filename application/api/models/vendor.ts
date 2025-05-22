@@ -1,19 +1,18 @@
-import mongoose from 'mongoose';
-mongoose.Schema.Types.String.set('trim', true);
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
+import mongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
 import { validatePhoneNumber, validateEmail } from '../services/dataValidationService.ts';
 import { addressSchema } from '../schemas/address.ts';
 import { IVendor } from '@shared/types/models.ts';
 
-import mongooseDelete from 'mongoose-delete';
-mongoose.plugin(mongooseDelete, { overrideMethods: true });
+/* Trim all strings and enable soft deletes */
+mongoose.Schema.Types.String.set('trim', true);
+mongoose.plugin(mongooseDelete, { overrideMethods: true, deletedBy: true, deletedAt: true });
 
 const schema = new Schema<IVendor>({
     name: {
         type: String,
         required: true,
-        uppercase: true,
-        unique: true
+        uppercase: true
     },
     phoneNumber: {
         type: String,
@@ -60,8 +59,13 @@ const schema = new Schema<IVendor>({
     }
 }, { timestamps: true, strict: 'throw' });
 
+/* Unique Index */
+schema.index(
+  { name: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { deleted: { $eq: false } }
+  }
+);
 
-
-schema.index({ name: 'text', mfgSpecNumber: 'text' });
-
-export const VendorModel = mongoose.model<IVendor>('Vendor', schema);
+export const VendorModel = mongoose.model<IVendor, SoftDeleteModel<IVendor>>('Vendor', schema);

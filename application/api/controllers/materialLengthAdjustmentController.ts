@@ -164,7 +164,7 @@ router.patch('/:mongooseId', async (request: Request, response: Response) => {
 
 router.delete('/:mongooseId', async (request: Request, response: Response) => {
   try { 
-      const deletedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.findByIdAndDelete(request.params.mongooseId).exec();
+      const deletedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.deleteById(request.params.mongooseId, request.user._id);
 
       return response.status(SUCCESS).json(deletedMaterialLengthAdjustment);
   } catch (error) {

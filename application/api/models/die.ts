@@ -1,6 +1,4 @@
-import mongoose from 'mongoose';
-mongoose.Schema.Types.String.set('trim', true);
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
 import { dieShapes } from '../enums/dieShapesEnum.ts';
 import { toolTypes } from '../enums/toolTypesEnum.ts';
 import { dieVendors } from '../enums/dieVendorsEnum.ts';
@@ -9,9 +7,11 @@ import { dieStatuses, ORDERED_DIE_STATUS, IN_STOCK_DIE_STATUS } from '../enums/d
 import { convertDollarsToPennies, convertPenniesToDollars } from '../services/currencyService.ts';
 import { IDie } from '@shared/types/models.ts';
 import { DIE_NUMBER_PREFIXES } from '../enums/dieNumberPrefixEnum.ts';
+import MongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
 
-import mongooseDelete from 'mongoose-delete';
-mongoose.plugin(mongooseDelete, { overrideMethods: true });
+/* Trim all strings and enable soft deletes */
+mongoose.Schema.Types.String.set('trim', true);
+mongoose.plugin(MongooseDelete, { overrideMethods: true, deletedBy: true, deletedAt: true });
 
 const DIE_NUMBER_REGEX = /^(\d{4})$/;
 
@@ -197,6 +197,13 @@ const schema = new Schema<IDie>({
     }
 }, { timestamps: true, strict: 'throw' });
 
-schema.index({ dieNumber: 'text', serialNumber: 'text' });
+/* Unique index */
+schema.index(
+  { dieNumber: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { deleted: { $eq: false } }
+  }
+);
 
-export const DieModel = mongoose.model<IDie>('Die', schema);
+export const DieModel = mongoose.model<IDie, SoftDeleteModel<IDie>>('Die', schema);

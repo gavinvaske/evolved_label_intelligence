@@ -36,7 +36,6 @@ export function verifyBearerToken(request: Request, response: Response, next) {
     return response.sendStatus(UNAUTHORIZED);
   }
   try {
-    /* @ts-ignore: TODO: Add request.user type via a .d.ts file */
     request.user = decodeAuthHeader(authorizationHeader)
     return next();
   } catch (error) {

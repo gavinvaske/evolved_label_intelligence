@@ -1,10 +1,12 @@
 import { IMaterialLengthAdjustment } from '@shared/types/models.ts';
-import mongoose from 'mongoose';
-mongoose.Schema.Types.String.set('trim', true);
-const Schema = mongoose.Schema;
-import mongoose_delete from 'mongoose-delete';
+import mongoose, { Schema } from 'mongoose';
 import { createAndUpdateOneHooks, deleteManyHooks, deleteOneHooks, MongooseHooks, updateManyHooks } from '../constants/mongoose.ts';
 import { populateMaterialInventories } from '../services/materialInventoryService.ts';
+import MongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
+
+/* Trim all strings and enable soft deletes */
+mongoose.Schema.Types.String.set('trim', true);
+mongoose.plugin(MongooseDelete, { overrideMethods: true, deletedBy: true, deletedAt: true });
 
 /* 
   * This table is responsible for Adding or Subtracting material from Inventory.
@@ -27,19 +29,13 @@ const schema = new Schema<IMaterialLengthAdjustment>({
     }
 }, { timestamps: true, strict: 'throw' });
 
-schema.plugin(mongoose_delete, {overrideMethods: true});
 
-schema.index({ 
-  'material.name': 'text', 
-  'material.materialId': 'text' 
-});
-
+/* Hooks */
 schema.post([...createAndUpdateOneHooks, ...updateManyHooks], (result: IMaterialLengthAdjustment | IMaterialLengthAdjustment[]) => {
-  if (result instanceof Array) {
-    const materialIds = result.map(({material}) => material && material.toString());
-    populateMaterialInventories(materialIds);
-  } else {
+  if ('material' in result) {
     populateMaterialInventories([result.material && result.material.toString()]);
+  } else {
+    populateMaterialInventories();
   }
 })
 
@@ -49,4 +45,7 @@ schema.post(MongooseHooks.BulkWrite, () => populateMaterialInventories())
 
 schema.post([...deleteOneHooks, ...deleteManyHooks], (_) => populateMaterialInventories())
 
-export const MaterialLengthAdjustmentModel = mongoose.model<IMaterialLengthAdjustment>('MaterialLengthAdjustment', schema);
+
+/* Model */
+export const MaterialLengthAdjustmentModel = mongoose.model<IMaterialLengthAdjustment, SoftDeleteModel<IMaterialLengthAdjustment>>('MaterialLengthAdjustment', schema);
+

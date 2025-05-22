@@ -136,7 +136,7 @@ router.delete('/:mongooseId', async (request, response) => {
   const { mongooseId } = request.params;
 
   try {
-    await MaterialCategoryModel.findByIdAndDelete(mongooseId);
+    await MaterialCategoryModel.deleteById(mongooseId, request.user._id);
 
     return response.sendStatus(SUCCESS);
   } catch (error) {
