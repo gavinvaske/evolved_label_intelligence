@@ -1,13 +1,13 @@
-import mongoose from 'mongoose';
-mongoose.Schema.Types.String.set('trim', true);
-const Schema = mongoose.Schema;
+import mongoose, { Schema } from 'mongoose';
 import { Decimal } from 'decimal.js';
-import mongooseDelete from 'mongoose-delete';
+import MongooseDelete, { SoftDeleteModel } from 'mongoose-delete';
 import { IMaterial } from '@shared/types/models.ts';
 import { MongooseHooks } from '../constants/mongoose.ts';
 import { populateMaterialInventories } from '../services/materialInventoryService.ts';
 
-mongoose.plugin(mongooseDelete, {overrideMethods: true});
+/* Trim all strings and enable soft deletes */
+mongoose.Schema.Types.String.set('trim', true);
+mongoose.plugin(MongooseDelete, { overrideMethods: true, deletedBy: true, deletedAt: true });
 
 const FOUR_DECIMAL_PLACES = 4;
 
@@ -52,9 +52,7 @@ const schema = new Schema<IMaterial>({
     materialId: {
         type: String,
         required: true,
-        uppercase: true,
-        index: true,
-        unique: true
+        uppercase: true
     },
     vendor: {
         type: Schema.Types.ObjectId,
@@ -169,9 +167,7 @@ const schema = new Schema<IMaterial>({
     productNumber: {
         type: String,
         uppercase: true,
-        required: true,
-        unique: true,
-        index: true
+        required: true
     },
     masterRollSize: {
         type: Number,
@@ -232,8 +228,17 @@ const schema = new Schema<IMaterial>({
     strict: 'throw'
 });
 
+/* Unique index */
+schema.index(
+  { materialId: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { deleted: { $eq: false } }
+  }
+);
+
+export const MaterialModel = mongoose.model<IMaterial, SoftDeleteModel<IMaterial>>('Material', schema);
+
+
+/* Hooks */
 schema.post(MongooseHooks.Save, (doc: IMaterial) => populateMaterialInventories([doc._id.toString()]))
-
-schema.index({ name: 'text', materialId: 'text' });
-
-export const MaterialModel = mongoose.model<IMaterial>('Material', schema);

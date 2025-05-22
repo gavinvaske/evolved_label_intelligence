@@ -142,7 +142,7 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
 
 router.delete('/:mongooseId', async (request, response) => {
   try {
-    const deletedMaterial = await MaterialModel.findByIdAndDelete(request.params.mongooseId).exec();
+    const deletedMaterial = await MaterialModel.deleteById(request.params.mongooseId, request.user._id)
 
     return response.status(SUCCESS).json(deletedMaterial);
   } catch (error) {

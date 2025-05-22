@@ -57,7 +57,7 @@ export interface IMaterialLengthAdjustment extends SchemaTimestampsConfig, Docum
   notes?: string;
 }
 
-export interface IMaterial extends SchemaTimestampsConfig, Document<MongooseId> {
+export interface IMaterial extends SchemaTimestampsConfig, SoftDeleteDocument {
   name: string;
   materialId: string;
   vendor: MongooseId | IVendor;
