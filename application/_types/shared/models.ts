@@ -37,7 +37,7 @@ export interface ICustomer extends SchemaTimestampsConfig, SoftDeleteDocument {
   overun: number;
 }
 
-export interface IVendor extends SchemaTimestampsConfig, Document<MongooseId>  {
+export type IVendor = SchemaTimestampsConfig & Document<MongooseId> & SoftDeleteDocument & {
   name: string;
   phoneNumber?: string;
   email?: string;

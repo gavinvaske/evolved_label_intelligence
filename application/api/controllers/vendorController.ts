@@ -108,9 +108,9 @@ router.patch('/:mongooseId', async (request, response) => {
 
 router.delete('/:mongooseId', async (request, response) => {
     try {
-        const deletedAdhesiveCategory = await VendorModel.findByIdAndDelete(request.params.mongooseId).exec();
+        const deletedVendor = await VendorModel.deleteById(request.params.mongooseId, request.user._id).exec();
     
-        return response.status(SUCCESS).json(deletedAdhesiveCategory);
+        return response.status(SUCCESS).json(deletedVendor);
     } catch (error) {
         console.error('Failed to delete vendor: ', error);
 
