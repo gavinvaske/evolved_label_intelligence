@@ -37,7 +37,7 @@ export const ConfirmationModal = ({
           <Button color="white" onClick={onClose}>
             {cancelText}
           </Button>
-          <Button color="red" onClick={handleConfirm}>
+          <Button color="red" onClick={handleConfirm} data-test="confirmation-modal-confirm-button">
             {confirmText}
           </Button>
         </div>

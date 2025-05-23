@@ -75,4 +75,28 @@ describe('Credit Term Management', () => {
     cy.get('[data-test=credit-term-table]')
       .should('contain', updatedDescription.toUpperCase());
   });
+
+  it('should allow deleting a credit term', () => {
+    // Find the row within the table and click the delete button
+    cy.get('[data-test=credit-term-table]')
+      .contains(uppercasedDescription)
+      .closest('[data-test=table-row]')
+      .find('[data-test=row-actions]')
+      .find('[data-test=row-actions-button]')
+      .click();
+
+    // Click the delete button in the dropdown menu
+    cy.get('[data-test=row-actions-menu]')
+      .find('[data-test=row-action-item]')
+      .contains('Delete')
+      .click();
+
+    // Handle the confirmation modal
+    cy.get('[data-test=confirmation-modal-confirm-button]')
+      .should('be.visible')
+      .click();
+
+    // Verify the credit term is deleted
+    cy.get('[data-test=credit-term-table]').should('not.contain', uppercasedDescription);
+  });
 });
