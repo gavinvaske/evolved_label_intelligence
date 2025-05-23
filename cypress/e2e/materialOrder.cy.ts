@@ -72,4 +72,38 @@ describe('Material Order Management', () => {
     cy.get('[data-test=material-order-table]')
       .should('contain', updatedPoNumber.toUpperCase());
   });
+
+  it('should allow deleting a material order', () => {
+    // First verify we have at least one row
+    cy.get('[data-test=material-order-table]')
+      .find('[data-test=table-row]')
+      .should('have.length.at.least', 1)
+      .then(($rows) => {
+        const initialRowCount = $rows.length;
+        
+        // Click the actions menu on the first row
+        cy.get('[data-test=material-order-table]')
+          .find('[data-test=table-row]')
+          .first()
+          .find('[data-test=row-actions]')
+          .find('[data-test=row-actions-button]')
+          .click();
+
+        // Click the delete button in the dropdown menu
+        cy.get('[data-test=row-actions-menu]')
+          .find('[data-test=row-action-item]')
+          .contains('Delete')
+          .click();
+
+        // Handle the confirmation modal
+        cy.get('[data-test=confirmation-modal-confirm-button]')
+          .should('be.visible')
+          .click();
+
+        // Verify the table has one less row
+        cy.get('[data-test=material-order-table]')
+          .find('[data-test=table-row]')
+          .should('have.length', initialRowCount - 1);
+      });
+  });
 });
