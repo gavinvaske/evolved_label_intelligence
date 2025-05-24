@@ -25,7 +25,8 @@
     "start:test": "cross-env NODE_ENV=test npx tsx application/api/index.ts",
     "cypress:open": "cross-env NODE_ENV=test cypress open",
     "acceptance:no-build": "start-server-and-test start:test http://localhost:8069 cypress:run",
-    "cypress:dev": "start-server-and-test start:test http://localhost:8069 \"cross-env NODE_ENV=test tsx cypress/support/seedTestDatabase.ts && npm run cypress:open\""
+    "cypress:dev": "start-server-and-test start:test http://localhost:8069 \"cross-env NODE_ENV=test tsx cypress/support/seedTestDatabase.ts && npm run cypress:open\"",
+    "db:reset": "cross-env NODE_ENV=development tsx scripts/resetAndSeedDatabase.ts"
   },
   "config": {
     "mongodbMemoryServer": {}
