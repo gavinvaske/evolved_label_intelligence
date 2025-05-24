@@ -17,11 +17,13 @@
     align-items: center;
     flex: 1;
     padding: 0px;
-
     width: 100%;
     color: #323338;
     font-weight: 600;
 
+    &:last-child {
+      flex: 0 0 100px; // Fixed width of 100px for the last column
+    }
   }
 
   .columnIcon {
