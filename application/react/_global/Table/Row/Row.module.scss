@@ -18,5 +18,9 @@
     white-space: normal;
     word-break: break-word;
     overflow-wrap: break-word;
+
+    &:last-child {
+      flex: 0 0 100px; // Fixed width of 100px for the last column
+    }
   }
 }
