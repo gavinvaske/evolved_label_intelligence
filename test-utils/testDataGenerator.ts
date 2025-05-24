@@ -228,7 +228,8 @@ function getBaseProduct() {
     coreDiameter: chance.d10(),
     labelsPerRoll: chance.integer({ min: 100, max: 1000 }),
     spotPlate: chance.bool(),
-    numberOfColors: chance.d12()
+    numberOfColors: chance.d12(),
+    productNumber: chance.string({ symbols: false, alpha: true, numeric: true })
   }
 }
 

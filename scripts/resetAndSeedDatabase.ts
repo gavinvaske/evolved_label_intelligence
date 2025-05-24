@@ -33,22 +33,80 @@ if (process.env.NODE_ENV !== 'development') {
 // Collections to preserve (not clear)
 const PRESERVED_COLLECTIONS = ['users'];
 
-// Collections to seed with data and their corresponding model names
-const COLLECTIONS_TO_SEED = [
-    { collection: 'dies', model: 'Die' },
-    { collection: 'materials', model: 'Material' },
-    { collection: 'finishes', model: 'Finish' },
-    { collection: 'customers', model: 'Customer' },
-    { collection: 'baseproducts', model: 'BaseProduct' },
-    { collection: 'vendors', model: 'Vendor' },
-    { collection: 'materialcategories', model: 'MaterialCategory' },
-    { collection: 'materiallengthadjustments', model: 'MaterialLengthAdjustment' },
-    { collection: 'materialorders', model: 'MaterialOrder' },
-    { collection: 'deliverymethods', model: 'DeliveryMethod' },
-    { collection: 'linertypes', model: 'LinerType' },
-    { collection: 'creditterms', model: 'CreditTerm' },
-    { collection: 'adhesivecategories', model: 'AdhesiveCategory' }
+// Define seeding order and relationships
+const SEEDING_ORDER = [
+    // First level - no dependencies
+    {
+        collection: 'vendors',
+        model: 'Vendor',
+        dependencies: []
+    },
+    {
+        collection: 'materialcategories',
+        model: 'MaterialCategory',
+        dependencies: []
+    },
+    {
+        collection: 'adhesivecategories',
+        model: 'AdhesiveCategory',
+        dependencies: []
+    },
+    {
+        collection: 'linertypes',
+        model: 'LinerType',
+        dependencies: []
+    },
+    {
+        collection: 'creditterms',
+        model: 'CreditTerm',
+        dependencies: []
+    },
+    {
+        collection: 'deliverymethods',
+        model: 'DeliveryMethod',
+        dependencies: []
+    },
+    // Second level - depends on first level
+    {
+        collection: 'materials',
+        model: 'Material',
+        dependencies: ['Vendor', 'MaterialCategory', 'AdhesiveCategory', 'LinerType']
+    },
+    {
+        collection: 'finishes',
+        model: 'Finish',
+        dependencies: ['Vendor']
+    },
+    {
+        collection: 'customers',
+        model: 'Customer',
+        dependencies: []
+    },
+    {
+        collection: 'dies',
+        model: 'Die',
+        dependencies: ['Vendor']
+    },
+    // Third level - depends on second level
+    {
+        collection: 'baseproducts',
+        model: 'BaseProduct',
+        dependencies: ['Customer', 'Die', 'Material', 'Finish']
+    },
+    {
+        collection: 'materiallengthadjustments',
+        model: 'MaterialLengthAdjustment',
+        dependencies: ['Material']
+    },
+    {
+        collection: 'materialorders',
+        model: 'MaterialOrder',
+        dependencies: ['Material', 'Vendor']
+    }
 ];
+
+// Store created documents for reference
+const createdDocuments: { [key: string]: mongoose.Types.ObjectId[] } = {};
 
 function promptForConfirmation(): Promise<boolean> {
     const rl = readline.createInterface({
@@ -60,7 +118,7 @@ function promptForConfirmation(): Promise<boolean> {
         console.log('\n⚠️  WARNING: This will reset your development database! ⚠️');
         console.log('This action cannot be undone.');
         console.log('The following collections will be cleared and reseeded:');
-        console.log(COLLECTIONS_TO_SEED.map(c => `- ${c.collection}`).join('\n'));
+        console.log(SEEDING_ORDER.map(c => `- ${c.collection}`).join('\n'));
         console.log('\nThe following collections will be preserved:');
         console.log(PRESERVED_COLLECTIONS.map(c => `- ${c}`).join('\n'));
         
@@ -99,9 +157,9 @@ async function resetAndSeedDatabase() {
             }
         }
 
-        // Seed the database
+        // Seed the database in order
         console.log('Seeding database...');
-        for (const { collection, model } of COLLECTIONS_TO_SEED) {
+        for (const { collection, model, dependencies } of SEEDING_ORDER) {
             const mongooseModel = mongoose.model(model);
             const mockDataGenerator = mockData[model];
 
@@ -112,10 +170,48 @@ async function resetAndSeedDatabase() {
 
             // Generate 5-10 random documents for each collection
             const numDocuments = Math.floor(Math.random() * 6) + 5;
-            const documents = Array(numDocuments).fill(null).map(() => mockDataGenerator());
+            const documents = Array(numDocuments).fill(null).map(() => {
+                const doc = mockDataGenerator();
+                
+                // Replace random ObjectIds with actual created document IDs
+                for (const dep of dependencies) {
+                    const depIds = createdDocuments[dep];
+                    if (depIds && depIds.length > 0) {
+                        // Find all fields that reference this dependency
+                        for (const key in doc) {
+                            if (doc[key] instanceof mongoose.Types.ObjectId && 
+                                key.toLowerCase().includes(dep.toLowerCase())) {
+                                // Pick a random ID from the dependency
+                                doc[key] = depIds[Math.floor(Math.random() * depIds.length)];
+                            }
+                        }
+                    }
+                }
+
+                // Handle BaseProduct's productNumber
+                if (model === 'BaseProduct') {
+                    // Remove productNumber as it will be generated by the pre-save hook
+                    delete doc.productNumber;
+                }
+                
+                return doc;
+            });
             
-            await mongooseModel.insertMany(documents);
-            console.log(`Seeded ${numDocuments} documents in ${collection}`);
+            try {
+                // Insert documents one at a time to handle pre-save hooks
+                for (const doc of documents) {
+                    const newDoc = new mongooseModel(doc);
+                    await newDoc.save();
+                    if (!createdDocuments[model]) {
+                        createdDocuments[model] = [];
+                    }
+                    createdDocuments[model].push(newDoc._id);
+                }
+                console.log(`Seeded ${documents.length} documents in ${collection}`);
+            } catch (error) {
+                console.error(`Error seeding ${collection}:`, error);
+                throw error;
+            }
         }
 
         console.log('\nDatabase reset and seeding completed successfully!');
@@ -123,7 +219,13 @@ async function resetAndSeedDatabase() {
         console.error('Error resetting and seeding database:', error);
         process.exit(1);
     } finally {
-        await mongoose.disconnect();
+        // Wait a moment to ensure all operations are complete
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        
+        // Close the connection
+        if (mongoose.connection.readyState !== 0) {
+            await mongoose.connection.close();
+        }
     }
 }
 
