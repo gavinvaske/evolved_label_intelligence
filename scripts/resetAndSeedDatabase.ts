@@ -14,7 +14,6 @@ import '../application/api/models/vendor';
 import '../application/api/models/materialCategory';
 import '../application/api/models/materialLengthAdjustment';
 import '../application/api/models/materialOrder';
-// import '../application/api/models/shippingLocation';
 import '../application/api/models/deliveryMethod';
 import '../application/api/models/linerType';
 import '../application/api/models/creditTerm';
@@ -33,28 +32,142 @@ if (process.env.NODE_ENV !== 'development') {
 // Collections to preserve (not clear)
 const PRESERVED_COLLECTIONS = ['users'];
 
+// Define predefined data for specific models
+const PREDEFINED_DATA = {
+    Vendor: [
+        {
+            name: 'Avery Dennison',
+            phoneNumber: '1-800-462-8379',
+            email: 'sales@averydennison.com',
+            website: 'https://www.averydennison.com',
+            primaryContactName: 'John Smith',
+            primaryContactPhoneNumber: '1-800-462-8379',
+            primaryContactEmail: 'john.smith@averydennison.com',
+            primaryAddress: {
+                name: 'Avery Dennison HQ',
+                street: '8080 Norton Parkway',
+                unitOrSuite: 'Suite 100',
+                city: 'Mentor',
+                state: 'OH',
+                zipCode: '44060'
+            },
+            remittanceAddress: {
+                name: 'Avery Dennison Payments',
+                street: '8080 Norton Parkway',
+                unitOrSuite: 'Suite 200',
+                city: 'Mentor',
+                state: 'OH',
+                zipCode: '44060'
+            }
+        },
+        {
+            name: 'UPM Raflatac',
+            phoneNumber: '1-800-558-1234',
+            email: 'sales@upmraflatac.com',
+            website: 'https://www.upmraflatac.com',
+            primaryContactName: 'Sarah Johnson',
+            primaryContactPhoneNumber: '1-800-558-1234',
+            primaryContactEmail: 'sarah.johnson@upmraflatac.com',
+            primaryAddress: {
+                name: 'UPM Raflatac HQ',
+                street: '100 North Point Center East',
+                unitOrSuite: 'Suite 200',
+                city: 'Alpharetta',
+                state: 'GA',
+                zipCode: '30022'
+            },
+            remittanceAddress: {
+                name: 'UPM Raflatac Payments',
+                street: '100 North Point Center East',
+                unitOrSuite: 'Suite 300',
+                city: 'Alpharetta',
+                state: 'GA',
+                zipCode: '30022'
+            }
+        }
+    ],
+    Material: [
+        {
+            name: 'White Polyester',
+            materialId: 'WP-100',
+            thickness: 2,
+            weight: 2,
+            width: 12,
+            faceColor: '#FFFFFF',
+            adhesive: 'Permanent',
+            description: 'High-quality white polyester material with permanent adhesive',
+            whenToUse: 'Ideal for outdoor applications and harsh environments',
+            alternativeStock: 'White Vinyl'
+        },
+        {
+            name: 'Clear Polyester',
+            materialId: 'CP-200',
+            thickness: 2,
+            weight: 2,
+            width: 12,
+            faceColor: 'transparent',
+            adhesive: 'Permanent',
+            description: 'Premium clear polyester material with permanent adhesive',
+            whenToUse: 'Perfect for window applications and transparent labeling',
+            alternativeStock: 'Clear Vinyl'
+        },
+        {name: 'White BOPP', materialId: 'BP-300', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality white BOPP material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Clear BOPP', materialId: 'BP-400', thickness: 2, weight: 2, width: 12, faceColor: 'transparent', adhesive: 'Permanent', description: 'Premium clear BOPP material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
+        {name: 'White PVC', materialId: 'PV-500', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality white PVC material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Clear PVC', materialId: 'PV-600', thickness: 2, weight: 2, width: 12, faceColor: 'transparent', adhesive: 'Permanent', description: 'Premium clear PVC material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
+        {name: 'White PET', materialId: 'PT-700', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality white PET material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Clear PET', materialId: 'PT-800', thickness: 2, weight: 2, width: 12, faceColor: 'transparent', adhesive: 'Permanent', description: 'Premium clear PET material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
+        {name: 'Vinyl', materialId: 'VY-900', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality vinyl material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Paper', materialId: 'PR-1000', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality paper material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'BOPP', materialId: 'BP-1100', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality BOPP material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'PVC', materialId: 'PV-1200', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality PVC material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'PET', materialId: 'PT-1300', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality PET material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Glassine', materialId: 'GL-1400', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality glassine material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Kraft', materialId: 'KR-1500', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality kraft material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+    ],
+    MaterialCategory: [
+        { name: 'Polyester' },
+        { name: 'Vinyl' },
+        { name: 'Paper' }
+    ],
+    AdhesiveCategory: [
+        { name: 'Permanent' },
+        { name: 'Removable' },
+        { name: 'Repositionable' }
+    ],
+    LinerType: [
+        { name: 'Glassine' },
+        { name: 'Kraft' },
+        { name: 'Polyester' }
+    ]
+};
+
 // Define seeding order and relationships
 const SEEDING_ORDER = [
     // First level - no dependencies
     {
         collection: 'vendors',
         model: 'Vendor',
-        dependencies: []
+        dependencies: [],
+        predefinedData: PREDEFINED_DATA.Vendor
     },
     {
         collection: 'materialcategories',
         model: 'MaterialCategory',
-        dependencies: []
+        dependencies: [],
+        predefinedData: PREDEFINED_DATA.MaterialCategory
     },
     {
         collection: 'adhesivecategories',
         model: 'AdhesiveCategory',
-        dependencies: []
+        dependencies: [],
+        predefinedData: PREDEFINED_DATA.AdhesiveCategory
     },
     {
         collection: 'linertypes',
         model: 'LinerType',
-        dependencies: []
+        dependencies: [],
+        predefinedData: PREDEFINED_DATA.LinerType
     },
     {
         collection: 'creditterms',
@@ -70,7 +183,8 @@ const SEEDING_ORDER = [
     {
         collection: 'materials',
         model: 'Material',
-        dependencies: ['Vendor', 'MaterialCategory', 'AdhesiveCategory', 'LinerType']
+        dependencies: ['Vendor', 'MaterialCategory', 'AdhesiveCategory', 'LinerType'],
+        predefinedData: PREDEFINED_DATA.Material
     },
     {
         collection: 'finishes',
@@ -159,7 +273,7 @@ async function resetAndSeedDatabase() {
 
         // Seed the database in order
         console.log('Seeding database...');
-        for (const { collection, model, dependencies } of SEEDING_ORDER) {
+        for (const { collection, model, dependencies, predefinedData } of SEEDING_ORDER) {
             const mongooseModel = mongoose.model(model);
             const mockDataGenerator = mockData[model];
 
@@ -168,38 +282,27 @@ async function resetAndSeedDatabase() {
                 continue;
             }
 
-            // Generate 5-10 random documents for each collection
-            const numDocuments = Math.floor(Math.random() * 6) + 5;
-            const documents = Array(numDocuments).fill(null).map(() => {
-                const doc = mockDataGenerator();
-                
-                // Replace random ObjectIds with actual created document IDs
-                for (const dep of dependencies) {
-                    const depIds = createdDocuments[dep];
-                    if (depIds && depIds.length > 0) {
-                        // Find all fields that reference this dependency
-                        for (const key in doc) {
-                            if (doc[key] instanceof mongoose.Types.ObjectId && 
-                                key.toLowerCase().includes(dep.toLowerCase())) {
-                                // Pick a random ID from the dependency
-                                doc[key] = depIds[Math.floor(Math.random() * depIds.length)];
+            // First, create predefined documents if they exist
+            if (predefinedData && predefinedData.length > 0) {
+                for (const predefinedDoc of predefinedData) {
+                    // Generate base document with all required fields
+                    const baseDoc = mockDataGenerator();
+                    // Merge predefined data with generated data
+                    const doc = { ...baseDoc, ...predefinedDoc };
+                    
+                    // Handle dependencies for predefined documents
+                    for (const dep of dependencies) {
+                        const depIds = createdDocuments[dep];
+                        if (depIds && depIds.length > 0) {
+                            for (const key in doc) {
+                                if (doc[key] instanceof mongoose.Types.ObjectId && 
+                                    key.toLowerCase().includes(dep.toLowerCase())) {
+                                    doc[key] = depIds[Math.floor(Math.random() * depIds.length)];
+                                }
                             }
                         }
                     }
-                }
 
-                // Handle BaseProduct's productNumber
-                if (model === 'BaseProduct') {
-                    // Remove productNumber as it will be generated by the pre-save hook
-                    delete doc.productNumber;
-                }
-                
-                return doc;
-            });
-            
-            try {
-                // Insert documents one at a time to handle pre-save hooks
-                for (const doc of documents) {
                     const newDoc = new mongooseModel(doc);
                     await newDoc.save();
                     if (!createdDocuments[model]) {
@@ -207,10 +310,49 @@ async function resetAndSeedDatabase() {
                     }
                     createdDocuments[model].push(newDoc._id);
                 }
-                console.log(`Seeded ${documents.length} documents in ${collection}`);
-            } catch (error) {
-                console.error(`Error seeding ${collection}:`, error);
-                throw error;
+                console.log(`Created ${predefinedData.length} predefined documents in ${collection}`);
+            } else {
+                // Only generate random documents if there are no predefined documents
+                const numRandomDocuments = Math.floor(Math.random() * 3) + 2; // 2-4 random documents
+                const documents = Array(numRandomDocuments).fill(null).map(() => {
+                    const doc = mockDataGenerator();
+                    
+                    // Replace random ObjectIds with actual created document IDs
+                    for (const dep of dependencies) {
+                        const depIds = createdDocuments[dep];
+                        if (depIds && depIds.length > 0) {
+                            for (const key in doc) {
+                                if (doc[key] instanceof mongoose.Types.ObjectId && 
+                                    key.toLowerCase().includes(dep.toLowerCase())) {
+                                    doc[key] = depIds[Math.floor(Math.random() * depIds.length)];
+                                }
+                            }
+                        }
+                    }
+
+                    // Handle BaseProduct's productNumber
+                    if (model === 'BaseProduct') {
+                        delete doc.productNumber;
+                    }
+                    
+                    return doc;
+                });
+                
+                try {
+                    // Insert random documents
+                    for (const doc of documents) {
+                        const newDoc = new mongooseModel(doc);
+                        await newDoc.save();
+                        if (!createdDocuments[model]) {
+                            createdDocuments[model] = [];
+                        }
+                        createdDocuments[model].push(newDoc._id);
+                    }
+                    console.log(`Created ${documents.length} random documents in ${collection}`);
+                } catch (error) {
+                    console.error(`Error seeding ${collection}:`, error);
+                    throw error;
+                }
             }
         }
 
