@@ -44,7 +44,7 @@ function getDie() {
         gear: chance.d100(),
         toolType: chance.pickone(toolTypes),
         notes: chance.sentence(),
-        cost: chance.floating({ min: 0, fixed: 2 }),
+        cost: chance.floating({ min: 0, fixed: 2, max: 1000 }),
         vendor: chance.pickone(dieVendors),
         magCylinder: chance.pickone(dieMagCylinders),
         cornerRadius: chance.floating({ min: 0.01, max: 10, fixed: 2 }),
@@ -55,7 +55,7 @@ function getDie() {
         facestock: chance.string(),
         liner: chance.string(),
         specialType: chance.string(),
-        serialNumber: chance.string(),
+        serialNumber: chance.string({ symbols: false, alpha: true, numeric: true }),
         status: chance.pickone(dieStatuses),
         quantity: chance.d100(),
         isLamination: chance.pickone([chance.bool(), undefined])
@@ -67,27 +67,27 @@ function getMaterialOrder() {
     material: new mongoose.Types.ObjectId(),
     purchaseOrderNumber: `${chance.integer({min: 0})}`,
     orderDate: chance.date({string: true}),
-    arrivalDate: chance.date({string: true}),
-    feetPerRoll: chance.integer({min: 100, max: 10000}),
-    totalRolls: chance.integer({min: 1, max: 100}),
-    totalCost: chance.floating({min: 1, max: 500000}),
+    arrivalDate: chance.date({ string: true }),
+    feetPerRoll: chance.integer({min: 100, max: 1500}),
+    totalRolls: chance.integer({min: 1, max: 50}),
+    totalCost: chance.floating({min: 500, max: 20000, fixed: 2}),
     vendor: new mongoose.Types.ObjectId(),
     hasArrived: chance.bool(),
     notes: chance.sentence(),
     author: new mongoose.Types.ObjectId(),
-    freightCharge: chance.floating({ min: 0, fixed: 2, max: 1000 }),
-    fuelCharge: chance.floating({ min: 0, fixed: 2, max: 1000 })
+    freightCharge: chance.floating({ min: 0, fixed: 2, max: 500 }),
+    fuelCharge: chance.floating({ min: 0, fixed: 2, max: 500 })
   }
 }
 
 function getVendor() {
     return {
-      name: chance.word(),
+      name: chance.animal(),
       phoneNumber: chance.phone(),
       email: chance.email(),
       notes: chance.sentence(),
       website: chance.url(),
-      primaryContactName: `${chance.word()} ${chance.word()}`,
+      primaryContactName: generatePersonFullName(),
       primaryContactPhoneNumber: chance.phone(),
       primaryContactEmail: chance.email(),
       primaryAddress: getAddress(),
@@ -112,7 +112,7 @@ function getLinerType() {
 
 function getCreditTerm() {
     return {
-        description: chance.string({ symbols: false, alpha: true, numeric: true })
+        description: chance.sentence({ words: chance.d4() })
     };
 }
 
@@ -139,7 +139,7 @@ function getMaterial() {
         costPerMsi: `${chance.floating({ min: 0.001, fixed: 3, max: 3 })}`,
         freightCostPerMsi: `${chance.floating({ min: 0.001, fixed: 3, max: 3 })}`,
         width: chance.d12(),
-        faceColor: chance.color(),
+        faceColor: chance.pickone(MATERIAL_FACE_COLORS),
         adhesive: chance.word(),
         adhesiveCategory: new mongoose.Types.ObjectId(),
         quotePricePerMsi: chance.integer({ min: 0.001, max: 3 }),
@@ -180,7 +180,7 @@ function getFinish() {
 
 function getContact() {
     return {
-        fullName: `${chance.word()} ${chance.word()}`,
+        fullName: generatePersonFullName(),
         phoneNumber: chance.phone(),
         phoneExtension: chance.integer({ min: 0, max: 999 }),
         email: chance.email(),
@@ -193,7 +193,7 @@ function getContact() {
 
 function getCustomer() {
     return {
-        name: `${chance.word()} ${chance.word()}`,
+        name: generatePersonFullName(),
         notes: chance.sentence(),
         overun: chance.d100(),
         customerId: chance.string({ symbols: false, alpha: true, numeric: true }),
@@ -205,8 +205,8 @@ function getUser() {
     const PASSWORD_MIN_LENGTH = 8;
 
     return {
-        firstName: chance.word(),
-        lastName: chance.word(),
+        firstName: chance.first(),
+        lastName: chance.last(),
         birthDate: chance.date({ string: true }),
         email: chance.email(),
         password: chance.string({ length: PASSWORD_MIN_LENGTH }),
@@ -257,3 +257,21 @@ function getDeliveryMethod() {
         name: chance.word()
     };
 }
+
+const generatePersonFullName = () => {
+  return `${chance.first()} ${chance.last()}`
+}
+
+const MATERIAL_FACE_COLORS = [
+  'White',
+  'Clear',
+  'Black',
+  'Silver',
+  'Gold',
+  'Matte White',
+  'Gloss White',
+  'Holographic',
+  'Kraft Brown',
+  'Fluorescent Yellow'
+  ,
+]

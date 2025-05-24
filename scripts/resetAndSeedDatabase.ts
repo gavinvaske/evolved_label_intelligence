@@ -84,6 +84,56 @@ const PREDEFINED_DATA = {
                 state: 'GA',
                 zipCode: '30022'
             }
+        },
+        {
+            name: 'Bemis',
+            phoneNumber: '1-800-558-1234',
+            email: 'sales@bemis.com',
+            website: 'https://www.bemis.com',
+            primaryContactName: 'John Smith',
+            primaryContactPhoneNumber: '1-800-558-1234',
+            primaryContactEmail: 'john.smith@bemis.com',
+            primaryAddress: {
+                name: 'Bemis HQ',
+                street: '100 North Point Center East',
+                unitOrSuite: 'Suite 200',
+                city: 'Alpharetta',
+                state: 'GA',
+                zipCode: '30022'
+            },
+            remittanceAddress: {
+                name: 'Bemis Payments',
+                street: '100 North Point Center East',
+                unitOrSuite: 'Suite 300',
+                city: 'Alpharetta',
+                state: 'GA',
+                zipCode: '30022'
+            }
+        },
+        {
+          name: 'Rexam',
+          phoneNumber: '1-800-558-1234',
+          email: 'sales@rexam.com',
+          website: 'https://www.rexam.com',
+          primaryContactName: 'Todd Anderson',
+          primaryContactPhoneNumber: '1-800-558-1234',
+          primaryContactEmail: 'todd.anderson@rexam.com',
+          primaryAddress: {
+            name: 'Rexam HQ',
+            street: '100 North Point Center East',
+            unitOrSuite: 'Suite 200',
+            city: 'Alpharetta',
+            state: 'GA',
+            zipCode: '30022'
+          },
+          remittanceAddress: {
+            name: 'Rexam Payments',
+            street: '100 North Point Center East',
+            unitOrSuite: 'Suite 300',
+            city: 'Alpharetta',
+            state: 'GA',
+            zipCode: '30022'
+          }
         }
     ],
     Material: [
@@ -111,35 +161,74 @@ const PREDEFINED_DATA = {
             whenToUse: 'Perfect for window applications and transparent labeling',
             alternativeStock: 'Clear Vinyl'
         },
-        {name: 'White BOPP', materialId: 'BP-300', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality white BOPP material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'Clear BOPP', materialId: 'BP-400', thickness: 2, weight: 2, width: 12, faceColor: 'transparent', adhesive: 'Permanent', description: 'Premium clear BOPP material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
-        {name: 'White PVC', materialId: 'PV-500', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality white PVC material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'Clear PVC', materialId: 'PV-600', thickness: 2, weight: 2, width: 12, faceColor: 'transparent', adhesive: 'Permanent', description: 'Premium clear PVC material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
-        {name: 'White PET', materialId: 'PT-700', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality white PET material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'Clear PET', materialId: 'PT-800', thickness: 2, weight: 2, width: 12, faceColor: 'transparent', adhesive: 'Permanent', description: 'Premium clear PET material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
-        {name: 'Vinyl', materialId: 'VY-900', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality vinyl material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'Paper', materialId: 'PR-1000', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality paper material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'BOPP', materialId: 'BP-1100', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality BOPP material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'PVC', materialId: 'PV-1200', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality PVC material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'PET', materialId: 'PT-1300', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality PET material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'Glassine', materialId: 'GL-1400', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality glassine material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
-        {name: 'Kraft', materialId: 'KR-1500', thickness: 2, weight: 2, width: 12, faceColor: '#FFFFFF', adhesive: 'Permanent', description: 'High-quality kraft material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'White BOPP', materialId: 'BP-300', adhesive: 'Permanent', description: 'High-quality white BOPP material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Clear BOPP', materialId: 'BP-400', adhesive: 'Permanent', description: 'Premium clear BOPP material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
+        {name: 'White PVC', materialId: 'PV-500', adhesive: 'Permanent', description: 'High-quality white PVC material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Clear PVC', materialId: 'PV-600', adhesive: 'Permanent', description: 'Premium clear PVC material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
+        {name: 'White PET', materialId: 'PT-700', adhesive: 'Permanent', description: 'High-quality white PET material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Clear PET', materialId: 'PT-800', adhesive: 'Permanent', description: 'Premium clear PET material with permanent adhesive', whenToUse: 'Perfect for window applications and transparent labeling', alternativeStock: 'Clear Vinyl'},
+        {name: 'Vinyl', materialId: 'VY-900', adhesive: 'Permanent', description: 'High-quality vinyl material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Paper', materialId: 'PR-1000', adhesive: 'Permanent', description: 'High-quality paper material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'BOPP', materialId: 'BP-1100', adhesive: 'Permanent', description: 'High-quality BOPP material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'PVC', materialId: 'PV-1200', adhesive: 'Permanent', description: 'High-quality PVC material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'PET', materialId: 'PT-1300', adhesive: 'Permanent', description: 'High-quality PET material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Glassine', materialId: 'GL-1400', adhesive: 'Permanent', description: 'High-quality glassine material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Kraft', materialId: 'KR-1500', adhesive: 'Permanent', description: 'High-quality kraft material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Semi-Gloss Paper', materialId: 'SG-1600', adhesive: 'Permanent', description: 'High-quality semi-gloss paper material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Matte Litho', materialId: 'ML-1700', adhesive: 'Permanent', description: 'High-quality matte litho material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Gloss Litho', materialId: 'GL-1800', adhesive: 'Permanent', description: 'High-quality gloss litho material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Gloss UV', materialId: 'UV-1900', adhesive: 'Permanent', description: 'High-quality gloss UV material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Matte UV', materialId: 'UV-2000', adhesive: 'Permanent', description: 'High-quality matte UV material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'Silver Matte PE', materialId: 'SP-2100', adhesive: 'Permanent', description: 'High-quality silver matte PE material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
+        {name: 'PE (Polyethylene)', materialId: 'PE-2200', adhesive: 'Permanent', description: 'High-quality PE material with permanent adhesive', whenToUse: 'Ideal for outdoor applications and harsh environments', alternativeStock: 'White Vinyl'},
     ],
     MaterialCategory: [
         { name: 'Polyester' },
         { name: 'Vinyl' },
-        { name: 'Paper' }
+        { name: 'Paper' },
+        { name: 'Thermal' },
+        { name: 'Film' },
+        { name: 'Specialty Stocks' }
     ],
     AdhesiveCategory: [
         { name: 'Permanent' },
         { name: 'Removable' },
-        { name: 'Repositionable' }
+        { name: 'Repositionable' },
+        { name: 'Freezer/Cold Temp Adhesive'},
+        { name: 'Hot Melt Adhesive'},
+        { name: 'High Tack Adhesive'},
+        { name: 'Medical-Grade Adhesive'},
     ],
     LinerType: [
         { name: 'Glassine' },
         { name: 'Kraft' },
-        { name: 'Polyester' }
+        { name: 'Polyester' },
+        { name: 'PET Liner' },
+        { name: 'PVC Liner' },
+        { name: 'BOPP Liner' },
+        { name: 'Gloss Liner' },
+        { name: 'Matte Liner' },
+        { name: 'Gloss UV Liner' },
+        { name: 'Matte UV Liner' },
     ]
+};
+
+// Define ranges for random document generation per model
+/* If PREDEFINED_DATA is not provided for a model, then the number of random documents generated will be between the min and max */
+const RANDOM_DOCUMENT_RANGES = {
+    Vendor: { min: 2, max: 4 },
+    Material: { min: 5, max: 10 },
+    Finish: { min: 3, max: 6 },
+    Customer: { min: 20, max: 60 },
+    BaseProduct: { min: 2, max: 5 },
+    MaterialCategory: { min: 2, max: 4 },
+    AdhesiveCategory: { min: 2, max: 4 },
+    LinerType: { min: 2, max: 4 },
+    CreditTerm: { min: 2, max: 4 },
+    DeliveryMethod: { min: 2, max: 4 },
+    Die: { min: 5, max: 12 },
+    MaterialLengthAdjustment: { min: 50, max: 100 },
+    MaterialOrder: { min: 50, max: 100 }
 };
 
 // Define seeding order and relationships
@@ -312,8 +401,9 @@ async function resetAndSeedDatabase() {
                 }
                 console.log(`Created ${predefinedData.length} predefined documents in ${collection}`);
             } else {
-                // Only generate random documents if there are no predefined documents
-                const numRandomDocuments = Math.floor(Math.random() * 3) + 2; // 2-4 random documents
+                // Get the random document range for this model, or use default if not specified
+                const range = RANDOM_DOCUMENT_RANGES[model] || { min: 2, max: 4 };
+                const numRandomDocuments = Math.floor(Math.random() * (range.max - range.min + 1)) + range.min;
                 const documents = Array(numRandomDocuments).fill(null).map(() => {
                     const doc = mockDataGenerator();
                     
