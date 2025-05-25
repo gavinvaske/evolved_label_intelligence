@@ -40,7 +40,9 @@ describe('Die Management', () => {
       cy.selectFromDropdown('[data-test=input-magCylinder]', die.magCylinder.toString());
       cy.get('[data-test=input-facestock]').type(die.facestock);
       cy.get('[data-test=input-liner]').type(die.liner);
-      cy.get('[data-test=input-specialType]').type(die.specialType || '');
+      if (die.specialType) {
+        cy.get('[data-test=input-specialType]').type(die.specialType);
+      }
 
       // Additional Information
       cy.get('[data-test=input-cost]').type(die.cost.toString());
