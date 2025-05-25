@@ -5,6 +5,7 @@ import { ConditionalFilterDropdownOption } from "./ConditionalFilterDropdownOpti
 import inventoryStore from "../../../stores/inventoryStore"
 import { v4 as uuidv4 } from 'uuid';
 import { IMaterial } from "@shared/types/models"
+import { isInventoryLevelCritical, isInventoryLevelLow } from "../../../Inventory/Materials/Material/MaterialCard"
 
 interface Props {
   isOpen: boolean
@@ -57,23 +58,64 @@ const renderConditionalQuickFilters = <T extends any>(conditionalFilters: Condit
 
 const conditionalQuickFilters: ConditionalFilter<IMaterial>[] = [
   {
-    description: "Stock Status",
+    description: 'Inventory Levels',
     options: [
       {
         uuid: uuidv4(),
-        textToDisplay: 'Available to Use',
+        textToDisplay: 'Critical',
         conditionalFilter: (materials: Partial<IMaterial>[]) => {
           return materials.filter((material) => {
-            return material?.inventory?.netLengthAvailable && material?.inventory?.netLengthAvailable > 0
+            return isInventoryLevelCritical(material as IMaterial)
           })
         }
       },
       {
         uuid: uuidv4(),
-        textToDisplay: 'Negative Net Inventory',
+        textToDisplay: 'Warning',
         conditionalFilter: (materials: Partial<IMaterial>[]) => {
           return materials.filter((material) => {
-            return material?.inventory?.netLengthAvailable && material?.inventory?.netLengthAvailable < 0
+            return isInventoryLevelLow(material as IMaterial)
+          })
+        }
+      },
+      {
+        uuid: uuidv4(),
+        textToDisplay: 'Good',
+        conditionalFilter: (materials: Partial<IMaterial>[]) => {
+          return materials.filter((material) => {
+            return !isInventoryLevelCritical(material as IMaterial) && !isInventoryLevelLow(material as IMaterial)
+          })
+        }
+      }
+    ]
+  },
+  {
+    description: "Thickness",
+    options: [
+      {
+        uuid: uuidv4(),
+        textToDisplay: '1-2 mils',
+        conditionalFilter: (materials: Partial<IMaterial>[]) => {
+          return materials.filter((material) => {
+            return material?.thickness && material?.thickness >= 1 && material?.thickness <= 2
+          })
+        }
+      },
+      {
+        uuid: uuidv4(),
+        textToDisplay: '2-3 mils',
+        conditionalFilter: (materials: Partial<IMaterial>[]) => {
+          return materials.filter((material) => {
+            return material?.thickness && material?.thickness >= 2 && material?.thickness <= 3
+          })
+        }
+      },
+      {
+        uuid: uuidv4(),
+        textToDisplay: '3-4 mils',
+        conditionalFilter: (materials: Partial<IMaterial>[]) => {
+          return materials.filter((material) => {
+            return material?.thickness && material?.thickness >= 3 && material?.thickness <= 4
           })
         }
       }
@@ -84,19 +126,19 @@ const conditionalQuickFilters: ConditionalFilter<IMaterial>[] = [
     options: [
       {
         uuid: uuidv4(),
-        textToDisplay: 'Large (>10)',
+        textToDisplay: 'Large (>=6")',
         conditionalFilter: (materials: Partial<IMaterial>[]) => {
           return materials.filter((material) => {
-            return material?.width && material?.width > 10
+            return material?.width && material?.width >= 6
           })
         }
       },
       {
         uuid: uuidv4(),
-        textToDisplay: 'Small (<10)',
+        textToDisplay: 'Small (<6")',
         conditionalFilter: (materials: Partial<IMaterial>[]) => {
           return materials.filter((material) => {
-            return material?.width && material?.width < 10
+            return material?.width && material?.width < 6
           })
         }
       }

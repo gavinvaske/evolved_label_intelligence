@@ -11,6 +11,7 @@ import { IVendorForm } from '@ui/types/forms';
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import * as formStyles from '@ui/styles/form.module.scss'
 import { Button } from '../../_global/Button/Button';
+import * as styles from './VendorForm.module.scss'
 
 const vendorTableUrl = '/react-ui/tables/vendor'
 
@@ -144,7 +145,7 @@ export const VendorForm = () => {
                 placeholder='Enter notes here...'
               />
 
-              <div className={formStyles.inputGroupWrapper}>
+              <div className={styles.checkboxWrapper}>
                 <label>
                   <input
                     type="checkbox"

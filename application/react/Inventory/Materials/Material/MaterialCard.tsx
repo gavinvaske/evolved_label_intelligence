@@ -21,8 +21,8 @@ const MaterialCard = observer((props: Props) => {
       <div className={clsx(styles.cardHeader, flexboxStyles.flexCenterCenterRow)}>
         <div className={clsx(styles.col, styles.colLeft)}>
           <h2 className={clsx({
-            [styles.lowInventory as string]: isLowInventory(material),
-            [styles.lowInventoryWarning as string]: isLowInventoryWarning(material),
+            [styles.lowInventory as string]: isInventoryLevelCritical(material),
+            [styles.lowInventoryWarning as string]: isInventoryLevelLow(material),
           })}>
             {material.materialId}
           </h2>
@@ -71,7 +71,7 @@ const MaterialCard = observer((props: Props) => {
   );
 });
 
-function isLowInventory(material: IMaterial): boolean {
+export function isInventoryLevelCritical(material: IMaterial): boolean {
   const { lowStockThreshold, lowStockBuffer, inventory } = material;
 
   if ((!lowStockThreshold || !lowStockBuffer) || inventory.netLengthAvailable < lowStockThreshold) {
@@ -80,7 +80,7 @@ function isLowInventory(material: IMaterial): boolean {
   return false;
 }
 
-function isLowInventoryWarning(material: IMaterial): boolean {
+export function isInventoryLevelLow(material: IMaterial): boolean {
   const { lowStockThreshold, lowStockBuffer, inventory } = material;
 
   if (
