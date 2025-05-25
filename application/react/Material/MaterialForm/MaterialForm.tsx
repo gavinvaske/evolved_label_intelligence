@@ -197,8 +197,7 @@ export const MaterialForm = () => {
                   attribute='width'
                   label="Width"
                   isRequired={true}
-                  leftUnit='@storm'
-                  rightUnit='@storm'
+                  leftUnit='in.'
                 />
                 <CustomSelect
                   attribute='vendor'
@@ -217,13 +216,13 @@ export const MaterialForm = () => {
                   attribute='thickness'
                   label="Thickness" 
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='mils'
                 />
                 <Input
                   attribute='weight'
                   label="Weight"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='lbs/MSI'
                 />
                 <Input
                   attribute='faceColor'
@@ -242,18 +241,21 @@ export const MaterialForm = () => {
                   label="Freight Cost (per MSI)"
                   isRequired={true}
                   fieldType='currency'
+                  leftUnit='$/MSI'
                 />
                 <Input
                   attribute='costPerMsi'
                   label="Cost (per MSI)"
                   isRequired={true}
                   fieldType='currency'
+                  leftUnit='$/MSI'
                 />
                 <Input
                   attribute='quotePricePerMsi'
                   label="Quote Price (Per MSI)"
                   isRequired={true}
                   fieldType='currency'
+                  leftUnit='$/MSI'
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
@@ -261,13 +263,13 @@ export const MaterialForm = () => {
                   attribute='lowStockThreshold'
                   label="Low Stock Threshold"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='ft.'
                 />
                 <Input
                   attribute='lowStockBuffer'
                   label="Low Stock Buffer"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='ft.'
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
@@ -294,25 +296,25 @@ export const MaterialForm = () => {
                   attribute='length'
                   label="Length"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='ft.'
                 />
                 <Input
                   attribute='facesheetWeightPerMsi'
                   label="Facesheet Weight (Per MSI)"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='lbs/MSI'
                 />
                 <Input
                   attribute='adhesiveWeightPerMsi'
                   label="Adhesive Weight (Per MSI)"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='lbs/MSI'
                 />
                 <Input
                   attribute='linerWeightPerMsi'
                   label="Liner Weight (Per MSI)"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='lbs/MSI'
                 />
                 <Input
                   attribute='productNumber'
@@ -323,7 +325,7 @@ export const MaterialForm = () => {
                   attribute='masterRollSize'
                   label="Master Roll Size"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='ft.'
                 />
                 <Input
                   attribute='image'

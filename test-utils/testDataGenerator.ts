@@ -175,7 +175,7 @@ function getFinish() {
         finishId: chance.string({ symbols: false, alpha: true, numeric: true }),
         vendor: new mongoose.Types.ObjectId(),
         category: new mongoose.Types.ObjectId(),
-        thickness: chance.integer({ min: 1, max: 3 }),
+        thickness: chance.floating({ min: 1, max: 4, fixed: 1 }),
         weight: chance.d100(),
         costPerMsi: chance.floating({ min: 0.001, fixed: 3, max: 3 }),
         freightCostPerMsi: chance.floating({ min: 0.001, fixed: 3, max: 3 }),
