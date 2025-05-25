@@ -12,8 +12,9 @@
     }
   },
   "scripts": {
-    "build": "parcel build --no-cache",
-    "start": "npm run build && npx tsx application/api/index.ts",
+    "build": "cross-env NODE_OPTIONS=--max-old-space-size=512 parcel build --no-cache",
+    "start": "npx tsx application/api/index.ts",
+    "heroku-postbuild": "npm run build",
     "react": "npm run parcel:remove-cache && parcel watch",
     "test": "jest",
     "cypress:run": "cross-env NODE_ENV=test cypress run",
