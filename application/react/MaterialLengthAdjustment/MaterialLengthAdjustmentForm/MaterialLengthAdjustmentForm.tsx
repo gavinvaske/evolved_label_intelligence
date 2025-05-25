@@ -111,7 +111,7 @@ export const MaterialLengthAdjustmentForm = () => {
                   attribute='length'
                   label="Length"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='ft.'
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>

@@ -309,7 +309,7 @@ export const CustomerForm = () => {
                     attribute='overun'
                     label="Overun"
                     isRequired={true}
-                    leftUnit='ft'
+                    leftUnit='ft.'
                   />
                 </div>
                 <div className={formStyles.inputGroupWrapper}>

@@ -130,43 +130,43 @@ export const DieForm = () => {
                   attribute='sizeAcross'
                   label="Size Across"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='in.'
                 />
                 <Input
                   attribute='sizeAround'
                   label="Size Around"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='in.'
                 />
                 <Input
                   attribute='numberAcross'
                   label="Number Across"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='in.'
                 />
                 <Input
                   attribute='numberAround'
                   label="Number Around"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='in.'
                 />
                 <Input
                   attribute='cornerRadius'
                   label="Corner Radius"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='in.'
                 />
                 <Input
                   attribute='topAndBottom'
                   label="Across Matrix"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='in.'
                 />
                 <Input
                   attribute='leftAndRight'
                   label="Around Matrix"
                   isRequired={true}
-                  leftUnit='@storm'
+                  leftUnit='in.'
                 />
               </div>
               <div className={formStyles.inputGroupWrapper}>
@@ -209,6 +209,7 @@ export const DieForm = () => {
                   label="Cost"
                   isRequired={true}
                   fieldType='currency'
+                  leftUnit='$'
                 />
                 <CustomSelect
                   attribute='vendor'
