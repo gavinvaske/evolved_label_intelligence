@@ -16,7 +16,7 @@ type Props = {
 }
 
 export const AdhesiveCategoryRowActions = ({ row, confirmation }: Props) => {
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, name } = row.original;
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const { showConfirmation } = confirmation;
@@ -24,7 +24,7 @@ export const AdhesiveCategoryRowActions = ({ row, confirmation }: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
       title: 'Delete Adhesive Category',
-      message: 'Are you sure you want to delete this adhesive category? This action cannot be undone.',
+      message: (<span>Are you sure you want to delete "<strong>{name}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 

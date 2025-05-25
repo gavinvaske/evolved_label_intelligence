@@ -25,7 +25,7 @@ export const LinerTypeRowActions = (props: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
       title: 'Delete Liner Type?',
-      message: `Are you sure you want to delete this liner type? This action cannot be undone. (Liner Type Name: "${linerTypeName}")`,
+      message: (<span>Are you sure you want to delete "<strong>{linerTypeName}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 

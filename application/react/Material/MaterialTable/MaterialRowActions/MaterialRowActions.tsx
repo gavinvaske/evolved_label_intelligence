@@ -16,7 +16,7 @@ type Props = {
 
 export const MaterialRowActions = (props: Props) => {
   const { row, confirmation } = props
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, name } = row.original;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const MaterialRowActions = (props: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
       title: 'Delete Material',
-      message: 'Are you sure you want to delete this material? This action cannot be undone.',
+      message: (<span>Are you sure you want to delete "<strong>{name}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 

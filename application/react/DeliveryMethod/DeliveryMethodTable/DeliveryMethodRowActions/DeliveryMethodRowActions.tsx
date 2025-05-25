@@ -25,7 +25,7 @@ export const DeliveryMethodRowActions = (props: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
       title: 'Delete Delivery Method?',
-      message: `Are you sure you want to delete this delivery method? This action cannot be undone. (Delivery Method Name: "${deliveryMethodName}")`,
+      message: (<span>Are you sure you want to delete "<strong>{deliveryMethodName}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 

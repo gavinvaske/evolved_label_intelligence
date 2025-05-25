@@ -17,7 +17,7 @@ type Props = {
 
 export const CreditTermRowActions = (props: Props) => {
   const { row, confirmation } = props;
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, description } = row.original;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -26,7 +26,7 @@ export const CreditTermRowActions = (props: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
       title: 'Delete Credit Term',
-      message: 'Are you sure you want to delete this credit term? This action cannot be undone.',
+      message: (<span>Are you sure you want to delete "<strong>{description}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 

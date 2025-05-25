@@ -3,7 +3,7 @@ import { ConfirmationModal } from './ConfirmationModal';
 
 type ConfirmationOptions = {
   title?: string;
-  message: string;
+  message: string | JSX.Element;
   confirmText?: string;
   cancelText?: string;
 };
@@ -46,8 +46,8 @@ export const useConfirmation = (): ConfirmationResult => {
         onConfirm={handleConfirm}
         title={options.title || 'Confirm Action'}
         message={options.message}
-        confirmText={options.confirmText}
-        cancelText={options.cancelText}
+        confirmText={options.confirmText || 'Confirm'}
+        cancelText={options.cancelText || 'Cancel'}
       />
     );
   }, [isOpen, options, handleClose, handleConfirm]);
