@@ -25,7 +25,8 @@
     "start:test": "cross-env NODE_ENV=test npx tsx application/api/index.ts",
     "cypress:open": "cross-env NODE_ENV=test cypress open",
     "acceptance:no-build": "start-server-and-test start:test http://localhost:8069 cypress:run",
-    "cypress:dev": "start-server-and-test start:test http://localhost:8069 \"cross-env NODE_ENV=test tsx cypress/support/seedTestDatabase.ts && npm run cypress:open\""
+    "cypress:dev": "start-server-and-test start:test http://localhost:8069 \"cross-env NODE_ENV=test tsx cypress/support/seedTestDatabase.ts && npm run cypress:open\"",
+    "db:reset": "tsx scripts/resetAndSeedDatabase.ts"
   },
   "config": {
     "mongodbMemoryServer": {}
@@ -64,6 +65,8 @@
     "multer": "1.4.5-lts.1",
     "parcel": "2.13.3",
     "pluralize": "8.0.0",
+    "postcss": "8.5.3",
+    "postcss-modules": "6.0.1",
     "process": "0.11.10",
     "react": "18.3.1",
     "react-dom": "18.3.1",
@@ -94,7 +97,7 @@
     "@types/uuid": "9.0.8",
     "babel-jest": "29.7.0",
     "browserify-zlib": "0.2.0",
-    "chance": "1.1.12",
+    "chance": "1.1.13",
     "cross-env": "7.0.3",
     "crypto-browserify": "3.12.0",
     "cypress": "14.3.2",
@@ -103,8 +106,6 @@
     "jest": "29.7.0",
     "jest-when": "3.5.2",
     "path-browserify": "1.0.1",
-    "postcss": "8.5.3",
-    "postcss-modules": "6.0.1",
     "start-server-and-test": "2.0.3",
     "stream-browserify": "3.0.0",
     "stream-http": "3.2.0",

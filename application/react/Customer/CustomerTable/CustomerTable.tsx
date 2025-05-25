@@ -35,9 +35,6 @@ export const CustomerTable = () => {
     columnHelper.accessor('name', {
       header: 'Name'
     }),
-    columnHelper.accessor('notes', {
-      header: 'Notes'
-    }),
     columnHelper.accessor('overun', {
       header: 'Overun'
     }),
