@@ -52,10 +52,10 @@ function getDie() {
         leftAndRight: chance.d100(),
         spaceAcross: chance.floating({ min: 0.01, max: 10, fixed: 2 }),
         spaceAround: chance.floating({ min: 0.01, max: 10, fixed: 2 }),
-        facestock: chance.string(),
-        liner: chance.string(),
-        specialType: chance.string(),
-        serialNumber: chance.string({ symbols: false, alpha: true, numeric: true }),
+        facestock: chance.pickone(DIE.FACESTOCK),
+        liner: chance.pickone(DIE.LINER),
+        specialType: chance.pickone([...DIE.SPECIAL_TYPES, undefined]),
+        serialNumber: chance.string({ symbols: false, alpha: true, numeric: true, min: 10, max: 10 }),
         status: chance.pickone(dieStatuses),
         quantity: chance.d100(),
         isLamination: chance.pickone([chance.bool(), undefined])
@@ -63,13 +63,17 @@ function getDie() {
 }
 
 function getMaterialOrder() {
+  const orderDate: string = chance.date({ string: true, year: chance.integer({ min: 2018, max: 2025 }) });
+  const daysToAdd: number = chance.integer({ min: 14, max: 60 });
+  const arrivalDate: string = new Date(new Date(orderDate).getTime() + daysToAdd * 24 * 60 * 60 * 1000).toISOString();
+
   return {
     material: new mongoose.Types.ObjectId(),
-    purchaseOrderNumber: `${chance.integer({min: 0})}`,
-    orderDate: chance.date({string: true}),
-    arrivalDate: chance.date({ string: true }),
+    purchaseOrderNumber: chance.string({ symbols: false, alpha: false, numeric: true, min: 8, max: 8 }),
+    orderDate: orderDate,
+    arrivalDate: arrivalDate,
     feetPerRoll: chance.integer({min: 100, max: 1500}),
-    totalRolls: chance.integer({min: 1, max: 50}),
+    totalRolls: chance.integer({ min: 1, max: 40 }),
     totalCost: chance.floating({min: 500, max: 20000, fixed: 2}),
     vendor: new mongoose.Types.ObjectId(),
     hasArrived: chance.bool(),
@@ -92,14 +96,14 @@ function getVendor() {
       primaryContactEmail: chance.email(),
       primaryAddress: getAddress(),
       remittanceAddress: chance.pickone([getAddress(), undefined]),
-      mfgSpecNumber: chance.word()
+      mfgSpecNumber: generateMfgSpecNumber()
     };
 }
 
 function getMaterialLengthAdjustment() {
   return {
     material: new mongoose.Types.ObjectId(),
-    length: chance.integer({ min: -100000, max: 100000 }),
+    length: chance.integer({ min: -10000, max: 10000 }),
     notes: chance.sentence()
   }
 }
@@ -139,24 +143,24 @@ function getMaterial() {
         costPerMsi: `${chance.floating({ min: 0.001, fixed: 3, max: 3 })}`,
         freightCostPerMsi: `${chance.floating({ min: 0.001, fixed: 3, max: 3 })}`,
         width: chance.d12(),
-        faceColor: chance.pickone(MATERIAL_FACE_COLORS),
+        faceColor: chance.pickone(MATERIAL.FACE_COLORS),
         adhesive: chance.word(),
         adhesiveCategory: new mongoose.Types.ObjectId(),
         quotePricePerMsi: chance.integer({ min: 0.001, max: 3 }),
         description: chance.sentence(),
         whenToUse: chance.sentence(),
         alternativeStock: chance.word(),
-        length: chance.integer({ min: 0, max: 1000000 }), // TODO: Does this need to be accounted for in the inventory calcs?
+        length: chance.d100(),
         facesheetWeightPerMsi: chance.floating({ min: 0.0001, fixed: 4, max: 10 }),
         adhesiveWeightPerMsi: chance.floating({ min: 0.0001, fixed: 4, max: 10 }),
         linerWeightPerMsi: chance.floating({ min: 0.0001, fixed: 4, max: 10 }),
-        locations: ['A1', 'Z99'],
+        locations: generateNMaterialLocations(chance.integer({ min: 1, max: 6 })),
         linerType: new mongoose.Types.ObjectId(),
-        productNumber: chance.word(),
+        productNumber: generateMaterialProductNumber(),
         masterRollSize: chance.integer({ min: 1, max: 10 }),
         image: chance.url(),
-        lowStockThreshold: chance.integer({ min: 0, max: 10000 }),
-        lowStockBuffer: chance.integer({ min: 0, max: 10000 }),
+        lowStockThreshold: chance.integer({ min: 5000, max: 15000 }),
+        lowStockBuffer: chance.integer({ min: 5000, max: 15000 }),
     };
 }
 
@@ -196,7 +200,7 @@ function getCustomer() {
         name: generatePersonFullName(),
         notes: chance.sentence(),
         overun: chance.d100(),
-        customerId: chance.string({ symbols: false, alpha: true, numeric: true }),
+        customerId: chance.string({ symbols: false, alpha: true, numeric: true, min: 8, max: 8 }),
         contacts: chance.n(getContact, chance.d10()),
     };
 }
@@ -262,16 +266,84 @@ const generatePersonFullName = () => {
   return `${chance.first()} ${chance.last()}`
 }
 
-const MATERIAL_FACE_COLORS = [
-  'White',
-  'Clear',
-  'Black',
-  'Silver',
-  'Gold',
-  'Matte White',
-  'Gloss White',
-  'Holographic',
-  'Kraft Brown',
-  'Fluorescent Yellow'
-  ,
-]
+const generateMaterialProductNumber = () => {
+  return `${chance.string({ symbols: false, alpha: true, numeric: false, min: 2, max: 3 })}-${chance.string({ symbols: false, alpha: true, numeric: false, min: 2, max: 3 })}-${chance.string({ symbols: false, alpha: true, numeric: false, min: 2, max: 3 })}`
+}
+
+function generateNMaterialLocations(n: number) {
+  const result = new Set();
+
+  while (result.size < n) {
+    const letter = chance.character({ pool: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' });
+    const number = chance.integer({ min: 1, max: 99 });
+    const str = `${letter}${number}`;
+    result.add(str);
+  }
+
+  return Array.from(result);
+}
+
+/**
+ * Generates a random MFG Spec Number for a material vendor
+ * Format: VENDOR-FACESTOCKADHESIVE-LINER-SUFFIX
+ * @returns {string} Randomly generated MFG Spec number
+ */
+function generateMfgSpecNumber() {
+  const vendorPrefixes = ['AVY', 'MAC', 'UPM', 'FXC', 'SPN', 'RIT'];
+  const facestockCodes = ['BOPP', 'PPR', 'THP', 'PP', 'PET'];
+  const adhesiveCodes = ['WP', 'RE', 'HP', 'LT', 'UV'];
+  const linerCodes = ['40SCK', '50GZN', '1.2PET', 'LF', '90PK'];
+  const suffixes = [chance.integer({ min: 1000, max: 9999 }), chance.string({ length: 2, pool: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' })];
+
+  const vendor = chance.pickone(vendorPrefixes);
+  const facestock = chance.pickone(facestockCodes);
+  const adhesive = chance.pickone(adhesiveCodes);
+  const liner = chance.pickone(linerCodes);
+  const suffix = chance.pickone(suffixes);
+
+  return `${vendor}-${facestock}${adhesive}-${liner}-${suffix}`;
+}
+
+const MATERIAL = {
+  FACE_COLORS: [
+    'White',
+    'Clear',
+    'Black',
+    'Silver',
+    'Gold',
+    'Matte White',
+    'Gloss White',
+    'Holographic',
+    'Kraft Brown',
+    'Fluorescent Yellow'
+  ]
+}
+
+const DIE = {
+  LINER: [
+    '40# SCK',
+    '50# Glassine',
+    'PET Liner',
+    'Layflat Liner',
+    'Kraft Liner'
+  ],
+  FACESTOCK: [
+    'White BOPP',
+    'Clear BOPP',
+    'Silver BOPP',
+    'Matte Litho Paper',
+    'Semi-Gloss Paper',
+    'Direct Thermal Paper',
+    'Kraft Paper'
+  ],
+  SPECIAL_TYPES: [
+    'Tamper-Evident',
+    'Holographic Film',
+    'Void Materials',
+    'Thermal Transfer Film',
+    'Pattern Adhesive',
+    'Laminated Stock',
+    'Back-Scored Liner',
+    'Cold Temp Adhesive Construction'
+  ]
+}

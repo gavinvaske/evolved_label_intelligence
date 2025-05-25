@@ -40,75 +40,31 @@ const PREDEFINED_DATA = {
             phoneNumber: '1-800-462-8379',
             email: 'sales@averydennison.com',
             website: 'https://www.averydennison.com',
-            primaryContactName: 'John Smith',
+            primaryContactName: 'Dennis Reynolds',
             primaryContactPhoneNumber: '1-800-462-8379',
-            primaryContactEmail: 'john.smith@averydennison.com',
-            primaryAddress: {
-                name: 'Avery Dennison HQ',
-                street: '8080 Norton Parkway',
-                unitOrSuite: 'Suite 100',
-                city: 'Mentor',
-                state: 'OH',
-                zipCode: '44060'
-            },
-            remittanceAddress: {
-                name: 'Avery Dennison Payments',
-                street: '8080 Norton Parkway',
-                unitOrSuite: 'Suite 200',
-                city: 'Mentor',
-                state: 'OH',
-                zipCode: '44060'
-            }
+            primaryContactEmail: 'dennis.reynolds@averydennison.com',
         },
         {
             name: 'UPM Raflatac',
             phoneNumber: '1-800-558-1234',
             email: 'sales@upmraflatac.com',
             website: 'https://www.upmraflatac.com',
-            primaryContactName: 'Sarah Johnson',
+            primaryContactName: 'Liam McPoyle',
             primaryContactPhoneNumber: '1-800-558-1234',
-            primaryContactEmail: 'sarah.johnson@upmraflatac.com',
-            primaryAddress: {
-                name: 'UPM Raflatac HQ',
-                street: '100 North Point Center East',
-                unitOrSuite: 'Suite 200',
-                city: 'Alpharetta',
-                state: 'GA',
-                zipCode: '30022'
-            },
-            remittanceAddress: {
-                name: 'UPM Raflatac Payments',
-                street: '100 North Point Center East',
-                unitOrSuite: 'Suite 300',
-                city: 'Alpharetta',
-                state: 'GA',
-                zipCode: '30022'
-            }
+            primaryContactEmail: 'liam.mcpoyle@upmraflatac.com',
         },
         {
             name: 'Bemis',
             phoneNumber: '1-800-558-1234',
             email: 'sales@bemis.com',
             website: 'https://www.bemis.com',
-            primaryContactName: 'John Smith',
-            primaryContactPhoneNumber: '1-800-558-1234',
-            primaryContactEmail: 'john.smith@bemis.com',
-            primaryAddress: {
-                name: 'Bemis HQ',
-                street: '100 North Point Center East',
-                unitOrSuite: 'Suite 200',
-                city: 'Alpharetta',
-                state: 'GA',
-                zipCode: '30022'
-            },
-            remittanceAddress: {
-                name: 'Bemis Payments',
-                street: '100 North Point Center East',
-                unitOrSuite: 'Suite 300',
-                city: 'Alpharetta',
-                state: 'GA',
-                zipCode: '30022'
-            }
+            primaryContactName: 'Deandra Reynolds',
+            primaryContactEmail: 'deandra.reynolds@bemis.com',
+        },
+        {
+          name: 'Mactac',
+          primaryContactName: 'Gavin Mactac',
+          primaryContactEmail: 'gavin.mactac@mactac.com',
         },
         {
           name: 'Rexam',
@@ -118,22 +74,16 @@ const PREDEFINED_DATA = {
           primaryContactName: 'Todd Anderson',
           primaryContactPhoneNumber: '1-800-558-1234',
           primaryContactEmail: 'todd.anderson@rexam.com',
-          primaryAddress: {
-            name: 'Rexam HQ',
-            street: '100 North Point Center East',
-            unitOrSuite: 'Suite 200',
-            city: 'Alpharetta',
-            state: 'GA',
-            zipCode: '30022'
-          },
-          remittanceAddress: {
-            name: 'Rexam Payments',
-            street: '100 North Point Center East',
-            unitOrSuite: 'Suite 300',
-            city: 'Alpharetta',
-            state: 'GA',
-            zipCode: '30022'
-          }
+        },
+        {
+          name: '3M',
+          primaryContactName: 'Charlie Kelly',
+          primaryContactEmail: 'charlie.kelly@3m.com',
+        },
+        {
+          name: 'Technicote',
+          primaryContactName: 'Phil Town',
+          primaryContactEmail: 'phil.town@technicote.com',
         }
     ],
     Material: [
@@ -210,6 +160,22 @@ const PREDEFINED_DATA = {
         { name: 'Matte Liner' },
         { name: 'Gloss UV Liner' },
         { name: 'Matte UV Liner' },
+    ],
+    CreditTerm: [
+      { description: 'Net 30' },
+      { description: 'Net 60' },
+      { description: 'Net 90' },
+      { description: 'Due on receipt' },
+      { description: 'Prepaid' },
+      { description: 'EOM' },
+    ],
+    DeliveryMethod: [
+      { name: 'UPS Ground'},
+      { name: 'UPS Next Day Air'},
+      { name: 'UPS 2nd Day Air'},
+      { name: 'FedEx Ground'},
+      { name: 'FedEx Next Day Air'},
+      { name: 'FedEx 2nd Day Air'},
     ]
 };
 
