@@ -227,12 +227,14 @@ const SEEDING_ORDER = [
     {
         collection: 'creditterms',
         model: 'CreditTerm',
-        dependencies: []
+        dependencies: [],
+        predefinedData: PREDEFINED_DATA.CreditTerm
     },
     {
         collection: 'deliverymethods',
         model: 'DeliveryMethod',
-        dependencies: []
+        dependencies: [],
+        predefinedData: PREDEFINED_DATA.DeliveryMethod
     },
     // Second level - depends on first level
     {
