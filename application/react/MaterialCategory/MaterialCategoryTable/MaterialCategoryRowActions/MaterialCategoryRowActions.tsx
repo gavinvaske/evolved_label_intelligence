@@ -16,7 +16,7 @@ type Props = {
 
 export const MaterialCategoryRowActions = (props: Props) => {
   const { row, confirmation } = props;
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, name } = row.original;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -25,7 +25,7 @@ export const MaterialCategoryRowActions = (props: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseIdStr) => {
     const confirmed = await showConfirmation({
       title: 'Delete Material Category',
-      message: 'Are you sure you want to delete this material category? This action cannot be undone.',
+      message: (<span>Are you sure you want to delete "<strong>{name}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 
@@ -45,8 +45,8 @@ export const MaterialCategoryRowActions = (props: Props) => {
 
   return (
     <RowActions>
-      <RowActionItem text='Edit' Icon={IoCreateOutline} onClick={() => onEditClicked(mongooseObjectId)} />
-      <RowActionItem text='Delete' Icon={IoTrashOutline} onClick={() => onDeleteClicked(mongooseObjectId)} />
+      <RowActionItem text='Edit' Icon={IoCreateOutline} onClick={() => onEditClicked(mongooseObjectId as MongooseIdStr)} />
+      <RowActionItem text='Delete' Icon={IoTrashOutline} onClick={() => onDeleteClicked(mongooseObjectId as MongooseIdStr)} />
     </RowActions>
   )
 }

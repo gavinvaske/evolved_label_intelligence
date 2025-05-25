@@ -6,7 +6,7 @@ import { useQueryClient } from '@tanstack/react-query';
 import { useSuccessMessage } from '../../../_hooks/useSuccessMessage';
 import { useErrorMessage } from '../../../_hooks/useErrorMessage';
 import { IoCreateOutline, IoTrashOutline } from 'react-icons/io5';
-import { IMaterialLengthAdjustment } from '@shared/types/models';
+import { IMaterial, IMaterialLengthAdjustment } from '@shared/types/models';
 import { MongooseIdStr } from '@shared/types/typeAliases';
 import { ConfirmationResult } from '../../../_global/Modal/useConfirmation';
 
@@ -17,7 +17,7 @@ type Props = {
 
 export const MaterialLengthAdjustmentRowActions = (props: Props) => {
   const { row, confirmation } = props;
-  const { _id: mongooseObjectId } = row.original;
+  const { _id: mongooseObjectId, material } = row.original;
   const { showConfirmation } = confirmation;
 
   const navigate = useNavigate();
@@ -27,7 +27,7 @@ export const MaterialLengthAdjustmentRowActions = (props: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseIdStr) => {
     const confirmed = await showConfirmation({
       title: 'Delete Material Length Adjustment',
-      message: 'Are you sure you want to delete this material length adjustment? This action cannot be undone.',
+      message: (<span>Are you sure you want to delete the adjustment for "<strong>{(material as IMaterial).name}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 

@@ -32,7 +32,7 @@ export const DieRowActions = (props: Props) => {
   const onDeleteClicked = async (mongooseObjectId: MongooseId) => {
     const confirmed = await showConfirmation({
       title: 'Delete Die?',
-      message: `Are you sure you want to delete this die? This action cannot be undone. (Die Number: "${dieNumber}")`,
+      message: (<span>Are you sure you want to delete "<strong>{dieNumber}</strong>"? <br /> This action cannot be undone.</span>),
       confirmText: 'Delete',
     });
 
