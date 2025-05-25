@@ -31,6 +31,7 @@ const renderTextQuickFilters = <T extends any>(textQuickFilters: TextFilter[], s
   return (
     textQuickFilters.map((quickFilter: TextFilter) => {
       const { description, options } = quickFilter;
+      options.sort((a, b) => a.value.localeCompare(b.value)); // Sort options alphabetically
       return (
         <div className={styles.filterSection}>
           <span className={styles.filterDescription}>{description}</span>
@@ -57,15 +58,27 @@ const textQuickFilters: TextFilter[] = [
     options: [
       {
         uuid: uuidv4(),
-        value: 'hy-vee'
+        value: 'Avery Dennison'
       },
       {
         uuid: uuidv4(),
-        value: 'walmart'
+        value: 'Technicote'
       },
       {
         uuid: uuidv4(),
-        value: 'cpg'
+        value: '3M'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Rexam'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Bemis'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'UPM Raflatac'
       },
     ]
   },
@@ -74,16 +87,28 @@ const textQuickFilters: TextFilter[] = [
     options: [
       {
         uuid: uuidv4(),
-        value: 'test'
+        value: 'Specialty'
       },
       {
         uuid: uuidv4(),
-        value: 'cardboard'
+        value: 'Film'
       },
       {
         uuid: uuidv4(),
-        value: 'plastic'
+        value: 'Thermal'
       },
+      {
+        uuid: uuidv4(),
+        value: 'Paper'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Vinyl'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Polyester'
+      }
     ]
   },
   {
@@ -91,16 +116,57 @@ const textQuickFilters: TextFilter[] = [
     options: [
       {
         uuid: uuidv4(),
-        value: 'test'
+        value: 'Matte'
       },
       {
         uuid: uuidv4(),
-        value: 'AAA'
+        value: 'Gloss'
       },
       {
         uuid: uuidv4(),
-        value: 'FFF'
+        value: 'UV'
       },
+      {
+        uuid: uuidv4(),
+        value: 'BOPP'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'PET'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Polyester'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Kraft'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Glassine'
+      }
+    ]
+  },
+  {
+    description: 'Adhesive Category',
+    options: [
+      {
+        uuid: uuidv4(),
+        value: 'Medical'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Hot'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Cold'
+      },
+      {
+        uuid: uuidv4(),
+        value: 'Removable'
+      }
     ]
   }
 ]
