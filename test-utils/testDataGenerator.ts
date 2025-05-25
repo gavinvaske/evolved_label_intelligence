@@ -63,9 +63,14 @@ function getDie() {
 }
 
 function getMaterialOrder() {
-  const orderDate: string = chance.date({ string: true, year: chance.integer({ min: 2018, max: 2025 }) });
+  const orderDate: string = chance.date({ string: true, year: chance.integer({ min: 2018, max: 2025 }) }).toString();
   const daysToAdd: number = chance.integer({ min: 14, max: 60 });
-  const arrivalDate: string = new Date(new Date(orderDate).getTime() + daysToAdd * 24 * 60 * 60 * 1000).toISOString();
+  const arrivalDate: string = new Date(new Date(orderDate).getTime() + daysToAdd * 24 * 60 * 60 * 1000)
+    .toLocaleDateString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric'
+    });
 
   return {
     material: new mongoose.Types.ObjectId(),
