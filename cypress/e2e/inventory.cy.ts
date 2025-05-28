@@ -277,15 +277,15 @@ describe('Inventory Management', () => {
     
     // Helper function to delete a single row
     const deleteRow = (tableTestId: string) => {
-      // Get the first row and store its content for verification
+      // Get current row count and first row's content
       cy.get(`[data-test=${tableTestId}]`)
         .find('[data-test=table-row]')
-        .first()
-        .then(($row) => {
-          const rowContent = $row.text();
-          
-          // Click delete and confirm
-          cy.wrap($row)
+        .then(($rows) => {
+          const currentCount = $rows.length;
+          const rowContent = $rows.first().text();
+
+          // Delete the row
+          cy.wrap($rows.first())
             .find('[data-test=row-actions]')
             .find('[data-test=row-actions-button]')
             .click();
@@ -300,20 +300,10 @@ describe('Inventory Management', () => {
             .should('be.visible')
             .click();
 
-          // Wait for the table to update
-          cy.wait(1000); // Give the table time to update
-
-          // Verify the row is gone
+          // Wait for row count to decrease by 1
           cy.get(`[data-test=${tableTestId}]`)
-            .then(($table) => {
-              const $rows = $table.find('[data-test=table-row]');
-              if ($rows.length === 0) {
-                return; // Table is empty, which is fine
-              }
-              // Check that our specific row is not in the table
-              const rowsText = Array.from($rows).map(row => row.textContent);
-              expect(rowsText).not.to.include(rowContent);
-            });
+            .find('[data-test=table-row]')
+            .should('have.length', currentCount - 1);
         });
     };
 
