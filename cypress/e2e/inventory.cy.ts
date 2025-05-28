@@ -4,6 +4,13 @@ describe('Inventory Management', () => {
   const material = testDataGenerator.Material();
   const uppercasedMaterialId = material.materialId.toUpperCase();
 
+  before(() => {
+    // Clear DB before running tests (hint: prevents weird issues when running multiple test runs in cypress local browser)
+    cy.task('clearCollection', 'materialorders');
+    cy.task('clearCollection', 'materiallengthadjustments');
+    cy.task('clearCollection', 'materials');
+  });
+
   // Helper function to find and interact with a material card
   const findMaterialCard = () => {
     return cy.contains(material.materialId.toUpperCase())
@@ -220,7 +227,7 @@ describe('Inventory Management', () => {
   });
 
   /* If this test breaks, it means your inventory length calculations are wrong. Tread carefully. (I hope future me isnt reading this...) */
-  it('should calculated the correct inventory lengths for a material with multiple orders and length adjustments, allowing for editing of orders and length adjustments', () => {
+  it('should calculated the correct inventory lengths for a material with multiple orders and length adjustments, allowing for editing/deleting of orders and length adjustments', () => {
     // Create two arrived orders
     const { length: lengthArrived1, materialOrder: order1 } = createMaterialOrder(true);
     const { length: lengthArrived2 } = createMaterialOrder(true);
@@ -245,7 +252,7 @@ describe('Inventory Management', () => {
     const newTotalRolls = 100;
     const newOrderLength = newFeetPerRoll * newTotalRolls;
     editMaterialOrder(order1.purchaseOrderNumber, newFeetPerRoll, newTotalRolls);
-    
+
     // Verify the updated length in inventory
     const updatedArrivedLength = newOrderLength + lengthArrived2;
     verifyMaterialLength('length-arrived', updatedArrivedLength);
@@ -263,5 +270,73 @@ describe('Inventory Management', () => {
     cy.get('[data-test=total-length-of-arrived-material]').should('exist').and('contain', updatedArrivedLength);
     cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', totalNotArrivedLength);
     cy.get('[data-test=net-length-of-material]').should('exist').and('contain', updatedArrivedLength + newAdjustmentLength + materialLengthAdjustment2.length);
+
+    // Helper function to delete a single row
+    const deleteRow = (tableTestId: string) => {
+      // Get current row count and first row's content
+      cy.get(`[data-test=${tableTestId}]`)
+        .find('[data-test=table-row]')
+        .then(($rows) => {
+          const currentCount = $rows.length;
+          const rowContent = $rows.first().text();
+
+          // Delete the row
+          cy.wrap($rows.first())
+            .find('[data-test=row-actions]')
+            .find('[data-test=row-actions-button]')
+            .click();
+
+          cy.get('[data-test=row-actions-menu]')
+            .should('be.visible')
+            .find('[data-test=row-action-item]')
+            .contains('Delete')
+            .click();
+
+          cy.get('[data-test=confirmation-modal-confirm-button]')
+            .should('be.visible')
+            .click();
+
+          // Wait for row count to decrease by 1
+          cy.get(`[data-test=${tableTestId}]`)
+            .find('[data-test=table-row]')
+            .should('have.length', currentCount - 1);
+        });
+    };
+
+    // Visit the material order table
+    cy.visit('/react-ui/tables/material-order');
+
+    // Delete all material orders
+    cy.get('[data-test=material-order-table]')
+      .find('[data-test=table-row]')
+      .then(($rows) => {
+        const rowCount = $rows.length;
+        for (let i = 0; i < rowCount; i++) {
+          deleteRow('material-order-table');
+        }
+      });
+
+    // Delete length adjustments
+    cy.visit('/react-ui/tables/material-length-adjustment');
+
+    // Delete all length adjustments
+    cy.get('[data-test=material-length-adjustment-table]')
+      .find('[data-test=table-row]')
+      .then(($rows) => {
+        const rowCount = $rows.length;
+        for (let i = 0; i < rowCount; i++) {
+          deleteRow('material-length-adjustment-table');
+        }
+      });
+
+    // Navigate back to inventory page and verify all lengths are now 0
+    cy.visit('/react-ui/inventory');
+    verifyMaterialLength('length-arrived', 0);
+    verifyMaterialLength('length-not-arrived', 0);
+    verifyMaterialLength('net-length-available', 0);
+
+    cy.get('[data-test=total-length-of-arrived-material]').should('exist').and('contain', '0');
+    cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', '0');
+    cy.get('[data-test=net-length-of-material]').should('exist').and('contain', '0');
   });
 });
