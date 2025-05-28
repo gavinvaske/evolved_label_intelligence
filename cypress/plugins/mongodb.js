@@ -1,4 +1,4 @@
-const { connectToTestDatabase, clearTestDatabase, isTestDbRunning, closeTestDatabase } = require('../../test/sharedTestDatabase');
+const { connectToTestDatabase, isTestDbRunning, closeTestDatabase, clearCollection } = require('../../test/sharedTestDatabase');
 const { seedTestDatabase } = require('../support/seedTestDatabase');
 
 module.exports = (on, config) => {
@@ -16,8 +16,8 @@ module.exports = (on, config) => {
     });
 
     on('task', {
-        clearDatabase: async () => {
-            await clearTestDatabase();
+        clearCollection: async (collectionName) => {
+            await clearCollection(collectionName);
             return null;
         }
     });

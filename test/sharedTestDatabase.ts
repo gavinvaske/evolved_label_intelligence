@@ -69,11 +69,30 @@ export async function clearTestDatabase() {
   console.log('Clearing test database...');
   for (const key in collections) {
       const collection = collections[key];
-      if (collection) {
+      if (collection && key !== 'users') {  // Skip the users collection
           await collection.deleteMany({});
       }
   }
   console.log('Test database cleared');
+}
+
+export async function clearCollection(collectionName: string) {
+  throwErrorIfDbIsNotInTestMode();
+
+  // Ensure we're connected
+  if (mongoose.connection.readyState !== 1) {
+    console.log('Connecting to database...');
+    await connectToTestDatabase();
+  }
+
+  const collection = mongoose.connection.collections[collectionName];
+  if (!collection) {
+    throw new Error(`Collection "${collectionName}" does not exist`);
+  }
+
+  console.log(`Clearing "${collectionName}"...`);
+  await collection.deleteMany({});
+  console.log(`Cleared "${collectionName}"`);
 }
 
 export function removeTestDbUriFile() {

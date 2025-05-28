@@ -4,6 +4,13 @@ describe('Inventory Management', () => {
   const material = testDataGenerator.Material();
   const uppercasedMaterialId = material.materialId.toUpperCase();
 
+  before(() => {
+    // Clear DB before running tests (hint: prevents weird issues when running multiple test runs in cypress local browser)
+    cy.task('clearCollection', 'materialorders');
+    cy.task('clearCollection', 'materiallengthadjustments');
+    cy.task('clearCollection', 'materials');
+  });
+
   // Helper function to find and interact with a material card
   const findMaterialCard = () => {
     return cy.contains(material.materialId.toUpperCase())
@@ -263,5 +270,84 @@ describe('Inventory Management', () => {
     cy.get('[data-test=total-length-of-arrived-material]').should('exist').and('contain', updatedArrivedLength);
     cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', totalNotArrivedLength);
     cy.get('[data-test=net-length-of-material]').should('exist').and('contain', updatedArrivedLength + newAdjustmentLength + materialLengthAdjustment2.length);
+
+    // Delete all orders and length adjustments
+    // Delete material orders
+    cy.visit('/react-ui/tables/material-order');
+    
+    // Helper function to delete a single row
+    const deleteRow = (tableTestId: string) => {
+      // Get the first row and store its content for verification
+      cy.get(`[data-test=${tableTestId}]`)
+        .find('[data-test=table-row]')
+        .first()
+        .then(($row) => {
+          const rowContent = $row.text();
+          
+          // Click delete and confirm
+          cy.wrap($row)
+            .find('[data-test=row-actions]')
+            .find('[data-test=row-actions-button]')
+            .click();
+
+          cy.get('[data-test=row-actions-menu]')
+            .should('be.visible')
+            .find('[data-test=row-action-item]')
+            .contains('Delete')
+            .click();
+
+          cy.get('[data-test=confirmation-modal-confirm-button]')
+            .should('be.visible')
+            .click();
+
+          // Wait for the table to update
+          cy.wait(1000); // Give the table time to update
+
+          // Verify the row is gone
+          cy.get(`[data-test=${tableTestId}]`)
+            .then(($table) => {
+              const $rows = $table.find('[data-test=table-row]');
+              if ($rows.length === 0) {
+                return; // Table is empty, which is fine
+              }
+              // Check that our specific row is not in the table
+              const rowsText = Array.from($rows).map(row => row.textContent);
+              expect(rowsText).not.to.include(rowContent);
+            });
+        });
+    };
+
+    // Delete all material orders
+    cy.get('[data-test=material-order-table]')
+      .find('[data-test=table-row]')
+      .then(($rows) => {
+        const rowCount = $rows.length;
+        for (let i = 0; i < rowCount; i++) {
+          deleteRow('material-order-table');
+        }
+      });
+
+    // Delete length adjustments
+    cy.visit('/react-ui/tables/material-length-adjustment');
+    
+    // Delete all length adjustments
+    cy.get('[data-test=material-length-adjustment-table]')
+      .find('[data-test=table-row]')
+      .then(($rows) => {
+        const rowCount = $rows.length;
+        for (let i = 0; i < rowCount; i++) {
+          deleteRow('material-length-adjustment-table');
+        }
+      });
+
+    // Navigate back to inventory and verify all lengths are 0
+    cy.visit('/react-ui/inventory');
+    verifyMaterialLength('length-arrived', 0);
+    verifyMaterialLength('length-not-arrived', 0);
+    verifyMaterialLength('net-length-available', 0);
+    
+    cy.get('[data-test=total-length-of-arrived-material]').should('exist').and('contain', '0');
+    cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', '0');
+    cy.get('[data-test=net-length-of-material]').should('exist').and('contain', '0');
   });
 });
