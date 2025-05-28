@@ -227,7 +227,7 @@ describe('Inventory Management', () => {
   });
 
   /* If this test breaks, it means your inventory length calculations are wrong. Tread carefully. (I hope future me isnt reading this...) */
-  it('should calculated the correct inventory lengths for a material with multiple orders and length adjustments, allowing for editing of orders and length adjustments', () => {
+  it('should calculated the correct inventory lengths for a material with multiple orders and length adjustments, allowing for editing/deleting of orders and length adjustments', () => {
     // Create two arrived orders
     const { length: lengthArrived1, materialOrder: order1 } = createMaterialOrder(true);
     const { length: lengthArrived2 } = createMaterialOrder(true);
