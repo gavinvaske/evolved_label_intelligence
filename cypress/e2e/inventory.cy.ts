@@ -252,7 +252,7 @@ describe('Inventory Management', () => {
     const newTotalRolls = 100;
     const newOrderLength = newFeetPerRoll * newTotalRolls;
     editMaterialOrder(order1.purchaseOrderNumber, newFeetPerRoll, newTotalRolls);
-    
+
     // Verify the updated length in inventory
     const updatedArrivedLength = newOrderLength + lengthArrived2;
     verifyMaterialLength('length-arrived', updatedArrivedLength);
@@ -271,10 +271,6 @@ describe('Inventory Management', () => {
     cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', totalNotArrivedLength);
     cy.get('[data-test=net-length-of-material]').should('exist').and('contain', updatedArrivedLength + newAdjustmentLength + materialLengthAdjustment2.length);
 
-    // Delete all orders and length adjustments
-    // Delete material orders
-    cy.visit('/react-ui/tables/material-order');
-    
     // Helper function to delete a single row
     const deleteRow = (tableTestId: string) => {
       // Get current row count and first row's content
@@ -307,6 +303,9 @@ describe('Inventory Management', () => {
         });
     };
 
+    // Visit the material order table
+    cy.visit('/react-ui/tables/material-order');
+
     // Delete all material orders
     cy.get('[data-test=material-order-table]')
       .find('[data-test=table-row]')
@@ -319,7 +318,7 @@ describe('Inventory Management', () => {
 
     // Delete length adjustments
     cy.visit('/react-ui/tables/material-length-adjustment');
-    
+
     // Delete all length adjustments
     cy.get('[data-test=material-length-adjustment-table]')
       .find('[data-test=table-row]')
@@ -330,12 +329,12 @@ describe('Inventory Management', () => {
         }
       });
 
-    // Navigate back to inventory and verify all lengths are 0
+    // Navigate back to inventory page and verify all lengths are now 0
     cy.visit('/react-ui/inventory');
     verifyMaterialLength('length-arrived', 0);
     verifyMaterialLength('length-not-arrived', 0);
     verifyMaterialLength('net-length-available', 0);
-    
+
     cy.get('[data-test=total-length-of-arrived-material]').should('exist').and('contain', '0');
     cy.get('[data-test=total-length-of-not-arrived-material]').should('exist').and('contain', '0');
     cy.get('[data-test=net-length-of-material]').should('exist').and('contain', '0');
