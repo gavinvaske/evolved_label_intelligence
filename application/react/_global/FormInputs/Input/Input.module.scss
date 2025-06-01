@@ -1,4 +1,4 @@
-@import '../../../_styles/constants.module.scss';
+@use '../../../_styles/constants.module.scss';
 
 .inputWrapper {
   display: flex;
@@ -40,14 +40,14 @@
     transition: border-color 0.2s ease-in-out;
 
     &.error {
-      border-color: $RED;
+      border-color: constants.$RED;
     }
 
     &:focus-within {
       border-color: #007bff;
 
       &.error {
-        border-color: $RED;
+        border-color: constants.$RED;
       }
     }
 

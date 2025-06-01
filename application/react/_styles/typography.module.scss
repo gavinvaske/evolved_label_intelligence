@@ -1,43 +1,43 @@
-@import './constants.module.scss';
+@use 'constants.module.scss';
 
 /* RED TEXT */
 .textRed {
-  color: $RED;
+  color: constants.$RED;
 }
 
 /* BLUE TEXT */
 .textBlue {
-  color: $BLUE;
+  color: constants.$BLUE;
 }
 
 /* PURPLE TEXT */
 .textPurple {
-  color: $PURPLE;
+  color: constants.$PURPLE;
 }
 
 /* GREEN TEXT */
 .textGreen {
-  color: $GREEN;
+  color: constants.$GREEN;
 }
 
 /* ORANGE TEXT */
 .textOrange {
-  color: $ORANGE;
+  color: constants.$ORANGE;
 }
 
 /* LIGHT BLUE TEXT */
 .textLightBlue {
-  color: $LIGHT_BLUE;
+  color: constants.$LIGHT_BLUE;
 }
 
 /* YELLOW TEXT */
 .textYellow {
-  color: $YELLOW;
+  color: constants.$YELLOW;
 }
 
 /* MAGENTA TEXT */
 .textMagenta {
-  color: $MAGENTA;
+  color: constants.$MAGENTA;
 }
 
 /* WHITE TEXT */
@@ -47,5 +47,5 @@
 
 /* DARK GREY TEXT */
 .textDarkGrey {
-  color: $DARK_GREY;
+  color: constants.$DARK_GREY;
 }
