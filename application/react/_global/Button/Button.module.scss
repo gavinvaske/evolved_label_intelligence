@@ -1,3 +1,5 @@
+@use '../../_styles/constants.module.scss';
+
 .button {
   display: inline-flex;
   align-items: center;
@@ -67,9 +69,9 @@
   }
 
   &.blue {
-    background-color: #157efb;
+    background-color: constants.$BLUE;
     color: white;
-    border-color: #157efb;
+    border-color: constants.$BLUE;
 
     &:hover:not(.disabled) {
       background-color: #1268c9;
@@ -77,16 +79,16 @@
   }
 
   &.purple {
-    background-color: #7367F0;
+    background-color: constants.$PURPLE;
     color: white;
 
     &:hover:not(.disabled) {
-      background-color: #5e50ee;
+      background-color: #6355ee;
     }
   }
 
   &.red {
-    background-color: #ff0000;
+    background-color: constants.$RED;
     color: white;
 
     &:hover:not(.disabled) {
@@ -94,12 +96,39 @@
     }
   }
 
-  &.link {
-    background-color: #7367F0;
+  &.green {
+    background-color: constants.$GREEN;
     color: white;
 
     &:hover:not(.disabled) {
-      background-color: #5e50ee;
+      background-color: constants.$GREEN_DARK;
+    }
+  }
+
+  &.orange {
+    background-color: constants.$ORANGE;
+    color: white;
+
+    &:hover:not(.disabled) {
+      background-color: constants.$ORANGE_DARK;
+    }
+  }
+
+  &.yellow {
+    background-color: constants.$YELLOW;
+    color: black;
+
+    &:hover:not(.disabled) {
+      background-color: constants.$YELLOW_DARK;
+    }
+  }
+
+  &.link {
+    background-color: constants.$PURPLE;
+    color: white;
+
+    &:hover:not(.disabled) {
+      background-color: #6355ee;
     }
   }
 }

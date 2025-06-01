@@ -1,3 +1,5 @@
+@use '../../_styles/constants.module.scss';
+
 .registerFormHeader {
   margin-bottom: 28px;
 }
@@ -41,7 +43,7 @@
         flex-direction: row;
 
         svg {
-          fill: #157efb;
+          fill: constants.$BLUE;
           height: 30px;
         }
 
