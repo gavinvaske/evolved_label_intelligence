@@ -1,4 +1,4 @@
-@import '../../../_styles/constants.module.scss';
+@use '../../../_styles/constants.module.scss';
 
 .customSelectContainer {
   position: relative;
@@ -22,10 +22,10 @@
   transition: border-color 0.2s ease;
 
   &.requiredError {
-    border-color: $RED;
+    border-color: constants.$RED;
 
     svg {
-      color: $RED;
+      color: constants.$RED;
     }
   }
 
@@ -92,7 +92,7 @@
 }
 
 .error {
-  color: $RED;
+  color: constants.$RED;
   margin-top: 10px;
 }
 
