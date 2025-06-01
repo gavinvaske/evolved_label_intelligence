@@ -27,14 +27,15 @@
     background-color: unset;
     outline: none;
     box-sizing: border-box;
-    cursor: pointer;
+    cursor: text;
     transition: 0.3s;
     margin: 0 5px;
+    border-radius: 0;
   }
 
   &:hover {
     background: radial-gradient(circle at center, rgba(245, 245, 245, 0.8) 0%, rgba(245, 245, 245, 0.45) 100%);
-    cursor: pointer;
+    cursor: text;
   }
 
   &.hasText {
