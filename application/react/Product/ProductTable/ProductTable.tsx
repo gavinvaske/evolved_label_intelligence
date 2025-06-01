@@ -13,7 +13,8 @@ import { getDateTimeFromIsoStr } from '@ui/utils/dateTime';
 import * as tableStyles from '@ui/styles/table.module.scss'
 import * as sharedStyles from '@ui/styles/shared.module.scss'
 import { IBaseProduct } from '../../../api/models/baseProduct';
-
+import { TablePageHeader } from '../../_global/Table/TablePageHeader/TablePageHeader';
+import { PageSelect } from '../../_global/Table/PageSelect/PageSelect';
 const columnHelper = createColumnHelper<IBaseProduct>()
 
 export const GET_PRODUCTS_QUERY_KEY = 'get-products'
@@ -39,7 +40,7 @@ export const ProductTable = () => {
   const [globalFilter, setGlobalFilter] = React.useState('');
   const [sorting, setSorting] = React.useState<SortingState>([])
 
-  const { isError, data: products, error } = useQuery({
+  const { isError, data: products, error, isLoading } = useQuery({
     queryKey: [GET_PRODUCTS_QUERY_KEY],
     queryFn: getProducts,
     initialData: []
@@ -68,11 +69,20 @@ export const ProductTable = () => {
   return (
     <div id='product-table-page-wrapper' className={sharedStyles.pageWrapper}>
       <div className={sharedStyles.card}>
-        <div className={tableStyles.headerDescription}>
-          <h1 className={sharedStyles.textBlue}>Products</h1>
-          <p>Showing <p className={sharedStyles.textBlue}>{rows.length} </p> products.</p>
-        </div>
-        <SearchBar value={globalFilter} onChange={(e: any) => setGlobalFilter(e.target.value)} />
+      <TablePageHeader
+          title="Products"
+          createButton={{
+            to: '/react-ui/forms/product',
+            tooltip: 'Create a new product'
+          }}
+          totalResults={products?.totalResults || 0}
+          currentResults={rows.length}
+          searchValue={globalFilter}
+          onSearch={(value: string) => {
+            setGlobalFilter(value)
+            table.resetPageIndex();
+          }}
+        />
 
         <Table id='product-table'>
           <TableHead table={table} />
@@ -82,6 +92,10 @@ export const ProductTable = () => {
               <Row row={row} key={row.id}></Row>
             ))}
           </TableBody>
+          <PageSelect
+            table={table}
+            isLoading={isLoading}
+          />
         </Table>
       </div>
     </div>
