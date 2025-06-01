@@ -71,44 +71,6 @@ router.get('/in-progress/:ticketId', async (request, response) => {
     }
 });
 
-router.get('/delete/:id', async (request, response) => {
-    try {
-        response.send('TODO: Archive deleted tickets');
-    } catch (error) {
-        request.flash('errors', error.message);
-        return response.redirect('back');
-    }
-});
-
-router.post('/update/:ticketId/notes', async (request, response) => {
-    try {
-        const departmentKey = Object.keys(request.body.departmentNotes)[0];
-        const newNote = request.body.departmentNotes[departmentKey];
-
-        const ticket = await TicketModel.findById(request.params.ticketId).exec();
-
-        if (!ticket.departmentNotes) {
-            ticket.departmentNotes = {};
-        }
-
-        const previousNote = ticket.departmentNotes[departmentKey];
-        const theNoteHasChanged = previousNote !== newNote;
-
-        if (theNoteHasChanged) {
-            ticket.departmentNotes[departmentKey] = newNote;
-        
-            await ticket.save();
-        }
-
-    } catch (error) {
-        return response.json({
-            error: error.message
-        });
-    }
-
-    return response.json({});
-});
-
 router.post('/find-department-statuses', (request, response) => {
     const departmentName = request.body.departmentName;
     const allStatusesForOneDepartment = departmentToStatusesMappingForTicketObjects[departmentName];

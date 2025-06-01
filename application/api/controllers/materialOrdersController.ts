@@ -215,35 +215,6 @@ router.get('/update/:id', async (request, response) => {
     }
 });
 
-router.post('/update/:id', async (request, response) => {
-    try {
-        if (!request.body.hasArrived) {
-            request.body.hasArrived = false;
-        }
-
-        await MaterialOrderModel.findByIdAndUpdate(request.params.id, request.body, { runValidators: true }).exec();
-
-        request.flash('alerts', 'Updated successfully');
-        response.redirect('/material-orders');
-    } catch (error) {
-        request.flash('errors', error.message);
-        return response.redirect('back');
-    }
-});
-
-router.get('/delete/:id', async (request, response) => {
-    try {
-        await MaterialOrderModel.findByIdAndDelete(request.params.id).exec();
-
-        request.flash('alerts', 'Deletion was successful');
-        return response.redirect('back');
-    } catch (error) {
-        console.log(error);
-        request.flash('errors', error.message);
-        return response.redirect('back');
-    }
-});
-
 router.get('/:mongooseId', async (request, response) => {
     try {
         const materialOrder = await MaterialOrderModel.findById(request.params.mongooseId);

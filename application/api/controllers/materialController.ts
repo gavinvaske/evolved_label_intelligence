@@ -207,34 +207,6 @@ router.get('/update/:id', async (request, response) => {
   }
 });
 
-router.post('/update/:id', async (request, response) => {
-  try {
-    await MaterialModel.findByIdAndUpdate(request.params.id, request.body, { runValidators: true }).exec();
-
-    request.flash('alerts', 'Updated successfully');
-    response.redirect(SHOW_ALL_MATERIALS_ENDPOINT);
-  } catch (error) {
-    console.log(error);
-    request.flash('errors', error.message);
-
-    return response.redirect('back');
-  }
-});
-
-/* @Deprecated */
-router.get('/delete/:id', async (request, response) => {
-  try {
-    await MaterialModel.findByIdAndDelete(request.params.id).exec();
-
-    request.flash('alerts', 'Deletion was successful');
-  } catch (error) {
-    console.log(error);
-    request.flash('errors', error.message);
-  }
-
-  return response.redirect('back');
-});
-
 router.get('/recalculate-inventory', async (_: Request, response: Response) => {
   try {
     await materialInventoryService.populateMaterialInventories();
