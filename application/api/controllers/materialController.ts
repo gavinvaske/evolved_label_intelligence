@@ -2,13 +2,10 @@ import { Router, Request, Response } from 'express';
 const router = Router();
 import { MaterialModel } from '../models/material.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
-import { VendorModel } from '../models/vendor.ts';
-import { MaterialCategoryModel } from '../models/materialCategory.ts';
 
 import * as materialInventoryService from '../services/materialInventoryService.ts';
 import * as mongooseService from '../services/mongooseService.ts';
 
-const SHOW_ALL_MATERIALS_ENDPOINT = '/materials';
 import { BAD_REQUEST, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { SearchQuery, SearchResult } from '@shared/types/http.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
@@ -170,13 +167,6 @@ router.patch('/:mongooseId', async (request, response) => {
   }
 });
 
-router.get('/form', async (request, response) => {
-  const vendors = await VendorModel.find().exec();
-  const materialCategories = await MaterialCategoryModel.find().exec();
-
-  return response.render('createMaterial', { vendors, materialCategories });
-});
-
 router.post('/', async (request, response) => {
   try {
     const material = await MaterialModel.create(request.body);
@@ -188,25 +178,6 @@ router.post('/', async (request, response) => {
   }
 });
 
-router.get('/update/:id', async (request, response) => {
-  try {
-    const material = await MaterialModel.findById(request.params.id);
-    const vendors = await VendorModel.find().exec();
-    const materialCategories = await MaterialCategoryModel.find().exec();
-
-    return response.render('updateMaterial', {
-      material,
-      vendors,
-      materialCategories
-    });
-  } catch (error) {
-    console.log(error);
-    request.flash('errors', [error.message]);
-
-    return response.redirect('back');
-  }
-});
-
 router.get('/recalculate-inventory', async (_: Request, response: Response) => {
   try {
     await materialInventoryService.populateMaterialInventories();
@@ -215,20 +186,6 @@ router.get('/recalculate-inventory', async (_: Request, response: Response) => {
   } catch (error) {
     console.log('Error populating material inventories.', error);
     return response.status(SERVER_ERROR).send(error.message);
-  }
-});
-
-router.get('/:mongooseId', async (request, response) => {
-  try {
-    const material = await MaterialModel.findById(request.params.mongooseId);
-
-    return response.json(material);
-  } catch (error) {
-    console.error('Error searching for material: ', error);
-
-    return response
-      .status(SERVER_ERROR)
-      .send(error.message);
   }
 });
 
@@ -244,6 +201,20 @@ router.get('/', async (_: Request, response: Response) => {
     return response.json(materials);
   } catch (error) {
     console.error('Error searching for materials: ', error);
+
+    return response
+      .status(SERVER_ERROR)
+      .send(error.message);
+  }
+});
+
+router.get('/:mongooseId', async (request, response) => {
+  try {
+    const material = await MaterialModel.findById(request.params.mongooseId);
+
+    return response.json(material);
+  } catch (error) {
+    console.error('Error searching for material: ', error);
 
     return response
       .status(SERVER_ERROR)

@@ -174,47 +174,6 @@ router.post('/batch', async (request: Request, response: Response) => {
   }
 })
 
-// @deprecated
-router.post('/create', async (request, response) => {
-    try {
-        await MaterialOrderModel.create(request.body);
-    } catch (error) {
-        console.log(`The request: ${JSON.stringify(request.body)} resulted in the following errors: ${JSON.stringify(error)}`);
-        request.flash('errors', ['Unable to create the Material Order, the following error(s) occurred:', error.message]);
-        return response.redirect('back');
-    }
-
-    request.flash('alerts', ['Material Order created successfully']);
-
-    return response.redirect('/material-orders');
-});
-
-router.get('/update/:id', async (request, response) => {
-    try {
-        const vendors = await VendorModel.find().exec();
-        const materials = await MaterialModel.find().exec();
-        const materialOrder = await MaterialOrderModel
-            .findById(request.params.id)
-            .populate({path: 'author'})
-            .populate({path: 'vendor'})
-            .populate({path: 'material'})
-            .exec();
-        const user = request.user;
-
-        return response.render('updateMaterialOrder', {
-            vendors,
-            materials,
-            materialOrder,
-            user
-        });
-    } catch (error) {
-        console.log(error);
-        request.flash('errors', [error.message]);
-
-        return response.redirect('back');
-    }
-});
-
 router.get('/:mongooseId', async (request, response) => {
     try {
         const materialOrder = await MaterialOrderModel.findById(request.params.mongooseId);

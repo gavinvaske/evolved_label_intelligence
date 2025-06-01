@@ -11,8 +11,6 @@ import { IMaterialCategory } from '@shared/types/models.ts';
 
 router.use(verifyBearerToken);
 
-const SHOW_ALL_MATERIAL_CATEGORIES_ENDPOINT = '/material-categories';
-
 router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
     const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
@@ -74,23 +72,6 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
   }
 });
 
-router.get('/form', (_, response) => {
-  response.render('createMaterialCategory.ejs');
-});
-
-router.get('/form/:id', async (request, response) => {
-  try {
-    const materialCategory = await MaterialCategoryModel.findById(request.params.id);
-
-    return response.render('updateMaterialCategory', { materialCategory });
-  } catch (error) {
-    console.log(error);
-    request.flash('errors', [error.message]);
-
-    return response.status(SERVER_ERROR).redirect('back');
-  }
-});
-
 router.post('/', async (request, response) => {
   try {
       const materialCategory = await MaterialCategoryModel.create(request.body);
@@ -104,32 +85,6 @@ router.post('/', async (request, response) => {
           .status(SERVER_ERROR)
           .send(error.message);
   }
-});
-
-router.post('/form/:id', async (request, response) => {
-  try {
-    await MaterialCategoryModel.findByIdAndUpdate(request.params.id, request.body, { runValidators: true }).exec();
-
-    return response.redirect(SHOW_ALL_MATERIAL_CATEGORIES_ENDPOINT);
-  } catch (error) {
-    console.log(error);
-    request.flash('errors', [error.message]);
-
-    return response.status(SERVER_ERROR).redirect('back');
-  }
-});
-
-router.post('/form', async (request, response) => {
-  try {
-    await MaterialCategoryModel.create(request.body);
-  } catch (error) {
-    console.log(error);
-    request.flash('errors', ['Unable to save the Material Category, the following error(s) occurred:', error.message]);
-    return;
-  }
-  request.flash('alerts', ['Material Category created successfully']);
-
-  return response.redirect(SHOW_ALL_MATERIAL_CATEGORIES_ENDPOINT);
 });
 
 router.delete('/:mongooseId', async (request, response) => {
