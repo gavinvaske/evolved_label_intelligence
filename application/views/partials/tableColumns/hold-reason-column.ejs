@@ -1,7 +1,0 @@
-<div class='column-td bg-white on-hold-status-cell'>
-    <span class='on-hold-reason-text searchable'><%= ticket.departmentToHoldReason && ticket.departmentToHoldReason.get(departmentIdentifier) %></span>
-    <%- include('../on-hold-dropdown', {
-        allHoldReasonsForThisDepartment: allHoldReasonsForThisDepartment,
-      }) 
-    -%>
-  </div>
