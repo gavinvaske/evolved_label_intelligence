@@ -40,7 +40,6 @@ const SearchBar = forwardRef((props: Props, inputRef: any) => {
     <div className={styles.searchBar} data-test='searchbar'>
       <input
         ref={inputRef}
-        id='primarySearch'
         type='text'
         defaultValue={value}
         onKeyUp={handleButtonPressed}

@@ -15,6 +15,7 @@ import inventoryStore from '../../stores/inventoryStore';
 import { Button } from '../Button/Button';
 import { QuickSearchDropdown } from './QuickSearchDropdown/QuickSearchDropdown';
 import { AdvancedFilterDropdown } from './AdvancedFilterDropdown/AdvancedFilterDropdown';
+import * as typographyStyles from '@ui/styles/typography.module.scss';
 
 type Props<T> = {
   store: Filter<T>
@@ -139,7 +140,7 @@ export const FilterBar = observer(<T extends any>(props: Props<T>) => {
         </div>
       </div>
       <div className={styles.viewingResults}>
-        Viewing <span className={sharedStyles.textBlue}>{inventoryStore.getFilteredMaterials().length}</span> of <span className={sharedStyles.textBlue}>{filterableItemsCount}</span> results.
+        Viewing <span className={typographyStyles.textBlue}>{inventoryStore.getFilteredMaterials().length}</span> of <span className={typographyStyles.textBlue}>{filterableItemsCount}</span> results.
       </div>
     </>
   );
