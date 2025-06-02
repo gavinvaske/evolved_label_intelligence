@@ -72,9 +72,11 @@ describe('Auth', () => {
 
   it('should be able to visit forgot password page and see correct fields', () => {
     // Visit forgot password page
-    cy.visit('/react-ui/forgot-password');
+    cy.visit('/react-ui/login');
+    cy.contains('Forgot Password').click();
 
     // Verify correct text and fields exist
+    cy.url().should('include', '/react-ui/forgot-password');
     cy.contains("Enter your email and we'll send you instructions to reset your password").should('exist');
     cy.get('input[name="email"]').should('exist');
     cy.get('button[type="submit"]').should('exist');
