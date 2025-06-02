@@ -65,8 +65,24 @@ describe('Auth', () => {
     cy.get('button[type="submit"]').click();
     
     // Verify successful login (by default, the user is not authorized to view any page upon login)
-    cy.url().should('include', '/react-ui/profile');
-    cy.contains('Unauthorized');
-    cy.contains('You do not have access to the requested page');
+    cy.url().should('include', '/react-ui/unauthorized');
+    cy.contains('Unauthorized').should('exist');
+    cy.contains('You do not have access to the requested page').should('exist');
   });
+
+  it('should be able to visit forgot password page and see correct fields', () => {
+    // Visit forgot password page
+    cy.visit('/react-ui/forgot-password');
+
+    // Verify correct text and fields exist
+    cy.contains("Enter your email and we'll send you instructions to reset your password").should('exist');
+    cy.get('input[name="email"]').should('exist');
+    cy.get('button[type="submit"]').should('exist');
+    
+    // Click back to login button
+    cy.contains('Back to login').click();
+
+    // Verify redirect to login page
+    cy.url().should('include', '/react-ui/login');
+  })
 });
