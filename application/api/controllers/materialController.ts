@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, RequestHandler } from 'express';
 const router = Router();
 import { MaterialModel } from '../models/material.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
@@ -11,15 +11,22 @@ import { SearchQuery, SearchResult } from '@shared/types/http.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { IMaterial } from '@shared/types/models.ts';
+import { SearchHandler } from '@api/types/express.ts';
 
 router.use(verifyBearerToken);
 
-router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
     const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+    if (!pageIndex || !limit) {
+      response.status(BAD_REQUEST).send('Invalid page index or limit');
+      return;
+    }
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+      response.status(BAD_REQUEST).send('Invalid sort direction');
+      return;
+    }
 
     const pageNumber = parseInt(pageIndex, 10);
     const pageSize = parseInt(limit, 10);
@@ -129,27 +136,25 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
       pageSize,
     }
 
-    return response.json(paginationResponse)
-
+    response.json(paginationResponse);
   } catch (error) {
     console.error('Failed to search for materials: ', error);
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-})
+}) as SearchHandler);
 
-router.delete('/:mongooseId', async (request, response) => {
+router.delete('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const deletedMaterial = await MaterialModel.deleteById(request.params.mongooseId, request.user._id)
 
-    return response.status(SUCCESS).json(deletedMaterial);
+    response.status(SUCCESS).json(deletedMaterial);
   } catch (error) {
     console.error('Failed to delete material: ', error);
-
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.patch('/:mongooseId', async (request, response) => {
+router.patch('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const updatedMaterial = await MaterialModel.findOneAndUpdate(
       { _id: request.params.mongooseId },
@@ -157,39 +162,36 @@ router.patch('/:mongooseId', async (request, response) => {
       { runValidators: true, new: true }
     ).exec();
 
-    return response.json(updatedMaterial);
+    response.json(updatedMaterial);
   } catch (error) {
     console.error('Failed to update material: ', error);
-
-    response
-      .status(SERVER_ERROR)
-      .send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.post('/', async (request, response) => {
+router.post('/', (async (request: Request, response: Response) => {
   try {
     const material = await MaterialModel.create(request.body);
 
-    return response.json(material);
+    response.json(material);
   } catch (error) {
     console.log('Error creating material: ', error);
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.get('/recalculate-inventory', async (_: Request, response: Response) => {
+router.get('/recalculate-inventory', (async (_: Request, response: Response) => {
   try {
     await materialInventoryService.populateMaterialInventories();
 
-    return response.sendStatus(SUCCESS)
+    response.sendStatus(SUCCESS);
   } catch (error) {
     console.log('Error populating material inventories.', error);
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.get('/', async (_: Request, response: Response) => {
+router.get('/', (async (_: Request, response: Response) => {
   try {
     const materials = await MaterialModel.find()
       .populate('vendor')
@@ -198,28 +200,22 @@ router.get('/', async (_: Request, response: Response) => {
       .populate('linerType')
       .exec();
 
-    return response.json(materials);
+    response.json(materials);
   } catch (error) {
     console.error('Error searching for materials: ', error);
-
-    return response
-      .status(SERVER_ERROR)
-      .send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.get('/:mongooseId', async (request, response) => {
+router.get('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const material = await MaterialModel.findById(request.params.mongooseId);
 
-    return response.json(material);
+    response.json(material);
   } catch (error) {
     console.error('Error searching for material: ', error);
-
-    return response
-      .status(SERVER_ERROR)
-      .send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
 export default router;

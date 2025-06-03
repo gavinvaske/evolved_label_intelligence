@@ -31,12 +31,12 @@ router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, respons
     const sortOptions: SortOption = getSortOption(sortField, sortDirection);
 
     const textSearch = query && query.length
-    ? {
+      ? {
         $or: [
           { name: { $regex: query, $options: 'i' } }
         ],
       }
-    : {};
+      : {};
 
     const pipeline = [
       {
@@ -79,70 +79,70 @@ router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, respons
 }) as SearchHandler);
 
 router.delete('/:mongooseId', (async (request: Request, response: Response) => {
-    try {
-        const deletedAdhesiveCategory = await AdhesiveCategoryModel.deleteById(request.params.mongooseId, request.user._id)
-    
-        response.status(SUCCESS).json(deletedAdhesiveCategory);
-    } catch (error) {
-        console.error('Failed to delete adhesiveCategory: ', error);
+  try {
+    const deletedAdhesiveCategory = await AdhesiveCategoryModel.deleteById(request.params.mongooseId, request.user._id)
 
-        response.status(SERVER_ERROR).send(error.message);
-    }
+    response.status(SUCCESS).json(deletedAdhesiveCategory);
+  } catch (error) {
+    console.error('Failed to delete adhesiveCategory: ', error);
+
+    response.status(SERVER_ERROR).send(error.message);
+  }
 }) as RequestHandler);
 
 router.get('/', (async (_: Request, response: Response) => {
-    try {
-        const adhesiveCategories = await AdhesiveCategoryModel.find().exec();
+  try {
+    const adhesiveCategories = await AdhesiveCategoryModel.find().exec();
 
-        response.json(adhesiveCategories);
-    } catch (error) {
-        console.error('Error fetching adhesive category: ', error);
-        response.status(SERVER_ERROR).send(error.message);
-    }
+    response.json(adhesiveCategories);
+  } catch (error) {
+    console.error('Error fetching adhesive category: ', error);
+    response.status(SERVER_ERROR).send(error.message);
+  }
 }) as RequestHandler);
 
 router.patch('/:mongooseId', (async (request: Request, response: Response) => {
-    try {
-        const updatedAdhesiveCategory = await AdhesiveCategoryModel.findOneAndUpdate(
-            { _id: request.params.mongooseId }, 
-            { $set: request.body }, 
-            { runValidators: true, new: true }
-        ).exec();
+  try {
+    const updatedAdhesiveCategory = await AdhesiveCategoryModel.findOneAndUpdate(
+      { _id: request.params.mongooseId },
+      { $set: request.body },
+      { runValidators: true, new: true }
+    ).exec();
 
-        return response.json(updatedAdhesiveCategory);
-    } catch (error) {
-        console.error('Failed to update adhesiveCategory: ', error);
+    return response.json(updatedAdhesiveCategory);
+  } catch (error) {
+    console.error('Failed to update adhesiveCategory: ', error);
 
-        response
-            .status(SERVER_ERROR)
-            .send(error.message);
-    }
+    response
+      .status(SERVER_ERROR)
+      .send(error.message);
+  }
 }) as RequestHandler);
 
 router.post('/', (async (request: Request, response: Response) => {
-    let savedAdhesiveCategory;
+  let savedAdhesiveCategory;
 
-    try {
-        savedAdhesiveCategory = await AdhesiveCategoryModel.create(request.body);
+  try {
+    savedAdhesiveCategory = await AdhesiveCategoryModel.create(request.body);
 
-        response.status(CREATED_SUCCESSFULLY).send(savedAdhesiveCategory);
-    } catch (error) {
-        console.error('Error creating adhesive category: ', error);
+    response.status(CREATED_SUCCESSFULLY).send(savedAdhesiveCategory);
+  } catch (error) {
+    console.error('Error creating adhesive category: ', error);
 
-        response.status(SERVER_ERROR).send(error.message);
-    }
+    response.status(SERVER_ERROR).send(error.message);
+  }
 }) as RequestHandler);
 
 router.get('/:mongooseId', (async (request: Request, response: Response) => {
-    try {
-        const adhesiveCategory = await AdhesiveCategoryModel.findById(request.params.mongooseId);
+  try {
+    const adhesiveCategory = await AdhesiveCategoryModel.findById(request.params.mongooseId);
 
-        response.json(adhesiveCategory);
-    } catch (error) {
-        console.error('Error searching for adhesiveCategory: ', error);
+    response.json(adhesiveCategory);
+  } catch (error) {
+    console.error('Error searching for adhesiveCategory: ', error);
 
-        response.status(SERVER_ERROR).send(error.message);
-    }
+    response.status(SERVER_ERROR).send(error.message);
+  }
 }) as RequestHandler);
 
 

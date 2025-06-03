@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, RequestHandler } from 'express';
 const router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { MaterialCategoryModel } from '../models/materialCategory.ts';
@@ -8,15 +8,22 @@ import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { IMaterialCategory } from '@shared/types/models.ts';
+import { SearchHandler } from '@api/types/express.ts';
 
 router.use(verifyBearerToken);
 
-router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
     const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+    if (!pageIndex || !limit) {
+      response.status(BAD_REQUEST).send('Invalid page index or limit');
+      return;
+    }
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+      response.status(BAD_REQUEST).send('Invalid sort direction');
+      return;
+    }
 
     const pageNumber = parseInt(pageIndex, 10);
     const pageSize = parseInt(limit, 10);
@@ -64,72 +71,66 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
       pageSize,
     }
 
-    return response.json(paginationResponse)
+    response.json(paginationResponse);
 
   } catch (error) {
     console.error('Error during materialCategories search:', error);
-    return response.status(SERVER_ERROR).send(error);
+    response.status(SERVER_ERROR).send(error);
   }
-});
+}) as SearchHandler);
 
-router.post('/', async (request, response) => {
+router.post('/', (async (request: Request, response: Response) => {
   try {
-      const materialCategory = await MaterialCategoryModel.create(request.body);
+    const materialCategory = await MaterialCategoryModel.create(request.body);
 
-      return response
-          .status(CREATED_SUCCESSFULLY)
-          .json(materialCategory);
+    response.status(CREATED_SUCCESSFULLY).json(materialCategory);
   } catch (error) {
-      console.error('Failed to create materialCategory: ', error);
-      return response
-          .status(SERVER_ERROR)
-          .send(error.message);
+    console.error('Failed to create materialCategory: ', error);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.delete('/:mongooseId', async (request, response) => {
+router.delete('/:mongooseId', (async (request: Request, response: Response) => {
   const { mongooseId } = request.params;
 
   try {
     await MaterialCategoryModel.deleteById(mongooseId, request.user._id);
 
-    return response.sendStatus(SUCCESS);
+    response.sendStatus(SUCCESS);
   } catch (error) {
     console.log(error);
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.get('/:mongooseId', async (request, response) => {
+router.get('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const materialCategory = await MaterialCategoryModel.findById(request.params.mongooseId);
 
-    return response.json(materialCategory);
+    response.json(materialCategory);
   } catch (error) {
     console.error('Error searching for materialCategory: ', error);
 
-    return response
+    response
       .status(SERVER_ERROR)
       .send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.patch('/:mongooseId', async (request, response) => {
+router.patch('/:mongooseId', (async (request: Request, response: Response) => {
   try {
-      const updatedMaterialCategory = await MaterialCategoryModel.findOneAndUpdate(
-          { _id: request.params.mongooseId }, 
-          { $set: request.body }, 
-          { runValidators: true, new: true }
-      ).exec();
+    const updatedMaterialCategory = await MaterialCategoryModel.findOneAndUpdate(
+      { _id: request.params.mongooseId },
+      { $set: request.body },
+      { runValidators: true, new: true }
+    ).exec();
 
-      return response.json(updatedMaterialCategory);
+    response.json(updatedMaterialCategory);
   } catch (error) {
-      console.error('Failed to update materialCategory: ', error);
+    console.error('Failed to update materialCategory: ', error);
 
-      response
-          .status(SERVER_ERROR)
-          .send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
 export default router;
