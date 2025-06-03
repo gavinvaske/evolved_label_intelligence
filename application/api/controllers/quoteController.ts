@@ -1,4 +1,4 @@
-import { Router, Request, Response } from 'express';
+import { Router, Request, Response, RequestHandler } from 'express';
 const router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import * as quoteService from '../services/quoteService.ts';
@@ -10,29 +10,29 @@ router.use(verifyBearerToken);
 
 const BAD_REQUEST_STATUS = 400;
 
-router.post('/', async (request, response) => {
+router.post('/', (async (request: Request, response: Response) => {
     const labelQuantities = request.body.labelQuantities;
     delete request.body.labelQuantities;
     const quoteInputs = request.body;
     
     try {
         const quotes = await quoteService.createQuotes(labelQuantities, quoteInputs);
-        return response.send(quotes);
+        response.send(quotes);
     } catch (error) {
         console.log('Error creating quotes: ', error);
-        return response.status(BAD_REQUEST_STATUS).send(error.message);
+        response.status(BAD_REQUEST_STATUS).send(error.message);
     }
-});
+  }) as RequestHandler);
 
-router.get('/', async (_: Request, response: Response) => {
+router.get('/', (async (_: Request, response: Response) => {
   try {
     const quotes = await QuoteModel.find().sort({ updatedAt: DESCENDING }).exec();
 
-    return response.json(quotes);
+    response.json(quotes);
   } catch (error) {
     console.error('Error loading quotes', error);
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
 export default router;

@@ -1,22 +1,21 @@
-import { Router } from 'express';
-const router = Router();
+import express, { Request, Response, RequestHandler } from 'express';
+const router = express.Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { DeliveryMethodModel } from '../models/deliveryMethod.ts';
 import { SUCCESS, SERVER_ERROR, BAD_REQUEST, CREATED_SUCCESSFULLY } from '../enums/httpStatusCodes.ts';
 
 router.use(verifyBearerToken);
 
-router.get('/', async (_, response) => {
+router.get('/', (async (_: Request, response: Response) => {
     try {
         const deliveryMethods = await DeliveryMethodModel.find().exec();
-
-        return response.send(deliveryMethods);
+        response.send(deliveryMethods);
     } catch (error) {
-        return response.status(SERVER_ERROR).send(error.message);
+        response.status(SERVER_ERROR).send(error.message);
     }
-});
+}) as RequestHandler);
 
-router.patch('/:mongooseId', async (request, response) => {
+router.patch('/:mongooseId', (async (request: Request, response: Response) => {
     try {
         const updatedDeliveryMethod = await DeliveryMethodModel.findOneAndUpdate(
             { _id: request.params.mongooseId }, 
@@ -24,54 +23,41 @@ router.patch('/:mongooseId', async (request, response) => {
             { runValidators: true, new: true }
         ).exec();
 
-        return response.json(updatedDeliveryMethod);
+        response.json(updatedDeliveryMethod);
     } catch (error) {
         console.error('Failed to update deliveryMethod: ', error);
-
-        response
-            .status(SERVER_ERROR)
-            .send(error.message);
+        response.status(SERVER_ERROR).send(error.message);
     }
-});
+}) as RequestHandler);
 
-router.post('/', async (request, response) => {
-    let savedDeliveryMethod;
-
+router.post('/', (async (request: Request, response: Response) => {
     try {
-        savedDeliveryMethod = await DeliveryMethodModel.create(request.body);
-
-        return response.status(CREATED_SUCCESSFULLY).send(savedDeliveryMethod);
+        const savedDeliveryMethod = await DeliveryMethodModel.create(request.body);
+        response.status(CREATED_SUCCESSFULLY).send(savedDeliveryMethod);
     } catch (error) {
         console.error('Failed to create deliveryMethod', error);
-
-        return response.status(BAD_REQUEST).send(error.message);
+        response.status(BAD_REQUEST).send(error.message);
     }
-});
+}) as RequestHandler);
 
-router.delete('/:mongooseId', async (request, response) => {
+router.delete('/:mongooseId', (async (request: Request, response: Response) => {
     try {
-        const deletedDeliveryMethod = await DeliveryMethodModel.deleteById(request.params.mongooseId, request.user._id)
-        
-        return response.status(SUCCESS).json(deletedDeliveryMethod);
+        const deletedDeliveryMethod = await DeliveryMethodModel.deleteById(request.params.mongooseId, request.user._id);
+        response.status(SUCCESS).json(deletedDeliveryMethod);
     } catch (error) {
         console.error('Failed to delete deliveryMethod: ', error);
-
-        return response.status(SERVER_ERROR).send(error.message);
+        response.status(SERVER_ERROR).send(error.message);
     }
-});
+}) as RequestHandler);
 
-router.get('/:mongooseId', async (request, response) => {
+router.get('/:mongooseId', (async (request: Request, response: Response) => {
     try {
         const deliveryMethod = await DeliveryMethodModel.findById(request.params.mongooseId);
-
-        return response.json(deliveryMethod);
+        response.json(deliveryMethod);
     } catch (error) {
         console.error('Error searching for deliveryMethod: ', error);
-
-        return response
-            .status(SERVER_ERROR)
-            .send(error.message);
+        response.status(SERVER_ERROR).send(error.message);
     }
-});
+}) as RequestHandler);
 
 export default router;

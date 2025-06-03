@@ -1,5 +1,5 @@
-import { Router, Request, Response } from 'express';
-const router = Router();
+import express, { Router, Request, Response, RequestHandler } from 'express';
+const router: express.Router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { AdhesiveCategoryModel } from '../models/adhesiveCategory.ts';
 import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
@@ -8,15 +8,22 @@ import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { IAdhesiveCategory } from '@shared/types/models.ts';
+import { SearchHandler } from '@api/types/express.ts';
 
 router.use(verifyBearerToken);
 
-router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
-    const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
+    const { query, pageIndex, limit, sortField, sortDirection } = request.query;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+    if (!pageIndex || !limit) {
+      response.status(BAD_REQUEST).send('Invalid page index or limit');
+      return;
+    }
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+      response.status(BAD_REQUEST).send('Invalid sort direction');
+      return;
+    }
 
     const pageNumber = parseInt(pageIndex, 10);
     const pageSize = parseInt(limit, 10);
@@ -52,7 +59,7 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
     ];
 
     const results = await AdhesiveCategoryModel.aggregate<any>(pipeline);
-    const totalDocumentCount = results[0]?.totalCount[0]?.count || 0; // Extract total count
+    const totalDocumentCount = results[0]?.totalCount[0]?.count || 0;
     const adhesiveCategories = results[0]?.paginatedResults || [];
     const totalPages = Math.ceil(totalDocumentCount / pageSize);
 
@@ -64,40 +71,37 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
       pageSize,
     }
 
-    return response.json(paginationResponse)
-    
+    response.json(paginationResponse);
   } catch (error) {
     console.error('Error during adhesiveCategory search:', error);
-    return response.status(500).send(error);
+    response.status(500).send(error);
   }
-});
+}) as SearchHandler);
 
-router.delete('/:mongooseId', async (request, response) => {
+router.delete('/:mongooseId', (async (request: Request, response: Response) => {
     try {
         const deletedAdhesiveCategory = await AdhesiveCategoryModel.deleteById(request.params.mongooseId, request.user._id)
     
-        return response.status(SUCCESS).json(deletedAdhesiveCategory);
+        response.status(SUCCESS).json(deletedAdhesiveCategory);
     } catch (error) {
         console.error('Failed to delete adhesiveCategory: ', error);
 
-        return response.status(SERVER_ERROR).send(error.message);
+        response.status(SERVER_ERROR).send(error.message);
     }
-});
+}) as RequestHandler);
 
-router.get('/', async (_, response) => {
+router.get('/', (async (_: Request, response: Response) => {
     try {
         const adhesiveCategories = await AdhesiveCategoryModel.find().exec();
 
-        return response.json(adhesiveCategories);
+        response.json(adhesiveCategories);
     } catch (error) {
         console.error('Error fetching adhesive category: ', error);
-        return response
-            .status(SERVER_ERROR)
-            .send(error.message);
+        response.status(SERVER_ERROR).send(error.message);
     }
-});
+}) as RequestHandler);
 
-router.patch('/:mongooseId', async (request, response) => {
+router.patch('/:mongooseId', (async (request: Request, response: Response) => {
     try {
         const updatedAdhesiveCategory = await AdhesiveCategoryModel.findOneAndUpdate(
             { _id: request.params.mongooseId }, 
@@ -113,38 +117,33 @@ router.patch('/:mongooseId', async (request, response) => {
             .status(SERVER_ERROR)
             .send(error.message);
     }
-});
+}) as RequestHandler);
 
-router.post('/', async (request, response) => {
+router.post('/', (async (request: Request, response: Response) => {
     let savedAdhesiveCategory;
 
     try {
         savedAdhesiveCategory = await AdhesiveCategoryModel.create(request.body);
 
-        return response
-            .status(CREATED_SUCCESSFULLY)
-            .send(savedAdhesiveCategory);
+        response.status(CREATED_SUCCESSFULLY).send(savedAdhesiveCategory);
     } catch (error) {
         console.error('Error creating adhesive category: ', error);
-        return response
-            .status(SERVER_ERROR)
-            .send(error.message);
-    }
-});
 
-router.get('/:mongooseId', async (request, response) => {
+        response.status(SERVER_ERROR).send(error.message);
+    }
+}) as RequestHandler);
+
+router.get('/:mongooseId', (async (request: Request, response: Response) => {
     try {
         const adhesiveCategory = await AdhesiveCategoryModel.findById(request.params.mongooseId);
 
-        return response.json(adhesiveCategory);
+        response.json(adhesiveCategory);
     } catch (error) {
         console.error('Error searching for adhesiveCategory: ', error);
 
-        return response
-            .status(SERVER_ERROR)
-            .send(error.message);
+        response.status(SERVER_ERROR).send(error.message);
     }
-});
+}) as RequestHandler);
 
 
 export default router;
