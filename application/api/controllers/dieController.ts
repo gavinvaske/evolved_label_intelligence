@@ -1,29 +1,29 @@
-import { Router, Request, Response } from 'express';
-const router = Router();
+import { Router, Request, Response, RequestHandler } from 'express';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { DieModel } from '../models/die.ts';
 import { IDie } from '@shared/types/models.ts';
-import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
+import { BAD_REQUEST, CREATED_SUCCESSFULLY, NOT_FOUND, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { SearchQuery, SearchResult } from '@shared/types/http.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
+import { SearchHandler } from '@api/types/express.ts';
 
-
+const router = Router();
 router.use(verifyBearerToken);
 
-router.post('/', async (request: Request, response: Response) => {
+router.post('/', (async (request: Request, response: Response) => {
   try {
     await DieModel.create(request.body);
 
-    return response.status(CREATED_SUCCESSFULLY).send();
+    response.status(CREATED_SUCCESSFULLY).send();
   } catch (error) {
     console.error('Failed to create die:', error.message);
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.patch('/:mongooseId', async (request: Request, response: Response) => {
+router.patch('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const updatedDie = await DieModel.findByIdAndUpdate(
       { _id: request.params.mongooseId },
@@ -31,31 +31,36 @@ router.patch('/:mongooseId', async (request: Request, response: Response) => {
       { runValidators: true, new: true }
     ).orFail(new Error(`Die not found using ID '${request.params.mongooseId}'`)).exec();
 
-    return response.json(updatedDie);
+    response.json(updatedDie);
   } catch (error) {
     console.error('Failed to update die:', error.message);
-    return response.status(BAD_REQUEST).send(error.message);
+    response.status(BAD_REQUEST).send(error.message);
   }
-})
+}) as RequestHandler);
 
-router.delete('/:mongooseId', async (request: Request, response: Response) => {
+router.delete('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const deletedDie = await DieModel.deleteById(request.params.mongooseId, request.user._id)
 
-    return response.status(SUCCESS).json(deletedDie);
+    response.status(SUCCESS).json(deletedDie);
   } catch (error) {
     console.error('Failed to delete die: ', error);
-
-    return response.status(SERVER_ERROR).send(error);
+    response.status(SERVER_ERROR).send(error);
   }
-});
+}) as RequestHandler);
 
-router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
     const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+    if (!pageIndex || !limit) {
+      response.status(BAD_REQUEST).send('Invalid page index or limit');
+      return;
+    }
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+      response.status(BAD_REQUEST).send('Invalid sort direction');
+      return;
+    }
 
     const pageNumber = parseInt(pageIndex, 10);
     const pageSize = parseInt(limit, 10);
@@ -63,7 +68,7 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
     const sortOptions: SortOption = getSortOption(sortField, sortDirection);
 
     const textSearch = query && query.length
-    ? {
+      ? {
         $or: [
           { dieNumber: { $regex: query, $options: 'i' } },
           { shape: { $regex: query, $options: 'i' } },
@@ -74,7 +79,7 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
           { serialNumber: { $regex: query, $options: 'i' } }
         ],
       }
-    : {};
+      : {};
 
     const pipeline = [
       {
@@ -109,27 +114,29 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
       pageSize,
     }
 
-    return response.json(paginationResponse)
-    
+    response.json(paginationResponse);
   } catch (error) {
     console.error('Error during material-length-adjustment search:', error);
-    return response.status(500).send(error);
+    response.status(500).send(error);
   }
-});
+}) as SearchHandler);
 
-router.get('/:mongooseId', async (request: Request, response: Response) => {
+router.get('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const die = await DieModel.findById(request.params.mongooseId)
       .orFail(new Error(`Die not found using ID '${request.params.mongooseId}'`))
       .exec();
 
-    if (!die) throw new Error('Die not found');
+    if (!die) {
+      response.status(NOT_FOUND).send('Die not found');
+      return;
+    }
 
-    return response.json(die);
+    response.json(die);
   } catch (error) {
     console.error('Error fetching die: ', error.message);
-    return response.status(BAD_REQUEST).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
 export default router;

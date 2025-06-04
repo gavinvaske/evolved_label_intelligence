@@ -1,5 +1,4 @@
-import { Router, Request, Response } from 'express';
-const router = Router();
+import { Router, Request, Response, RequestHandler } from 'express';
 import { UserModel } from '../models/user.ts';
 import { hasAnyRole, verifyBearerToken } from '../middleware/authorize.ts';
 import { upload } from '../middleware/upload.ts';
@@ -11,18 +10,27 @@ import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { AVAILABLE_AUTH_ROLES } from '../enums/authRolesEnum.ts';
+import { SearchHandler } from '@api/types/express.ts';
+
+const router = Router();
 
 function deleteFileFromFileSystem(path) {
   fs.unlinkSync(path);
 }
 
-router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
     const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+    if (!pageIndex || !limit) {
+      response.status(BAD_REQUEST).send('Invalid page index or limit');
+      return;
+    }
 
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+      response.status(BAD_REQUEST).send('Invalid sort direction');
+      return;
+    }
     const pageNumber = parseInt(pageIndex, 10);
     const pageSize = parseInt(limit, 10);
     const numDocsToSkip = pageNumber * pageSize;
@@ -73,14 +81,14 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
       pageSize,
     }
 
-    return response.json(paginationResponse)
+    response.json(paginationResponse);
   } catch (error) {
     console.error('Failed to search for users: ', error);
-    return response.status(SERVER_ERROR).send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-})
+}) as SearchHandler);
 
-router.patch('/me', verifyBearerToken, async (request: Request, response: Response) => {
+router.patch('/me', verifyBearerToken, (async (request: Request, response: Response) => {
   try {
     if (!request.user._id) throw new Error('User not logged in');
 
@@ -99,41 +107,40 @@ router.patch('/me', verifyBearerToken, async (request: Request, response: Respon
       { runValidators: true }
     );
 
-    return response.sendStatus(SUCCESS);
+    response.sendStatus(SUCCESS);
   } catch (error) {
     console.error('Error updating user: ', error);
-    return response.status(SERVER_ERROR).send(error.message)
+    response.status(SERVER_ERROR).send(error.message)
   }
-});
+}) as RequestHandler);
 
-router.get('/', verifyBearerToken, async (_, response: Response) => {
+router.get('/', verifyBearerToken, (async (_, response: Response) => {
   try {
     const users = await UserModel.find().exec();
 
-    return response.json(users);
+    response.json(users);
   } catch (error) {
     console.error('Error fetching users: ', error);
-
-    return response
-      .status(SERVER_ERROR)
-      .send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), async (request: Request, response: Response) => {
+router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), (async (request: Request, response: Response) => {
   const maxImageSizeInBytes = 800000;
   let imageFilePath;
 
   try {
     if (!request.file) {
-      return response.sendStatus(SUCCESS);
+      response.sendStatus(SUCCESS);
+      return;
     }
 
     imageFilePath = request.file.path;
     const base64EncodedImage = fs.readFileSync(imageFilePath);
 
     if (request.file.size >= maxImageSizeInBytes) {
-      return response.status(BAD_REQUEST).send(`File size is too big! Please use an image that is ${(maxImageSizeInBytes / 1000).toFixed(0)} KB or less`)
+      response.status(BAD_REQUEST).send(`File size is too big! Please use an image that is ${(maxImageSizeInBytes / 1000).toFixed(0)} KB or less`)
+      return;
     }
 
     const user = await UserModel.findById(request.user._id);
@@ -147,37 +154,42 @@ router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), as
 
     await user.save();
 
-    return response.sendStatus(SUCCESS);
+    response.sendStatus(SUCCESS);
   } catch (error) {
     console.error('Failed to upload profile picture:', error)
 
-    return response.status(SERVER_ERROR).send(error.message)
+    response.status(SERVER_ERROR).send(error.message)
   } finally {
     deleteFileFromFileSystem(imageFilePath);
   }
-});
+}) as RequestHandler);
 
-router.put('/:mongooseId/auth-roles', hasAnyRole(['SUPER_ADMIN']), async (request: Request, response: Response) => {
+router.put('/:mongooseId/auth-roles', hasAnyRole(['SUPER_ADMIN']), (async (request: Request, response: Response) => {
   const { mongooseId } = request.params;
 
-  if (!mongooseId) return response.sendStatus(BAD_REQUEST)
+  if (!mongooseId) {
+    response.sendStatus(BAD_REQUEST);
+    return;
+  }
+
   try {
     const uniqueAuthRoles = [...new Set(request.body.authRoles as string[] | undefined)];
     uniqueAuthRoles.sort()
 
     if (!uniqueAuthRoles.every((authRole) => AVAILABLE_AUTH_ROLES.includes(authRole))) {
-      return response.status(BAD_REQUEST).send('Invalid auth roles provided');
+      response.status(BAD_REQUEST).send('Invalid auth roles provided');
+      return;
     }
 
     await UserModel.findOneAndUpdate(
       { _id: mongooseId },
       { authRoles: uniqueAuthRoles }
     );
-    return response.sendStatus(SUCCESS)
+    response.sendStatus(SUCCESS)
   } catch (error) {
-    return response.status(SERVER_ERROR).send(error.message)
+    response.status(SERVER_ERROR).send(error.message)
   }
 
-})
+}) as RequestHandler);
 
 export default router;

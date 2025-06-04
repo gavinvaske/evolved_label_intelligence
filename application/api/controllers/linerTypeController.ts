@@ -1,5 +1,4 @@
-import { Router, Request, Response } from 'express';
-const router = Router();
+import { Router, Request, Response, RequestHandler } from 'express';
 import { LinerTypeModel } from '../models/linerType.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
@@ -8,15 +7,23 @@ import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { ILinerType } from '@shared/types/models.ts';
+import { SearchHandler } from '@api/types/express.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
-router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
     const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+    if (!pageIndex || !limit) {
+      response.status(BAD_REQUEST).send('Invalid page index or limit');
+      return;
+    }
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+      response.status(BAD_REQUEST).send('Invalid sort direction');
+      return;
+    }
 
     const pageNumber = parseInt(pageIndex, 10);
     const pageSize = parseInt(limit, 10);
@@ -24,12 +31,12 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
     const sortOptions: SortOption = getSortOption(sortField, sortDirection);
 
     const textSearch = query && query.length
-    ? {
+      ? {
         $or: [
           { name: { $regex: query, $options: 'i' } }
         ],
       }
-    : {};
+      : {};
 
     const pipeline = [
       {
@@ -64,71 +71,59 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
       pageSize,
     }
 
-    return response.json(paginationResponse)
-    
+    response.json(paginationResponse);
   } catch (error) {
     console.error('Error during linerTypes search:', error);
-    return response.status(500).send(error);
+    response.status(500).send(error);
   }
-});
+}) as SearchHandler);
 
-router.delete('/:mongooseId', async (request, response) => {
-    try {
-        const deletedLinerType = await LinerTypeModel.deleteById(request.params.mongooseId, request.user._id)
+router.delete('/:mongooseId', (async (request: Request, response: Response) => {
+  try {
+    const deletedLinerType = await LinerTypeModel.deleteById(request.params.mongooseId, request.user._id)
 
-        return response.status(SUCCESS).json(deletedLinerType);
-    } catch (error) {
-        console.error('Failed to delete LinerType: ', error);
+    response.status(SUCCESS).json(deletedLinerType);
+  } catch (error) {
+    console.error('Failed to delete LinerType: ', error);
 
-        return response.status(SERVER_ERROR).send(error.message);
-    }
-});
+    response.status(SERVER_ERROR).send(error.message);
+  }
+}) as RequestHandler);
 
-router.patch('/:mongooseId', async (request, response) => {
-    try {
-        const updatedLinerType = await LinerTypeModel.findOneAndUpdate(
-            {_id: request.params.mongooseId}, 
-            {$set: request.body}, 
-            {runValidators: true, new: true}
-        ).exec();
+router.patch('/:mongooseId', (async (request: Request, response: Response) => {
+  try {
+    const updatedLinerType = await LinerTypeModel.findOneAndUpdate(
+      { _id: request.params.mongooseId },
+      { $set: request.body },
+      { runValidators: true, new: true }
+    ).exec();
 
-        return response.json(updatedLinerType);
-    } catch (error) {
-        console.log('Failed to update LinerType: ', error);
+    response.json(updatedLinerType);
+  } catch (error) {
+    console.log('Failed to update LinerType: ', error);
+    response.status(SERVER_ERROR).send(error.message);
+  }
+}) as RequestHandler);
 
-        response
-            .status(SERVER_ERROR)
-            .send(error.message);
-    }
-});
+router.post('/', (async (request: Request, response: Response) => {
+  try {
+    const linerType = await LinerTypeModel.create(request.body);
 
-router.post('/', async (request, response) => {
-    try {
-        const linerType = await LinerTypeModel.create(request.body);
+    response.status(CREATED_SUCCESSFULLY).json(linerType);
+  } catch (error) {
+    console.error('Failed to create LinerType: ', error);
+    response.status(SERVER_ERROR).send(error.message);
+  }
+}) as RequestHandler);
 
-        return response
-            .status(CREATED_SUCCESSFULLY)
-            .json(linerType);
-    } catch (error) {
-        console.error('Failed to create LinerType: ', error);
-        return response
-            .status(SERVER_ERROR)
-            .send(error.message);
-    }
-});
-
-router.get('/:mongooseId', async (request, response) => {
-    try {
-        const linerType = await LinerTypeModel.findById(request.params.mongooseId);
-
-        return response.json(linerType);
-    } catch (error) {
-        console.error('Error searching for linerType: ', error);
-
-        return response
-            .status(SERVER_ERROR)
-            .send(error.message);
-    }
-});
+router.get('/:mongooseId', (async (request: Request, response: Response) => {
+  try {
+    const linerType = await LinerTypeModel.findById(request.params.mongooseId);
+    response.json(linerType);
+  } catch (error) {
+    console.error('Error searching for linerType: ', error);
+    response.status(SERVER_ERROR).send(error.message);
+  }
+}) as RequestHandler);
 
 export default router;

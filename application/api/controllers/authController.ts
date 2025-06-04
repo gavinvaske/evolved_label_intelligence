@@ -1,4 +1,4 @@
-import { Router, Request, Response, response } from 'express';
+import { Router, Request, Response, RequestHandler } from 'express';
 import { UserModel } from '../models/user.ts';
 import { BAD_REQUEST, CREATED_SUCCESSFULLY, FORBIDDEN, NOT_FOUND, SERVER_ERROR, SUCCESS, UNAUTHORIZED } from '../enums/httpStatusCodes.ts';
 import { generateRefreshToken, generateAccessToken, TokenPayload, verifyBearerToken } from '../middleware/authorize.ts';
@@ -15,11 +15,11 @@ const MIN_PASSWORD_LENGTH = 8;
 const BCRYPT_SALT_ROUNDS = 10;
 const MONGODB_DUPLICATE_KEY_ERROR_CODE = 11000;
 
-router.get('/logout', (_: Request, response: Response) => {
+router.get('/logout', ((_: Request, response: Response) => {
   response.clearCookie(REFRESH_TOKEN_COOKIE_NAME);
 
-  return response.sendStatus(SUCCESS);
-})
+  response.sendStatus(SUCCESS);
+}) as RequestHandler);
 
 /* TODO: This type is a duplicate from the UI
     * Investigate various ways to share types between API and frontend (issue #348)
@@ -38,11 +38,12 @@ export type UserAuth = {
   refresh token that was stored in an HTTP only cookie, and if it's valid, and not expired
   as well, it generates a new accessToken that is sent back to the user
 */
-router.get('/access-token', (request: Request, response: Response) => {
+router.get('/access-token', ((request: Request, response: Response) => {
   const refreshTokenFromSecureCookie = request.cookies[REFRESH_TOKEN_COOKIE_NAME];
 
   if (!refreshTokenFromSecureCookie) {
-    return response.status(FORBIDDEN).json({ error: 'Refresh token missing' });
+    response.status(FORBIDDEN).json({ error: 'Refresh token missing' });
+    return;
   }
 
   try {
@@ -62,13 +63,13 @@ router.get('/access-token', (request: Request, response: Response) => {
       authRoles: payloadWithExtraStuff.authRoles,
     };
 
-    return response.json(userAuth);
+    response.json(userAuth);
   } catch (error) {
-    return response.status(FORBIDDEN).json({ error: 'Refresh token expired' });
+    response.status(FORBIDDEN).json({ error: 'Refresh token expired' });
   }
-});
+}) as RequestHandler);
 
-router.post('/login', async (request: Request, response: Response) => {
+router.post('/login', (async (request: Request, response: Response) => {
   const { email, password } = request.body;
   const invalidLoginMessage = 'Invalid email and/or password'
 
@@ -76,13 +77,15 @@ router.post('/login', async (request: Request, response: Response) => {
     const user = await UserModel.findOne({ email }).lean();
 
     if (!user) {
-      return response.status(UNAUTHORIZED).send(invalidLoginMessage);
+      response.status(UNAUTHORIZED).send(invalidLoginMessage);
+      return;
     }
 
     const isPasswordCorrectForUser = await bcrypt.compare(password, user.password);
 
     if (!isPasswordCorrectForUser) {
-      return response.status(UNAUTHORIZED).send(invalidLoginMessage);
+      response.status(UNAUTHORIZED).send(invalidLoginMessage);
+      return;
     }
 
     const authRoles = user.authRoles || []
@@ -113,19 +116,18 @@ router.post('/login', async (request: Request, response: Response) => {
       // Do nothing else: aka allow login to proceed successfully
     }
 
-    return response.status(SUCCESS).json({
+    response.status(SUCCESS).json({
       accessToken,
       authRoles: authRoles
     })
 
   } catch (error) {
     console.error(error);
-
-    return response.status(SERVER_ERROR).send('An error was thrown during login, see logs for more details');
+    response.status(SERVER_ERROR).send('An error was thrown during login, see logs for more details');
   }
-})
+}) as RequestHandler);
 
-router.post('/forgot-password', async (request, response) => {
+router.post('/forgot-password', (async (request: Request, response: Response) => {
   const { email } = request.body;
 
   try {
@@ -154,28 +156,33 @@ router.post('/forgot-password', async (request, response) => {
     /* Don't return error HTTP status for security purposes. Any/All requests should result in 200 HTTP status */
   }
 
-  return response.sendStatus(200);
-});
+  response.sendStatus(200);
+}) as RequestHandler);
 
-export const validatePasswordsOrSendErrorResponse = (password: string, repeatPassword: string, response: Response) => {
+export const validatePasswords = (password: string, repeatPassword: string): string | null => {
   if (!password || !repeatPassword) {
-    return response.status(BAD_REQUEST).send('Missing password or repeat password')
+    return 'Missing password or repeat password'
   }
   if (password !== repeatPassword) {
-    return response.status(BAD_REQUEST).send('Passwords do not match')
+    return 'Passwords do not match'
   }
   if (password.length < MIN_PASSWORD_LENGTH) {
-    return response.status(BAD_REQUEST).send(`Password must be at least ${MIN_PASSWORD_LENGTH} characters`)
+    return `Password must be at least ${MIN_PASSWORD_LENGTH} characters`
   }
-  return;
+  return null;
 }
 
-router.post('/change-password/:mongooseId/:token', async (request: Request, response: Response) => {
+router.post('/change-password/:mongooseId/:token', (async (request: Request, response: Response) => {
   const { mongooseId, token } = request.params;
   const { password, repeatPassword } = request.body;
 
   try {
-    validatePasswordsOrSendErrorResponse(password, repeatPassword, response);
+    const errorMessage = validatePasswords(password, repeatPassword);
+
+    if (errorMessage) {
+      response.status(BAD_REQUEST).send(errorMessage);
+      return;
+    }
 
     /* For security purposes: The line below does nothing except add time complexity to making this request.  */
     await bcrypt.hash('foobar-foobar-foobar', BCRYPT_SALT_ROUNDS);
@@ -196,25 +203,29 @@ router.post('/change-password/:mongooseId/:token', async (request: Request, resp
       { _id: mongooseId },
       { password: encryptedPassword }
     );
+    response.sendStatus(SUCCESS);
   } catch (error) {
     console.warn(`Change password request for mongooseId of '${mongooseId}' resulted in an error: `, error)
-
-    return response.status(FORBIDDEN).send('Unable to change password. Your link may have expired, was incorrectly copied, or something else.')
+    response.status(FORBIDDEN).send('Unable to change password. Your link may have expired, was incorrectly copied, or something else.')
   }
+}) as RequestHandler);
 
-  return response.sendStatus(SUCCESS);
-});
-
-router.post('/register', async (request: Request, response: Response) => {
+router.post('/register', (async (request: Request, response: Response) => {
   const { firstName, lastName, birthDate, email, password: plainTextPassword, repeatPassword } = request.body;
   const genericErrorMessage = 'An error occurred during registration, see logs for more details';
 
   if (!email) {
-    return response.status(BAD_REQUEST).send("Missing 'email' from request")
+    response.status(BAD_REQUEST).send("Missing 'email' from request")
+    return;
   }
 
   try {
-    validatePasswordsOrSendErrorResponse(plainTextPassword, repeatPassword, response);
+    const errorMessage = validatePasswords(plainTextPassword, repeatPassword);
+
+    if (errorMessage) {
+      response.status(BAD_REQUEST).send(errorMessage);
+      return;
+    }
 
     const encryptedPassword = await bcrypt.hash(plainTextPassword, BCRYPT_SALT_ROUNDS);
 
@@ -227,26 +238,27 @@ router.post('/register', async (request: Request, response: Response) => {
     });
   } catch (error) {
     if (error.code === MONGODB_DUPLICATE_KEY_ERROR_CODE) {
-      return response.status(BAD_REQUEST).send('Email already exists')
+      response.status(BAD_REQUEST).send('Email already exists')
+      return;
     }
     console.error(`Unable to register user with email ${email}: `, error);
 
-    return response.status(SERVER_ERROR).send(genericErrorMessage);
+    response.status(SERVER_ERROR).send(genericErrorMessage);
   }
 
-  return response.sendStatus(CREATED_SUCCESSFULLY);
-});
+  response.sendStatus(CREATED_SUCCESSFULLY);
+}) as RequestHandler);
 
-router.get('/me', verifyBearerToken, async (request, response) => {
+router.get('/me', verifyBearerToken, (async (request: Request, response: Response) => {
   try {
     const user = await UserModel.findById(request.user._id, 'email firstName lastName authRoles jobRole phoneNumber birthDate profilePicture').lean();
 
-    return response.json(user);
+    response.json(user);
   } catch (error) {
     console.error(error);
-    return response.sendStatus(NOT_FOUND)
+    response.sendStatus(NOT_FOUND)
   }
-});
+}) as RequestHandler);
 
 
 export default router;

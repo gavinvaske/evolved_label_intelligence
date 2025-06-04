@@ -1,5 +1,4 @@
-import { Router, Request, Response } from 'express';
-const router = Router();
+import { Router, Request, Response, RequestHandler } from 'express';
 import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { IMaterialLengthAdjustment } from '@shared/types/models.ts';
@@ -8,15 +7,18 @@ import { SearchQuery, SearchResult } from '../../_types/shared/http.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { SortOption } from '../../_types/shared/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
+import { SearchHandler } from '@api/types/express.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
-router.post('/batch', async (request: Request, response: Response) => {
+router.post('/batch', (async (request: Request, response: Response) => {
   try {
     const { ids } = request.body;
 
     if (!Array.isArray(ids) || ids.length === 0) {
-      return response.status(400).json({ error: "'ids' is invalid" });
+      response.status(400).json({ error: "'ids' is invalid" });
+      return;
     }
 
     const orders = await MaterialLengthAdjustmentModel
@@ -24,35 +26,36 @@ router.post('/batch', async (request: Request, response: Response) => {
       .populate('material')
       .exec();
 
-    return response.json(orders)
+    response.json(orders);
   } catch (error) {
     console.error('Failed to fetch materialLengthAdjustments by ids', error);
-
-    return response.status(BAD_REQUEST).send(error.message);
+    response.status(BAD_REQUEST).send(error.message);
   }
-})
+}) as RequestHandler);
 
-router.post('/', async (request: Request, response: Response) => {
-    try {
-        const savedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.create(request.body);
+router.post('/', (async (request: Request, response: Response) => {
+  try {
+    const savedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.create(request.body);
 
-        return response
-            .status(CREATED_SUCCESSFULLY)
-            .send(savedMaterialLengthAdjustment);
-    } catch (error) {
-        console.error('Error creating materialLengthAdjustment: ', error);
-        return response
-            .status(SERVER_ERROR)
-            .send(error.message);
-    }
-});
+    response.status(CREATED_SUCCESSFULLY).send(savedMaterialLengthAdjustment);
+  } catch (error) {
+    console.error('Error creating materialLengthAdjustment: ', error);
+    response.status(SERVER_ERROR).send(error.message);
+  }
+}) as RequestHandler);
 
-router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
+router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
   try {
     const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) return response.status(BAD_REQUEST).send('Invalid page index or limit');
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') return response.status(BAD_REQUEST).send('Invalid sort direction');
+    if (!pageIndex || !limit) {
+      response.status(BAD_REQUEST).send('Invalid page index or limit');
+      return;
+    }
+    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+      response.status(BAD_REQUEST).send('Invalid sort direction');
+      return;
+    }
 
     const pageNumber = parseInt(pageIndex, 10);
     const pageSize = parseInt(limit, 10);
@@ -60,14 +63,14 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
     const sortOptions: SortOption = getSortOption(sortField, sortDirection);
 
     const textSearch = query && query.length
-    ? {
+      ? {
         $or: [
           { notes: { $regex: query, $options: 'i' } },
           { 'material.name': { $regex: query, $options: 'i' } },
           { 'material.materialId': { $regex: query, $options: 'i' } },
         ],
       }
-    : {};
+      : {};
 
     const pipeline = [
       {
@@ -122,56 +125,48 @@ router.get('/search', async (request: Request<{}, {}, {}, SearchQuery>, response
       pageSize,
     }
 
-    return response.json(paginationResponse)
-    
+    response.json(paginationResponse);
   } catch (error) {
     console.error('Error during material-length-adjustment search:', error);
-    return response.status(500).send(error.message);
+    response.status(500).send(error.message);
   }
-});
+}) as SearchHandler);
 
-router.get('/:mongooseId', async (request: Request, response: Response) => {
+router.get('/:mongooseId', (async (request: Request, response: Response) => {
   try {
     const materialLengthAdjustment = await MaterialLengthAdjustmentModel.findById(request.params.mongooseId);
 
-    return response.json(materialLengthAdjustment);
+    response.json(materialLengthAdjustment);
   } catch (error) {
-      console.error('Error searching for materialLengthAdjustment: ', error);
-
-      return response
-          .status(SERVER_ERROR)
-          .send(error.message);
+    console.error('Error searching for materialLengthAdjustment: ', error);
+    response.status(SERVER_ERROR).send(error.message);
   }
-})
+}) as RequestHandler);
 
-router.patch('/:mongooseId', async (request: Request, response: Response) => {
+router.patch('/:mongooseId', (async (request: Request, response: Response) => {
   try {
-      const updatedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.findOneAndUpdate(
-          { _id: request.params.mongooseId }, 
-          { $set: request.body }, 
-          { runValidators: true, new: true }
-      ).exec();
+    const updatedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.findOneAndUpdate(
+      { _id: request.params.mongooseId },
+      { $set: request.body },
+      { runValidators: true, new: true }
+    ).exec();
 
-      return response.json(updatedMaterialLengthAdjustment);
+    response.json(updatedMaterialLengthAdjustment);
   } catch (error) {
-      console.error('Failed to update materialLengthAdjustment: ', error);
-
-      return response
-          .status(SERVER_ERROR)
-          .send(error.message);
+    console.error('Failed to update materialLengthAdjustment: ', error);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
-router.delete('/:mongooseId', async (request: Request, response: Response) => {
-  try { 
-      const deletedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.deleteById(request.params.mongooseId, request.user._id);
+router.delete('/:mongooseId', (async (request: Request, response: Response) => {
+  try {
+    const deletedMaterialLengthAdjustment = await MaterialLengthAdjustmentModel.deleteById(request.params.mongooseId, request.user._id);
 
-      return response.status(SUCCESS).json(deletedMaterialLengthAdjustment);
+    response.status(SUCCESS).json(deletedMaterialLengthAdjustment);
   } catch (error) {
-      console.error('Failed to delete materialLengthAdjustment: ', error);
-
-      return response.status(SERVER_ERROR).send(error.message);
+    console.error('Failed to delete materialLengthAdjustment: ', error);
+    response.status(SERVER_ERROR).send(error.message);
   }
-});
+}) as RequestHandler);
 
 export default router;
