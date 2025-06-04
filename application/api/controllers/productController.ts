@@ -6,7 +6,7 @@ import { TicketModel } from '../models/ticket.ts';
 import * as s3Service from '../services/s3Service.ts';
 import * as fileService from '../services/fileService.ts';
 import { BaseProductModel } from '../models/baseProduct.ts';
-import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
+import { BAD_REQUEST, CREATED_SUCCESSFULLY, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { DESCENDING } from '../enums/mongooseSortMethods.ts';
 
 const SERVER_ERROR_CODE = 500;
@@ -54,69 +54,44 @@ router.post('/:productNumber/upload-proof', upload.single('proof'), (async (requ
 }) as RequestHandler);
 
 router.post('/', (async (request: Request, response: Response) => {
-  try {
-    const savedProduct = await BaseProductModel.create({
-      ...request.body,
-      author: request.user._id
-    })
+  const savedProduct = await BaseProductModel.create({
+    ...request.body,
+    author: request.user._id
+  })
 
-    response.status(CREATED_SUCCESSFULLY).send(savedProduct);
-  } catch (error) {
-    console.error('Failed to create product', error.message);
-    response.status(BAD_REQUEST).send(error.message);
-  }
+  response.status(CREATED_SUCCESSFULLY).send(savedProduct);
 }) as RequestHandler);
 
 router.patch('/:mongooseId', (async (request: Request, response: Response) => {
-  try {
-    const baseProduct = await BaseProductModel.findOneAndUpdate(
-      { _id: request.params.mongooseId },
-      { $set: request.body },
-      { runValidators: true, new: true }
-    ).orFail(new Error(`Product not found using ID '${request.params.mongooseId}'`)).exec();
+  const baseProduct = await BaseProductModel.findOneAndUpdate(
+    { _id: request.params.mongooseId },
+    { $set: request.body },
+    { runValidators: true, new: true }
+  ).orFail(new Error(`Product not found using ID '${request.params.mongooseId}'`)).exec();
 
-    response.json(baseProduct);
-  } catch (error) {
-    console.log('Failed to update product: ', error.message);
-    response.status(BAD_REQUEST).send(error.message);
-  }
+  response.json(baseProduct);
 }) as RequestHandler);
 
 router.delete('/:mongooseId', (async (request: Request, response: Response) => {
-  try {
-    const deletedProduct = await BaseProductModel.findByIdAndDelete(request.params.mongooseId)
-      .orFail(new Error(`Product not found using ID '${request.params.mongooseId}'`))
-      .exec();
+  const deletedProduct = await BaseProductModel.findByIdAndDelete(request.params.mongooseId)
+    .orFail(new Error(`Product not found using ID '${request.params.mongooseId}'`))
+    .exec();
 
-    response.status(SUCCESS).json(deletedProduct);
-  } catch (error) {
-    console.error('Failed to delete product: ', error);
-    response.status(SERVER_ERROR).send(error.message);
-  }
+  response.status(SUCCESS).json(deletedProduct);
 }) as RequestHandler);
 
 router.get('/', (async (_: Request, response: Response) => {
-  try {
-    const products = await BaseProductModel.find().sort({ updatedAt: DESCENDING }).exec();
+  const products = await BaseProductModel.find().sort({ updatedAt: DESCENDING }).exec();
 
-    response.json(products);
-  } catch (error) {
-    console.error('Error loading products', error);
-    response.status(SERVER_ERROR).send(error.message);
-  }
+  response.json(products);
 }) as RequestHandler);
 
 router.get('/:mongooseId', (async (request: Request, response: Response) => {
-  try {
-    const product = await BaseProductModel.findById(request.params.mongooseId)
-      .orFail(new Error(`Product not found using ID '${request.params.mongooseId}'`))
-      .exec();
+  const product = await BaseProductModel.findById(request.params.mongooseId)
+    .orFail(new Error(`Product not found using ID '${request.params.mongooseId}'`))
+    .exec();
 
-    response.json(product);
-  } catch (error) {
-    console.error('Error fetching product: ', error.message);
-    response.status(BAD_REQUEST).send(error.message);
-  }
+  response.json(product);
 }) as RequestHandler);
 
 

@@ -19,110 +19,95 @@ function deleteFileFromFileSystem(path) {
 }
 
 router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
-  try {
-    const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
+  const { query, pageIndex, limit, sortField, sortDirection } = request.query as SearchQuery;
 
-    if (!pageIndex || !limit) {
-      response.status(BAD_REQUEST).send('Invalid page index or limit');
-      return;
-    }
-
-    if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
-      response.status(BAD_REQUEST).send('Invalid sort direction');
-      return;
-    }
-    const pageNumber = parseInt(pageIndex, 10);
-    const pageSize = parseInt(limit, 10);
-    const numDocsToSkip = pageNumber * pageSize;
-    const sortOptions: SortOption = getSortOption(sortField, sortDirection);
-
-    const textSearch = query && query.length
-      ? {
-        $or: [
-          { email: { $regex: query, $options: 'i' } },
-          { firstName: { $regex: query, $options: 'i' } },
-          { lastName: { $regex: query, $options: 'i' } },
-          { jobRole: { $regex: query, $options: 'i' } },
-          { phoneNumber: { $regex: query, $options: 'i' } },
-        ],
-      }
-      : {};
-
-    const pipeline = [
-      {
-        $match: {
-          ...textSearch,
-        },
-      },
-      {
-        $facet: {
-          paginatedResults: [
-            { $sort: { ...sortOptions, ...DEFAULT_SORT_OPTIONS } },
-            { $skip: numDocsToSkip },
-            { $limit: pageSize },
-          ],
-          totalCount: [
-            { $count: 'count' },
-          ],
-        },
-      },
-    ];
-
-    const results = await UserModel.aggregate<any>(pipeline);
-    const totalDocumentCount = results[0]?.totalCount[0]?.count || 0; // Extract total count
-    const materialOrders = results[0]?.paginatedResults || [];
-    const totalPages = Math.ceil(totalDocumentCount / pageSize);
-
-    const paginationResponse: SearchResult<IUser> = {
-      totalResults: totalDocumentCount,
-      totalPages,
-      currentPageIndex: (query && query.length) ? 0 : pageNumber,
-      results: materialOrders,
-      pageSize,
-    }
-
-    response.json(paginationResponse);
-  } catch (error) {
-    console.error('Failed to search for users: ', error);
-    response.status(SERVER_ERROR).send(error.message);
+  if (!pageIndex || !limit) {
+    response.status(BAD_REQUEST).send('Invalid page index or limit');
+    return;
   }
+
+  if (sortDirection?.length && sortDirection !== '1' && sortDirection !== '-1') {
+    response.status(BAD_REQUEST).send('Invalid sort direction');
+    return;
+  }
+  const pageNumber = parseInt(pageIndex, 10);
+  const pageSize = parseInt(limit, 10);
+  const numDocsToSkip = pageNumber * pageSize;
+  const sortOptions: SortOption = getSortOption(sortField, sortDirection);
+
+  const textSearch = query && query.length
+    ? {
+      $or: [
+        { email: { $regex: query, $options: 'i' } },
+        { firstName: { $regex: query, $options: 'i' } },
+        { lastName: { $regex: query, $options: 'i' } },
+        { jobRole: { $regex: query, $options: 'i' } },
+        { phoneNumber: { $regex: query, $options: 'i' } },
+      ],
+    }
+    : {};
+
+  const pipeline = [
+    {
+      $match: {
+        ...textSearch,
+      },
+    },
+    {
+      $facet: {
+        paginatedResults: [
+          { $sort: { ...sortOptions, ...DEFAULT_SORT_OPTIONS } },
+          { $skip: numDocsToSkip },
+          { $limit: pageSize },
+        ],
+        totalCount: [
+          { $count: 'count' },
+        ],
+      },
+    },
+  ];
+
+  const results = await UserModel.aggregate<any>(pipeline);
+  const totalDocumentCount = results[0]?.totalCount[0]?.count || 0; // Extract total count
+  const materialOrders = results[0]?.paginatedResults || [];
+  const totalPages = Math.ceil(totalDocumentCount / pageSize);
+
+  const paginationResponse: SearchResult<IUser> = {
+    totalResults: totalDocumentCount,
+    totalPages,
+    currentPageIndex: (query && query.length) ? 0 : pageNumber,
+    results: materialOrders,
+    pageSize,
+  }
+
+  response.json(paginationResponse);
 }) as SearchHandler);
 
 router.patch('/me', verifyBearerToken, (async (request: Request, response: Response) => {
-  try {
-    if (!request.user._id) throw new Error('User not logged in');
+  if (!request.user._id) throw new Error('User not logged in');
 
-    const newUserValues = {
-      email: request.body.email || undefined,
-      firstName: request.body.firstName || undefined,
-      lastName: request.body.lastName || undefined,
-      jobRole: request.body.jobRole || undefined,
-      birthDate: request.body.birthDate || '',
-      phoneNumber: request.body.phoneNumber || undefined
-    }
-
-    await UserModel.findOneAndUpdate(
-      { _id: request.user._id },
-      { $set: newUserValues },
-      { runValidators: true }
-    );
-
-    response.sendStatus(SUCCESS);
-  } catch (error) {
-    console.error('Error updating user: ', error);
-    response.status(SERVER_ERROR).send(error.message)
+  const newUserValues = {
+    email: request.body.email || undefined,
+    firstName: request.body.firstName || undefined,
+    lastName: request.body.lastName || undefined,
+    jobRole: request.body.jobRole || undefined,
+    birthDate: request.body.birthDate || '',
+    phoneNumber: request.body.phoneNumber || undefined
   }
+
+  await UserModel.findOneAndUpdate(
+    { _id: request.user._id },
+    { $set: newUserValues },
+    { runValidators: true }
+  );
+
+  response.sendStatus(SUCCESS);
 }) as RequestHandler);
 
 router.get('/', verifyBearerToken, (async (_, response: Response) => {
-  try {
-    const users = await UserModel.find().exec();
+  const users = await UserModel.find().exec();
 
-    response.json(users);
-  } catch (error) {
-    console.error('Error fetching users: ', error);
-    response.status(SERVER_ERROR).send(error.message);
-  }
+  response.json(users);
 }) as RequestHandler);
 
 router.post('/me/profile-picture', verifyBearerToken, upload.single('image'), (async (request: Request, response: Response) => {
@@ -172,24 +157,20 @@ router.put('/:mongooseId/auth-roles', hasAnyRole(['SUPER_ADMIN']), (async (reque
     return;
   }
 
-  try {
-    const uniqueAuthRoles = [...new Set(request.body.authRoles as string[] | undefined)];
-    uniqueAuthRoles.sort()
+  const uniqueAuthRoles = [...new Set(request.body.authRoles as string[] | undefined)];
+  uniqueAuthRoles.sort()
 
-    if (!uniqueAuthRoles.every((authRole) => AVAILABLE_AUTH_ROLES.includes(authRole))) {
-      response.status(BAD_REQUEST).send('Invalid auth roles provided');
-      return;
-    }
-
-    await UserModel.findOneAndUpdate(
-      { _id: mongooseId },
-      { authRoles: uniqueAuthRoles }
-    );
-    response.sendStatus(SUCCESS)
-  } catch (error) {
-    response.status(SERVER_ERROR).send(error.message)
+  if (!uniqueAuthRoles.every((authRole) => AVAILABLE_AUTH_ROLES.includes(authRole))) {
+    response.status(BAD_REQUEST).send('Invalid auth roles provided');
+    return;
   }
 
+  await UserModel.findOneAndUpdate(
+    { _id: mongooseId },
+    { authRoles: uniqueAuthRoles }
+  );
+
+  response.sendStatus(SUCCESS);
 }) as RequestHandler);
 
 export default router;

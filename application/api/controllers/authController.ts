@@ -73,58 +73,50 @@ router.post('/login', (async (request: Request, response: Response) => {
   const { email, password } = request.body;
   const invalidLoginMessage = 'Invalid email and/or password'
 
-  try {
-    const user = await UserModel.findOne({ email }).lean();
+  const user = await UserModel.findOne({ email }).lean();
 
-    if (!user) {
-      response.status(UNAUTHORIZED).send(invalidLoginMessage);
-      return;
-    }
-
-    const isPasswordCorrectForUser = await bcrypt.compare(password, user.password);
-
-    if (!isPasswordCorrectForUser) {
-      response.status(UNAUTHORIZED).send(invalidLoginMessage);
-      return;
-    }
-
-    const authRoles = user.authRoles || []
-
-    const tokenPayload: TokenPayload = {
-      _id: user._id as MongooseId,
-      email: user.email as string,
-      authRoles: authRoles
-    }
-
-    const accessTokenSecret = process.env.JWT_SECRET as string;
-    const accessToken = generateAccessToken(tokenPayload, accessTokenSecret);
-
-    const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET as string;
-    const refreshToken = generateRefreshToken(tokenPayload, refreshTokenSecret);
-
-    response.cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken, {
-      httpOnly: true
-    });
-
-    try {
-      /* Store user login date/time */
-      await UserModel.updateOne({ _id: user._id }, {
-        $set: { lastLoginDateTime: new Date() }
-      })
-    } catch (error) {
-      console.error('Failed to save login info: ', error);
-      // Do nothing else: aka allow login to proceed successfully
-    }
-
-    response.status(SUCCESS).json({
-      accessToken,
-      authRoles: authRoles
-    })
-
-  } catch (error) {
-    console.error(error);
-    response.status(SERVER_ERROR).send('An error was thrown during login, see logs for more details');
+  if (!user) {
+    throw new Error(invalidLoginMessage);
   }
+
+  const isPasswordCorrectForUser = await bcrypt.compare(password, user.password);
+
+  if (!isPasswordCorrectForUser) {
+    throw new Error(invalidLoginMessage);
+  }
+
+  const authRoles = user.authRoles || []
+
+  const tokenPayload: TokenPayload = {
+    _id: user._id as MongooseId,
+    email: user.email as string,
+    authRoles: authRoles
+  }
+
+  const accessTokenSecret = process.env.JWT_SECRET as string;
+  const accessToken = generateAccessToken(tokenPayload, accessTokenSecret);
+
+  const refreshTokenSecret = process.env.REFRESH_TOKEN_SECRET as string;
+  const refreshToken = generateRefreshToken(tokenPayload, refreshTokenSecret);
+
+  response.cookie(REFRESH_TOKEN_COOKIE_NAME, refreshToken, {
+    httpOnly: true
+  });
+
+  try {
+    /* Store user login date/time */
+    await UserModel.updateOne({ _id: user._id }, {
+      $set: { lastLoginDateTime: new Date() }
+    })
+  } catch (error) {
+    console.error('Failed to save login info: ', error);
+    // Do nothing else: aka allow login to proceed successfully
+  }
+
+  response.status(SUCCESS).json({
+    accessToken,
+    authRoles: authRoles
+  })
 }) as RequestHandler);
 
 router.post('/forgot-password', (async (request: Request, response: Response) => {
