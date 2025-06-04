@@ -29,10 +29,11 @@ export const errorHandler: ErrorRequestHandler = (error, req: Request, res: Resp
   }
 
   const response = {
-    error: errors.length === 1 ? errors[0] : undefined,
-    errors: errors.length > 1 ? errors : undefined,
+    error: !errors.length ? error.message : undefined,
+    errors: errors.length > 0 ? errors : undefined,
   }
 
   // Send JSON response with structured error format
   res.status(status).json(response);
 };
+
