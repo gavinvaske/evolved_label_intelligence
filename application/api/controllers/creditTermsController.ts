@@ -1,5 +1,4 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-const router = Router();
 import { SUCCESS, SERVER_ERROR, BAD_REQUEST, CREATED_SUCCESSFULLY } from '../enums/httpStatusCodes.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { CreditTermModel } from '../models/creditTerm.ts';
@@ -10,6 +9,7 @@ import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { ICreditTerm } from '@shared/types/models.ts';
 import { SearchHandler } from '@api/types/express.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
 router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {

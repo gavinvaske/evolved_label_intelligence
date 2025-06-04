@@ -1,9 +1,9 @@
-import express, { Request, Response, RequestHandler } from 'express';
-const router = express.Router();
+import { Router, Request, Response, RequestHandler } from 'express';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { DeliveryMethodModel } from '../models/deliveryMethod.ts';
 import { SUCCESS, SERVER_ERROR, BAD_REQUEST, CREATED_SUCCESSFULLY } from '../enums/httpStatusCodes.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
 router.get('/', (async (_: Request, response: Response) => {

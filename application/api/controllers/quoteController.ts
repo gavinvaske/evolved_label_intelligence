@@ -1,11 +1,11 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-const router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import * as quoteService from '../services/quoteService.ts';
 import { QuoteModel } from '../models/quote.ts';
 import { DESCENDING } from '../enums/mongooseSortMethods.ts';
 import { SERVER_ERROR } from '../enums/httpStatusCodes.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
 const BAD_REQUEST_STATUS = 400;

@@ -1,5 +1,4 @@
-import express, { Request, RequestHandler, Response } from 'express';
-const router = express.Router();
+import { Router, Request, RequestHandler, Response } from 'express';
 import { VendorModel } from '../models/vendor.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
@@ -10,6 +9,7 @@ import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { IVendor } from '@shared/types/models.ts';
 import { SearchHandler } from '@api/types/express.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
 router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {

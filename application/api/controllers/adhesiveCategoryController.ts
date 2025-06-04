@@ -1,5 +1,4 @@
-import express, { Router, Request, Response, RequestHandler } from 'express';
-const router: express.Router = Router();
+import { Router, Request, Response, RequestHandler } from 'express';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { AdhesiveCategoryModel } from '../models/adhesiveCategory.ts';
 import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
@@ -10,6 +9,7 @@ import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { IAdhesiveCategory } from '@shared/types/models.ts';
 import { SearchHandler } from '@api/types/express.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
 router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {
@@ -109,13 +109,11 @@ router.patch('/:mongooseId', (async (request: Request, response: Response) => {
       { runValidators: true, new: true }
     ).exec();
 
-    return response.json(updatedAdhesiveCategory);
+    response.json(updatedAdhesiveCategory);
   } catch (error) {
     console.error('Failed to update adhesiveCategory: ', error);
 
-    response
-      .status(SERVER_ERROR)
-      .send(error.message);
+    response.status(SERVER_ERROR).send(error.message);
   }
 }) as RequestHandler);
 

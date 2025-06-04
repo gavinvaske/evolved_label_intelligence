@@ -1,5 +1,4 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-const router = Router();
 import { BAD_REQUEST, CREATED_SUCCESSFULLY, SERVER_ERROR, SUCCESS } from '../enums/httpStatusCodes.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { IMaterialLengthAdjustment } from '@shared/types/models.ts';
@@ -10,6 +9,7 @@ import { SortOption } from '../../_types/shared/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { SearchHandler } from '@api/types/express.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
 router.post('/batch', (async (request: Request, response: Response) => {

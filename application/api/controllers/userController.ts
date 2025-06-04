@@ -1,5 +1,4 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-const router = Router();
 import { UserModel } from '../models/user.ts';
 import { hasAnyRole, verifyBearerToken } from '../middleware/authorize.ts';
 import { upload } from '../middleware/upload.ts';
@@ -12,6 +11,8 @@ import { SortOption } from '@shared/types/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { AVAILABLE_AUTH_ROLES } from '../enums/authRolesEnum.ts';
 import { SearchHandler } from '@api/types/express.ts';
+
+const router = Router();
 
 function deleteFileFromFileSystem(path) {
   fs.unlinkSync(path);

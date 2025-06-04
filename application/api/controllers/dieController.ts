@@ -1,5 +1,4 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-const router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { DieModel } from '../models/die.ts';
 import { IDie } from '@shared/types/models.ts';
@@ -10,7 +9,7 @@ import { getSortOption } from '../services/mongooseService.ts';
 import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { SearchHandler } from '@api/types/express.ts';
 
-
+const router = Router();
 router.use(verifyBearerToken);
 
 router.post('/', (async (request: Request, response: Response) => {

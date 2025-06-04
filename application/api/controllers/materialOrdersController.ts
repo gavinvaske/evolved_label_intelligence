@@ -1,5 +1,4 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-const router = Router();
 import { MaterialOrderModel } from '../models/materialOrder.ts';
 import { IMaterialOrder } from '@shared/types/models.ts';
 import { verifyBearerToken } from '../middleware/authorize.ts';
@@ -10,6 +9,7 @@ import { DEFAULT_SORT_OPTIONS } from '../constants/mongoose.ts';
 import { getSortOption } from '../services/mongooseService.ts';
 import { SearchHandler } from '@api/types/express.ts';
 
+const router = Router();
 router.use(verifyBearerToken);
 
 router.get('/search', (async (request: Request<{}, {}, {}, SearchQuery>, response: Response) => {

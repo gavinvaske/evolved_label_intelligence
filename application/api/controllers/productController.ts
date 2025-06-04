@@ -1,5 +1,4 @@
 import { Router, Request, Response, RequestHandler } from 'express';
-const router = Router();
 import { verifyBearerToken } from '../middleware/authorize.ts';
 import { upload } from '../middleware/upload.ts';
 import { TicketModel } from '../models/ticket.ts';
@@ -13,6 +12,7 @@ import { DESCENDING } from '../enums/mongooseSortMethods.ts';
 const SERVER_ERROR_CODE = 500;
 const INVALID_REQUEST_CODE = 400;
 
+const router = Router();
 router.use(verifyBearerToken);
 
 router.post('/:productNumber/upload-proof', upload.single('proof'), (async (request: Request, response: Response) => {
