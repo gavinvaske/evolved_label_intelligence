@@ -15,6 +15,7 @@ import deliveryMethodEndpoints from './controllers/deliveryMethodController.ts';
 import creditTermEndpoints from './controllers/creditTermsController.ts';
 import authEndpoints from './controllers/authController.ts'
 import { Application } from 'express';
+import { errorHandler } from './errorHandler.ts';
 
 export const setupApiRoutes = (app: Application) => {
   app.use('/auth', authEndpoints);
@@ -33,4 +34,5 @@ export const setupApiRoutes = (app: Application) => {
   app.use('/customers', customerEndpoints);
   app.use('/delivery-methods', deliveryMethodEndpoints);
   app.use('/credit-terms', creditTermEndpoints);
+  app.use(errorHandler);  // Error handler must be last middleware
 }
