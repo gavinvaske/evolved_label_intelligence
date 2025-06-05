@@ -9,8 +9,6 @@ interface ErrorResponse {
 const handleAxiosError = (error: AxiosError) => {
   const errorData = error.response?.data as ErrorResponse;
 
-  console.log('handling axios error: ', errorData);
-
   if (!errorData) {
     flashMessageStore.addErrorMessage('Uh oh, an error occurred');
     return;
