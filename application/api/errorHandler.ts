@@ -44,9 +44,8 @@ export const errorHandler: ErrorRequestHandler = (error, req: Request, res: Resp
     );
   }
 
-  // Handle Mongoose validation errors (e.g., required fields missing)
   else if (error instanceof mongoose.Error.ValidationError) {
-    const validationErrors = Object.values(error.errors).map(e => e.message);
+    const validationErrors = Object.values(error.errors).map(e => convertMongooseErrorToHumanReadable(e as mongoose.Error.ValidatorError));
     response = createErrorResponse(
       BAD_REQUEST,
       undefined,
@@ -79,3 +78,37 @@ export const errorHandler: ErrorRequestHandler = (error, req: Request, res: Resp
   });
 };
 
+const convertMongooseErrorToHumanReadable = (error: mongoose.Error.ValidatorError | mongoose.Error.CastError) => {
+  // Handle CastError inside a ValidationError
+  if (error instanceof mongoose.Error.CastError) {
+    return `${error.path} must be a ${error.kind}`;
+  }
+
+  // Required field
+  if (error.kind === 'required') {
+    return `${error.path} is required`;
+  }
+
+  // String length validators
+  if (error.kind === 'minlength') {
+    return `${error.path} is too short`;
+  }
+
+  if (error.kind === 'maxlength') {
+    return `${error.path} is too long`;
+  }
+
+  // Enum validator
+  if (error.kind === 'enum' && 'enumValues' in error && Array.isArray((error as any).enumValues)) {
+    return `${error.path} must be one of: ${(error as any).enumValues.join(', ')}`;
+  }
+
+  // Custom validator message
+  if (error instanceof mongoose.Error.ValidatorError) {
+    return error.message;
+  }
+
+  // Catch-all for other types inside ValidationError
+  // @ts-ignore
+  return `${error.path ? error.path : 'One or more fields'} is invalid`;
+}
