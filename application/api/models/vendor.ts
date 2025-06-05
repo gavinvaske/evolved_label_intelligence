@@ -16,12 +16,12 @@ const schema = new Schema<IVendor>({
     },
     phoneNumber: {
         type: String,
-        validate: [validatePhoneNumber, 'The provided phone number "{VALUE}" is not a valid phone number']
+        validate: [validatePhoneNumber, 'must be a valid phone number']
     },
     email: {
         type: String,
         required: false,
-        validate: [validateEmail, 'The provided email "{VALUE}" is not a valid email address']
+        validate: [validateEmail, 'must be a valid email']
     },
     notes: {
         type: String,
@@ -46,12 +46,12 @@ const schema = new Schema<IVendor>({
     primaryContactPhoneNumber: {
         type: String,
         required: true,
-        validate: [validatePhoneNumber, 'Invalid attribute "primaryContactPhoneNumber": The provided phone number "{VALUE}" is not a valid phone number']
+        validate: [validatePhoneNumber, 'must be a valid phone number']
     },
     primaryContactEmail: {
         type: String,
         required: true,
-        validate: [validateEmail, 'Invalid attribute "primaryContactEmail": The provided email "{VALUE}" is not a valid email address']
+        validate: [validateEmail, 'must be a valid email']
     },
     mfgSpecNumber: {
         type: String,

@@ -127,7 +127,7 @@ const schema = new Schema<IMaterial>({
         required: true,
         validate : {
             validator : Number.isInteger,
-            message: '{VALUE} is not an integer'
+            message: 'must be an integer'
         },
         min: 0
     },
@@ -174,14 +174,14 @@ const schema = new Schema<IMaterial>({
         required: true,
         validate : {
             validator : Number.isInteger,
-            message: '{VALUE} is not an integer'
+            message: 'must be an integer'
         },
         min: 1
     },
     image: {
         type: String,
         required: true,
-        validate: [validateUrl, '{VALUE} is not a valid url']
+        validate: [validateUrl, 'must be a valid url']
     },
     lowStockThreshold: {
         type: Number,
@@ -189,7 +189,7 @@ const schema = new Schema<IMaterial>({
         min: 0,
         validate : {
             validator : Number.isInteger,
-            message: '{VALUE} is not an integer'
+            message: 'must be an integer'
         },
     },
     lowStockBuffer: {
@@ -198,7 +198,7 @@ const schema = new Schema<IMaterial>({
         min: 0,
         validate : {
             validator : Number.isInteger,
-            message: '{VALUE} is not an integer'
+            message: 'must be an integer'
         },
     },
   inventory: {  // Denormalized attribute to optimize query performance

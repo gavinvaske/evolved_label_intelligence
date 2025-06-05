@@ -12,7 +12,7 @@ export const contactSchema = new Schema<IContact>({
     },
     phoneNumber: {
         type: String,
-        validate: [validatePhoneNumber, 'The provided phone number "{VALUE}" is not a valid phone number']
+        validate: [validatePhoneNumber, 'must be a valid phone number']
     },
     phoneExtension: {
         type: Number
@@ -20,7 +20,7 @@ export const contactSchema = new Schema<IContact>({
     email: {
         type: String,
         uppercase: true,
-        validate: [validateEmail, 'The provided email "{VALUE}" is not a valid email']
+        validate: [validateEmail, 'must be a valid email']
     },
     contactStatus: {
         type: String,

@@ -11,13 +11,13 @@ const userSchema = new Schema<IUser>({
     index: true,
     unique: true,
     uppercase: true,
-    required: [true, 'Email address is required'],
-    validate: [validateEmail, 'Please fill a valid email address'],
+    required: true,
+    validate: [validateEmail, 'must be a valid email'],
   },
   password: {
     type: String,
     minLength: 8,
-    required: [true, 'Password is required']
+    required: true
   },
   profilePicture: {
     data: {
@@ -30,22 +30,22 @@ const userSchema = new Schema<IUser>({
   },
   firstName: {
     type: String,
-    required: [true, 'First name is required']
+    required: true
   },
   lastName: {
     type: String,
-    required: [true, 'Last name is required']
+    required: true
   },
   birthDate: {
     type: Date,
-    required: [true, 'Birth date is required']
+    required: true
   },
   jobRole: {
     type: String
   },
   phoneNumber: {
     type: String,
-    validate: [validatePhoneNumber, 'The provided phone number "{VALUE}" is not a valid phone number']
+    validate: [validatePhoneNumber, 'must be a valid phone number']
   },
   authRoles: {
     type: [{
