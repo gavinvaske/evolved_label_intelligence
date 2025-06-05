@@ -105,7 +105,7 @@ const convertMongooseErrorToHumanReadable = (error: mongoose.Error.ValidatorErro
 
   // Custom validator message
   if (error instanceof mongoose.Error.ValidatorError) {
-    return error.message;
+    return `${error.path} ${error.message}`
   }
 
   // Catch-all for other types inside ValidationError

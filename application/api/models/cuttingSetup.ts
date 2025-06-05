@@ -38,8 +38,8 @@ const schema = new Schema({
     },
     video: {
         type: String,
-        validate: [validateUrl, 'Please fill a valid video url'],
-        match: [URL_VALIDATION_REGEX, 'Please fill a valid video url']
+        validate: [validateUrl, 'must be a valid url'],
+        match: [URL_VALIDATION_REGEX, 'must be a valid url']
     },
     difficulty: {
         type: String,

@@ -34,7 +34,7 @@ const packingSlipSchema = new Schema({
     },
     senderPhoneNumber: {
         type: String,
-        validate: [validatePhoneNumber, '{VALUE} is not a valid phone number']
+        validate: [validatePhoneNumber, 'must be a valid phone number']
     },
     nameOfReceiver: {
         type: String
@@ -52,7 +52,7 @@ const packingSlipSchema = new Schema({
     },
     numberOfBoxes: {
         type: Number,
-        validate: [Number.isInteger, '{VALUE} must be an integer'],
+        validate: [Number.isInteger, 'must be an integer'],
         min: 0,
     },
     weight: {

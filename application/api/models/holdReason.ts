@@ -15,7 +15,7 @@ function isDepartmentValid(department) {
 const HoldReasonSchema = new Schema({
     department: {
         type: String,
-        validate: [isDepartmentValid, 'The department "{VALUE}" is not a valid department.'],
+        validate: [isDepartmentValid, 'must be a valid department'],
         required: true
     },
     reason: {

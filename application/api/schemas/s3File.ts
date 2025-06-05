@@ -11,7 +11,7 @@ function validateUrl(url) {
 export const s3FileSchema = new Schema({
     url: {
         type: String,
-        validate: [validateUrl, 'Invalid URL of "{VALUE}" resulted in a validation error'],
+        validate: [validateUrl, 'must be a valid url'],
         required: true,
         alias: 'Location'
     },
